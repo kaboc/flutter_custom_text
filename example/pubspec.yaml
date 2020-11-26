@@ -1,0 +1,21 @@
+name: custom_text_example
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  custom_text:
+    path: ../
+  google_fonts: ^1.1.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/examples/
