@@ -1,26 +1,32 @@
 # custom_text
 
+[![Pub Version](https://img.shields.io/pub/v/custom_text)](https://pub.dev/packages/custom_text)
+
 A text widget for Flutter that enables strings in it to be styled flexibly and/or tapped.
 
 This widget may be useful for making link strings tappable, such as URLs, email addresses or
-phone numbers, or for only highlighting string elements in text with colors / different font
-settings depending on the types of string elements.
+phone numbers, or for only highlighting partial strings with colors / different font settings
+depending on the types of the string elements.
 
 ## Examples / Usage
 
-The following examples are all contained in the sample app in the `example/` folder.
-Just run it and see what this package is like if you're reluctant to read through all
-this document.
+The examples here are all contained in the sample app in the [example/][example] folder.
+Just run it and see what this package is like if you're reluctant to read through all the
+following descriptions.
 
 The app also shows the source code with keywords highlighted, which is itself thanks 
 to this package.
+
+![highlighting](https://user-images.githubusercontent.com/20254485/100355884-d9c68c80-3035-11eb-8460-545afebf683c.png)
 
 ### Simplest example
 
 A very basic example with URLs and email addresses styled.
 They are not tappable in this example.
 
-[example1.dart](example/lib/examples/example1.dart)
+![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
+
+[example1.dart][example1]
 
 ```dart
 CustomText(
@@ -46,7 +52,9 @@ them to be tapped / long-tapped.
 All of the three are styled, but only phone numbers among them are given unique `matchStyle`
 and `tapStyle`.
 
-[example2.dart](example/lib/examples/example2.dart)
+![example2](https://user-images.githubusercontent.com/20254485/100355833-c74c5300-3035-11eb-80d2-de64056417a1.gif)
+
+[example2.dart][example2]
 
 ```dart
 CustomText(
@@ -81,11 +89,13 @@ CustomText(
 
 ### Overwriting match patterns
 
-An example to overwrite the default match pattern of `TelMatcher`.
+An example to overwrite the default match pattern of [TelMatcher][TelMatcher].
 
 The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` format as a phone number.
 
-[example3.dart](example/lib/examples/example3.dart)
+![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
+
+[example3.dart][example3]
 
 ```dart
 CustomText(
@@ -107,7 +117,9 @@ A hashtag has a wide variety of definitions, but here as an example, it is defin
 as a string that starts with "#" followed by an alphabet and then by alphanumerics,
 and is enclosed with white spaces.
 
-[example4.dart](example/lib/examples/example4.dart)
+![example4](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
+
+[example4.dart][example4]
 
 ```dart
 // You can create a custom matcher easily by extending TextMatcher.
@@ -129,17 +141,19 @@ CustomText(
 
 ### SelectiveDefinition
 
-An example to parse markdown-style links, like `[label](url)` using `SelectiveDefinition`,
-and make them tappable.
+An example to parse markdown-style links, like `[label](url)` using
+[SelectiveDefinition][SelectiveDefinition], and make them tappable.
 
 Each of the string shown in the widget and the string passed to the tap callbacks is selected
 individually from the fragments (`groups`) that have matched the patterns enclosed with
 parentheses within the match pattern.
 
 For details of `groups`, please see the document of the
-[text_parser](https://pub.dev/packages/text_parser) package, which this package uses internally.
+[text_parser][text_parser] package, which this package uses internally.
 
-[example5.dart](example/lib/examples/example5.dart)
+![example5](https://user-images.githubusercontent.com/20254485/100355868-d0d5bb00-3035-11eb-836f-863f1af599ac.png)
+
+[example5.dart][example5]
 
 ```dart
 class MdLinkMatcher extends TextMatcher {
@@ -172,14 +186,15 @@ CustomText(
 
 ### SpanDefinition
 
-An example to show both strings and icons using `SpanDefinition`.
+An example to show both strings and icons using [SpanDefinition][SpanDefinition].
 
-The builder parameter takes a function returning an
-[InlineSpan](https://api.flutter.dev/flutter/painting/InlineSpan-class.html).
+The builder parameter takes a function returning an [InlineSpan][InlineSpan].
 The function is provided with matched string and groups, so it is possible to construct
 an `InlineSpan` flexibly with them.
 
-[example6.dart](example/lib/examples/example6.dart)
+![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
+
+[example6.dart][example6]
 
 ```dart
 CustomText(
@@ -220,10 +235,23 @@ On the web, taps/long-taps on some string elements that should be tappable do no
 due to some issues in Flutter itself.
 
 - [TapGestureRecognizer doesn't work on web, does work on mobile. · Issue #46975 · flutter/flutter](https://github.com/flutter/flutter/issues/46975)
-- [[web]: TextSpans interact with wrong TapGestureRecognizers  · Issue #63638 · flutter/flutter](https://github.com/flutter/flutter/issues/63638)
+- [\[web\]: TextSpans interact with wrong TapGestureRecognizers  · Issue #63638 · flutter/flutter](https://github.com/flutter/flutter/issues/63638)
 
 ## Links
 
-- [text_parser](https://pub.dev/packages/text_parser) package
-    - CustomText is heavily dependent on text_parser. Please see its documentation for details
-    or troubleshooting on parsing.
+- [text_parser][text_parser]
+    - CustomText is heavily dependent on the `text_parser` package. Please see its documentation
+    for details or troubleshooting on parsing.
+
+[example]: https://github.com/kaboc/flutter_custom_text/example/
+[example1]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example1.dart
+[example2]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example2.dart
+[example3]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example3.dart
+[example4]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example4.dart
+[example5]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example5.dart
+[example6]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example6.dart
+[TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
+[SelectiveDefinition]: file:///D:/dev/flutter/public/package/custom_text/doc/api/custom_text/SelectiveDefinition-class.html
+[SpanDefinition]: file:///D:/dev/flutter/public/package/custom_text/doc/api/custom_text/SpanDefinition-class.html
+[InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
+[text_parser]: https://pub.dev/packages/text_parser
