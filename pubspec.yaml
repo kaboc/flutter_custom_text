@@ -1,0 +1,13 @@
+name: custom_text
+description: A text widget that enables strings in it to be styled flexibly and/or tapped.
+version: 0.0.1
+homepage: https://github.com/kaboc/flutter_custom_text
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  text_parser: ^0.0.1
