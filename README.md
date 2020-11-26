@@ -243,15 +243,15 @@ due to some issues in Flutter itself.
     - CustomText is heavily dependent on the `text_parser` package. Please see its documentation
     for details or troubleshooting on parsing.
 
-[example]: https://github.com/kaboc/flutter_custom_text/example/
-[example1]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example1.dart
-[example2]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example2.dart
-[example3]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example3.dart
-[example4]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example4.dart
-[example5]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example5.dart
-[example6]: https://github.com/kaboc/flutter_custom_text/example/lib/examples/example6.dart
+[example]: https://github.com/kaboc/flutter_custom_text/tree/main/example
+[example1]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example1.dart
+[example2]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example2.dart
+[example3]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example3.dart
+[example4]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example4.dart
+[example5]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example5.dart
+[example6]: https://github.com/kaboc/flutter_custom_text/tree/main/example/lib/examples/example6.dart
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
-[SelectiveDefinition]: file:///D:/dev/flutter/public/package/custom_text/doc/api/custom_text/SelectiveDefinition-class.html
-[SpanDefinition]: file:///D:/dev/flutter/public/package/custom_text/doc/api/custom_text/SpanDefinition-class.html
+[SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
+[SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser
