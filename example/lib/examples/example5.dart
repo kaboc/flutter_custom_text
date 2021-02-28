@@ -16,8 +16,7 @@ class Example5 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, title: title, filename: filename),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           Description(description, filename: filename),
           Padding(
@@ -30,7 +29,7 @@ class Example5 extends StatelessWidget {
                   matcher: const MdLinkMatcher(),
                   // `labelSelector` is used to choose the string to show.
                   // `groups` provided to `labelSelector` is an array of
-                  // strings matching the fragments enclosed with parentheses
+                  // strings matching the fragments enclosed in parentheses
                   // within the match pattern.
                   labelSelector: (groups) => groups[0],
                   // `tapSelector` is used to choose the string to be passed

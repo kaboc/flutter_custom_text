@@ -63,42 +63,42 @@ class _View extends StatelessWidget {
       code,
       definitions: const [
         TextDefinition(
-          matcher: DartCommentMatcher(),
+          matcher: _DartCommentMatcher(),
           matchStyle: TextStyle(color: Color(0xFFBDBDBD)),
         ),
         TextDefinition(
-          matcher: DartKeywordMatcher(),
+          matcher: _DartKeywordMatcher(),
           matchStyle: TextStyle(color: Colors.orange),
         ),
         TextDefinition(
-          matcher: DartTypeMatcher(),
+          matcher: _DartTypeMatcher(),
           matchStyle: TextStyle(color: Colors.lightBlue),
         ),
         TextDefinition(
-          matcher: DartSymbolMatcher(),
+          matcher: _DartSymbolMatcher(),
           matchStyle: TextStyle(color: Colors.green),
         ),
         TextDefinition(
-          matcher: DartVariableMatcher(),
+          matcher: _DartVariableMatcher(),
           matchStyle: TextStyle(color: Colors.indigo),
         ),
         TextDefinition(
-          matcher: DartValueMatcher(),
+          matcher: _DartValueMatcher(),
           matchStyle: TextStyle(color: Colors.pink),
         ),
         TextDefinition(
-          matcher: DartStringMatcher(),
+          matcher: _DartStringMatcher(),
           matchStyle: TextStyle(color: Colors.teal),
         ),
         TextDefinition(
-          matcher: ClassMatcher(),
+          matcher: _ClassMatcher(),
           matchStyle: TextStyle(
             color: Color(0xFF7CB342),
             fontWeight: FontWeight.bold,
           ),
         ),
         TextDefinition(
-          matcher: ParameterMatcher(),
+          matcher: _ParameterMatcher(),
           matchStyle: TextStyle(color: Color(0xFFA1887F)),
         ),
       ],
@@ -106,15 +106,15 @@ class _View extends StatelessWidget {
   }
 }
 
-class DartCommentMatcher extends TextMatcher {
-  const DartCommentMatcher()
+class _DartCommentMatcher extends TextMatcher {
+  const _DartCommentMatcher()
       : super(
           r'//.*',
         );
 }
 
-class DartKeywordMatcher extends TextMatcher {
-  const DartKeywordMatcher()
+class _DartKeywordMatcher extends TextMatcher {
+  const _DartKeywordMatcher()
       : super(
           r'(?<=\s|^)(?:import|part|const|var|final|class|extends|super|'
           r'assert|@override|@required|return|if|else|for|in|switch|do|while|'
@@ -122,42 +122,42 @@ class DartKeywordMatcher extends TextMatcher {
         );
 }
 
-class DartTypeMatcher extends TextMatcher {
-  const DartTypeMatcher()
+class _DartTypeMatcher extends TextMatcher {
+  const _DartTypeMatcher()
       : super(
           r'(?<=\s|^)(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
           r'(?=[\s<]|$)',
         );
 }
 
-class DartSymbolMatcher extends TextMatcher {
-  const DartSymbolMatcher() : super(r'[?:[.,;:<>(){}\[\]=+\-*/!&|]');
+class _DartSymbolMatcher extends TextMatcher {
+  const _DartSymbolMatcher() : super(r'[?:[.,;:<>(){}\[\]=+\-*/!&|]');
 }
 
-class DartVariableMatcher extends TextMatcher {
-  const DartVariableMatcher()
+class _DartVariableMatcher extends TextMatcher {
+  const _DartVariableMatcher()
       : super(r'(?<=\s|^)(?:super|this|widget)(?=[\s.]|$)');
 }
 
-class DartValueMatcher extends TextMatcher {
-  const DartValueMatcher()
+class _DartValueMatcher extends TextMatcher {
+  const _DartValueMatcher()
       : super(r'(?<![a-zA-Z])(?:true|false|\d+\.\d+|\d)(?![a-zA-Z])');
 }
 
-class DartStringMatcher extends TextMatcher {
-  const DartStringMatcher() : super(r"r?'.*'");
+class _DartStringMatcher extends TextMatcher {
+  const _DartStringMatcher() : super(r"r?'.*'");
 }
 
-class ClassMatcher extends TextMatcher {
-  const ClassMatcher()
+class _ClassMatcher extends TextMatcher {
+  const _ClassMatcher()
       : super(
           r'(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
           r'SelectiveDefinition|SpanDefinition|HashTagMatcher|MdLinkMatcher)',
         );
 }
 
-class ParameterMatcher extends TextMatcher {
-  const ParameterMatcher()
+class _ParameterMatcher extends TextMatcher {
+  const _ParameterMatcher()
       : super(
           r'(?:definitions|style|matchStyle|tapStyle|onTap|onLongTap|'
           r'labelSelector|tapSelector)(?=:)',

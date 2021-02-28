@@ -17,8 +17,7 @@ class Example6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, title: title, filename: filename),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           Description(description, filename: filename),
           Padding(

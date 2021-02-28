@@ -9,8 +9,8 @@ part 'definition.dart';
 
 const _kLongTapDuration = Duration(milliseconds: 600);
 
-/// A widget that adds styles to string elements in text and/or enables
-/// clicks on them according to specified definitions.
+/// A widget that adds styles to partial strings in text and/or enables
+/// taps on them according to specified definitions.
 ///
 /// This widget may be useful for making strings such as URLs, email
 /// addresses or phone numbers clickable, or for only highlighting some
@@ -93,16 +93,19 @@ class CustomText extends StatefulWidget {
   /// [onLongTap] function is called..
   final Duration longTapDuration;
 
-  /// Parsing is executed in an isolate if set to `true` to prevent
-  /// the UI from being blocked during the parsing, except on the web
-  /// where isolates are not supported,
+  /// Parsing is executed in an isolate to prevent blocking of the UI
+  /// if set to `true`, except on the web where isolates are not supported,
   ///
-  /// It also has the adverse effect to show text without styles earlier
-  /// and then applies styles later when parsing is completed, which may
-  /// look awkward if the waiting time is not short. It depends on the
-  /// text length, the number and complexity of match patterns, and the
-  /// performance of users' devices. Try both `true` and `false` to see
-  /// which is suitable if you are unsure of it.
+  /// Using an isolate has the adverse effect of adding an overhead,
+  /// resulting in a slightly longer execution. If it is enabled. the
+  /// widget shows text without styles first and then applies them when
+  /// parsing is completed. Generally, leaving it disabled shows styled
+  /// text quicker, which probably looks better.
+  ///
+  /// How long parsing takes depends on the text length, the number and
+  /// complexity of match patterns, the device performance, etc.
+  /// Try both `true` and `false` to see which is suitable if you are
+  /// unsure of it.
   final bool preventBlocking;
 
   final StrutStyle strutStyle;

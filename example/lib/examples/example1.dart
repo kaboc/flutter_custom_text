@@ -16,8 +16,7 @@ class Example1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, title: title, filename: filename),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           Description(description, filename: filename),
           Padding(
@@ -30,10 +29,10 @@ class Example1 extends StatelessWidget {
                 TextDefinition(matcher: EmailMatcher()),
               ],
               matchStyle: const TextStyle(color: Colors.lightBlue),
-              // `tapStyle` does not work on tap even if set
-              // unless `onTap` / `onLongTap` is set.
+              // `tapStyle` is not used if both `onTap` and `onLongTap`
+              // are null or not set.
               tapStyle: const TextStyle(color: Colors.yellow),
-              //onTap: (text) => print(text),
+              onTap: null,
             ),
           ),
         ],

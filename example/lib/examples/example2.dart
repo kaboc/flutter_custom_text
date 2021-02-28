@@ -16,8 +16,7 @@ class Example2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, title: title, filename: filename),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           Description(description, filename: filename),
           Padding(
@@ -31,8 +30,8 @@ class Example2 extends StatelessWidget {
                 const TextDefinition(matcher: EmailMatcher()),
                 TextDefinition(
                   matcher: const TelMatcher(),
-                  // `matchStyle`, `tapStyle`, `onTap` and `onLongTap` here take
-                  // precedence over the equivalent parameters of CustomText.
+                  // `matchStyle`, `tapStyle`, `onTap` and `onLongTap` here
+                  // override the equivalent parameters of CustomText.
                   matchStyle: const TextStyle(
                     color: Colors.green,
                     decoration: TextDecoration.underline,
