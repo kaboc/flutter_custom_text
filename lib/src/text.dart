@@ -281,7 +281,10 @@ class _CustomTextState extends State<CustomText> {
           setState(() => _isTapped[index] = false);
           _timer?.cancel();
           _timer = null;
-        },
+        }
+        // onTap is necessary until this fix arrives in the stable channel.
+        // https://github.com/flutter/flutter/pull/69793
+        ..onTap = () {},
     );
   }
 }
