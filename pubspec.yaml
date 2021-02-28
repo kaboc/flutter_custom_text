@@ -10,4 +10,4 @@ dependencies:
   flutter:
     sdk: flutter
 
-  text_parser: ^0.0.1
+  text_parser: ^0.0.5
