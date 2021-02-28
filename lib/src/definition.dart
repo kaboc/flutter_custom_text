@@ -2,7 +2,7 @@ part of 'text.dart';
 
 abstract class _Definition {
   const _Definition({
-    this.matcher,
+    required this.matcher,
     this.labelSelector,
     this.tapSelector,
     this.builder,
@@ -13,13 +13,13 @@ abstract class _Definition {
   });
 
   final TextMatcher matcher;
-  final String Function(List<String>) labelSelector;
-  final String Function(List<String>) tapSelector;
-  final InlineSpan Function(String, List<String>) builder;
-  final TextStyle matchStyle;
-  final TextStyle tapStyle;
-  final void Function(String) onTap;
-  final void Function(String) onLongTap;
+  final String Function(List<String?>)? labelSelector;
+  final String Function(List<String?>)? tapSelector;
+  final InlineSpan Function(String, List<String?>)? builder;
+  final TextStyle? matchStyle;
+  final TextStyle? tapStyle;
+  final void Function(String)? onTap;
+  final void Function(String)? onLongTap;
 }
 
 /// A class that defines the parsing rule, text styles and actions for
@@ -37,13 +37,12 @@ class TextDefinition extends _Definition {
   /// is tapped / long-tapped. The matched string is passed in to the
   /// functions.
   const TextDefinition({
-    @required TextMatcher matcher,
-    TextStyle matchStyle,
-    TextStyle tapStyle,
-    void Function(String) onTap,
-    void Function(String) onLongTap,
-  })  : assert(matcher != null, '`matcher` must not be null.'),
-        super(
+    required TextMatcher matcher,
+    TextStyle? matchStyle,
+    TextStyle? tapStyle,
+    void Function(String)? onTap,
+    void Function(String)? onLongTap,
+  }) : super(
           matcher: matcher,
           matchStyle: matchStyle,
           tapStyle: tapStyle,
@@ -74,16 +73,14 @@ class SelectiveDefinition extends _Definition {
   /// is tapped / long-tapped. The string set by [tapSelector] is passed
   /// in to the functions.
   const SelectiveDefinition({
-    @required TextMatcher matcher,
-    @required String Function(List<String>) labelSelector,
-    String Function(List<String>) tapSelector,
-    TextStyle matchStyle,
-    TextStyle tapStyle,
-    void Function(String) onTap,
-    void Function(String) onLongTap,
-  })  : assert(matcher != null, '`matcher` must not be null'),
-        assert(labelSelector != null, '`labelSelector` must not be null.'),
-        super(
+    required TextMatcher matcher,
+    required String Function(List<String?>) labelSelector,
+    String Function(List<String?>)? tapSelector,
+    TextStyle? matchStyle,
+    TextStyle? tapStyle,
+    void Function(String)? onTap,
+    void Function(String)? onLongTap,
+  }) : super(
           matcher: matcher,
           labelSelector: labelSelector,
           tapSelector: tapSelector,
@@ -105,11 +102,9 @@ class SpanDefinition extends _Definition {
   /// function to return an object of a type derived from [InlineSpan],
   /// like [WidgetSpan], to display it instead of the matched string.
   const SpanDefinition({
-    @required TextMatcher matcher,
-    @required InlineSpan Function(String, List<String>) builder,
-  })  : assert(matcher != null, '`matcher` must not be null.'),
-        assert(builder != null, '`builder` must not be null.'),
-        super(
+    required TextMatcher matcher,
+    required InlineSpan Function(String, List<String?>) builder,
+  }) : super(
           matcher: matcher,
           builder: builder,
         );

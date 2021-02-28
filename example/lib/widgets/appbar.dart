@@ -4,8 +4,8 @@ import 'package:custom_text_example/code_view_page.dart';
 
 PreferredSizeWidget appBar(
   BuildContext context, {
-  String title,
-  String filename,
+  required String title,
+  required String filename,
 }) {
   return AppBar(
     title: Text(title),

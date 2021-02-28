@@ -23,8 +23,8 @@ void main() {
 
         final span1 = findSpan('aaa ');
         final span2 = findSpan('bbb@example.com');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -42,8 +42,8 @@ void main() {
 
         final span1 = findSpan('bbb@example.com');
         final span2 = findSpan('https://example.com/');
-        expect(span1.style.color, const Color(0xFF222222));
-        expect(span2.style.color, const Color(0xFF111111));
+        expect(span1?.style?.color, const Color(0xFF222222));
+        expect(span2?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -58,7 +58,7 @@ void main() {
         await tester.pump();
 
         final span = findSpan('bbb@example.com');
-        expect(span.style.color, const Color(0xFF222222));
+        expect(span?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -77,7 +77,7 @@ void main() {
         await tester.pump();
 
         final spanB = findSpan('bbb@example.com');
-        expect(spanB.style.color, const Color(0xFF111111));
+        expect(spanB?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -99,9 +99,9 @@ void main() {
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
         final span3 = findSpan('https://example.com/');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF222222));
-        expect(span3.style.color, const Color(0xFF111111));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF222222));
+        expect(span3?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -121,7 +121,7 @@ void main() {
         await tester.pump();
 
         final spanB = findSpan('bbb@example.com');
-        expect(spanB.style.color, const Color(0xFF222222));
+        expect(spanB?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -144,15 +144,15 @@ void main() {
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
         final span3 = findSpan('https://example.com/');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF333333));
-        expect(span3.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF333333));
+        expect(span3?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF222222));
+        expect(span2C?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -175,15 +175,15 @@ void main() {
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
         final span3 = findSpan('https://example.com/');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF333333));
-        expect(span3.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF333333));
+        expect(span3?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF222222));
+        expect(span2C?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -204,14 +204,14 @@ void main() {
 
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF111111));
+        expect(span2C?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -232,14 +232,14 @@ void main() {
 
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF111111));
+        expect(span2C?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -260,14 +260,14 @@ void main() {
 
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF111111));
+        expect(span2C?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -288,14 +288,14 @@ void main() {
 
         final span1 = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
-        expect(span1.style.color, const Color(0xFF111111));
-        expect(span2B.style.color, const Color(0xFF222222));
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF222222));
 
         tapUpSpan(span2B);
         await tester.pump();
 
         final span2C = findSpan('bbb@example.com');
-        expect(span2C.style.color, const Color(0xFF111111));
+        expect(span2C?.style?.color, const Color(0xFF111111));
       },
     );
   });

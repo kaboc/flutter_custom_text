@@ -19,19 +19,19 @@ class Example1 extends StatelessWidget {
       body: ListView(
         children: [
           Description(description, filename: filename),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: CustomText(
               'URL: https://example.com/\n'
               'Email: foo@example.com',
-              definitions: const [
+              definitions: [
                 TextDefinition(matcher: UrlMatcher()),
                 TextDefinition(matcher: EmailMatcher()),
               ],
-              matchStyle: const TextStyle(color: Colors.lightBlue),
+              matchStyle: TextStyle(color: Colors.lightBlue),
               // `tapStyle` is not used if both `onTap` and `onLongTap`
               // are null or not set.
-              tapStyle: const TextStyle(color: Colors.yellow),
+              tapStyle: TextStyle(color: Colors.yellow),
               onTap: null,
             ),
           ),

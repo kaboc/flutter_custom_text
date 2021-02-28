@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
 }
 
 class _ListTile extends StatelessWidget {
-  const _ListTile({@required this.title, @required this.builder});
+  const _ListTile({required this.title, required this.builder});
 
   final String title;
   final Widget Function(String title) builder;

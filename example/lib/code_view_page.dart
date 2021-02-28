@@ -5,7 +5,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CodeViewPage extends StatelessWidget {
-  const CodeViewPage({@required this.filename});
+  const CodeViewPage({required this.filename});
 
   final String filename;
 
@@ -35,7 +35,7 @@ class CodeViewPage extends StatelessWidget {
                               color: DefaultTextStyle.of(context).style.color,
                               fontSize: 15.0,
                             ),
-                            child: _View(snapshot.data),
+                            child: _View(snapshot.data!),
                           ),
                         ),
                       ),

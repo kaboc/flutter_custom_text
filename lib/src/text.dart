@@ -21,15 +21,15 @@ class CustomText extends StatefulWidget {
   /// enables clicks on them according to specified definitions.
   const CustomText(
     this.text, {
-    Key key,
-    @required this.definitions,
+    Key? key,
+    required this.definitions,
     this.style,
     this.matchStyle,
     this.tapStyle,
     this.onTap,
     this.onLongTap,
     this.longTapDuration,
-    this.preventBlocking = false,
+    this.preventBlocking,
     this.strutStyle,
     this.textAlign,
     this.textDirection,
@@ -42,8 +42,8 @@ class CustomText extends StatefulWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
   })  : assert(
-          definitions != null && definitions.length > 0,
-          '`definitions` must not be null nor empty.',
+          maxLines == null || maxLines > 0,
+          '`maxLines` must be greater than zero if it is not null.',
         ),
         super(key: key);
 
@@ -64,14 +64,14 @@ class CustomText extends StatefulWidget {
   ///
   /// If no style is set to any of the above and this parameter,
   /// [DefaultTextStyle] is used instead.
-  final TextStyle style;
+  final TextStyle? style;
 
   /// The default text style for matched strings. This is used only if
   /// `matchStyle` is not set in the relative definition.
   ///
   /// If no style is set to this parameter either, [DefaultTextStyle] is
   /// used instead.
-  final TextStyle matchStyle;
+  final TextStyle? matchStyle;
 
   /// The default text style used for matched strings while they are
   /// pressed.
@@ -81,17 +81,17 @@ class CustomText extends StatefulWidget {
   ///
   /// If no style is set to this parameter either, [DefaultTextStyle]
   /// is used instead.
-  final TextStyle tapStyle;
+  final TextStyle? tapStyle;
 
   /// The callback function called when tappable elements are tapped.
-  final void Function(Type, String) onTap;
+  final void Function(Type, String)? onTap;
 
   /// The callback function called when tappable elements are long-tapped.
-  final void Function(Type, String) onLongTap;
+  final void Function(Type, String)? onLongTap;
 
   /// The duration before a tap is regarded as a long-tap and the
   /// [onLongTap] function is called..
-  final Duration longTapDuration;
+  final Duration? longTapDuration;
 
   /// Parsing is executed in an isolate to prevent blocking of the UI
   /// if set to `true`, except on the web where isolates are not supported,
@@ -106,30 +106,31 @@ class CustomText extends StatefulWidget {
   /// complexity of match patterns, the device performance, etc.
   /// Try both `true` and `false` to see which is suitable if you are
   /// unsure of it.
-  final bool preventBlocking;
+  final bool? preventBlocking;
 
-  final StrutStyle strutStyle;
-  final TextAlign textAlign;
-  final TextDirection textDirection;
-  final Locale locale;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final double textScaleFactor;
-  final int maxLines;
-  final String semanticsLabel;
-  final TextWidthBasis textWidthBasis;
-  final TextHeightBehavior textHeightBehavior;
+  final StrutStyle? strutStyle;
+  final TextAlign? textAlign;
+  final TextDirection? textDirection;
+  final Locale? locale;
+  final bool? softWrap;
+  final TextOverflow? overflow;
+  final double? textScaleFactor;
+  final int? maxLines;
+  final String? semanticsLabel;
+  final TextWidthBasis? textWidthBasis;
+  final TextHeightBehavior? textHeightBehavior;
 
   @override
   _CustomTextState createState() => _CustomTextState();
 }
 
 class _CustomTextState extends State<CustomText> {
-  Map<Type, _Definition> _definitions;
-  List<TextMatcher> _matchers;
-  Future<List<TextElement>> _futureElements;
-  List<bool> _isTapped;
-  Timer _timer;
+  late Map<Type, _Definition> _definitions;
+  late List<TextMatcher> _matchers;
+  late Future<List<TextElement>> _futureElements;
+
+  List<bool> _isTapped = [];
+  Timer? _timer;
 
   @override
   void initState() {
@@ -145,21 +146,21 @@ class _CustomTextState extends State<CustomText> {
 
   @override
   void dispose() {
-    if (_timer?.isActive ?? false) {
-      _timer.cancel();
+    final timer = _timer;
+    if (timer != null && timer.isActive) {
+      timer.cancel();
     }
     super.dispose();
   }
 
   void _init() {
-    _isTapped = [];
     _definitions = {
       for (final e in widget.definitions) e.matcher.runtimeType: e,
     };
     _matchers = widget.definitions.map((def) => def.matcher).toList();
     _futureElements = TextParser(matchers: _matchers).parse(
       widget.text,
-      useIsolate: widget.preventBlocking,
+      useIsolate: widget.preventBlocking ?? false,
     );
   }
 
@@ -170,10 +171,10 @@ class _CustomTextState extends State<CustomText> {
       initialData: const [],
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data.length != _isTapped.length) {
-          _isTapped = List.generate(snapshot.data.length, (_) => false);
+            snapshot.data!.length != _isTapped.length) {
+          _isTapped = List.generate(snapshot.data!.length, (_) => false);
         }
-        return _richText(snapshot.data);
+        return _richText(snapshot.data!);
       },
     );
   }
@@ -187,14 +188,13 @@ class _CustomTextState extends State<CustomText> {
                 final index = entry.key;
                 final elm = entry.value;
 
-                if (elm.matcherType == null ||
-                    !_definitions.containsKey(elm.matcherType)) {
+                if (!_definitions.containsKey(elm.matcherType)) {
                   return TextSpan(text: elm.text, style: widget.style);
                 }
 
-                final def = _definitions[elm.matcherType];
+                final def = _definitions[elm.matcherType]!;
                 if (def.builder != null) {
-                  return def.builder(elm.text, elm.groups);
+                  return def.builder!(elm.text, elm.groups);
                 }
 
                 final isTappable = def.onTap != null ||
@@ -207,17 +207,18 @@ class _CustomTextState extends State<CustomText> {
                         index: index,
                         text: def.labelSelector == null
                             ? elm.text
-                            : def.labelSelector(elm.groups),
+                            : def.labelSelector!(elm.groups),
                         link: def.tapSelector == null
                             ? elm.text
-                            : def.tapSelector(elm.groups),
+                            : def.tapSelector!(elm.groups),
                         definition: def,
-                        longTapDuration: widget.longTapDuration,
+                        longTapDuration:
+                            widget.longTapDuration ?? _kLongTapDuration,
                       )
                     : TextSpan(
                         text: def.labelSelector == null
                             ? elm.text
-                            : def.labelSelector(elm.groups),
+                            : def.labelSelector!(elm.groups),
                         style:
                             def.matchStyle ?? widget.matchStyle ?? widget.style,
                       );
@@ -239,11 +240,11 @@ class _CustomTextState extends State<CustomText> {
   }
 
   TextSpan _tappableTextSpan({
-    int index,
-    String text,
-    String link,
-    _Definition definition,
-    Duration longTapDuration,
+    required int index,
+    required String text,
+    required String link,
+    required _Definition definition,
+    required Duration longTapDuration,
   }) {
     final matchStyle =
         definition.matchStyle ?? widget.matchStyle ?? widget.style;
@@ -258,13 +259,13 @@ class _CustomTextState extends State<CustomText> {
           setState(() => _isTapped[index] = true);
           if (definition.onLongTap != null) {
             _timer = Timer(
-              longTapDuration ?? _kLongTapDuration,
-              () => definition.onLongTap(link),
+              longTapDuration,
+              () => definition.onLongTap!(link),
             );
           } else if (widget.onLongTap != null) {
             _timer = Timer(
-              longTapDuration ?? _kLongTapDuration,
-              () => widget.onLongTap(definition.matcher.runtimeType, link),
+              longTapDuration,
+              () => widget.onLongTap!(definition.matcher.runtimeType, link),
             );
           }
         }
@@ -272,9 +273,9 @@ class _CustomTextState extends State<CustomText> {
           setState(() => _isTapped[index] = false);
           if (_timer?.isActive ?? true) {
             if (definition.onTap != null) {
-              definition.onTap(link);
+              definition.onTap!(link);
             } else if (widget.onTap != null) {
-              widget.onTap(definition.matcher.runtimeType, link);
+              widget.onTap!(definition.matcher.runtimeType, link);
             }
           }
           _timer?.cancel();

@@ -19,14 +19,14 @@ class Example4 extends StatelessWidget {
       body: ListView(
         children: [
           Description(description, filename: filename),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: CustomText(
               'Hello world! #CustomText',
-              definitions: const [
+              definitions: [
                 TextDefinition(matcher: HashTagMatcher()),
               ],
-              matchStyle: const TextStyle(color: Colors.lightBlue),
+              matchStyle: TextStyle(color: Colors.lightBlue),
             ),
           ),
         ],

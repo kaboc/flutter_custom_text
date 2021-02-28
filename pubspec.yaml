@@ -1,16 +1,16 @@
 name: custom_text
 description: A customisable text widget that allows strings in it to be styled flexibly and tapped / long-tapped.
-version: 0.0.3
+version: 0.1.0
 homepage: https://github.com/kaboc/flutter_custom_text
 
 environment:
-  sdk: ">=2.8.1 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  text_parser: ^0.0.5
+  text_parser: ^0.1.2
 
 dev_dependencies:
   flutter_test:

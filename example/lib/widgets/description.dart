@@ -5,7 +5,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:custom_text_example/code_view_page.dart';
 
 class Description extends StatelessWidget {
-  const Description(this.description, {@required this.filename});
+  const Description(this.description, {required this.filename});
 
   final String description;
   final String filename;
@@ -19,7 +19,7 @@ class Description extends StatelessWidget {
       child: DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodyText2!
             .copyWith(fontSize: 14.0, height: 1.2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class Description extends StatelessWidget {
               definitions: [
                 SelectiveDefinition(
                   matcher: const _CodeMatcher(),
-                  labelSelector: (groups) => groups[0],
+                  labelSelector: (groups) => groups[0] ?? '',
                   matchStyle: const TextStyle(
                     color: Colors.indigo,
                     // fontWeight: FontWeight.w500,

@@ -2,18 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-bool isTap;
-bool isLongTap;
-Type matcherType;
-String tappedText;
+bool? isTap;
+bool? isLongTap;
+Type? matcherType;
+String? tappedText;
 
-void onTap(Type type, String text) {
+void onTap(Type? type, String text) {
   isTap = true;
   matcherType = type;
   tappedText = text;
 }
 
-void onLongTap(Type type, String text) {
+void onLongTap(Type? type, String text) {
   isLongTap = true;
   matcherType = type;
   tappedText = text;
@@ -33,8 +33,8 @@ List<InlineSpan> getSpans() {
   return spans;
 }
 
-InlineSpan findSpan(String text) {
-  InlineSpan span;
+InlineSpan? findSpan(String text) {
+  InlineSpan? span;
   findRichText().text.visitChildren(
     (visitor) {
       if (visitor is TextSpan && visitor.text == text) {
@@ -47,18 +47,18 @@ InlineSpan findSpan(String text) {
   return span;
 }
 
-void tapDownSpan(InlineSpan span) {
+void tapDownSpan(InlineSpan? span) {
   if (span is TextSpan) {
-    final onTapDown = (span.recognizer as TapGestureRecognizer)?.onTapDown;
+    final onTapDown = (span.recognizer as TapGestureRecognizer?)?.onTapDown;
     if (onTapDown != null) {
       onTapDown(TapDownDetails());
     }
   }
 }
 
-void tapUpSpan(InlineSpan span) {
+void tapUpSpan(InlineSpan? span) {
   if (span is TextSpan) {
-    final onTapUp = (span.recognizer as TapGestureRecognizer)?.onTapUp;
+    final onTapUp = (span.recognizer as TapGestureRecognizer?)?.onTapUp;
     if (onTapUp != null) {
       onTapUp(TapUpDetails(kind: PointerDeviceKind.touch));
     }

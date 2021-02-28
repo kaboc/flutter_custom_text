@@ -21,7 +21,7 @@ void main() {
         await tester.pump();
 
         final span = findSpan('bbb');
-        expect(span.style.color, const Color(0xFF111111));
+        expect(span?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -39,8 +39,8 @@ void main() {
 
         final span1 = findSpan('bbb');
         final span2 = findSpan('012-3456-7890');
-        expect(span1.style.color, const Color(0xFF222222));
-        expect(span2.style.color, const Color(0xFF111111));
+        expect(span1?.style?.color, const Color(0xFF222222));
+        expect(span2?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -55,7 +55,7 @@ void main() {
         await tester.pump();
 
         final span = findSpan('bbb');
-        expect(span.style.color, const Color(0xFF222222));
+        expect(span?.style?.color, const Color(0xFF222222));
       },
     );
 
@@ -74,7 +74,7 @@ void main() {
         await tester.pump();
 
         final spanB = findSpan('bbb');
-        expect(spanB.style.color, const Color(0xFF111111));
+        expect(spanB?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -95,8 +95,8 @@ void main() {
 
         final span1B = findSpan('bbb');
         final span2 = findSpan('012-3456-7890');
-        expect(span1B.style.color, const Color(0xFF222222));
-        expect(span2.style.color, const Color(0xFF111111));
+        expect(span1B?.style?.color, const Color(0xFF222222));
+        expect(span2?.style?.color, const Color(0xFF111111));
       },
     );
 
@@ -116,7 +116,7 @@ void main() {
         await tester.pump();
 
         final spanB = findSpan('bbb');
-        expect(spanB.style.color, const Color(0xFF222222));
+        expect(spanB?.style?.color, const Color(0xFF222222));
       },
     );
   });

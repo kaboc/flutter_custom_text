@@ -18,16 +18,16 @@ class CustomTextWidget extends StatelessWidget {
   });
 
   final String text;
-  final TextStyle style;
-  final TextStyle matchStyle;
-  final TextStyle tapStyle;
-  final TextStyle matchStyleInDef;
-  final TextStyle tapStyleInDef;
-  final void Function(Type, String) onTap;
-  final void Function(Type, String) onLongTap;
-  final void Function(String) onTapInDef;
-  final void Function(String) onLongTapInDef;
-  final Duration longTapDuration;
+  final TextStyle? style;
+  final TextStyle? matchStyle;
+  final TextStyle? tapStyle;
+  final TextStyle? matchStyleInDef;
+  final TextStyle? tapStyleInDef;
+  final void Function(Type, String)? onTap;
+  final void Function(Type, String)? onLongTap;
+  final void Function(String)? onTapInDef;
+  final void Function(String)? onLongTapInDef;
+  final Duration? longTapDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +72,15 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   });
 
   final String text;
-  final TextStyle style;
-  final TextStyle matchStyle;
-  final TextStyle tapStyle;
-  final TextStyle matchStyleInDef;
-  final TextStyle tapStyleInDef;
-  final void Function(Type, String) onTap;
-  final void Function(Type, String) onLongTap;
-  final void Function(String) onTapInDef;
-  final void Function(String) onLongTapInDef;
+  final TextStyle? style;
+  final TextStyle? matchStyle;
+  final TextStyle? tapStyle;
+  final TextStyle? matchStyleInDef;
+  final TextStyle? tapStyleInDef;
+  final void Function(Type, String)? onTap;
+  final void Function(Type, String)? onLongTap;
+  final void Function(String)? onTapInDef;
+  final void Function(String)? onLongTapInDef;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +93,8 @@ class SelectiveCustomTextWidget extends StatelessWidget {
         ),
         SelectiveDefinition(
           matcher: const MdLinkMatcher(),
-          labelSelector: (groups) => groups[0],
-          tapSelector: (groups) => groups[1],
+          labelSelector: (groups) => groups[0] ?? '',
+          tapSelector: (groups) => groups[1] ?? '',
           matchStyle: matchStyleInDef,
           tapStyle: tapStyleInDef,
           onTap: onTapInDef,
