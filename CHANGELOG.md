@@ -1,7 +1,14 @@
-## 0.0.2 - 26 November 2020
+## 0.0.3
 
-* Fix broken links in README files.
+- Add tests.
+- Change minimum SDK version to match text_parser.
+- Workaround for Flutter issue.
+- Improve documentation and examples.
 
-## 0.0.1 - 26 November 2020
+## 0.0.2
 
-* Initial version.
+- Fix broken links in README files.
+
+## 0.0.1
+
+- Initial version.
