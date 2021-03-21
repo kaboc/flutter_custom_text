@@ -234,11 +234,6 @@ CustomText(
 )
 ```
 
-## Limitations
-
-On the web, taps/long-taps on some string elements that should be tappable do not work
-due to some issues in Flutter itself.
-
 ## Links
 
 - [text_parser][text_parser]
