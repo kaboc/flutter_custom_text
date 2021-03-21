@@ -129,6 +129,7 @@ class _CustomTextState extends State<CustomText> {
   late List<TextMatcher> _matchers;
   late Future<List<TextElement>> _futureElements;
 
+  final _tapRecognizers = <int, TapGestureRecognizer>{};
   final _isTapped = <int, bool>{};
   Timer? _timer;
 
@@ -141,6 +142,7 @@ class _CustomTextState extends State<CustomText> {
   @override
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _disposeTapRecognizers();
     _init();
   }
 
@@ -150,6 +152,7 @@ class _CustomTextState extends State<CustomText> {
     if (timer != null && timer.isActive) {
       timer.cancel();
     }
+    _disposeTapRecognizers();
     super.dispose();
   }
 
@@ -162,6 +165,12 @@ class _CustomTextState extends State<CustomText> {
       widget.text,
       useIsolate: widget.preventBlocking ?? false,
     );
+  }
+
+  void _disposeTapRecognizers() {
+    _tapRecognizers
+      ..forEach((_, recognizer) => recognizer.dispose())
+      ..clear();
   }
 
   @override
@@ -249,38 +258,52 @@ class _CustomTextState extends State<CustomText> {
       style: _isTapped.containsKey(index) && _isTapped[index]!
           ? tapStyle
           : matchStyle,
-      recognizer: TapGestureRecognizer()
-        ..onTapDown = (_) {
-          setState(() => _isTapped[index] = true);
-          if (definition.onLongTap != null) {
-            _timer = Timer(
-              longTapDuration,
-              () => definition.onLongTap!(link),
-            );
-          } else if (widget.onLongTap != null) {
-            _timer = Timer(
-              longTapDuration,
-              () => widget.onLongTap!(definition.matcher.runtimeType, link),
-            );
-          }
-        }
-        ..onTapUp = (_) {
-          setState(() => _isTapped[index] = false);
-          if (_timer?.isActive ?? true) {
-            if (definition.onTap != null) {
-              definition.onTap!(link);
-            } else if (widget.onTap != null) {
-              widget.onTap!(definition.matcher.runtimeType, link);
-            }
-          }
-          _timer?.cancel();
-          _timer = null;
-        }
-        ..onTapCancel = () {
-          setState(() => _isTapped[index] = false);
-          _timer?.cancel();
-          _timer = null;
-        },
+      recognizer: _tapRecognizers[index] = _recognizer(
+        index: index,
+        link: link,
+        definition: definition,
+        longTapDuration: longTapDuration,
+      ),
     );
+  }
+
+  TapGestureRecognizer _recognizer({
+    required int index,
+    required String link,
+    required _Definition definition,
+    required Duration longTapDuration,
+  }) {
+    return TapGestureRecognizer()
+      ..onTapDown = (_) {
+        setState(() => _isTapped[index] = true);
+        if (definition.onLongTap != null) {
+          _timer = Timer(
+            longTapDuration,
+            () => definition.onLongTap!(link),
+          );
+        } else if (widget.onLongTap != null) {
+          _timer = Timer(
+            longTapDuration,
+            () => widget.onLongTap!(definition.matcher.runtimeType, link),
+          );
+        }
+      }
+      ..onTapUp = (_) {
+        setState(() => _isTapped[index] = false);
+        if (_timer?.isActive ?? true) {
+          if (definition.onTap != null) {
+            definition.onTap!(link);
+          } else if (widget.onTap != null) {
+            widget.onTap!(definition.matcher.runtimeType, link);
+          }
+        }
+        _timer?.cancel();
+        _timer = null;
+      }
+      ..onTapCancel = () {
+        setState(() => _isTapped[index] = false);
+        _timer?.cancel();
+        _timer = null;
+      };
   }
 }
