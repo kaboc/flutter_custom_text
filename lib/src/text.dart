@@ -129,7 +129,7 @@ class _CustomTextState extends State<CustomText> {
   late List<TextMatcher> _matchers;
   late Future<List<TextElement>> _futureElements;
 
-  List<bool> _isTapped = [];
+  final _isTapped = <int, bool>{};
   Timer? _timer;
 
   @override
@@ -169,13 +169,7 @@ class _CustomTextState extends State<CustomText> {
     return FutureBuilder<List<TextElement>>(
       future: _futureElements,
       initialData: const [],
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data!.length != _isTapped.length) {
-          _isTapped = List.generate(snapshot.data!.length, (_) => false);
-        }
-        return _richText(snapshot.data!);
-      },
+      builder: (_, snapshot) => _richText(snapshot.data!),
     );
   }
 
@@ -252,8 +246,9 @@ class _CustomTextState extends State<CustomText> {
 
     return TextSpan(
       text: text,
-      style:
-          _isTapped.length > index && _isTapped[index] ? tapStyle : matchStyle,
+      style: _isTapped.containsKey(index) && _isTapped[index]!
+          ? tapStyle
+          : matchStyle,
       recognizer: TapGestureRecognizer()
         ..onTapDown = (_) {
           setState(() => _isTapped[index] = true);
