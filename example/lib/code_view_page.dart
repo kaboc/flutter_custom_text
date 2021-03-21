@@ -26,17 +26,11 @@ class CodeViewPage extends StatelessWidget {
               : SizedBox.expand(
                   child: Scrollbar(
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
                       child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: DefaultTextStyle(
-                            style: GoogleFonts.inconsolata(
-                              color: DefaultTextStyle.of(context).style.color,
-                              fontSize: 15.0,
-                            ),
-                            child: _View(snapshot.data!),
-                          ),
+                          child: _View(snapshot.data!),
                         ),
                       ),
                     ),
@@ -48,7 +42,7 @@ class CodeViewPage extends StatelessWidget {
   }
 
   Future<String> _loadCode() async {
-    return await rootBundle.loadString('lib/examples/$filename');
+    return rootBundle.loadString('lib/examples/$filename');
   }
 }
 
@@ -102,6 +96,10 @@ class _View extends StatelessWidget {
           matchStyle: TextStyle(color: Color(0xFFA1887F)),
         ),
       ],
+      style: GoogleFonts.inconsolata(
+        fontSize: 15.0,
+        height: 1.2,
+      ),
     );
   }
 }

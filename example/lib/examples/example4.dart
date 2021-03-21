@@ -2,35 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text_example/widgets/appbar.dart';
-import 'package:custom_text_example/widgets/description.dart';
-
 class Example4 extends StatelessWidget {
-  const Example4(this.title, this.filename, this.description);
+  const Example4(this.output);
 
-  final String title;
-  final String filename;
-  final String description;
+  final void Function(String) output;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context, title: title, filename: filename),
-      body: ListView(
-        children: [
-          Description(description, filename: filename),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: CustomText(
-              'Hello world! #CustomText',
-              definitions: [
-                TextDefinition(matcher: HashTagMatcher()),
-              ],
-              matchStyle: TextStyle(color: Colors.lightBlue),
-            ),
-          ),
-        ],
-      ),
+    return CustomText(
+      'Hello world! #CustomText',
+      definitions: const [
+        TextDefinition(matcher: HashTagMatcher()),
+      ],
+      matchStyle: const TextStyle(color: Colors.lightBlue),
+      tapStyle: const TextStyle(color: Colors.lightGreen),
+      onTap: (_, tag) => output(tag),
     );
   }
 }

@@ -3,58 +3,59 @@ import 'package:flutter/material.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text_example/widgets/appbar.dart';
-import 'package:custom_text_example/widgets/description.dart';
+class Example6 extends StatefulWidget {
+  const Example6(this.output);
 
-class Example6 extends StatelessWidget {
-  const Example6(this.title, this.filename, this.description);
+  final Function(String) output;
 
-  final String title;
-  final String filename;
-  final String description;
+  @override
+  _Example6State createState() => _Example6State();
+}
+
+class _Example6State extends State<Example6> {
+  final _recognizers = <String, TapGestureRecognizer>{};
+
+  @override
+  void dispose() {
+    _recognizers.forEach((_, recognizer) => recognizer.dispose());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context, title: title, filename: filename),
-      body: ListView(
-        children: [
-          Description(description, filename: filename),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: CustomText(
-              'Email 1: foo@example.com\n'
-              'Email 2: bar@example.com',
-              definitions: [
-                SpanDefinition(
-                  matcher: const EmailMatcher(),
-                  builder: (text, groups) => TextSpan(
-                    children: [
-                      const WidgetSpan(
-                        child: Icon(
-                          Icons.email,
-                          color: Colors.blueGrey,
-                          size: 18.0,
-                        ),
-                        alignment: PlaceholderAlignment.middle,
-                      ),
-                      const WidgetSpan(
-                        child: SizedBox(width: 6.0),
-                      ),
-                      TextSpan(
-                        text: text,
-                        style: const TextStyle(color: Colors.lightBlue),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => print(text),
-                      ),
-                    ],
+    return CustomText(
+      'Email 1: foo@example.com\n'
+      'Email 2: bar@example.com',
+      definitions: [
+        SpanDefinition(
+          matcher: const EmailMatcher(),
+          builder: (text, groups) {
+            _recognizers[text] ??= TapGestureRecognizer();
+
+            return TextSpan(
+              children: [
+                const WidgetSpan(
+                  child: Icon(
+                    Icons.email,
+                    color: Colors.blueGrey,
+                    size: 18.0,
                   ),
+                  alignment: PlaceholderAlignment.middle,
+                ),
+                const WidgetSpan(
+                  child: SizedBox(width: 6.0),
+                ),
+                TextSpan(
+                  text: text,
+                  style: const TextStyle(color: Colors.lightBlue),
+                  recognizer: _recognizers[text]!
+                    ..onTap = () => widget.output(text),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

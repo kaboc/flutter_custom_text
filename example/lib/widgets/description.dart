@@ -12,15 +12,12 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.grey.shade300,
-      padding: const EdgeInsets.all(16.0),
-      child: DefaultTextStyle(
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2!
-            .copyWith(fontSize: 14.0, height: 1.2),
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.bodyText1!,
+      child: Container(
+        width: double.infinity,
+        color: Colors.blueGrey.shade400,
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,11 +27,10 @@ class Description extends StatelessWidget {
                 TextDefinition(
                   matcher: const _FilenameMatcher(),
                   matchStyle: const TextStyle(
-                    color: Colors.teal,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                   ),
-                  tapStyle: TextStyle(color: Colors.teal.shade300),
+                  tapStyle: const TextStyle(),
                   onTap: (filename) => Navigator.of(context).push<void>(
                     MaterialPageRoute(
                       builder: (_) => CodeViewPage(filename: filename),
@@ -42,9 +38,12 @@ class Description extends StatelessWidget {
                   ),
                 ),
               ],
-              style: const TextStyle(fontSize: 16.0),
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.lightBlue.shade100,
+              ),
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 12.0),
             CustomText(
               description,
               definitions: [
@@ -52,12 +51,13 @@ class Description extends StatelessWidget {
                   matcher: const _CodeMatcher(),
                   labelSelector: (groups) => groups[0] ?? '',
                   matchStyle: const TextStyle(
-                    color: Colors.indigo,
-                    // fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
               ],
+              style: const TextStyle(color: Colors.white70),
             ),
           ],
         ),
