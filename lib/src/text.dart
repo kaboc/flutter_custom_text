@@ -29,7 +29,7 @@ class CustomText extends StatefulWidget {
     this.onTap,
     this.onLongTap,
     this.longTapDuration,
-    this.preventBlocking,
+    this.preventBlocking = false,
     this.strutStyle,
     this.textAlign,
     this.textDirection,
@@ -106,7 +106,7 @@ class CustomText extends StatefulWidget {
   /// complexity of match patterns, the device performance, etc.
   /// Try both `true` and `false` to see which is suitable if you are
   /// unsure of it.
-  final bool? preventBlocking;
+  final bool preventBlocking;
 
   final StrutStyle? strutStyle;
   final TextAlign? textAlign;
@@ -163,7 +163,7 @@ class _CustomTextState extends State<CustomText> {
     _matchers = widget.definitions.map((def) => def.matcher).toList();
     _futureElements = TextParser(matchers: _matchers).parse(
       widget.text,
-      useIsolate: widget.preventBlocking ?? false,
+      useIsolate: widget.preventBlocking,
     );
   }
 
@@ -191,11 +191,11 @@ class _CustomTextState extends State<CustomText> {
                 final index = entry.key;
                 final elm = entry.value;
 
-                if (!_definitions.containsKey(elm.matcherType)) {
+                final def = _definitions[elm.matcherType];
+                if (def == null) {
                   return TextSpan(text: elm.text, style: widget.style);
                 }
 
-                final def = _definitions[elm.matcherType]!;
                 if (def.builder != null) {
                   return def.builder!(elm.text, elm.groups);
                 }
