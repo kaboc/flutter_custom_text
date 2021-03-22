@@ -1,3 +1,11 @@
+## 0.1.1
+
+- Fix to properly dispose of TapGestureRecognizer.
+- Remove note on web limitations.
+- Refactoring and some improvements.
+- Experimental
+    - Add feature to change mouse cursor on hover over clickable element.
+
 ## 0.1.0
 
 - Migrate to null safety.

@@ -194,8 +194,16 @@ CustomText(
 An example to show both strings and icons using [SpanDefinition][SpanDefinition].
 
 The builder parameter takes a function returning an [InlineSpan][InlineSpan].
-The function is provided with matched string and groups, so it is possible to construct
+The function is provided with matched string and groups, so it is possible to compose
 an `InlineSpan` flexibly with them.
+
+#### Notes
+ 
+- `SpanDefinition` does not have arguments for styles and tap callbacks, so it is totally
+up to you how the `InlineSpan` returned from it is decorated and how it reacts to gestures.
+- The `builder` function is called on every rebuild. If you create a `GestureRecognizer`
+inside the function, store it in such a way that you can check if one already exists to
+avoid so many recognizers being created.  
 
 ![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
 
@@ -224,8 +232,7 @@ CustomText(
           TextSpan(
             text: text,
             style: const TextStyle(color: Colors.lightBlue),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () => print(text),
+            recognizer: ...,
           ),
         ],
       ),
@@ -248,7 +255,7 @@ On web, the mouse cursor can change at a wrong position if a `SpanDefinition` co
 ## Links
 
 - [text_parser][text_parser]
-    - CustomText is heavily dependent on the `text_parser` package. Please see its documentation
+    - CustomText is dependent on the `text_parser` package. Please see its documentation
     for details or troubleshooting on parsing.
 
 [example]: https://github.com/kaboc/flutter_custom_text/tree/main/example

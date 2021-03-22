@@ -60,7 +60,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is not applied if tap callbacks are not set',
+      'tapStyle specified in definition is not applied '
+      'if tap callbacks are not set',
       (tester) async {
         await tester.pumpWidget(const SelectiveCustomTextWidget(
           'aaa[bbb](ccc)ddd',

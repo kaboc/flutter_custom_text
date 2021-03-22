@@ -6,8 +6,9 @@ analyzer:
     missing_required_param: error
     missing_return: error
     todo: ignore
-    deprecated_member_use_from_same_package: ignore
+    deprecated_member_use_from_same_package: warning
     sdk_version_async_exported_from_core: ignore
+    unnecessary_null_comparison: warning
 
 linter:
   rules:
@@ -34,6 +35,7 @@ linter:
     - avoid_slow_async_io
     - avoid_type_to_string
     - avoid_types_as_parameter_names
+    - avoid_unnecessary_containers
     - avoid_unused_constructor_parameters
     - avoid_void_async
     - await_only_futures
@@ -44,21 +46,26 @@ linter:
     - close_sinks
     - constant_identifier_names
     - control_flow_in_finally
-    - curly_braces_in_flow_control_structures
+    - curly_braces_in_flow_control_structures # not required by flutter style
+#    - deprecated_consistency
     - directives_ordering
     - do_not_use_environment
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
     - exhaustive_cases
+    - file_names
     - flutter_style_todos
     - hash_and_equals
     - implementation_imports
     - iterable_contains_unrelated_type
-    - join_return_with_assignment
+    - join_return_with_assignment # not required by flutter style
+    - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
+    - lines_longer_than_80_chars # not required by flutter style
     - list_remove_unrelated_type
+    - missing_whitespace_between_adjacent_strings
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
     - no_logic_in_create_state
@@ -74,7 +81,7 @@ linter:
     - parameter_assignments
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
-    - prefer_asserts_with_message
+    - prefer_asserts_with_message # not required by flutter style
     - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors
@@ -88,6 +95,7 @@ linter:
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable
     - prefer_foreach
+    - prefer_function_declarations_over_variables
     - prefer_generic_function_type_aliases
     - prefer_if_elements_to_conditional_expressions
     - prefer_if_null_operators
@@ -102,14 +110,18 @@ linter:
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
     - prefer_void_to_null
+    - provide_deprecation_message
     - recursive_getters
+    - sized_box_for_whitespace
     - slash_for_doc_comments
     - sort_constructors_first
     - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
+    - tighten_type_of_initializing_formals
     - type_init_formals
+    - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_const
     - unnecessary_getters_setters
@@ -125,7 +137,9 @@ linter:
     - unnecessary_this
     - unrelated_type_equality_checks
     - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
     - use_is_even_rather_than_modulo
+    - use_key_in_widget_constructors
     - use_late_for_private_fields_and_variables
     - use_raw_strings
     - use_rethrow_when_possible

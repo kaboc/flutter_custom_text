@@ -2,4 +2,6 @@ include: ../analysis_options.yaml
 
 linter:
   rules:
+    missing_whitespace_between_adjacent_strings: false
     sort_pub_dependencies: false
+    use_key_in_widget_constructors: false

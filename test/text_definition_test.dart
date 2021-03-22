@@ -63,7 +63,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is not applied if tap callbacks are not set',
+      'tapStyle specified in definition is not applied '
+      'if tap callbacks are not set',
       (tester) async {
         await tester.pumpWidget(const CustomTextWidget(
           'aaa bbb@example.com',
@@ -126,7 +127,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in CustomText is applied if onTap is set in definition',
+      'tapStyle specified in CustomText is applied '
+      'if onTap is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com https://example.com/',
@@ -157,7 +159,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in CustomText is applied if onLongTap is set in definition',
+      'tapStyle specified in CustomText is applied '
+      'if onLongTap is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com https://example.com/',
@@ -188,7 +191,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is applied if onTap is set in CustomText',
+      'tapStyle specified in definition is applied '
+      'if onTap is set in CustomText',
       (tester) async {
         await tester.pumpWidget(const CustomTextWidget(
           'aaa bbb@example.com',
@@ -216,7 +220,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is applied if onLongTap is set in CustomText',
+      'tapStyle specified in definition is applied '
+      'if onLongTap is set in CustomText',
       (tester) async {
         await tester.pumpWidget(const CustomTextWidget(
           'aaa bbb@example.com',
@@ -244,7 +249,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is applied if onTap is set in definition',
+      'tapStyle specified in definition is applied '
+      'if onTap is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
@@ -272,7 +278,8 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition is applied if onLongTap is set in definition',
+      'tapStyle specified in definition is applied '
+      'if onLongTap is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',

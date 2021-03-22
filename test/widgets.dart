@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:custom_text/custom_text.dart';
 
 class CustomTextWidget extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const CustomTextWidget(
     this.text, {
     this.style,
@@ -58,6 +59,7 @@ class CustomTextWidget extends StatelessWidget {
 
 /// CustomText using SpanDefinition.
 class SelectiveCustomTextWidget extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const SelectiveCustomTextWidget(
     this.text, {
     this.style,
@@ -111,6 +113,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
 }
 
 class SpanCustomTextWidget1 extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const SpanCustomTextWidget1(this.text);
 
   final String text;
@@ -145,6 +148,7 @@ class SpanCustomTextWidget1 extends StatelessWidget {
 }
 
 class SpanCustomTextWidget2 extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const SpanCustomTextWidget2(this.text);
 
   final String text;
