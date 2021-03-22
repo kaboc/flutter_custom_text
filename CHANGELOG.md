@@ -1,6 +1,10 @@
+## 0.1.2
+
+- Fix and improve documentation.
+
 ## 0.1.1
 
-- Fix to properly dispose of TapGestureRecognizer.
+- Fix to properly dispose of `TapGestureRecognizer`.
 - Remove note on web limitations.
 - Refactoring and some improvements.
 - Experimental

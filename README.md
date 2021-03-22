@@ -12,11 +12,13 @@ font settings depending on the types of the string elements.
 
 ## Examples / Usage
 
+**[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
+
 The examples here are all contained in the sample app in the [example/][example] folder.
 Just run it and see what this package is like if you're reluctant to read through all the
 following descriptions.
 
-The app also shows the source code with keywords highlighted, which is itself thanks 
+The app also shows the source code with keywords highlighted, which is itself thanks
 to this package.
 
 ![highlighting](https://user-images.githubusercontent.com/20254485/100355884-d9c68c80-3035-11eb-8460-545afebf683c.png)
@@ -78,8 +80,8 @@ CustomText(
         decoration: TextDecoration.underline,
       ),
       tapStyle: const TextStyle(color: Colors.orange),
-      onTap: (tel) => print('tel: $tel'),
-      onLongTap: (tel) => print('[Long-tapped] tel: $tel'),
+      onTap: (tel) => print(tel),
+      onLongTap: (tel) => print('[Long tap] $tel'),
     ),
   ],
   matchStyle: const TextStyle(
@@ -87,8 +89,8 @@ CustomText(
     decoration: TextDecoration.underline,
   ),
   tapStyle: const TextStyle(color: Colors.indigo),
-  onTap: (type, text) => print('$type: $text'),
-  onLongTap: (type, text) => print('[Long-tapped] $type: $text'),
+  onTap: (type, text) => print(text),
+  onLongTap: (type, text) => print('[Long tap] $text'),
 )
 ```
 
@@ -198,12 +200,12 @@ The function is provided with matched string and groups, so it is possible to co
 an `InlineSpan` flexibly with them.
 
 #### Notes
- 
+
 - `SpanDefinition` does not have arguments for styles and tap callbacks, so it is totally
 up to you how the `InlineSpan` returned from it is decorated and how it reacts to gestures.
 - The `builder` function is called on every rebuild. If you create a `GestureRecognizer`
 inside the function, store it in such a way that you can check if one already exists to
-avoid so many recognizers being created.  
+avoid so many recognizers being created.
 
 ![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
 
@@ -241,16 +243,25 @@ CustomText(
 )
 ```
 
-## [Experimental] Mouse cursor changed on hover over tappable TextSpan
+### [Experimental] Changing mouse cursor on hover over tappable element
 
-On web and desktop, the mouse cursor changes if it is over a tappable string. The feature
-can be enabled also on Android and iOS if you set some `SystemMouseCursor` other than
-`SystemMouseCursors.text` to `cursorOnHover`.
+New experimental feature to allow a different mouse cursor to be used while the pointer hovers
+over a tappable string. You can opt in to the feature by setting one of `SystemMouseCursor`s
+other than `SystemMouseCursors.basic` to `cursorOnHover`.
 
-### Limitations
+```dart
+CustomText(
+  'text',
+  definitions: [ ... ],
+  onTap: (type, text) => ...,
+  cursorOnHover: SystemMouseCursors.click,
+)
+```
 
-On web, the mouse cursor can change at a wrong position if a `SpanDefinition` contains
-`WidgetSpan`(s). It is probably a bug or a limitation of Flutter itself. 
+#### Limitations
+
+On web, the mouse cursor may change at a wrong position if a `SpanDefinition` contains
+`WidgetSpan`(s). It is probably a bug or a limitation of Flutter itself.
 
 ## Links
 
