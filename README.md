@@ -234,6 +234,17 @@ CustomText(
 )
 ```
 
+## [Experimental] Mouse cursor changed on hover over tappable TextSpan
+
+On web and desktop, the mouse cursor changes if it is over a tappable string. The feature
+can be enabled also on Android and iOS if you set some `SystemMouseCursor` other than
+`SystemMouseCursors.text` to `cursorOnHover`.
+
+### Limitations
+
+On web, the mouse cursor can change at a wrong position if a `SpanDefinition` contains
+`WidgetSpan`(s). It is probably a bug or a limitation of Flutter itself. 
+
 ## Links
 
 - [text_parser][text_parser]

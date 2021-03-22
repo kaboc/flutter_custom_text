@@ -7,6 +7,7 @@ import 'package:custom_text_example/examples/example3.dart';
 import 'package:custom_text_example/examples/example4.dart';
 import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
+import 'package:custom_text_example/examples/experimental.dart';
 
 void main() => runApp(MyApp());
 
@@ -111,6 +112,19 @@ class MyApp extends StatelessWidget {
                     'so it is possible to construct an `InlineSpan` flexibly '
                     'with them.',
                 (outputFunc) => Example6(outputFunc),
+              ),
+            ),
+            _ListTile(
+              title: 'Changing mouse cursor on hover',
+              builder: (title) => ExamplePage(
+                title,
+                'experimental.dart',
+                'An example to show the experimental feature of changing '
+                    'the mouse cursor on hover over a clickable element.\n'
+                    'Set one of `SystemMouseCursor`s other than '
+                    '`SystemMouseCursors.basic` to `cursorOnHover` to opt '
+                    'in to the feature.',
+                (outputFunc) => Experimental(outputFunc),
               ),
             ),
           ],

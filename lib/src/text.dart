@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
+import 'package:custom_text/src/hover.dart';
 import 'package:text_parser/text_parser.dart';
 
 part 'definition.dart';
@@ -29,6 +32,7 @@ class CustomText extends StatefulWidget {
     this.onTap,
     this.onLongTap,
     this.longTapDuration,
+    this.cursorOnHover = SystemMouseCursors.basic,
     this.preventBlocking = false,
     this.strutStyle,
     this.textAlign,
@@ -93,6 +97,15 @@ class CustomText extends StatefulWidget {
   /// [onLongTap] function is called..
   final Duration? longTapDuration;
 
+  /// The mouse cursor used while the pointer hovers over a clickable
+  /// element.
+  ///
+  /// This is currently experimental and may be changed or removed in
+  /// the future. To opt in to the feature, set one of [SystemMouseCursor]s
+  /// other than [SystemMouseCursors.basic].
+  @experimental
+  final SystemMouseCursor cursorOnHover;
+
   /// Parsing is executed in an isolate to prevent blocking of the UI
   /// if set to `true`, except on the web where isolates are not supported,
   ///
@@ -132,6 +145,9 @@ class _CustomTextState extends State<CustomText> {
   final _tapRecognizers = <int, TapGestureRecognizer>{};
   final _isTapped = <int, bool>{};
   Timer? _timer;
+
+  final _hover = Hover();
+  late SystemMouseCursor _currentCursor = widget.cursorOnHover;
 
   @override
   void initState() {
@@ -178,7 +194,22 @@ class _CustomTextState extends State<CustomText> {
     return FutureBuilder<List<TextElement>>(
       future: _futureElements,
       initialData: const [],
-      builder: (_, snapshot) => _richText(snapshot.data!),
+      builder: (_, snapshot) {
+        return widget.cursorOnHover == SystemMouseCursors.basic
+            ? _richText(snapshot.data!)
+            : MouseRegion(
+                cursor: _currentCursor,
+                onHover: (event) => _hover.onHover(event, (isOverTappable) {
+                  final newCursor = isOverTappable
+                      ? widget.cursorOnHover
+                      : SystemMouseCursors.basic;
+                  if (_currentCursor != newCursor) {
+                    setState(() => _currentCursor = newCursor);
+                  }
+                }),
+                child: _richText(snapshot.data!),
+              );
+      },
     );
   }
 
@@ -227,6 +258,7 @@ class _CustomTextState extends State<CustomText> {
                       );
               }).toList(),
       ),
+      key: _hover.textKey,
       style: widget.style,
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,
