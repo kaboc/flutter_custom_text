@@ -3,20 +3,20 @@
 [![Pub Version](https://img.shields.io/pub/v/custom_text)](https://pub.dev/packages/custom_text)
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
 
-A customisable text widget for Flutter that allows strings in it to be styled flexibly
-and/or tapped.
+A highly customisable text widget that allows styles and tap gestures to be applied to
+strings in it flexibly.
 
 This widget is useful for making link strings tappable, such as URLs, email addresses or
 phone numbers, or for only highlighting partial strings in text with colors and different
-font settings depending on the types of the string elements.
+font settings depending on the types of the string elements parsed by regular expressions.
 
 ## Examples / Usage
 
-**[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
-
 The examples here are all contained in the sample app in the [example/][example] folder.
-Just run it and see what this package is like if you're reluctant to read through all the
-following descriptions.
+Just click on the link below to open the web demo and see what this package is like if
+you're unwilling to read through all of this document.
+
+**[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
 
 The app also shows the source code with keywords highlighted, which is itself thanks
 to this package.

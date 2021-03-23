@@ -1,6 +1,6 @@
 {
     "name": "CustomText Demo",
-    "short_name": "Demo",
+    "short_name": "CustomText",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

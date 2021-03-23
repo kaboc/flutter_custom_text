@@ -150,14 +150,11 @@ class _ClassMatcher extends TextMatcher {
   const _ClassMatcher()
       : super(
           r'(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
-          r'SelectiveDefinition|SpanDefinition|HashTagMatcher|MdLinkMatcher)',
+          r'SelectiveDefinition|SpanDefinition|HashTagMatcher|MdLinkMatcher|'
+          r'TextMatcher)',
         );
 }
 
 class _ParameterMatcher extends TextMatcher {
-  const _ParameterMatcher()
-      : super(
-          r'(?:definitions|style|matchStyle|tapStyle|onTap|onLongTap|'
-          r'labelSelector|tapSelector)(?=:)',
-        );
+  const _ParameterMatcher() : super(r'[a-zA-Z]+(?=:)');
 }
