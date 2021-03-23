@@ -114,7 +114,9 @@ class _DartCommentMatcher extends TextMatcher {
 class _DartKeywordMatcher extends TextMatcher {
   const _DartKeywordMatcher()
       : super(
-          r'(?<=\s|^)(?:import|part|const|var|final|class|extends|super|'
+          // Workaround for Safari
+          r'(\s|^)(?:import|part|const|var|final|class|extends|super|'
+          // r'(?<=\s|^)(?:import|part|const|var|final|class|extends|super|'
           r'assert|@override|@required|return|if|else|for|in|switch|do|while|'
           r'continue|break|is|async|await|static|get|set|print)(?=[\s(.;]|$)',
         );
@@ -123,7 +125,9 @@ class _DartKeywordMatcher extends TextMatcher {
 class _DartTypeMatcher extends TextMatcher {
   const _DartTypeMatcher()
       : super(
-          r'(?<=\s|^)(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
+          // Workaround for Safari
+          r'(\s|^)(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
+          // r'(?<=\s|^)(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
           r'(?=[\s<]|$)',
         );
 }
@@ -134,12 +138,16 @@ class _DartSymbolMatcher extends TextMatcher {
 
 class _DartVariableMatcher extends TextMatcher {
   const _DartVariableMatcher()
-      : super(r'(?<=\s|^)(?:super|this|widget)(?=[\s.]|$)');
+      // Workaround for Safari
+      : super(r'(\s|^)(?:super|this|widget)(?=[\s.]|$)');
+      // : super(r'(?<=\s|^)(?:super|this|widget)(?=[\s.]|$)');
 }
 
 class _DartValueMatcher extends TextMatcher {
   const _DartValueMatcher()
-      : super(r'(?<![a-zA-Z])(?:true|false|\d+\.\d+|\d)(?![a-zA-Z])');
+      // Workaround for Safari
+      : super(r'(\s|^)(?:true|false|\d+\.\d+|\d)(?![a-zA-Z])');
+      // : super(r'(?<![a-zA-Z])(?:true|false|\d+\.\d+|\d)(?![a-zA-Z])');
 }
 
 class _DartStringMatcher extends TextMatcher {

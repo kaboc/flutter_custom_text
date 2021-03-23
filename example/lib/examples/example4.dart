@@ -25,5 +25,7 @@ class Example4 extends StatelessWidget {
 /// that starts with "#" followed by an alphabet and then alphanumerics,
 /// and is enclosed with white spaces)
 class HashTagMatcher extends TextMatcher {
-  const HashTagMatcher() : super(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
+  // TODO: Replace the pattern if Safari supports lookbehind.
+  const HashTagMatcher() : super(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
+  // const HashTagMatcher() : super(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
 }
