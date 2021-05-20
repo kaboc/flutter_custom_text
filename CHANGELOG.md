@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Fix the error of undefined `SystemMouseCursor` on Flutter 2.2.
+    - Requires Flutter >=2.2.0.
+- Several minor changes.
+
 ## 0.1.2
 
 - Fix and improve documentation.

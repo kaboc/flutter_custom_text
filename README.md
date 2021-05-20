@@ -258,12 +258,14 @@ CustomText(
 )
 ```
 
-#### Limitations
+On web, the mouse cursor may change at a wrong position if a `SpanDefinition` contains
+`WidgetSpan`s. It is probably a bug or a limitation of Flutter itself.
 
-- On web, the mouse cursor may change at a wrong position if a `SpanDefinition` contains
-`WidgetSpan`(s). It is probably a bug or a limitation of Flutter itself.
-- The regular expression pattern set by default in `TelMatcher` contains a lookbehind assertion,
-but Safari does not support it. Avoid using `TelMatcher` as is if your app targets Safari.
+## Limitations
+
+- The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
+[Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using `TelMatcher`
+as is if your app targets Safari.
 
 ## Links
 

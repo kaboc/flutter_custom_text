@@ -164,10 +164,7 @@ class _CustomTextState extends State<CustomText> {
 
   @override
   void dispose() {
-    final timer = _timer;
-    if (timer != null && timer.isActive) {
-      timer.cancel();
-    }
+    _timer?.cancel();
     _disposeTapRecognizers();
     super.dispose();
   }
