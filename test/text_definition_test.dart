@@ -6,7 +6,7 @@ import 'widgets.dart';
 
 void main() {
   setUp(() {
-    isTap = isLongTap = false;
+    isTap = isLongPress = false;
     matcherType = tappedText = null;
   });
 
@@ -160,14 +160,14 @@ void main() {
 
     testWidgets(
       'tapStyle specified in CustomText is applied '
-      'if onLongTap is set in definition',
+      'if onLongPress is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com https://example.com/',
           style: const TextStyle(color: Color(0xFF111111)),
           matchStyle: const TextStyle(color: Color(0xFF222222)),
           tapStyle: const TextStyle(color: Color(0xFF333333)),
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -221,13 +221,13 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onLongTap is set in CustomText',
+      'if onLongPress is set in CustomText',
       (tester) async {
         await tester.pumpWidget(const CustomTextWidget(
           'aaa bbb@example.com',
           style: TextStyle(color: Color(0xFF111111)),
           tapStyleInDef: TextStyle(color: Color(0xFF222222)),
-          onLongTap: onLongTap,
+          onLongPress: onLongPress,
         ));
         await tester.pump();
 
@@ -279,13 +279,13 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onLongTap is set in definition',
+      'if onLongPress is set in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
           style: const TextStyle(color: Color(0xFF111111)),
           tapStyleInDef: const TextStyle(color: Color(0xFF222222)),
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -331,11 +331,11 @@ void main() {
     );
 
     testWidgets(
-      'Correct string is passed to onLongTap specified in definition',
+      'Correct string is passed to onLongPress specified in definition',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -348,7 +348,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isLongTap, isTrue);
+        expect(isLongPress, isTrue);
         expect(tappedText, equals(email));
       },
     );
@@ -359,7 +359,7 @@ void main() {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
           onTapInDef: (text) => onTap(null, text),
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -372,17 +372,17 @@ void main() {
         await tester.pump();
 
         expect(isTap, isTrue);
-        expect(isLongTap, isFalse);
+        expect(isLongPress, isFalse);
       },
     );
 
     testWidgets(
-      'Only onLongTap specified in definition is called on long tap',
+      'Only onLongPress specified in definition is called on long-press',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
           onTapInDef: (text) => onTap(null, text),
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -396,7 +396,7 @@ void main() {
         await tester.pump();
 
         expect(isTap, isFalse);
-        expect(isLongTap, isTrue);
+        expect(isLongPress, isTrue);
       },
     );
 
@@ -420,12 +420,12 @@ void main() {
     });
 
     testWidgets(
-      'onLongTap specified in definition takes priority',
+      'onLongPress specified in definition takes priority',
       (tester) async {
         await tester.pumpWidget(CustomTextWidget(
           'aaa bbb@example.com',
-          onLongTap: (_, __) => onLongTap(null, 'longTap1'),
-          onLongTapInDef: (_) => onLongTap(null, 'longTap2'),
+          onLongPress: (_, __) => onLongPress(null, 'longPress1'),
+          onLongPressInDef: (_) => onLongPress(null, 'longPress2'),
         ));
         await tester.pump();
 
@@ -438,7 +438,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, 'longTap2');
+        expect(tappedText, 'longPress2');
       },
     );
   });

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 bool? isTap;
-bool? isLongTap;
+bool? isLongPress;
 Type? matcherType;
 String? tappedText;
 
@@ -13,8 +13,8 @@ void onTap(Type? type, String text) {
   tappedText = text;
 }
 
-void onLongTap(Type? type, String text) {
-  isLongTap = true;
+void onLongPress(Type? type, String text) {
+  isLongPress = true;
   matcherType = type;
   tappedText = text;
 }

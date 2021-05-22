@@ -41,7 +41,7 @@ CustomText(
     TextDefinition(matcher: EmailMatcher()),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
-  // `tapStyle` is not used if both `onTap` and `onLongTap`
+  // `tapStyle` is not used if both `onTap` and `onLongPress`
   // are null or not set.
   tapStyle: const TextStyle(color: Colors.yellow),
   onTap: null,
@@ -51,7 +51,7 @@ CustomText(
 ### Unique styles and actions per definition
 
 An example to apply styles to URLs, email addresses and phone numbers, and also enable
-them to be tapped / long-tapped.
+them to be tapped/long-pressed.
 
 All of the three are styled, but only phone numbers among them are given unique `matchStyle`
 and `tapStyle`.
@@ -61,7 +61,7 @@ and `tapStyle`.
 [example2.dart][example2]
 
 TIPS: Use [url_launcher](https://pub.dev/packages/url_launcher) or its equivalent to open
-a browser or another app by a tap/long-tap on a string.
+a browser or another app by a tap/long-press on a string.
 
 ```dart
 CustomText(
@@ -73,7 +73,7 @@ CustomText(
     const TextDefinition(matcher: EmailMatcher()),
     TextDefinition(
       matcher: const TelMatcher(),
-      // `matchStyle`, `tapStyle`, `onTap` and `onLongTap` here
+      // `matchStyle`, `tapStyle`, `onTap` and `onLongPress` here
       // override the equivalent parameters of CustomText.
       matchStyle: const TextStyle(
         color: Colors.green,
@@ -81,7 +81,7 @@ CustomText(
       ),
       tapStyle: const TextStyle(color: Colors.orange),
       onTap: (tel) => print(tel),
-      onLongTap: (tel) => print('[Long tap] $tel'),
+      onLongPress: (tel) => print('[Long press] $tel'),
     ),
   ],
   matchStyle: const TextStyle(
@@ -90,7 +90,7 @@ CustomText(
   ),
   tapStyle: const TextStyle(color: Colors.indigo),
   onTap: (type, text) => print(text),
-  onLongTap: (type, text) => print('[Long tap] $text'),
+  onLongPress: (type, text) => print('[Long press] $text'),
 )
 ```
 
@@ -181,7 +181,7 @@ CustomText(
       // within the match pattern.
       labelSelector: (groups) => groups[0],
       // `tapSelector` is used to choose the string to be passed
-      // to the `onTap` and `onLongTap` callbacks.
+      // to the `onTap` and `onLongPress` callbacks.
       tapSelector: (groups) => groups[1],
     ),
   ],

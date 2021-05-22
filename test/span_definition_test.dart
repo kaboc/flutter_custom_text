@@ -6,7 +6,7 @@ import 'widgets.dart';
 
 void main() {
   setUp(() {
-    isTap = isLongTap = false;
+    isTap = isLongPress = false;
     matcherType = tappedText = null;
   });
 

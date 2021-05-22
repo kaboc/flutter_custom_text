@@ -19,7 +19,7 @@ class Example2 extends StatelessWidget {
         TextDefinition(
           // TODO: Replace with default TelMatcher if Safari supports lookbehind
           matcher: const TelMatcher(r'(?:\+?[1-9]\d{0,4})?(?:[- ]?\d{1,4})+'),
-          // `matchStyle`, `tapStyle`, `onTap` and `onLongTap` here
+          // `matchStyle`, `tapStyle`, `onTap` and `onLongPress` here
           // override the equivalent parameters of CustomText.
           matchStyle: const TextStyle(
             color: Colors.green,
@@ -27,7 +27,7 @@ class Example2 extends StatelessWidget {
           ),
           tapStyle: const TextStyle(color: Colors.orange),
           onTap: (tel) => output(tel),
-          onLongTap: (tel) => output('[Long tap] $tel'),
+          onLongPress: (tel) => output('[Long press] $tel'),
         ),
       ],
       matchStyle: const TextStyle(
@@ -36,7 +36,7 @@ class Example2 extends StatelessWidget {
       ),
       tapStyle: const TextStyle(color: Colors.indigo),
       onTap: (type, text) => output(text),
-      onLongTap: (type, text) => output('[Long tap] $text'),
+      onLongPress: (type, text) => output('[Long press] $text'),
     );
   }
 }

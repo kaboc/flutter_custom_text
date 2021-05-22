@@ -9,7 +9,7 @@ abstract class _Definition {
     this.matchStyle,
     this.tapStyle,
     this.onTap,
-    this.onLongTap,
+    this.onLongPress,
   });
 
   final TextMatcher matcher;
@@ -19,41 +19,45 @@ abstract class _Definition {
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final void Function(String)? onTap;
-  final void Function(String)? onLongTap;
+  final void Function(String)? onLongPress;
 }
 
 /// A class that defines the parsing rule, text styles and actions for
-/// tap events.
+/// tap/long-press events.
 class TextDefinition extends _Definition {
   /// Creates a [TextDefinition] that defines parsing rules, text styles,
-  /// and actions for tap events.
+  /// and actions for tap/long-press events.
   ///
   /// If strings match the pattern set in [matcher], the strings are styled
   /// according to the styles specified by [matchStyle] and [tapStyle],
   /// which are used while a parsed element is not pressed and pressed
   /// respectively.
   ///
-  /// [onTap] / [onLongTap] are callback functions called when the element
-  /// is tapped / long-tapped. The matched string is passed in to the
-  /// functions.
+  /// [onTap] / [onLongPress] are callback functions called when the element
+  /// is tapped/long-pressed. The matched string is passed in to the functions.
   const TextDefinition({
     required TextMatcher matcher,
     TextStyle? matchStyle,
     TextStyle? tapStyle,
     void Function(String)? onTap,
-    void Function(String)? onLongTap,
+    @Deprecated(
+      '[onLongTap] is being deprecated in favor of [onLongPress]. '
+      '[onLongTap] will be removed on or after the 1.0.0 release.',
+    )
+        void Function(String)? onLongTap,
+    void Function(String)? onLongPress,
   }) : super(
           matcher: matcher,
           matchStyle: matchStyle,
           tapStyle: tapStyle,
           onTap: onTap,
-          onLongTap: onLongTap,
+          onLongPress: onLongPress ?? onLongTap,
         );
 }
 
 /// A class that is similar to [TextDefinition] but different in that this
-/// enables to choose the string to be displayed and the one passed to tap
-/// callbacks.,
+/// enables to choose the string to be displayed and the one passed to the
+/// tap/long-press callbacks.
 class SelectiveDefinition extends _Definition {
   /// Creates a [SelectiveDefinition] that is similar to [TextDefinition] but
   /// allows more flexible settings.,
@@ -67,10 +71,10 @@ class SelectiveDefinition extends _Definition {
   /// (an array of strings) that have matched the fragments enclosed with
   /// parentheses within the match pattern. The string returned by
   /// [labelSelector] is displayed, and the one returned by [tapSelector]
-  /// is passed to [onTap] and [onLongTap].
+  /// is passed to [onTap] and [onLongPress].
   ///
-  /// [onTap] / [onLongTap] are callback functions called when the element
-  /// is tapped / long-tapped. The string set by [tapSelector] is passed
+  /// [onTap] / [onLongPress] are callback functions called when the element
+  /// is tapped/long-pressed. The string set by [tapSelector] is passed
   /// in to the functions.
   const SelectiveDefinition({
     required TextMatcher matcher,
@@ -79,7 +83,12 @@ class SelectiveDefinition extends _Definition {
     TextStyle? matchStyle,
     TextStyle? tapStyle,
     void Function(String)? onTap,
-    void Function(String)? onLongTap,
+    @Deprecated(
+      '[onLongTap] is being deprecated in favor of [onLongPress]. '
+      '[onLongTap] will be removed on or after the 1.0.0 release.',
+    )
+        void Function(String)? onLongTap,
+    void Function(String)? onLongPress,
   }) : super(
           matcher: matcher,
           labelSelector: labelSelector,
@@ -87,7 +96,7 @@ class SelectiveDefinition extends _Definition {
           matchStyle: matchStyle,
           tapStyle: tapStyle,
           onTap: onTap,
-          onLongTap: onLongTap,
+          onLongPress: onLongPress ?? onLongTap,
         );
 }
 

@@ -12,10 +12,10 @@ class CustomTextWidget extends StatelessWidget {
     this.matchStyleInDef,
     this.tapStyleInDef,
     this.onTap,
-    this.onLongTap,
+    this.onLongPress,
     this.onTapInDef,
-    this.onLongTapInDef,
-    this.longTapDuration,
+    this.onLongPressInDef,
+    this.longPressDuration,
   });
 
   final String text;
@@ -25,10 +25,10 @@ class CustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final void Function(Type, String)? onTap;
-  final void Function(Type, String)? onLongTap;
+  final void Function(Type, String)? onLongPress;
   final void Function(String)? onTapInDef;
-  final void Function(String)? onLongTapInDef;
-  final Duration? longTapDuration;
+  final void Function(String)? onLongPressInDef;
+  final Duration? longPressDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +44,15 @@ class CustomTextWidget extends StatelessWidget {
           matchStyle: matchStyleInDef,
           tapStyle: tapStyleInDef,
           onTap: onTapInDef,
-          onLongTap: onLongTapInDef,
+          onLongPress: onLongPressInDef,
         ),
       ],
       style: style,
       matchStyle: matchStyle,
       tapStyle: tapStyle,
       onTap: onTap,
-      onLongTap: onLongTap,
-      longTapDuration: longTapDuration,
+      onLongPress: onLongPress,
+      longPressDuration: longPressDuration,
     );
   }
 }
@@ -68,9 +68,9 @@ class SelectiveCustomTextWidget extends StatelessWidget {
     this.matchStyleInDef,
     this.tapStyleInDef,
     this.onTap,
-    this.onLongTap,
+    this.onLongPress,
     this.onTapInDef,
-    this.onLongTapInDef,
+    this.onLongPressInDef,
   });
 
   final String text;
@@ -80,9 +80,9 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final void Function(Type, String)? onTap;
-  final void Function(Type, String)? onLongTap;
+  final void Function(Type, String)? onLongPress;
   final void Function(String)? onTapInDef;
-  final void Function(String)? onLongTapInDef;
+  final void Function(String)? onLongPressInDef;
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +100,14 @@ class SelectiveCustomTextWidget extends StatelessWidget {
           matchStyle: matchStyleInDef,
           tapStyle: tapStyleInDef,
           onTap: onTapInDef,
-          onLongTap: onLongTapInDef,
+          onLongPress: onLongPressInDef,
         ),
       ],
       style: style,
       matchStyle: matchStyle,
       tapStyle: tapStyle,
       onTap: onTap,
-      onLongTap: onLongTap,
+      onLongPress: onLongPress,
     );
   }
 }

@@ -50,12 +50,12 @@ class MyApp extends StatelessWidget {
                 'example2.dart',
                 'An example to apply styles to URLs, email addresses and '
                     'phone numbers, and enable them to be tapped / '
-                    'long-tapped.\n'
+                    'long-pressed.\n'
                     'Phone numbers are styled differently according to '
                     'the `matchStyle` and `tapStyle` set in the definition. ',
                 (outputFunc) => Example2(outputFunc),
                 additionalInfo:
-                    'Try tapping / long-tapping on coloured strings.',
+                    'Try tapping / long-pressing on coloured strings.',
               ),
             ),
             _ListTile(

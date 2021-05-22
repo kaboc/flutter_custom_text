@@ -8,7 +8,7 @@ import 'widgets.dart';
 
 void main() {
   setUp(() {
-    isTap = isLongTap = false;
+    isTap = isLongPress = false;
     matcherType = tappedText = null;
   });
 
@@ -88,13 +88,13 @@ void main() {
       expect(span2C?.style?.color, const Color(0xFF222222));
     });
 
-    testWidgets('tapStyle is applied if onLongTap is set', (tester) async {
+    testWidgets('tapStyle is applied if onLongPress is set', (tester) async {
       await tester.pumpWidget(const CustomTextWidget(
         'aaa bbb@example.com https://example.com/',
         style: TextStyle(color: Color(0xFF111111)),
         matchStyle: TextStyle(color: Color(0xFF222222)),
         tapStyle: TextStyle(color: Color(0xFF333333)),
-        onLongTap: onLongTap,
+        onLongPress: onLongPress,
       ));
       await tester.pump();
 
@@ -138,10 +138,13 @@ void main() {
     });
 
     testWidgets(
-      'Correct values are passed to onLongTap callback',
+      'Correct values are passed to onLongPress callback',
       (tester) async {
         await tester.pumpWidget(
-          const CustomTextWidget('aaa bbb@example.com', onLongTap: onLongTap),
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            onLongPress: onLongPress,
+          ),
         );
         await tester.pump();
 
@@ -154,7 +157,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isLongTap, isTrue);
+        expect(isLongPress, isTrue);
         expect(matcherType, equals(EmailMatcher));
         expect(tappedText, equals(email));
       },
@@ -164,7 +167,7 @@ void main() {
       await tester.pumpWidget(const CustomTextWidget(
         'aaa bbb@example.com',
         onTap: onTap,
-        onLongTap: onLongTap,
+        onLongPress: onLongPress,
       ));
       await tester.pump();
 
@@ -177,14 +180,14 @@ void main() {
       await tester.pump();
 
       expect(isTap, isTrue);
-      expect(isLongTap, isFalse);
+      expect(isLongPress, isFalse);
     });
 
-    testWidgets('Only onLongTap is called on long tap', (tester) async {
+    testWidgets('Only onLongPress is called on long-press', (tester) async {
       await tester.pumpWidget(const CustomTextWidget(
         'aaa bbb@example.com',
         onTap: onTap,
-        onLongTap: onLongTap,
+        onLongPress: onLongPress,
       ));
       await tester.pump();
 
@@ -198,17 +201,17 @@ void main() {
       await tester.pump();
 
       expect(isTap, isFalse);
-      expect(isLongTap, isTrue);
+      expect(isLongPress, isTrue);
     });
   });
 
   testWidgets(
-    'specified long tap duration is used instead of default value',
+    'specified long-press duration is used instead of default value',
     (tester) async {
       await tester.pumpWidget(const CustomTextWidget(
         'aaa bbb@example.com',
-        onLongTap: onLongTap,
-        longTapDuration: Duration(milliseconds: 300),
+        onLongPress: onLongPress,
+        longPressDuration: Duration(milliseconds: 300),
       ));
       await tester.pump();
 
@@ -221,7 +224,7 @@ void main() {
       tapUpSpan(span);
       await tester.pump();
 
-      expect(isLongTap, isTrue);
+      expect(isLongPress, isTrue);
     },
   );
 }

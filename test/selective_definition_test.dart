@@ -6,7 +6,7 @@ import 'widgets.dart';
 
 void main() {
   setUp(() {
-    isTap = isLongTap = false;
+    isTap = isLongPress = false;
     matcherType = tappedText = null;
   });
 
@@ -146,11 +146,11 @@ void main() {
     );
 
     testWidgets(
-      'Correct string is passed to onLongTap specified in CustomText',
+      'Correct string is passed to onLongPress specified in CustomText',
       (tester) async {
         await tester.pumpWidget(const SelectiveCustomTextWidget(
           'aaa[bbb](ccc)ddd',
-          onLongTap: onLongTap,
+          onLongPress: onLongPress,
         ));
         await tester.pump();
 
@@ -163,7 +163,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isLongTap, isTrue);
+        expect(isLongPress, isTrue);
         expect(matcherType, equals(MdLinkMatcher));
         expect(tappedText, equals('ccc'));
       },
@@ -192,11 +192,11 @@ void main() {
     );
 
     testWidgets(
-      'Correct string is passed to onLongTap specified in definition',
+      'Correct string is passed to onLongPress specified in definition',
       (tester) async {
         await tester.pumpWidget(SelectiveCustomTextWidget(
           'aaa[bbb](ccc)ddd',
-          onLongTapInDef: (text) => onLongTap(null, text),
+          onLongPressInDef: (text) => onLongPress(null, text),
         ));
         await tester.pump();
 
@@ -209,7 +209,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isLongTap, isTrue);
+        expect(isLongPress, isTrue);
         expect(tappedText, equals('ccc'));
       },
     );

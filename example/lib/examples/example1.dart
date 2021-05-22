@@ -15,7 +15,7 @@ class Example1 extends StatelessWidget {
         TextDefinition(matcher: EmailMatcher()),
       ],
       matchStyle: TextStyle(color: Colors.lightBlue),
-      // `tapStyle` is not used if both `onTap` and `onLongTap`
+      // `tapStyle` is not used if both `onTap` and `onLongPress`
       // are null or not set.
       tapStyle: TextStyle(color: Colors.yellow),
       onTap: null,

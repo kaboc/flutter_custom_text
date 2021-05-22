@@ -10,10 +10,10 @@ import 'package:text_parser/text_parser.dart';
 
 part 'definition.dart';
 
-const _kLongTapDuration = Duration(milliseconds: 600);
+const _kLongPressDuration = Duration(milliseconds: 600);
 
 /// A widget that adds styles to partial strings in text and/or enables
-/// taps on them according to specified definitions.
+/// taps/long-presses on them according to specified definitions.
 ///
 /// This widget may be useful for making strings such as URLs, email
 /// addresses or phone numbers clickable, or for only highlighting some
@@ -30,8 +30,13 @@ class CustomText extends StatefulWidget {
     this.matchStyle,
     this.tapStyle,
     this.onTap,
-    this.onLongTap,
-    this.longTapDuration,
+    @Deprecated(
+      '[onLongTap] is being deprecated in favor of [onLongPress]. '
+      '[onLongTap] will be removed on or after the 1.0.0 release.',
+    )
+        this.onLongTap,
+    this.onLongPress,
+    this.longPressDuration,
     this.cursorOnHover = SystemMouseCursors.basic,
     this.preventBlocking = false,
     this.strutStyle,
@@ -55,7 +60,7 @@ class CustomText extends StatefulWidget {
   final String text;
 
   /// Definitions that specify how to parse text, what to show and how to
-  /// show them, and what to do on taps.
+  /// show them, and what to do on taps/long-presses.
   final List<_Definition> definitions;
 
   /// The text style for strings that did not match any match patterns.
@@ -90,12 +95,15 @@ class CustomText extends StatefulWidget {
   /// The callback function called when tappable elements are tapped.
   final void Function(Type, String)? onTap;
 
-  /// The callback function called when tappable elements are long-tapped.
+  /// The callback function called when tappable elements are long-pressed.
   final void Function(Type, String)? onLongTap;
 
-  /// The duration before a tap is regarded as a long-tap and the
-  /// [onLongTap] function is called..
-  final Duration? longTapDuration;
+  /// The callback function called when tappable elements are long-pressed.
+  final void Function(Type, String)? onLongPress;
+
+  /// The duration before a tap is regarded as a long-press and the
+  /// [onLongPress] function is called.
+  final Duration? longPressDuration;
 
   /// The mouse cursor used while the pointer hovers over a clickable
   /// element.
@@ -229,8 +237,10 @@ class _CustomTextState extends State<CustomText> {
                 }
 
                 final isTappable = def.onTap != null ||
-                    def.onLongTap != null ||
+                    def.onLongPress != null ||
                     widget.onTap != null ||
+                    widget.onLongPress != null ||
+                    // ignore: deprecated_member_use_from_same_package
                     widget.onLongTap != null;
 
                 return isTappable
@@ -243,8 +253,8 @@ class _CustomTextState extends State<CustomText> {
                             ? elm.text
                             : def.tapSelector!(elm.groups),
                         definition: def,
-                        longTapDuration:
-                            widget.longTapDuration ?? _kLongTapDuration,
+                        longPressDuration:
+                            widget.longPressDuration ?? _kLongPressDuration,
                       )
                     : TextSpan(
                         text: def.labelSelector == null
@@ -276,7 +286,7 @@ class _CustomTextState extends State<CustomText> {
     required String text,
     required String link,
     required _Definition definition,
-    required Duration longTapDuration,
+    required Duration longPressDuration,
   }) {
     final matchStyle =
         definition.matchStyle ?? widget.matchStyle ?? widget.style;
@@ -291,7 +301,7 @@ class _CustomTextState extends State<CustomText> {
         index: index,
         link: link,
         definition: definition,
-        longTapDuration: longTapDuration,
+        longPressDuration: longPressDuration,
       ),
     );
   }
@@ -300,20 +310,23 @@ class _CustomTextState extends State<CustomText> {
     required int index,
     required String link,
     required _Definition definition,
-    required Duration longTapDuration,
+    required Duration longPressDuration,
   }) {
     return TapGestureRecognizer()
       ..onTapDown = (_) {
         setState(() => _isTapped[index] = true);
-        if (definition.onLongTap != null) {
+        if (definition.onLongPress != null) {
           _timer = Timer(
-            longTapDuration,
-            () => definition.onLongTap!(link),
+            longPressDuration,
+            () => definition.onLongPress!(link),
           );
-        } else if (widget.onLongTap != null) {
+          // ignore: deprecated_member_use_from_same_package
+        } else if (widget.onLongPress != null || widget.onLongTap != null) {
+          // ignore: deprecated_member_use_from_same_package
+          final onLongPress = widget.onLongPress ?? widget.onLongTap;
           _timer = Timer(
-            longTapDuration,
-            () => widget.onLongTap!(definition.matcher.runtimeType, link),
+            longPressDuration,
+            () => onLongPress!(definition.matcher.runtimeType, link),
           );
         }
       }
