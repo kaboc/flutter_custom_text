@@ -7,7 +7,7 @@ import 'package:custom_text_example/examples/example3.dart';
 import 'package:custom_text_example/examples/example4.dart';
 import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
-import 'package:custom_text_example/examples/experimental.dart';
+import 'package:custom_text_example/examples/example7.dart';
 
 void main() => runApp(MyApp());
 
@@ -118,13 +118,13 @@ class MyApp extends StatelessWidget {
               title: 'Changing mouse cursor on hover',
               builder: (title) => ExamplePage(
                 title,
-                'experimental.dart',
-                'An example to show the experimental feature of changing '
-                    'the mouse cursor on hover over a clickable element.\n'
-                    'Set one of `SystemMouseCursor`s other than '
-                    '`SystemMouseCursors.basic` to `cursorOnHover` to opt '
-                    'in to the feature.',
-                (outputFunc) => Experimental(outputFunc),
+                'example7.dart',
+                'An example to show the feature of changing the mouse cursor.\n'
+                    'The mouse cursor type set to `mouseCursor` of a '
+                    'definition is used while the mouse pointer hovers over'
+                    'a matching string.\n'
+                    '(Run this demo app on desktop to see how it looks.)',
+                (outputFunc) => Example7(outputFunc),
               ),
             ),
           ],
