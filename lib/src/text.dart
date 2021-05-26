@@ -151,7 +151,7 @@ class _CustomTextState extends State<CustomText> {
   late Future<List<TextElement>> _futureElements;
 
   final _tapRecognizers = <int, TapGestureRecognizer>{};
-  final _isTapped = <int, bool>{};
+  int? _tapIndex;
   Timer? _timer;
 
   final _hover = Hover();
@@ -294,9 +294,7 @@ class _CustomTextState extends State<CustomText> {
 
     return TextSpan(
       text: text,
-      style: _isTapped.containsKey(index) && _isTapped[index]!
-          ? tapStyle
-          : matchStyle,
+      style: _tapIndex == index ? tapStyle : matchStyle,
       recognizer: _tapRecognizers[index] = _recognizer(
         index: index,
         link: link,
@@ -314,7 +312,7 @@ class _CustomTextState extends State<CustomText> {
   }) {
     return TapGestureRecognizer()
       ..onTapDown = (_) {
-        setState(() => _isTapped[index] = true);
+        setState(() => _tapIndex = index);
         if (definition.onLongPress != null) {
           _timer = Timer(
             longPressDuration,
@@ -331,7 +329,7 @@ class _CustomTextState extends State<CustomText> {
         }
       }
       ..onTapUp = (_) {
-        setState(() => _isTapped[index] = false);
+        setState(() => _tapIndex = null);
         if (_timer?.isActive ?? true) {
           if (definition.onTap != null) {
             definition.onTap!(link);
@@ -343,7 +341,7 @@ class _CustomTextState extends State<CustomText> {
         _timer = null;
       }
       ..onTapCancel = () {
-        setState(() => _isTapped[index] = false);
+        setState(() => _tapIndex = null);
         _timer?.cancel();
         _timer = null;
       };
