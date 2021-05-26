@@ -10,6 +10,7 @@ abstract class _Definition {
     this.tapStyle,
     this.onTap,
     this.onLongPress,
+    this.mouseCursor,
   });
 
   final TextMatcher matcher;
@@ -20,6 +21,7 @@ abstract class _Definition {
   final TextStyle? tapStyle;
   final void Function(String)? onTap;
   final void Function(String)? onLongPress;
+  final MouseCursor? mouseCursor;
 }
 
 /// A class that defines the parsing rule, text styles and actions for
@@ -35,6 +37,11 @@ class TextDefinition extends _Definition {
   ///
   /// [onTap] / [onLongPress] are callback functions called when the element
   /// is tapped/long-pressed. The matched string is passed in to the functions.
+  ///
+  /// [mouseCursor] is a mouse cursor type used while the mouse hovers over
+  /// the matching text elements. Note that even if this is omitted,
+  /// [SystemMouseCursors.click] is automatically used if [onTap] or
+  /// [onLongPress] is set.
   const TextDefinition({
     required TextMatcher matcher,
     TextStyle? matchStyle,
@@ -46,12 +53,14 @@ class TextDefinition extends _Definition {
     )
         void Function(String)? onLongTap,
     void Function(String)? onLongPress,
+    MouseCursor? mouseCursor,
   }) : super(
           matcher: matcher,
           matchStyle: matchStyle,
           tapStyle: tapStyle,
           onTap: onTap,
           onLongPress: onLongPress ?? onLongTap,
+          mouseCursor: mouseCursor,
         );
 }
 
@@ -76,6 +85,11 @@ class SelectiveDefinition extends _Definition {
   /// [onTap] / [onLongPress] are callback functions called when the element
   /// is tapped/long-pressed. The string set by [tapSelector] is passed
   /// in to the functions.
+  ///
+  /// [mouseCursor] is a mouse cursor type used while the mouse hovers over
+  /// the matching text elements. Note that even if this is omitted,
+  /// [SystemMouseCursors.click] is automatically used if [onTap] or
+  /// [onLongPress] is set.
   const SelectiveDefinition({
     required TextMatcher matcher,
     required String Function(List<String?>) labelSelector,
@@ -89,6 +103,7 @@ class SelectiveDefinition extends _Definition {
     )
         void Function(String)? onLongTap,
     void Function(String)? onLongPress,
+    MouseCursor? mouseCursor,
   }) : super(
           matcher: matcher,
           labelSelector: labelSelector,
@@ -97,6 +112,7 @@ class SelectiveDefinition extends _Definition {
           tapStyle: tapStyle,
           onTap: onTap,
           onLongPress: onLongPress ?? onLongTap,
+          mouseCursor: mouseCursor,
         );
 }
 

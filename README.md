@@ -243,23 +243,40 @@ CustomText(
 )
 ```
 
-### [Experimental] Changing mouse cursor on hover over tappable element
+### Changing mouse cursor on hover
 
-New experimental feature to allow a different mouse cursor to be used while the pointer hovers
-over a tappable string. You can opt in to the feature by setting one of `SystemMouseCursor`s
-other than `SystemMouseCursors.basic` to `cursorOnHover`.
+`TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor type set to it
+is used while the pointer hovers over a string that has matched the matcher specified in the definition.
+
+If a tap callback (`onTap` or `onLongPress`) is set and `mouseCursor` is not set, `SystemMouseCursors.click`
+is automatically used for the string that the tap callback is applied to.
 
 ```dart
 CustomText(
-  'text',
-  definitions: [ ... ],
-  onTap: (type, text) => ...,
-  cursorOnHover: SystemMouseCursors.click,
+  'URL: https://example.com/\n'
+  'Email: foo@example.com',
+  definitions: [
+    const TextDefinition(
+      matcher: UrlMatcher(),
+      matchStyle: TextStyle(
+        color: Colors.grey,
+        decoration: TextDecoration.lineThrough,
+      ),
+      // `SystemMouseCursors.forbidden` is used for email addresses.
+      mouseCursor: SystemMouseCursors.forbidden,
+    ),
+    TextDefinition(
+      matcher: const EmailMatcher(),
+      matchStyle: const TextStyle(color: Colors.lightBlue),
+      tapStyle: const TextStyle(color: Colors.lightGreen),
+      // `SystemMouseCursors.click` is used for URLs automatically
+      // even if `mouseCursor` is not set because a tap has been
+      // enabled by the `onTap` callback.
+      onTap: (text) => output(text),
+    ),
+  ],
 )
 ```
-
-On web, the mouse cursor may change at a wrong position if a `SpanDefinition` contains
-`WidgetSpan`s. It is probably a bug or a limitation of Flutter itself.
 
 ## Limitations
 

@@ -441,5 +441,37 @@ void main() {
         expect(tappedText, 'longPress2');
       },
     );
+
+    testWidgets(
+      'default mouse cursors for TextSpan with/without tap callbacks',
+      (tester) async {
+        await tester.pumpWidget(CustomTextWidget(
+          'aaa bbb@example.com',
+          onTap: (_, __) {},
+        ));
+        await tester.pump();
+
+        final span1 = findSpan('aaa ');
+        final span2 = findSpan('bbb@example.com');
+        expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+        expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.click);
+      },
+    );
+
+    testWidgets(
+      'mouse cursor for TextSpan with mouseCursor set',
+      (tester) async {
+        await tester.pumpWidget(const CustomTextWidget(
+          'aaa bbb@example.com',
+          mouseCursor: SystemMouseCursors.grab,
+        ));
+        await tester.pump();
+
+        final span1 = findSpan('aaa ');
+        final span2 = findSpan('bbb@example.com');
+        expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+        expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
+      },
+    );
   });
 }

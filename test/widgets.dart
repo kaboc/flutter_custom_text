@@ -16,6 +16,7 @@ class CustomTextWidget extends StatelessWidget {
     this.onTapInDef,
     this.onLongPressInDef,
     this.longPressDuration,
+    this.mouseCursor,
   });
 
   final String text;
@@ -29,6 +30,7 @@ class CustomTextWidget extends StatelessWidget {
   final void Function(String)? onTapInDef;
   final void Function(String)? onLongPressInDef;
   final Duration? longPressDuration;
+  final MouseCursor? mouseCursor;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class CustomTextWidget extends StatelessWidget {
           tapStyle: tapStyleInDef,
           onTap: onTapInDef,
           onLongPress: onLongPressInDef,
+          mouseCursor: mouseCursor,
         ),
       ],
       style: style,
@@ -71,6 +74,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
     this.onLongPress,
     this.onTapInDef,
     this.onLongPressInDef,
+    this.mouseCursor,
   });
 
   final String text;
@@ -83,6 +87,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final void Function(Type, String)? onLongPress;
   final void Function(String)? onTapInDef;
   final void Function(String)? onLongPressInDef;
+  final MouseCursor? mouseCursor;
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +106,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
           tapStyle: tapStyleInDef,
           onTap: onTapInDef,
           onLongPress: onLongPressInDef,
+          mouseCursor: mouseCursor,
         ),
       ],
       style: style,

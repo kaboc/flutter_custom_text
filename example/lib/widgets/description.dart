@@ -43,7 +43,6 @@ class Description extends StatelessWidget {
                 fontSize: 16.0,
                 color: Colors.lightBlue.shade100,
               ),
-              cursorOnHover: SystemMouseCursors.click,
             ),
             const SizedBox(height: 12.0),
             CustomText(
