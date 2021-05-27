@@ -1,6 +1,21 @@
+## 0.3.0
+
+- **Breaking change**
+    - Use the `mouseCursor` property of `TextSpan` for changing the mouse cursor. (#4)
+        - `cursorOnHover` was removed from `CustomText`.
+        - `mouseCursor` is added to `TextDefinition` and `SelectiveDefinition`.
+- Deprecated
+    - `onLongTap` is now deprecated; use `onLongPress` instead.
+- New feature
+    - Add `hoverStyle` to `CustomText`, `TextDefinition` and `SelectiveDefinition`.
+- Refactoring and enhancement
+    - Improve management of tap state.
+    - Prevent unnecessary rebuilds and duplicate recognizer creations.
+    - Update example project.
+
 ## 0.2.0
 
-- Fix the error of undefined `SystemMouseCursor` on Flutter 2.2.
+- Fix the error of undefined `SystemMouseCursor` on Flutter 2.2. (#2)
     - Requires Flutter >=2.2.0.
 - Several minor changes.
 

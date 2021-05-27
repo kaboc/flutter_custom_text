@@ -69,7 +69,6 @@ class CustomTextWidget extends StatelessWidget {
   }
 }
 
-/// CustomText using SpanDefinition.
 class SelectiveCustomTextWidget extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const SelectiveCustomTextWidget(

@@ -27,7 +27,7 @@ class Example2 extends StatelessWidget {
           ),
           tapStyle: const TextStyle(color: Colors.orange),
           onTap: (tel) => output(tel),
-          onLongPress: (tel) => output('[Long press] $tel'),
+          onLongPress: (tel) => output('[Long press on Tel#] $tel'),
         ),
       ],
       matchStyle: const TextStyle(

@@ -13,10 +13,10 @@ const _kLongPressDuration = Duration(milliseconds: 600);
 /// A widget that adds styles to partial strings in text and/or enables
 /// taps/long-presses on them according to specified definitions.
 ///
-/// This widget may be useful for making strings such as URLs, email
-/// addresses or phone numbers clickable, or for only highlighting some
-/// parts of text with colors / different font settings depending on the
-/// types of string elements.
+/// This widget is useful for making strings such as URLs, email addresses
+/// or phone numbers clickable, or for only highlighting some parts of
+/// text with colors and different font settings depending on the types
+/// of string elements.
 class CustomText extends StatefulWidget {
   /// Creates a widget that adds styles to string elements in text and/or
   /// enables clicks on them according to specified definitions.
@@ -63,21 +63,16 @@ class CustomText extends StatefulWidget {
 
   /// The text style for strings that did not match any match patterns.
   ///
-  /// This is also used as the default text style; it is applied to matched
-  /// strings too if neither [CustomText.matchStyle] nor `matchStyle` in the
-  /// relative definition is set, and similarly, applied while they are
-  /// pressed if none of [CustomText.matchStyle], [CustomText.tapStyle], and
-  /// `matchStyle` / `tapStyle` in the relative definition is set.
+  /// This is also used for matched strings if neither [CustomText.matchStyle]
+  /// nor `matchStyle` in the relative definition is set.
   ///
-  /// If no style is set to any of the above and this parameter,
-  /// [DefaultTextStyle] is used instead.
+  /// If no style is set, [DefaultTextStyle] is used instead.
   final TextStyle? style;
 
-  /// The default text style for matched strings. This is used only if
-  /// `matchStyle` is not set in the relative definition.
+  /// The default text style for matched strings.
   ///
-  /// If no style is set to this parameter either, [DefaultTextStyle] is
-  /// used instead.
+  /// This is used only if `matchStyle` is not set in the relative
+  /// definition.
   final TextStyle? matchStyle;
 
   /// The default text style used for matched strings while they are
@@ -85,9 +80,6 @@ class CustomText extends StatefulWidget {
   ///
   /// This is used only if neither `matchStyle` nor `tapStyle` is set
   /// in the relative definition,
-  ///
-  /// If no style is set to this parameter either, [DefaultTextStyle]
-  /// is used instead.
   final TextStyle? tapStyle;
 
   /// The default text style used for matched strings while they are
@@ -114,10 +106,8 @@ class CustomText extends StatefulWidget {
   /// if set to `true`, except on the web where isolates are not supported,
   ///
   /// Using an isolate has the adverse effect of adding an overhead,
-  /// resulting in a slightly longer execution. If it is enabled. the
-  /// widget shows text without styles first and then applies them when
-  /// parsing is completed. Generally, leaving it disabled shows styled
-  /// text quicker, which probably looks better.
+  /// resulting in a slightly longer execution, but it is sometimes better
+  /// than the main thread getting blocked.
   ///
   /// How long parsing takes depends on the text length, the number and
   /// complexity of match patterns, the device performance, etc.
