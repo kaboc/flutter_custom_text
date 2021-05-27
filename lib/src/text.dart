@@ -149,10 +149,14 @@ class _CustomTextState extends State<CustomText> {
   }
 
   @override
-  void didUpdateWidget(CustomText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _disposeTapRecognizers();
-    _init();
+  void reassemble() {
+    super.reassemble();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _disposeTapRecognizers();
+      _init();
+      setState(() {});
+    });
   }
 
   @override
@@ -266,7 +270,7 @@ class _CustomTextState extends State<CustomText> {
       text: text,
       style: _tapIndex == index ? tapStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
-      recognizer: _tapRecognizers[index] = _recognizer(
+      recognizer: _tapRecognizers[index] ??= _recognizer(
         index: index,
         link: link,
         definition: definition,
