@@ -8,6 +8,7 @@ abstract class _Definition {
     this.builder,
     this.matchStyle,
     this.tapStyle,
+    this.hoverStyle,
     this.onTap,
     this.onLongPress,
     this.mouseCursor,
@@ -19,6 +20,7 @@ abstract class _Definition {
   final InlineSpan Function(String, List<String?>)? builder;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
+  final TextStyle? hoverStyle;
   final void Function(String)? onTap;
   final void Function(String)? onLongPress;
   final MouseCursor? mouseCursor;
@@ -46,6 +48,7 @@ class TextDefinition extends _Definition {
     required TextMatcher matcher,
     TextStyle? matchStyle,
     TextStyle? tapStyle,
+    TextStyle? hoverStyle,
     void Function(String)? onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
@@ -58,6 +61,7 @@ class TextDefinition extends _Definition {
           matcher: matcher,
           matchStyle: matchStyle,
           tapStyle: tapStyle,
+          hoverStyle: hoverStyle,
           onTap: onTap,
           onLongPress: onLongPress ?? onLongTap,
           mouseCursor: mouseCursor,
@@ -96,6 +100,7 @@ class SelectiveDefinition extends _Definition {
     String Function(List<String?>)? tapSelector,
     TextStyle? matchStyle,
     TextStyle? tapStyle,
+    TextStyle? hoverStyle,
     void Function(String)? onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
@@ -110,6 +115,7 @@ class SelectiveDefinition extends _Definition {
           tapSelector: tapSelector,
           matchStyle: matchStyle,
           tapStyle: tapStyle,
+          hoverStyle: hoverStyle,
           onTap: onTap,
           onLongPress: onLongPress ?? onLongTap,
           mouseCursor: mouseCursor,

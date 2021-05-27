@@ -243,13 +243,19 @@ CustomText(
 )
 ```
 
-### Changing mouse cursor on hover
+### Changing mouse cursor and text style on hover
 
 `TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor type set to it
 is used while the pointer hovers over a string that has matched the matcher specified in the definition.
 
 If a tap callback (`onTap` or `onLongPress`) is set and `mouseCursor` is not set, `SystemMouseCursors.click`
 is automatically used for the string that the tap callback is applied to.
+
+A different text style can also be applied on hover using `hoverStyle` either in `CustomText` or in definitions.
+
+![example7](https://user-images.githubusercontent.com/20254485/119790338-cf1a8080-bf0e-11eb-8c76-3116a540b159.gif)
+
+[example7.dart][example7]
 
 ```dart
 CustomText(
@@ -267,8 +273,16 @@ CustomText(
     ),
     TextDefinition(
       matcher: const EmailMatcher(),
-      matchStyle: const TextStyle(color: Colors.lightBlue),
-      tapStyle: const TextStyle(color: Colors.lightGreen),
+      matchStyle: const TextStyle(
+        color: Colors.lightBlue,
+        decoration: TextDecoration.underline,
+      ),
+      tapStyle: const TextStyle(color: Colors.green),
+      // Text is shadowed while the mouse pointer hovers over it.
+      hoverStyle: TextStyle(
+        color: Colors.lightBlue,
+        shadows: ...,
+      ),
       // `SystemMouseCursors.click` is used for URLs automatically
       // even if `mouseCursor` is not set because a tap has been
       // enabled by the `onTap` callback.
@@ -297,6 +311,7 @@ as is if your app targets Safari.
 [example4]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example4.dart
 [example5]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example5.dart
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
+[example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html

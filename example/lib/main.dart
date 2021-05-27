@@ -115,13 +115,14 @@ class MyApp extends StatelessWidget {
               ),
             ),
             _ListTile(
-              title: 'Changing mouse cursor on hover',
+              title: 'Changing mouse cursor and text style on hover',
               builder: (title) => ExamplePage(
                 title,
                 'example7.dart',
-                'An example to show the feature of changing the mouse cursor.\n'
+                'An example to show the feature of changing the mouse cursor '
+                    'and the text style on hover.\n'
                     'The mouse cursor type set to `mouseCursor` of a '
-                    'definition is used while the mouse pointer hovers over'
+                    'definition is used while the mouse pointer hovers over '
                     'a matching string.\n'
                     '(Run this demo app on desktop to see how it looks.)',
                 (outputFunc) => Example7(outputFunc),

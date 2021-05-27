@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -457,7 +458,9 @@ void main() {
         expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.click);
       },
     );
+  });
 
+  group('mouse hover', () {
     testWidgets(
       'mouse cursor for TextSpan with mouseCursor set',
       (tester) async {
@@ -471,6 +474,74 @@ void main() {
         final span2 = findSpan('bbb@example.com');
         expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
         expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
+      },
+    );
+
+    testWidgets('hoverStyle', (tester) async {
+      await tester.pumpWidget(const CustomTextWidget(
+        'aaa bbb@example.com https://example.com/',
+        style: TextStyle(color: Color(0xFF111111)),
+        matchStyle: TextStyle(color: Color(0xFF222222)),
+        hoverStyle: TextStyle(color: Color(0xFF333333)),
+        hoverStyleInDef: TextStyle(color: Color(0xFF444444)),
+      ));
+      await tester.pump();
+
+      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      await gesture.addPointer(location: Offset.zero);
+      final center = tester.getCenter(find.byType(RichText));
+
+      await gesture.moveTo(Offset(center.dx / 2, center.dy));
+      await tester.pump();
+
+      final span1A = findSpan('aaa ');
+      final span2A = findSpan('bbb@example.com');
+      final span3A = findSpan('https://example.com/');
+      expect(span1A?.style?.color, const Color(0xFF111111));
+      expect(span2A?.style?.color, const Color(0xFF444444));
+      expect(span3A?.style?.color, const Color(0xFF222222));
+
+      await gesture.moveTo(Offset(center.dx / 2 * 3, center.dy));
+      await tester.pump();
+
+      final span1B = findSpan('aaa ');
+      final span2B = findSpan('bbb@example.com');
+      final span3B = findSpan('https://example.com/');
+      expect(span1B?.style?.color, const Color(0xFF111111));
+      expect(span2B?.style?.color, const Color(0xFF222222));
+      expect(span3B?.style?.color, const Color(0xFF333333));
+
+      await gesture.removePointer();
+    });
+
+    testWidgets(
+      'tapStyle is used while being tapped even if hoverStyle is set',
+      (tester) async {
+        await tester.pumpWidget(CustomTextWidget(
+          'aaa bbb@example.com',
+          style: const TextStyle(color: Color(0xFF111111)),
+          tapStyle: const TextStyle(color: Color(0xFF222222)),
+          hoverStyle: const TextStyle(color: Color(0xFF333333)),
+          onTap: (_, __) {},
+        ));
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText)));
+        await tester.pump();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF333333));
+
+        await gesture.removePointer();
+
+        tapDownSpan(spanA);
+        await tester.pump();
+
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, const Color(0xFF222222));
       },
     );
   });

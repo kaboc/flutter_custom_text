@@ -27,6 +27,7 @@ class CustomText extends StatefulWidget {
     this.style,
     this.matchStyle,
     this.tapStyle,
+    this.hoverStyle,
     this.onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
@@ -89,6 +90,13 @@ class CustomText extends StatefulWidget {
   /// is used instead.
   final TextStyle? tapStyle;
 
+  /// The default text style used for matched strings while they are
+  /// under the mouse pointer.
+  ///
+  /// This is used only if `hoverStyle` is not set in the relative
+  /// definition.
+  final TextStyle? hoverStyle;
+
   /// The callback function called when tappable elements are tapped.
   final void Function(Type, String)? onTap;
 
@@ -139,8 +147,9 @@ class _CustomTextState extends State<CustomText> {
   late Future<List<TextElement>> _futureElements;
 
   final _tapRecognizers = <int, TapGestureRecognizer>{};
-  int? _tapIndex;
   Timer? _timer;
+  int? _tapIndex;
+  int? _hoverIndex;
 
   @override
   void initState() {
@@ -217,12 +226,14 @@ class _CustomTextState extends State<CustomText> {
                     // ignore: deprecated_member_use_from_same_package
                     widget.onLongTap != null;
 
+                final text = def.labelSelector == null
+                    ? elm.text
+                    : def.labelSelector!(elm.groups);
+
                 return isTappable
                     ? _tappableTextSpan(
                         index: index,
-                        text: def.labelSelector == null
-                            ? elm.text
-                            : def.labelSelector!(elm.groups),
+                        text: text,
                         link: def.tapSelector == null
                             ? elm.text
                             : def.tapSelector!(elm.groups),
@@ -230,13 +241,10 @@ class _CustomTextState extends State<CustomText> {
                         longPressDuration:
                             widget.longPressDuration ?? _kLongPressDuration,
                       )
-                    : TextSpan(
-                        text: def.labelSelector == null
-                            ? elm.text
-                            : def.labelSelector!(elm.groups),
-                        style:
-                            def.matchStyle ?? widget.matchStyle ?? widget.style,
-                        mouseCursor: def.mouseCursor,
+                    : _textSpan(
+                        index: index,
+                        text: text,
+                        definition: def,
                       );
               }).toList(),
       ),
@@ -255,6 +263,32 @@ class _CustomTextState extends State<CustomText> {
     );
   }
 
+  TextSpan _textSpan({
+    required int index,
+    required String text,
+    required _Definition definition,
+  }) {
+    final matchStyle =
+        definition.matchStyle ?? widget.matchStyle ?? widget.style;
+    final hoverStyle = definition.hoverStyle ?? widget.hoverStyle;
+
+    return TextSpan(
+      text: text,
+      style: _hoverIndex == index ? hoverStyle : matchStyle,
+      mouseCursor: definition.mouseCursor,
+      onEnter: hoverStyle == null
+          ? null
+          : (_) {
+              setState(() => _hoverIndex = index);
+            },
+      onExit: hoverStyle == null
+          ? null
+          : (_) {
+              setState(() => _hoverIndex = null);
+            },
+    );
+  }
+
   TextSpan _tappableTextSpan({
     required int index,
     required String text,
@@ -265,17 +299,30 @@ class _CustomTextState extends State<CustomText> {
     final matchStyle =
         definition.matchStyle ?? widget.matchStyle ?? widget.style;
     final tapStyle = definition.tapStyle ?? widget.tapStyle ?? matchStyle;
+    final hoverStyle = definition.hoverStyle ?? widget.hoverStyle;
 
     return TextSpan(
       text: text,
-      style: _tapIndex == index ? tapStyle : matchStyle,
-      mouseCursor: definition.mouseCursor,
+      style: _tapIndex == index
+          ? tapStyle
+          : (_hoverIndex == index ? hoverStyle : matchStyle),
       recognizer: _tapRecognizers[index] ??= _recognizer(
         index: index,
         link: link,
         definition: definition,
         longPressDuration: longPressDuration,
       ),
+      mouseCursor: definition.mouseCursor,
+      onEnter: hoverStyle == null
+          ? null
+          : (_) {
+              setState(() => _hoverIndex = index);
+            },
+      onExit: hoverStyle == null
+          ? null
+          : (_) {
+              setState(() => _hoverIndex = null);
+            },
     );
   }
 

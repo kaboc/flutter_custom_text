@@ -24,14 +24,30 @@ class Example7 extends StatelessWidget {
         ),
         TextDefinition(
           matcher: const EmailMatcher(),
-          matchStyle: const TextStyle(color: Colors.lightBlue),
-          tapStyle: const TextStyle(color: Colors.lightGreen),
+          matchStyle: const TextStyle(
+            color: Colors.lightBlue,
+            decoration: TextDecoration.underline,
+          ),
+          tapStyle: const TextStyle(color: Colors.green),
+          // Text is shadowed while the mouse pointer hovers over it.
+          hoverStyle: TextStyle(
+            color: Colors.lightBlue,
+            shadows: [_shadow(Colors.lightBlue)],
+          ),
           // `SystemMouseCursors.click` is used for URLs automatically
           // even if `mouseCursor` is not set because a tap has been
           // enabled by the `onTap` callback.
           onTap: (text) => output(text),
         ),
       ],
+    );
+  }
+
+  Shadow _shadow(MaterialColor color) {
+    return Shadow(
+      offset: const Offset(2.0, 2.0),
+      blurRadius: 4.0,
+      color: color.shade400,
     );
   }
 }

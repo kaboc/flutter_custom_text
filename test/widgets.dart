@@ -9,8 +9,10 @@ class CustomTextWidget extends StatelessWidget {
     this.style,
     this.matchStyle,
     this.tapStyle,
+    this.hoverStyle,
     this.matchStyleInDef,
     this.tapStyleInDef,
+    this.hoverStyleInDef,
     this.onTap,
     this.onLongPress,
     this.onTapInDef,
@@ -23,8 +25,10 @@ class CustomTextWidget extends StatelessWidget {
   final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
+  final TextStyle? hoverStyle;
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
+  final TextStyle? hoverStyleInDef;
   final void Function(Type, String)? onTap;
   final void Function(Type, String)? onLongPress;
   final void Function(String)? onTapInDef;
@@ -34,28 +38,33 @@ class CustomTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomText(
-      text,
-      textDirection: TextDirection.ltr,
-      definitions: [
-        const TextDefinition(
-          matcher: UrlMatcher(),
-        ),
-        TextDefinition(
-          matcher: const EmailMatcher(),
-          matchStyle: matchStyleInDef,
-          tapStyle: tapStyleInDef,
-          onTap: onTapInDef,
-          onLongPress: onLongPressInDef,
-          mouseCursor: mouseCursor,
-        ),
-      ],
-      style: style,
-      matchStyle: matchStyle,
-      tapStyle: tapStyle,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      longPressDuration: longPressDuration,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: CustomText(
+        text,
+        textDirection: TextDirection.ltr,
+        definitions: [
+          const TextDefinition(
+            matcher: UrlMatcher(),
+          ),
+          TextDefinition(
+            matcher: const EmailMatcher(),
+            matchStyle: matchStyleInDef,
+            tapStyle: tapStyleInDef,
+            hoverStyle: hoverStyleInDef,
+            onTap: onTapInDef,
+            onLongPress: onLongPressInDef,
+            mouseCursor: mouseCursor,
+          ),
+        ],
+        style: style,
+        matchStyle: matchStyle,
+        tapStyle: tapStyle,
+        hoverStyle: hoverStyle,
+        onTap: onTap,
+        onLongPress: onLongPress,
+        longPressDuration: longPressDuration,
+      ),
     );
   }
 }
@@ -68,8 +77,10 @@ class SelectiveCustomTextWidget extends StatelessWidget {
     this.style,
     this.matchStyle,
     this.tapStyle,
+    this.hoverStyle,
     this.matchStyleInDef,
     this.tapStyleInDef,
+    this.hoverStyleInDef,
     this.onTap,
     this.onLongPress,
     this.onTapInDef,
@@ -81,8 +92,10 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
+  final TextStyle? hoverStyle;
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
+  final TextStyle? hoverStyleInDef;
   final void Function(Type, String)? onTap;
   final void Function(Type, String)? onLongPress;
   final void Function(String)? onTapInDef;
@@ -91,29 +104,34 @@ class SelectiveCustomTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomText(
-      text,
-      textDirection: TextDirection.ltr,
-      definitions: [
-        const TextDefinition(
-          matcher: TelMatcher(),
-        ),
-        SelectiveDefinition(
-          matcher: const MdLinkMatcher(),
-          labelSelector: (groups) => groups[0] ?? '',
-          tapSelector: (groups) => groups[1] ?? '',
-          matchStyle: matchStyleInDef,
-          tapStyle: tapStyleInDef,
-          onTap: onTapInDef,
-          onLongPress: onLongPressInDef,
-          mouseCursor: mouseCursor,
-        ),
-      ],
-      style: style,
-      matchStyle: matchStyle,
-      tapStyle: tapStyle,
-      onTap: onTap,
-      onLongPress: onLongPress,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: CustomText(
+        text,
+        textDirection: TextDirection.ltr,
+        definitions: [
+          const TextDefinition(
+            matcher: TelMatcher(),
+          ),
+          SelectiveDefinition(
+            matcher: const MdLinkMatcher(),
+            labelSelector: (groups) => groups[0] ?? '',
+            tapSelector: (groups) => groups[1] ?? '',
+            matchStyle: matchStyleInDef,
+            tapStyle: tapStyleInDef,
+            hoverStyle: hoverStyleInDef,
+            onTap: onTapInDef,
+            onLongPress: onLongPressInDef,
+            mouseCursor: mouseCursor,
+          ),
+        ],
+        style: style,
+        matchStyle: matchStyle,
+        tapStyle: tapStyle,
+        hoverStyle: hoverStyle,
+        onTap: onTap,
+        onLongPress: onLongPress,
+      ),
     );
   }
 }
