@@ -145,17 +145,22 @@ class _CustomTextState extends State<CustomText> {
   void initState() {
     super.initState();
     _init();
+    _reset();
   }
 
   @override
-  void reassemble() {
-    super.reassemble();
+  void didUpdateWidget(CustomText oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _disposeTapRecognizers();
-      _init();
-      setState(() {});
-    });
+    _init();
+
+    final isUpdated = widget.text != oldWidget.text ||
+        widget.preventBlocking != oldWidget.preventBlocking ||
+        _hasNewDefinitions(oldWidget);
+
+    if (isUpdated) {
+      _reset();
+    }
   }
 
   @override
@@ -169,6 +174,11 @@ class _CustomTextState extends State<CustomText> {
     _definitions = {
       for (final e in widget.definitions) e.matcher.runtimeType: e,
     };
+  }
+
+  void _reset() {
+    _disposeTapRecognizers();
+
     _matchers = widget.definitions.map((def) => def.matcher).toList();
     _futureElements = TextParser(matchers: _matchers).parse(
       widget.text,
@@ -180,6 +190,20 @@ class _CustomTextState extends State<CustomText> {
     _tapRecognizers
       ..forEach((_, recognizer) => recognizer.dispose())
       ..clear();
+  }
+
+  bool _hasNewDefinitions(CustomText oldWidget) {
+    if (widget.definitions.length == oldWidget.definitions.length) {
+      return true;
+    }
+
+    for (var i = 0; i < widget.definitions.length; i++) {
+      if (widget.definitions[i].matcher != oldWidget.definitions[i].matcher) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   @override
