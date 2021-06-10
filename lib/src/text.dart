@@ -136,7 +136,7 @@ class _CustomTextState extends State<CustomText> {
   late List<TextMatcher> _matchers;
   late Future<List<TextElement>> _futureElements;
 
-  final _tapRecognizers = <int, TapGestureRecognizer>{};
+  final Map<int, TapGestureRecognizer> _tapRecognizers = {};
   Timer? _timer;
   int? _tapIndex;
   int? _hoverIndex;
@@ -165,7 +165,6 @@ class _CustomTextState extends State<CustomText> {
 
   @override
   void dispose() {
-    _timer?.cancel();
     _disposeTapRecognizers();
     super.dispose();
   }
@@ -187,6 +186,7 @@ class _CustomTextState extends State<CustomText> {
   }
 
   void _disposeTapRecognizers() {
+    _timer?.cancel();
     _tapRecognizers
       ..forEach((_, recognizer) => recognizer.dispose())
       ..clear();

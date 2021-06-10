@@ -1,9 +1,13 @@
+## 0.3.1
+
+- Fix to allow dynamic update of text.
+
 ## 0.3.0
 
 - **Breaking change**
     - Use the `mouseCursor` property of `TextSpan` for changing the mouse cursor. (#4)
-        - `cursorOnHover` was removed from `CustomText`.
-        - `mouseCursor` is added to `TextDefinition` and `SelectiveDefinition`.
+        - `cursorOnHover`, which was experimental, was removed from `CustomText`.
+        - `mouseCursor` was added to `TextDefinition` and `SelectiveDefinition`.
 - Deprecated
     - `onLongTap` is now deprecated; use `onLongPress` instead.
 - New feature

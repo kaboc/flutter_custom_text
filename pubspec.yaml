@@ -1,6 +1,6 @@
 name: custom_text
 description: A highly customisable text widget that allows styles and tap gestures to be applied to strings in it flexibly.
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/kaboc/flutter_custom_text
 
 environment:
