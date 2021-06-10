@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:custom_text_example/widgets/appbar.dart';
@@ -26,29 +25,14 @@ class ExamplePage extends StatefulWidget {
 }
 
 class _ExamplePageState extends State<ExamplePage> {
-  final _result = <String>[];
-
-  late final StreamController<String> _controller = StreamController<String>()
-    ..stream.listen((v) => _updateOutput(v));
-
+  final _resultNotifier = ValueNotifier<String>('');
   final _scrollController = ScrollController();
 
   @override
   void dispose() {
-    _controller.close();
+    _resultNotifier.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _updateOutput(String value) {
-    setState(() => _result.add(value));
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        curve: Curves.linear,
-        duration: const Duration(milliseconds: 80),
-      );
-    });
   }
 
   @override
@@ -56,6 +40,17 @@ class _ExamplePageState extends State<ExamplePage> {
     final description = Description(
       widget.description,
       filename: widget.filename,
+    );
+
+    final example = _Example(
+      builder: widget.builder,
+      additionalInfo: widget.additionalInfo,
+      resultNotifier: _resultNotifier,
+    );
+    final output = _Output(
+      hasOutput: widget.hasOutput,
+      resultNotifier: _resultNotifier,
+      scrollController: _scrollController,
     );
 
     return Scaffold(
@@ -66,31 +61,47 @@ class _ExamplePageState extends State<ExamplePage> {
               ? _HorizontalLayout(
                   maxWidth: constraints.maxWidth,
                   description: description,
-                  example: _example(),
-                  output: _output(),
+                  example: example,
+                  output: output,
                 )
               : _VerticalLayout(
                   maxHeight: constraints.maxHeight,
                   description: description,
-                  example: _example(),
-                  output: _output(),
+                  example: example,
+                  output: output,
                 );
         },
       ),
     );
   }
+}
 
-  Widget _example() {
+class _Example extends StatelessWidget {
+  const _Example({
+    required this.builder,
+    required this.additionalInfo,
+    required this.resultNotifier,
+  });
+
+  final Widget Function(void Function(String)) builder;
+  final String? additionalInfo;
+  final ValueNotifier<String> resultNotifier;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.builder((v) => _controller.sink.add(v)),
-          if (widget.additionalInfo != null) ...[
+          builder((v) {
+            final value = resultNotifier.value;
+            resultNotifier.value += value.isEmpty ? v : '\n$v';
+          }),
+          if (additionalInfo != null) ...[
             const SizedBox(height: 32.0),
             Text(
-              widget.additionalInfo!,
+              additionalInfo!,
               style: Theme.of(context)
                   .textTheme
                   .bodyText1!
@@ -101,22 +112,40 @@ class _ExamplePageState extends State<ExamplePage> {
       ),
     );
   }
+}
 
-  Widget _output() {
+class _Output extends StatelessWidget {
+  const _Output({
+    required this.hasOutput,
+    required this.resultNotifier,
+    required this.scrollController,
+  });
+
+  final bool hasOutput;
+  final ValueNotifier<String> resultNotifier;
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.bodyText1!,
       child: ColoredBox(
         color: Colors.grey.shade300,
         child: Scrollbar(
-          controller: _scrollController,
+          controller: scrollController,
           isAlwaysShown: true,
           child: SingleChildScrollView(
-            controller: _scrollController,
+            controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: widget.hasOutput
-                  ? Text(
-                      _result.join('\n'),
+              child: hasOutput
+                  ? ValueListenableBuilder<String>(
+                      valueListenable: resultNotifier,
+                      builder: (_, result, __) {
+                        WidgetsBinding.instance!
+                            .addPostFrameCallback((_) => _scroll());
+                        return Text(result);
+                      },
                     )
                   : const Text(
                       'Tapping on text in this example '
@@ -127,6 +156,14 @@ class _ExamplePageState extends State<ExamplePage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _scroll() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      curve: Curves.linear,
+      duration: const Duration(milliseconds: 80),
     );
   }
 }

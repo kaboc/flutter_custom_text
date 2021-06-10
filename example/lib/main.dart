@@ -123,9 +123,9 @@ class MyApp extends StatelessWidget {
                     'and the text style on hover.\n'
                     'The mouse cursor type set to `mouseCursor` of a '
                     'definition is used while the mouse pointer hovers over '
-                    'a matching string.\n'
-                    '(Run this demo app on desktop to see how it looks.)',
+                    'a matching string.',
                 (outputFunc) => Example7(outputFunc),
+                additionalInfo: 'Run the app on desktop to see how it looks.',
               ),
             ),
           ],
