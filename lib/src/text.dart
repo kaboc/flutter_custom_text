@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 
 import 'package:text_parser/text_parser.dart';
 
+import 'parser_options.dart';
+
 part 'definition.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
@@ -24,6 +26,7 @@ class CustomText extends StatefulWidget {
     this.text, {
     Key? key,
     required this.definitions,
+    this.parserOptions = const ParserOptions(),
     this.style,
     this.matchStyle,
     this.tapStyle,
@@ -60,6 +63,10 @@ class CustomText extends StatefulWidget {
   /// Definitions that specify how to parse text, what to show and how to
   /// show them, and what to do on taps/long-presses.
   final List<_Definition> definitions;
+
+  /// The options for [RegExp] that configures how a regular expression
+  /// is treated.
+  final ParserOptions parserOptions;
 
   /// The text style for strings that did not match any match patterns.
   ///
@@ -179,7 +186,14 @@ class _CustomTextState extends State<CustomText> {
     _disposeTapRecognizers();
 
     _matchers = widget.definitions.map((def) => def.matcher).toList();
-    _futureElements = TextParser(matchers: _matchers).parse(
+
+    _futureElements = TextParser(
+      matchers: _matchers,
+      multiLine: widget.parserOptions.multiLine,
+      caseSensitive: widget.parserOptions.caseSensitive,
+      unicode: widget.parserOptions.unicode,
+      dotAll: widget.parserOptions.dotAll,
+    ).parse(
       widget.text,
       useIsolate: widget.preventBlocking,
     );
