@@ -34,7 +34,7 @@ class CustomText extends StatefulWidget {
     this.onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed on or after the 1.0.0 release.',
+      '[onLongTap] will be removed in a future version.',
     )
         this.onLongTap,
     this.onLongPress,

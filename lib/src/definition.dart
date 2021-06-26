@@ -1,5 +1,6 @@
 part of 'text.dart';
 
+@immutable
 abstract class _Definition {
   const _Definition({
     required this.matcher,
@@ -52,7 +53,7 @@ class TextDefinition extends _Definition {
     void Function(String)? onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed on or after the 1.0.0 release.',
+      '[onLongTap] will be removed in a future version.',
     )
         void Function(String)? onLongTap,
     void Function(String)? onLongPress,
@@ -104,7 +105,7 @@ class SelectiveDefinition extends _Definition {
     void Function(String)? onTap,
     @Deprecated(
       '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed on or after the 1.0.0 release.',
+      '[onLongTap] will be removed in a future version.',
     )
         void Function(String)? onLongTap,
     void Function(String)? onLongPress,

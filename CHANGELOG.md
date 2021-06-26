@@ -1,3 +1,10 @@
+## 0.4.0
+
+- Add `ParserOptions` for tweaking RegExp settings.
+- Add `parserOptions` parameter to `CustomText`.
+- Add `LinkMatcher`.
+- Depends on `text_parser` >=0.2.0.
+
 ## 0.3.1
 
 - Fix to allow dynamic update of text.

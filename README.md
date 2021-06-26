@@ -12,14 +12,13 @@ font settings depending on the types of the string elements parsed by regular ex
 
 ## Examples / Usage
 
-The examples here are all contained in the sample app in the [example/][example] folder.
-Just click on the link below to open the web demo and see what this package is like if
-you're unwilling to read through all of this document.
+Most of the examples here are contained in the sample app in the [example/][example] folder.
+Just click on the link below to open the web demo and see what this package can achieve.
 
 **[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
 
-The app also shows the source code with keywords highlighted, which is itself thanks
-to this package.
+The app also shows the source code with keywords highlighted, which itself is made possible
+by this package.
 
 ![highlighting](https://user-images.githubusercontent.com/20254485/100355884-d9c68c80-3035-11eb-8460-545afebf683c.png)
 
@@ -180,10 +179,10 @@ CustomText(
       // `groups` provided to `labelSelector` is an array of
       // strings matching the fragments enclosed in parentheses
       // within the match pattern.
-      labelSelector: (groups) => groups[0],
+      labelSelector: (groups) => groups[0]!,
       // `tapSelector` is used to choose the string to be passed
       // to the `onTap` and `onLongPress` callbacks.
-      tapSelector: (groups) => groups[1],
+      tapSelector: (groups) => groups[1]!,
     ),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),

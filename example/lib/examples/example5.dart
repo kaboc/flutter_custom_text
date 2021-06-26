@@ -19,10 +19,10 @@ class Example5 extends StatelessWidget {
           // `groups` provided to `labelSelector` is an array of
           // strings matching the fragments enclosed in parentheses
           // within the match pattern.
-          labelSelector: (groups) => groups[0] ?? '',
+          labelSelector: (groups) => groups[0]!,
           // `tapSelector` is used to choose the string to be passed
           // to the `onTap` and `onLongPress` callbacks.
-          tapSelector: (groups) => groups[1] ?? '',
+          tapSelector: (groups) => groups[1]!,
         ),
       ],
       matchStyle: const TextStyle(color: Colors.lightBlue),
