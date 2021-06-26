@@ -166,7 +166,7 @@ class _ClassMatcher extends TextMatcher {
   const _ClassMatcher()
       : super(
           r'(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
-          r'SelectiveDefinition|SpanDefinition|HashTagMatcher|MdLinkMatcher|'
+          r'SelectiveDefinition|SpanDefinition|HashTagMatcher|LinkMatcher|'
           r'TextMatcher)',
         );
 }

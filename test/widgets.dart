@@ -113,7 +113,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
             matcher: TelMatcher(),
           ),
           SelectiveDefinition(
-            matcher: const MdLinkMatcher(),
+            matcher: const LinkMatcher(),
             labelSelector: (groups) => groups[0] ?? '',
             tapSelector: (groups) => groups[1] ?? '',
             matchStyle: matchStyleInDef,
@@ -186,7 +186,7 @@ class SpanCustomTextWidget2 extends StatelessWidget {
           matcher: TelMatcher(),
         ),
         SpanDefinition(
-          matcher: const MdLinkMatcher(),
+          matcher: const LinkMatcher(),
           builder: (text, groups) => TextSpan(
             children: [
               TextSpan(text: text),
@@ -198,8 +198,4 @@ class SpanCustomTextWidget2 extends StatelessWidget {
       ],
     );
   }
-}
-
-class MdLinkMatcher extends TextMatcher {
-  const MdLinkMatcher() : super(r'\[(.+?)\]\((.+?)\)');
 }

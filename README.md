@@ -162,18 +162,20 @@ parentheses within the match pattern.
 For details of `groups`, see the document of the [text_parser][text_parser] package that this package uses internally.
 
 ```dart
-class MdLinkMatcher extends TextMatcher {
-  const MdLinkMatcher() : super(r'\[(.+?)\]\((.+?)\)');
+// This matcher comes with the package, so
+// there's no need to prepare it yourself.
+class LinkMatcher extends TextMatcher {
+  const LinkMatcher() : super(r'\[(.+?)\]\((.*?)\)');
 }
+```
 
-...
-
+```dart
 CustomText(
   'Markdown-style link\n'
   '[Tap here](Tapped!)',
   definitions: [
     SelectiveDefinition(
-      matcher: const MdLinkMatcher(),
+      matcher: const LinkMatcher(),
       // `labelSelector` is used to choose the string to show.
       // `groups` provided to `labelSelector` is an array of
       // strings matching the fragments enclosed in parentheses
@@ -187,6 +189,23 @@ CustomText(
   matchStyle: const TextStyle(color: Colors.lightBlue),
   tapStyle: const TextStyle(color: Colors.green),
   onTap: (_, text) => print(text),
+)
+```
+
+`LinkMatcher` used together with `SelectiveDefinition` is handy not only for making a text link
+but also for just decorating the bracketed strings (but not showing the brackets).
+
+```dart
+// "abc" and "jkl" are displayed in red.
+CustomText(
+  'abc[def]()ghi[jkl]()',
+  definitions: [
+    SelectiveDefinition(
+      matcher: const LinkMatcher(),
+      labelSelector: (groups) => groups[0]!,
+    ),
+  ],
+  matchStyle: const TextStyle(color: Colors.red),
 )
 ```
 

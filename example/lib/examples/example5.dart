@@ -14,7 +14,7 @@ class Example5 extends StatelessWidget {
       '[Tap here](Tapped!)',
       definitions: [
         SelectiveDefinition(
-          matcher: const MdLinkMatcher(),
+          matcher: const LinkMatcher(),
           // `labelSelector` is used to choose the string to show.
           // `groups` provided to `labelSelector` is an array of
           // strings matching the fragments enclosed in parentheses
@@ -30,9 +30,4 @@ class Example5 extends StatelessWidget {
       onTap: (_, text) => output(text),
     );
   }
-}
-
-/// matcher for markdown-style links (like [shown label](https://example.com/))
-class MdLinkMatcher extends TextMatcher {
-  const MdLinkMatcher() : super(r'\[(.+?)\]\((.+?)\)');
 }

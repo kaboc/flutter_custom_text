@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:custom_text/custom_text.dart';
+
 import 'utils.dart';
 import 'widgets.dart';
 
@@ -141,7 +143,7 @@ void main() {
         await tester.pump();
 
         expect(isTap, isTrue);
-        expect(matcherType, equals(MdLinkMatcher));
+        expect(matcherType, equals(LinkMatcher));
         expect(tappedText, equals('ccc'));
       },
     );
@@ -165,7 +167,7 @@ void main() {
         await tester.pump();
 
         expect(isLongPress, isTrue);
-        expect(matcherType, equals(MdLinkMatcher));
+        expect(matcherType, equals(LinkMatcher));
         expect(tappedText, equals('ccc'));
       },
     );
