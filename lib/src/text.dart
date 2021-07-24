@@ -176,6 +176,15 @@ class _CustomTextState extends State<CustomText> {
     super.dispose();
   }
 
+  @override
+  void setState(VoidCallback fn) {
+    // Makes sure that the state object is still mounted
+    // to prevent the issues #6 and #9.
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void _init() {
     _definitions = {
       for (final e in widget.definitions) e.matcher.runtimeType: e,
@@ -314,10 +323,7 @@ class _CustomTextState extends State<CustomText> {
       onExit: hoverStyle == null
           ? null
           : (_) {
-              // For preventing #6
-              if (mounted) {
-                setState(() => _hoverIndex = null);
-              }
+              setState(() => _hoverIndex = null);
             },
     );
   }
@@ -354,10 +360,7 @@ class _CustomTextState extends State<CustomText> {
       onExit: hoverStyle == null
           ? null
           : (_) {
-              // For preventing #6
-              if (mounted) {
-                setState(() => _hoverIndex = null);
-              }
+              setState(() => _hoverIndex = null);
             },
     );
   }
