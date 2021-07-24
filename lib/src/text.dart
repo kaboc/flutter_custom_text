@@ -231,10 +231,12 @@ class _CustomTextState extends State<CustomText> {
 
   Text _richText(List<TextElement> elements) {
     return Text.rich(
-      TextSpan(
-        children: elements.isEmpty
-            ? [TextSpan(text: widget.text)]
-            : elements.asMap().entries.map((entry) {
+      // Replacing only inner TextSpan after parsing causes
+      // issue #5, so this outer TextSpan has to be replaced.
+      elements.isEmpty
+          ? TextSpan(text: widget.text)
+          : TextSpan(
+              children: elements.asMap().entries.map((entry) {
                 final index = entry.key;
                 final elm = entry.value;
 
@@ -275,7 +277,7 @@ class _CustomTextState extends State<CustomText> {
                         definition: def,
                       );
               }).toList(),
-      ),
+            ),
       style: widget.style,
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,
