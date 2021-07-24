@@ -51,11 +51,7 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
-  })  : assert(
-          maxLines == null || maxLines > 0,
-          '`maxLines` must be greater than zero if it is not null.',
-        ),
-        super(key: key);
+  }) : super(key: key);
 
   /// The text to parse and show.
   final String text;
@@ -187,7 +183,7 @@ class _CustomTextState extends State<CustomText> {
 
   void _init() {
     _definitions = {
-      for (final e in widget.definitions) e.matcher.runtimeType: e,
+      for (final def in widget.definitions) def.matcher.runtimeType: def,
     };
   }
 
@@ -240,53 +236,7 @@ class _CustomTextState extends State<CustomText> {
 
   Text _richText(List<TextElement> elements) {
     return Text.rich(
-      // Replacing only inner TextSpan after parsing causes
-      // issue #5, so this outer TextSpan has to be replaced.
-      elements.isEmpty
-          ? TextSpan(text: widget.text)
-          : TextSpan(
-              children: elements.asMap().entries.map((entry) {
-                final index = entry.key;
-                final elm = entry.value;
-
-                final def = _definitions[elm.matcherType];
-                if (def == null) {
-                  return TextSpan(text: elm.text, style: widget.style);
-                }
-
-                if (def.builder != null) {
-                  return def.builder!(elm.text, elm.groups);
-                }
-
-                final isTappable = def.onTap != null ||
-                    def.onLongPress != null ||
-                    widget.onTap != null ||
-                    widget.onLongPress != null ||
-                    // ignore: deprecated_member_use_from_same_package
-                    widget.onLongTap != null;
-
-                final text = def.labelSelector == null
-                    ? elm.text
-                    : def.labelSelector!(elm.groups);
-
-                return isTappable
-                    ? _tappableTextSpan(
-                        index: index,
-                        text: text,
-                        link: def.tapSelector == null
-                            ? elm.text
-                            : def.tapSelector!(elm.groups),
-                        definition: def,
-                        longPressDuration:
-                            widget.longPressDuration ?? _kLongPressDuration,
-                      )
-                    : _textSpan(
-                        index: index,
-                        text: text,
-                        definition: def,
-                      );
-              }).toList(),
-            ),
+      _textSpan(elements),
       style: widget.style,
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,
@@ -302,7 +252,57 @@ class _CustomTextState extends State<CustomText> {
     );
   }
 
-  TextSpan _textSpan({
+  TextSpan _textSpan(List<TextElement> elements) {
+    // Replacing only inner TextSpan when parsing is done causes
+    // the issue #5, so this outer TextSpan is replaced instead.
+    return elements.isEmpty
+        ? TextSpan(text: widget.text)
+        : TextSpan(
+            children: elements.asMap().entries.map((entry) {
+              final index = entry.key;
+              final elm = entry.value;
+
+              final def = _definitions[elm.matcherType];
+              if (def == null) {
+                return TextSpan(text: elm.text, style: widget.style);
+              }
+
+              if (def.builder != null) {
+                return def.builder!(elm.text, elm.groups);
+              }
+
+              final isTappable = def.onTap != null ||
+                  def.onLongPress != null ||
+                  widget.onTap != null ||
+                  widget.onLongPress != null ||
+                  // ignore: deprecated_member_use_from_same_package
+                  widget.onLongTap != null;
+
+              final text = def.labelSelector == null
+                  ? elm.text
+                  : def.labelSelector!(elm.groups);
+
+              return isTappable
+                  ? _tappableTextSpan(
+                      index: index,
+                      text: text,
+                      link: def.tapSelector == null
+                          ? elm.text
+                          : def.tapSelector!(elm.groups),
+                      definition: def,
+                      longPressDuration:
+                          widget.longPressDuration ?? _kLongPressDuration,
+                    )
+                  : _nonTappableTextSpan(
+                      index: index,
+                      text: text,
+                      definition: def,
+                    );
+            }).toList(),
+          );
+  }
+
+  TextSpan _nonTappableTextSpan({
     required int index,
     required String text,
     required _Definition definition,
