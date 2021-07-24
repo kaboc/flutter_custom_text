@@ -314,7 +314,10 @@ class _CustomTextState extends State<CustomText> {
       onExit: hoverStyle == null
           ? null
           : (_) {
-              setState(() => _hoverIndex = null);
+              // For preventing #6
+              if (mounted) {
+                setState(() => _hoverIndex = null);
+              }
             },
     );
   }
@@ -351,7 +354,10 @@ class _CustomTextState extends State<CustomText> {
       onExit: hoverStyle == null
           ? null
           : (_) {
-              setState(() => _hoverIndex = null);
+              // For preventing #6
+              if (mounted) {
+                setState(() => _hoverIndex = null);
+              }
             },
     );
   }
