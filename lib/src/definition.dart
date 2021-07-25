@@ -51,11 +51,6 @@ class TextDefinition extends _Definition {
     TextStyle? tapStyle,
     TextStyle? hoverStyle,
     void Function(String)? onTap,
-    @Deprecated(
-      '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed in a future version.',
-    )
-        void Function(String)? onLongTap,
     void Function(String)? onLongPress,
     MouseCursor? mouseCursor,
   }) : super(
@@ -64,7 +59,7 @@ class TextDefinition extends _Definition {
           tapStyle: tapStyle,
           hoverStyle: hoverStyle,
           onTap: onTap,
-          onLongPress: onLongPress ?? onLongTap,
+          onLongPress: onLongPress,
           mouseCursor: mouseCursor,
         );
 }
@@ -103,11 +98,6 @@ class SelectiveDefinition extends _Definition {
     TextStyle? tapStyle,
     TextStyle? hoverStyle,
     void Function(String)? onTap,
-    @Deprecated(
-      '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed in a future version.',
-    )
-        void Function(String)? onLongTap,
     void Function(String)? onLongPress,
     MouseCursor? mouseCursor,
   }) : super(
@@ -118,7 +108,7 @@ class SelectiveDefinition extends _Definition {
           tapStyle: tapStyle,
           hoverStyle: hoverStyle,
           onTap: onTap,
-          onLongPress: onLongPress ?? onLongTap,
+          onLongPress: onLongPress,
           mouseCursor: mouseCursor,
         );
 }

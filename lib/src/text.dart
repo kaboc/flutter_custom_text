@@ -32,11 +32,6 @@ class CustomText extends StatefulWidget {
     this.tapStyle,
     this.hoverStyle,
     this.onTap,
-    @Deprecated(
-      '[onLongTap] is being deprecated in favor of [onLongPress]. '
-      '[onLongTap] will be removed in a future version.',
-    )
-        this.onLongTap,
     this.onLongPress,
     this.longPressDuration,
     this.preventBlocking = false,
@@ -94,9 +89,6 @@ class CustomText extends StatefulWidget {
 
   /// The callback function called when tappable elements are tapped.
   final void Function(Type, String)? onTap;
-
-  /// The callback function called when tappable elements are long-pressed.
-  final void Function(Type, String)? onLongTap;
 
   /// The callback function called when tappable elements are long-pressed.
   final void Function(Type, String)? onLongPress;
@@ -274,9 +266,7 @@ class _CustomTextState extends State<CustomText> {
               final isTappable = def.onTap != null ||
                   def.onLongPress != null ||
                   widget.onTap != null ||
-                  widget.onLongPress != null ||
-                  // ignore: deprecated_member_use_from_same_package
-                  widget.onLongTap != null;
+                  widget.onLongPress != null;
 
               final text = def.labelSelector == null
                   ? elm.text
@@ -379,13 +369,10 @@ class _CustomTextState extends State<CustomText> {
             longPressDuration,
             () => definition.onLongPress!(link),
           );
-          // ignore: deprecated_member_use_from_same_package
-        } else if (widget.onLongPress != null || widget.onLongTap != null) {
-          // ignore: deprecated_member_use_from_same_package
-          final onLongPress = widget.onLongPress ?? widget.onLongTap;
+        } else if (widget.onLongPress != null) {
           _timer = Timer(
             longPressDuration,
-            () => onLongPress!(definition.matcher.runtimeType, link),
+            () => widget.onLongPress!(definition.matcher.runtimeType, link),
           );
         }
       }
