@@ -33,10 +33,10 @@ class TextDefinition extends _Definition {
   /// Creates a [TextDefinition] that defines parsing rules, text styles,
   /// and actions for tap/long-press events.
   ///
-  /// If strings match the pattern set in [matcher], the strings are styled
-  /// according to the styles specified by [matchStyle] and [tapStyle],
-  /// which are used while a parsed element is not pressed and being pressed
-  /// respectively.
+  /// If the pattern set in [matcher] has matches, the matching strings are
+  /// styled according to the styles specified by [matchStyle], [tapStyle]
+  /// and [hoverStyle], which are used while the string element is not
+  /// pressed, being pressed, and being hovered respectively.
   ///
   /// [onTap] / [onLongPress] are callback functions called when the element
   /// is tapped/long-pressed. The matched string is passed in to the functions.
@@ -71,10 +71,10 @@ class SelectiveDefinition extends _Definition {
   /// Creates a [SelectiveDefinition] that is similar to [TextDefinition] but
   /// allows more flexible settings.,
   ///
-  /// If strings match the pattern set in [matcher], the strings are styled
-  /// according to the styles specified by [matchStyle] and [tapStyle],
-  /// which are used while the string element is not pressed and being
-  /// pressed respectively.
+  /// If the pattern set in [matcher] has matches, the matching strings are
+  /// styled according to the styles specified by [matchStyle], [tapStyle]
+  /// and [hoverStyle], which are used while the string element is not
+  /// pressed, being pressed, and being hover respectively.
   ///
   /// [labelSelector] and [tapSelector] are functions provided with groups
   /// (an array of strings) that have matched the fragments enclosed with

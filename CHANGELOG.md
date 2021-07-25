@@ -1,3 +1,11 @@
+## 0.5.0
+
+- Fix an issue of tap and hover inactive in a rare condition. (#7)
+- Fix issues of `setState()` called after `dispose()`. (#8, #10)
+- Remove deprecated `onLongTap`.
+- Minor refactoring.
+- Improve documentation of definition classes.
+
 ## 0.4.0
 
 - Add `ParserOptions` for tweaking RegExp settings.
