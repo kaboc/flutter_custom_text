@@ -1,14 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:text_parser/text_parser.dart';
 
 import 'definition_base.dart';
 import 'parser_options.dart';
-
-const _kLongPressDuration = Duration(milliseconds: 600);
+import 'text_span_notifier.dart';
 
 /// A widget that decorates parts of text and/or enables taps/long-presses
 /// on them according to specified definitions.
@@ -125,65 +123,41 @@ class CustomText extends StatefulWidget {
 }
 
 class _CustomTextState extends State<CustomText> {
-  late Map<Type, Definition> _definitions;
-  late List<TextMatcher> _matchers;
   late Future<List<TextElement>> _futureElements;
 
-  final Map<int, TapGestureRecognizer> _tapRecognizers = {};
-  Timer? _timer;
-  int? _tapIndex;
-  int? _hoverIndex;
+  late CustomTextSpanNotifier _textSpanNotifier;
 
   @override
   void initState() {
     super.initState();
-    _init();
-    _reset();
+
+    _parse();
+    _initSpanNotifier();
   }
 
   @override
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _init();
-
     final isUpdated = widget.text != oldWidget.text ||
         widget.preventBlocking != oldWidget.preventBlocking ||
         _hasNewDefinitions(oldWidget);
 
     if (isUpdated) {
-      _reset();
+      _disposeSpanNotifier();
+      _initSpanNotifier();
     }
   }
 
   @override
   void dispose() {
-    _disposeTapRecognizers();
+    _disposeSpanNotifier();
     super.dispose();
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    // Makes sure that the state object is still mounted
-    // to prevent the issues #6 and #9.
-    if (mounted) {
-      super.setState(fn);
-    }
-  }
-
-  void _init() {
-    _definitions = {
-      for (final def in widget.definitions) def.matcher.runtimeType: def,
-    };
-  }
-
-  void _reset() {
-    _disposeTapRecognizers();
-
-    _matchers = widget.definitions.map((def) => def.matcher).toList();
-
+  void _parse() {
     _futureElements = TextParser(
-      matchers: _matchers,
+      matchers: widget.definitions.map((def) => def.matcher).toList(),
       multiLine: widget.parserOptions.multiLine,
       caseSensitive: widget.parserOptions.caseSensitive,
       unicode: widget.parserOptions.unicode,
@@ -192,13 +166,38 @@ class _CustomTextState extends State<CustomText> {
       widget.text,
       useIsolate: widget.preventBlocking,
     );
+
+    _initSpanNotifier();
   }
 
-  void _disposeTapRecognizers() {
-    _timer?.cancel();
-    _tapRecognizers
-      ..forEach((_, recognizer) => recognizer.dispose())
-      ..clear();
+  void _initSpanNotifier() {
+    _textSpanNotifier = CustomTextSpanNotifier(
+      text: widget.text,
+      definitions: widget.definitions,
+      matchStyle: widget.matchStyle,
+      tapStyle: widget.tapStyle,
+      hoverStyle: widget.hoverStyle,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      longPressDuration: widget.longPressDuration,
+    );
+
+    // Causes a rebuild when notified of a change
+    // in the value of SpanState.
+    _textSpanNotifier.addListener(_rebuild);
+  }
+
+  void _disposeSpanNotifier() {
+    _textSpanNotifier.removeListener(_rebuild);
+    _textSpanNotifier.dispose();
+  }
+
+  void _rebuild() {
+    // Makes sure that the state object is still mounted
+    // to prevent the issues #6 and #9.
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   bool _hasNewDefinitions(CustomText oldWidget) {
@@ -226,8 +225,10 @@ class _CustomTextState extends State<CustomText> {
 
   Text _richText(List<TextElement> elements) {
     return Text.rich(
-      _textSpan(elements),
-      style: widget.style,
+      _textSpanNotifier.span(
+        elements: elements,
+        style: widget.style,
+      ),
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,
       textDirection: widget.textDirection,
@@ -240,156 +241,5 @@ class _CustomTextState extends State<CustomText> {
       textWidthBasis: widget.textWidthBasis,
       textHeightBehavior: widget.textHeightBehavior,
     );
-  }
-
-  TextSpan _textSpan(List<TextElement> elements) {
-    // Replacing only inner TextSpan when parsing is done causes
-    // the issue #5, so this outer TextSpan is replaced instead.
-    return elements.isEmpty
-        ? TextSpan(text: widget.text)
-        : TextSpan(
-            children: elements.asMap().entries.map((entry) {
-              final index = entry.key;
-              final elm = entry.value;
-
-              final def = _definitions[elm.matcherType];
-              if (def == null) {
-                return TextSpan(text: elm.text, style: widget.style);
-              }
-
-              if (def.builder != null) {
-                return def.builder!(elm.text, elm.groups);
-              }
-
-              final isTappable = def.onTap != null ||
-                  def.onLongPress != null ||
-                  widget.onTap != null ||
-                  widget.onLongPress != null;
-
-              final text = def.labelSelector == null
-                  ? elm.text
-                  : def.labelSelector!(elm.groups);
-
-              return isTappable
-                  ? _tappableTextSpan(
-                      index: index,
-                      text: text,
-                      link: def.tapSelector == null
-                          ? elm.text
-                          : def.tapSelector!(elm.groups),
-                      definition: def,
-                      longPressDuration:
-                          widget.longPressDuration ?? _kLongPressDuration,
-                    )
-                  : _nonTappableTextSpan(
-                      index: index,
-                      text: text,
-                      definition: def,
-                    );
-            }).toList(),
-          );
-  }
-
-  TextSpan _nonTappableTextSpan({
-    required int index,
-    required String text,
-    required Definition definition,
-  }) {
-    final matchStyle =
-        definition.matchStyle ?? widget.matchStyle ?? widget.style;
-    final hoverStyle = definition.hoverStyle ?? widget.hoverStyle;
-
-    return TextSpan(
-      text: text,
-      style: _hoverIndex == index ? hoverStyle : matchStyle,
-      mouseCursor: definition.mouseCursor,
-      onEnter: hoverStyle == null
-          ? null
-          : (_) {
-              setState(() => _hoverIndex = index);
-            },
-      onExit: hoverStyle == null
-          ? null
-          : (_) {
-              setState(() => _hoverIndex = null);
-            },
-    );
-  }
-
-  TextSpan _tappableTextSpan({
-    required int index,
-    required String text,
-    required String link,
-    required Definition definition,
-    required Duration longPressDuration,
-  }) {
-    final matchStyle =
-        definition.matchStyle ?? widget.matchStyle ?? widget.style;
-    final tapStyle = definition.tapStyle ?? widget.tapStyle ?? matchStyle;
-    final hoverStyle = definition.hoverStyle ?? widget.hoverStyle;
-
-    return TextSpan(
-      text: text,
-      style: _tapIndex == index
-          ? tapStyle
-          : (_hoverIndex == index ? hoverStyle : matchStyle),
-      recognizer: _tapRecognizers[index] ??= _recognizer(
-        index: index,
-        link: link,
-        definition: definition,
-        longPressDuration: longPressDuration,
-      ),
-      mouseCursor: definition.mouseCursor,
-      onEnter: hoverStyle == null
-          ? null
-          : (_) {
-              setState(() => _hoverIndex = index);
-            },
-      onExit: hoverStyle == null
-          ? null
-          : (_) {
-              setState(() => _hoverIndex = null);
-            },
-    );
-  }
-
-  TapGestureRecognizer _recognizer({
-    required int index,
-    required String link,
-    required Definition definition,
-    required Duration longPressDuration,
-  }) {
-    return TapGestureRecognizer()
-      ..onTapDown = (_) {
-        setState(() => _tapIndex = index);
-        if (definition.onLongPress != null) {
-          _timer = Timer(
-            longPressDuration,
-            () => definition.onLongPress!(link),
-          );
-        } else if (widget.onLongPress != null) {
-          _timer = Timer(
-            longPressDuration,
-            () => widget.onLongPress!(definition.matcher.runtimeType, link),
-          );
-        }
-      }
-      ..onTapUp = (_) {
-        setState(() => _tapIndex = null);
-        if (_timer?.isActive ?? true) {
-          if (definition.onTap != null) {
-            definition.onTap!(link);
-          } else if (widget.onTap != null) {
-            widget.onTap!(definition.matcher.runtimeType, link);
-          }
-        }
-        _timer?.cancel();
-        _timer = null;
-      }
-      ..onTapCancel = () {
-        setState(() => _tapIndex = null);
-        _timer?.cancel();
-        _timer = null;
-      };
   }
 }
