@@ -1,35 +1,13 @@
-part of 'text.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 
-@immutable
-abstract class _Definition {
-  const _Definition({
-    required this.matcher,
-    this.labelSelector,
-    this.tapSelector,
-    this.builder,
-    this.matchStyle,
-    this.tapStyle,
-    this.hoverStyle,
-    this.onTap,
-    this.onLongPress,
-    this.mouseCursor,
-  });
+import 'package:text_parser/text_parser.dart';
 
-  final TextMatcher matcher;
-  final String Function(List<String?>)? labelSelector;
-  final String Function(List<String?>)? tapSelector;
-  final InlineSpan Function(String, List<String?>)? builder;
-  final TextStyle? matchStyle;
-  final TextStyle? tapStyle;
-  final TextStyle? hoverStyle;
-  final void Function(String)? onTap;
-  final void Function(String)? onLongPress;
-  final MouseCursor? mouseCursor;
-}
+import 'definition_base.dart';
 
-/// A class that defines the parsing rule, text styles and actions for
+/// A class that defines parsing rules, text styles and actions for
 /// tap/long-press events.
-class TextDefinition extends _Definition {
+class TextDefinition extends Definition {
   /// Creates a [TextDefinition] that defines parsing rules, text styles,
   /// and actions for tap/long-press events.
   ///
@@ -67,7 +45,7 @@ class TextDefinition extends _Definition {
 /// A class that is similar to [TextDefinition] but different in that this
 /// enables to choose the string to be displayed and the one passed to the
 /// tap/long-press callbacks.
-class SelectiveDefinition extends _Definition {
+class SelectiveDefinition extends Definition {
   /// Creates a [SelectiveDefinition] that is similar to [TextDefinition] but
   /// allows more flexible settings.,
   ///
@@ -115,7 +93,7 @@ class SelectiveDefinition extends _Definition {
 
 /// A class that defines parsing rules and the string or widget to be
 /// displayed inside [CustomText].
-class SpanDefinition extends _Definition {
+class SpanDefinition extends Definition {
   /// A [SpanDefinition] that defines parsing rules and the widget to
   /// be displayed inside [CustomText].
   ///

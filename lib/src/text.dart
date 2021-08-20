@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:text_parser/text_parser.dart';
 
+import 'definition_base.dart';
 import 'parser_options.dart';
-
-part 'definition.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
 
@@ -53,7 +51,7 @@ class CustomText extends StatefulWidget {
 
   /// Definitions that specify parsing rules, text styles and actions
   /// for tap/long-press events.
-  final List<_Definition> definitions;
+  final List<Definition> definitions;
 
   /// The options for [RegExp] that configures how a regular expression
   /// is treated.
@@ -127,7 +125,7 @@ class CustomText extends StatefulWidget {
 }
 
 class _CustomTextState extends State<CustomText> {
-  late Map<Type, _Definition> _definitions;
+  late Map<Type, Definition> _definitions;
   late List<TextMatcher> _matchers;
   late Future<List<TextElement>> _futureElements;
 
@@ -295,7 +293,7 @@ class _CustomTextState extends State<CustomText> {
   TextSpan _nonTappableTextSpan({
     required int index,
     required String text,
-    required _Definition definition,
+    required Definition definition,
   }) {
     final matchStyle =
         definition.matchStyle ?? widget.matchStyle ?? widget.style;
@@ -322,7 +320,7 @@ class _CustomTextState extends State<CustomText> {
     required int index,
     required String text,
     required String link,
-    required _Definition definition,
+    required Definition definition,
     required Duration longPressDuration,
   }) {
     final matchStyle =
@@ -358,7 +356,7 @@ class _CustomTextState extends State<CustomText> {
   TapGestureRecognizer _recognizer({
     required int index,
     required String link,
-    required _Definition definition,
+    required Definition definition,
     required Duration longPressDuration,
   }) {
     return TapGestureRecognizer()
