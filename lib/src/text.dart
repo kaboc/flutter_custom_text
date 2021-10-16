@@ -139,11 +139,27 @@ class _CustomTextState extends State<CustomText> {
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final isUpdated = widget.text != oldWidget.text ||
-        widget.preventBlocking != oldWidget.preventBlocking ||
-        _hasNewDefinitions(oldWidget);
+    final isMatcherUpdated = _hasNewMatchers(oldWidget);
+    final isDefinitionUpdated =
+        isMatcherUpdated || _hasNewDefinitions(oldWidget);
 
-    if (isUpdated) {
+    final shouldParse = isMatcherUpdated ||
+        widget.text != oldWidget.text ||
+        widget.parserOptions != oldWidget.parserOptions ||
+        widget.preventBlocking != oldWidget.preventBlocking;
+
+    final shouldUpdateSpan = isDefinitionUpdated ||
+        widget.style != oldWidget.style ||
+        widget.matchStyle != oldWidget.matchStyle ||
+        widget.tapStyle != oldWidget.tapStyle ||
+        widget.hoverStyle != oldWidget.hoverStyle ||
+        widget.longPressDuration != oldWidget.longPressDuration;
+
+    if (shouldParse) {
+      _parse();
+    }
+
+    if (shouldParse || shouldUpdateSpan) {
       _disposeSpanNotifier();
       _initSpanNotifier();
     }
@@ -200,8 +216,8 @@ class _CustomTextState extends State<CustomText> {
     }
   }
 
-  bool _hasNewDefinitions(CustomText oldWidget) {
-    if (widget.definitions.length == oldWidget.definitions.length) {
+  bool _hasNewMatchers(CustomText oldWidget) {
+    if (widget.definitions.length != oldWidget.definitions.length) {
       return true;
     }
 
@@ -210,7 +226,19 @@ class _CustomTextState extends State<CustomText> {
         return true;
       }
     }
+    return false;
+  }
 
+  bool _hasNewDefinitions(CustomText oldWidget) {
+    if (widget.definitions.length != oldWidget.definitions.length) {
+      return true;
+    }
+
+    for (var i = 0; i < widget.definitions.length; i++) {
+      if (widget.definitions[i] != oldWidget.definitions[i]) {
+        return true;
+      }
+    }
     return false;
   }
 

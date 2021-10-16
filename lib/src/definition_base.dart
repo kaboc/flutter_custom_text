@@ -30,4 +30,24 @@ abstract class Definition {
   final void Function(String)? onTap;
   final void Function(String)? onLongPress;
   final MouseCursor? mouseCursor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Definition &&
+          runtimeType == other.runtimeType &&
+          matcher == other.matcher &&
+          matchStyle == other.matchStyle &&
+          tapStyle == other.tapStyle &&
+          hoverStyle == other.hoverStyle &&
+          mouseCursor == other.mouseCursor;
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      matcher.hashCode ^
+      matchStyle.hashCode ^
+      tapStyle.hashCode ^
+      hoverStyle.hashCode ^
+      mouseCursor.hashCode;
 }
