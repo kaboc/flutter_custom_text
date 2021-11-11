@@ -12,16 +12,16 @@ part 'definition.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
 
-/// A widget that adds styles to partial strings in text and/or enables
-/// taps/long-presses on them according to specified definitions.
+/// A widget that decorates parts of text and/or enables taps/long-presses
+/// on them according to specified definitions.
 ///
 /// This widget is useful for making strings such as URLs, email addresses
 /// or phone numbers clickable, or for only highlighting some parts of
 /// text with colors and different font settings depending on the types
 /// of string elements.
 class CustomText extends StatefulWidget {
-  /// Creates a widget that adds styles to string elements in text and/or
-  /// enables clicks on them according to specified definitions.
+  /// Creates a widget that decorates parts of text and/or enables clicks
+  /// on them according to specified definitions.
   const CustomText(
     this.text, {
     Key? key,
@@ -51,8 +51,8 @@ class CustomText extends StatefulWidget {
   /// The text to parse and show.
   final String text;
 
-  /// Definitions that specify how to parse text, what to show and how to
-  /// show them, and what to do on taps/long-presses.
+  /// Definitions that specify parsing rules, text styles and actions
+  /// for tap/long-press events.
   final List<_Definition> definitions;
 
   /// The options for [RegExp] that configures how a regular expression

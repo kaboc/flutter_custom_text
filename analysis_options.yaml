@@ -48,7 +48,7 @@ linter:
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures # not required by flutter style
 #    - deprecated_consistency
-    - directives_ordering
+#    - directives_ordering
     - do_not_use_environment
     - empty_catches
     - empty_constructor_bodies

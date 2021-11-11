@@ -22,9 +22,6 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(fontWeight: FontWeight.normal, height: 1.2),
           bodyText2: TextStyle(fontSize: 18.0, height: 1.5),
         ),
-        appBarTheme: const AppBarTheme(
-          brightness: Brightness.dark,
-        ),
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -41,6 +38,8 @@ class MyApp extends StatelessWidget {
                     'addresses.\nThey are not tappable in this example.',
                 (_) => const Example1(),
                 hasOutput: false,
+                additionalInfo: 'Tapping on text in this example '
+                    'does not print anything here.',
               ),
             ),
             _ListTile(
@@ -115,7 +114,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             _ListTile(
-              title: 'Changing mouse cursor and text style on hover',
+              title: 'Mouse cursor and text style on hover',
               builder: (title) => ExamplePage(
                 title,
                 'example7.dart',
@@ -125,7 +124,9 @@ class MyApp extends StatelessWidget {
                     'definition is used while the mouse pointer hovers over '
                     'a matching string.',
                 (outputFunc) => Example7(outputFunc),
-                additionalInfo: 'Run the app on desktop to see how it looks.',
+                additionalInfo:
+                    'Run the app on desktop to see how this example looks '
+                    'and behaves on hover over some strings.',
               ),
             ),
           ],

@@ -48,30 +48,39 @@ class _ExamplePageState extends State<ExamplePage> {
       resultNotifier: _resultNotifier,
     );
     final output = _Output(
-      hasOutput: widget.hasOutput,
       resultNotifier: _resultNotifier,
       scrollController: _scrollController,
     );
 
     return Scaffold(
       appBar: appBar(context, title: widget.title, filename: widget.filename),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return constraints.maxWidth > constraints.maxHeight
-              ? _HorizontalLayout(
-                  maxWidth: constraints.maxWidth,
-                  description: description,
-                  example: example,
-                  output: output,
-                )
-              : _VerticalLayout(
-                  maxHeight: constraints.maxHeight,
-                  description: description,
-                  example: example,
-                  output: output,
-                );
-        },
-      ),
+      body: widget.hasOutput
+          ? LayoutBuilder(
+              builder: (context, constraints) {
+                return constraints.maxWidth > constraints.maxHeight
+                    ? _HorizontalLayout(
+                        maxWidth: constraints.maxWidth,
+                        description: description,
+                        example: example,
+                        output: output,
+                      )
+                    : _VerticalLayout(
+                        maxHeight: constraints.maxHeight,
+                        description: description,
+                        example: example,
+                        output: output,
+                      );
+              },
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  description,
+                  example,
+                ],
+              ),
+            ),
     );
   }
 }
@@ -116,12 +125,10 @@ class _Example extends StatelessWidget {
 
 class _Output extends StatelessWidget {
   const _Output({
-    required this.hasOutput,
     required this.resultNotifier,
     required this.scrollController,
   });
 
-  final bool hasOutput;
   final ValueNotifier<String> resultNotifier;
   final ScrollController scrollController;
 
@@ -138,20 +145,14 @@ class _Output extends StatelessWidget {
             controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: hasOutput
-                  ? ValueListenableBuilder<String>(
-                      valueListenable: resultNotifier,
-                      builder: (_, result, __) {
-                        WidgetsBinding.instance!
-                            .addPostFrameCallback((_) => _scroll());
-                        return Text(result);
-                      },
-                    )
-                  : const Text(
-                      'Tapping on text in this example '
-                      'does not print anything here.',
-                      style: TextStyle(color: Colors.black38),
-                    ),
+              child: ValueListenableBuilder<String>(
+                valueListenable: resultNotifier,
+                builder: (_, result, __) {
+                  WidgetsBinding.instance!
+                      .addPostFrameCallback((_) => _scroll());
+                  return Text(result);
+                },
+              ),
             ),
           ),
         ),

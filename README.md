@@ -1,19 +1,17 @@
-# custom_text
-
 [![Pub Version](https://img.shields.io/pub/v/custom_text)](https://pub.dev/packages/custom_text)
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
 
 A highly customisable text widget that allows styles and tap gestures to be applied to
 strings in it flexibly.
 
-This widget is useful for making link strings tappable, such as URLs, email addresses or
+This widget is useful for making part of text tappable, such as URLs, email addresses or
 phone numbers, or for only highlighting partial strings in text with colors and different
-font settings depending on the types of the string elements parsed by regular expressions.
+font settings depending on the types of the elements parsed by regular expressions.
 
 ## Examples / Usage
 
 Most of the examples here are contained in the sample app in the [example/][example] folder.
-Just click on the link below to open the web demo and see what this package can achieve.
+Just click on the link below to open its web version and see what this package can achieve.
 
 **[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
 
@@ -195,7 +193,7 @@ CustomText(
 but also for just decorating the bracketed strings (but not showing the brackets).
 
 ```dart
-// "abc" and "jkl" are displayed in red.
+// "def" and "jkl" are displayed in red.
 CustomText(
   'abc[def]()ghi[jkl]()',
   definitions: [
