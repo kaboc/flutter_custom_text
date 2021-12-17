@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import 'package:custom_text/custom_text.dart';
 
@@ -19,6 +19,7 @@ class CustomTextWidget extends StatelessWidget {
     this.onLongPressInDef,
     this.longPressDuration,
     this.mouseCursor,
+    this.onButtonPressed,
   });
 
   final String text;
@@ -35,35 +36,43 @@ class CustomTextWidget extends StatelessWidget {
   final void Function(String)? onLongPressInDef;
   final Duration? longPressDuration;
   final MouseCursor? mouseCursor;
+  final VoidCallback? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: CustomText(
-        text,
-        textDirection: TextDirection.ltr,
-        definitions: [
-          const TextDefinition(
-            matcher: UrlMatcher(),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Column(
+        children: [
+          CustomText(
+            text,
+            definitions: [
+              const TextDefinition(
+                matcher: UrlMatcher(),
+              ),
+              TextDefinition(
+                matcher: const EmailMatcher(),
+                matchStyle: matchStyleInDef,
+                tapStyle: tapStyleInDef,
+                hoverStyle: hoverStyleInDef,
+                onTap: onTapInDef,
+                onLongPress: onLongPressInDef,
+                mouseCursor: mouseCursor,
+              ),
+            ],
+            style: style,
+            matchStyle: matchStyle,
+            tapStyle: tapStyle,
+            hoverStyle: hoverStyle,
+            onTap: onTap,
+            onLongPress: onLongPress,
+            longPressDuration: longPressDuration,
           ),
-          TextDefinition(
-            matcher: const EmailMatcher(),
-            matchStyle: matchStyleInDef,
-            tapStyle: tapStyleInDef,
-            hoverStyle: hoverStyleInDef,
-            onTap: onTapInDef,
-            onLongPress: onLongPressInDef,
-            mouseCursor: mouseCursor,
+          ElevatedButton(
+            child: const Text('Button'),
+            onPressed: onButtonPressed,
           ),
         ],
-        style: style,
-        matchStyle: matchStyle,
-        tapStyle: tapStyle,
-        hoverStyle: hoverStyle,
-        onTap: onTap,
-        onLongPress: onLongPress,
-        longPressDuration: longPressDuration,
       ),
     );
   }
