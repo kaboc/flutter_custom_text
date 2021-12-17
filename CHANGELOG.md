@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Minor improvements.
+
 ## 0.5.0
 
 - Fix an issue of tap and hover inactive in a rare condition. (#7)
