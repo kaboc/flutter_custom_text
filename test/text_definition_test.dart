@@ -487,7 +487,7 @@ void main() {
 
       final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
       await gesture.addPointer(location: Offset.zero);
-      final center = tester.getCenter(find.byType(RichText));
+      final center = tester.getCenter(find.byType(RichText).first);
 
       await gesture.moveTo(Offset(center.dx / 2, center.dy));
       await tester.pump();
@@ -527,7 +527,7 @@ void main() {
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         await gesture.addPointer(location: Offset.zero);
-        await gesture.moveTo(tester.getCenter(find.byType(RichText)));
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pump();
 
         final spanA = findSpan('bbb@example.com');

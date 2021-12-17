@@ -224,4 +224,220 @@ void main() {
       },
     );
   });
+
+  group('Updating properties', () {
+    testWidgets(
+      'change of tapStyle specified in definition is reflected '
+      'when the widget is rebuilt',
+      (tester) async {
+        var tapStyle = const TextStyle(color: Color(0xFF111111));
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              'aaa bbb@example.com',
+              tapStyleInDef: tapStyle,
+              onTapInDef: (_) {},
+              onButtonPressed: () => setState(() {
+                tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
+              }),
+            );
+          }),
+        );
+        await tester.pump();
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        const email = 'bbb@example.com';
+
+        final span1 = findSpan(email);
+        tapDownSpan(span1);
+        await tester.pump();
+
+        final span2 = findSpan(email);
+        expect(span2?.style?.color, const Color(0xFF222222));
+
+        tapUpSpan(span1);
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'change of tapStyle specified in CustomText is reflected '
+      'when the widget is rebuilt',
+      (tester) async {
+        var tapStyle = const TextStyle(color: Color(0xFF111111));
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              'aaa bbb@example.com',
+              tapStyle: tapStyle,
+              onTap: (_, __) {},
+              onButtonPressed: () => setState(() {
+                tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
+              }),
+            );
+          }),
+        );
+        await tester.pump();
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        const email = 'bbb@example.com';
+
+        final span1 = findSpan(email);
+        tapDownSpan(span1);
+        await tester.pump();
+
+        final span2 = findSpan(email);
+        expect(span2?.style?.color, const Color(0xFF222222));
+
+        tapUpSpan(span1);
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'change of tap callback specified in definition is reflected '
+      'when the widget is rebuilt',
+      (tester) async {
+        void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
+
+        var callback = onTap;
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              'aaa bbb@example.com',
+              onTapInDef: (text) => callback(null, text),
+              onButtonPressed: () {
+                setState(() => callback = onTap2);
+              },
+            );
+          }),
+        );
+        await tester.pump();
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        const email = 'bbb@example.com';
+
+        final span = findSpan(email);
+        tapDownSpan(span);
+        await tester.pump();
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(tappedText, equals(email.toUpperCase()));
+      },
+    );
+
+    testWidgets(
+      'change of tap callback specified in CustomText is reflected '
+      'when the widget is rebuilt',
+      (tester) async {
+        void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
+
+        var callback = onTap;
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              'aaa bbb@example.com',
+              onTap: (_, text) => callback(null, text),
+              onButtonPressed: () {
+                setState(() => callback = onTap2);
+              },
+            );
+          }),
+        );
+        await tester.pump();
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        const email = 'bbb@example.com';
+
+        final span = findSpan(email);
+        tapDownSpan(span);
+        await tester.pump();
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(tappedText, equals(email.toUpperCase()));
+      },
+    );
+
+    testWidgets(
+      'text change is reflected to onTap specified in definition '
+      'when the widget is rebuilt',
+      (tester) async {
+        var text = 'aaa bbb@example.com';
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              text,
+              onTapInDef: (text) => onTap(null, text),
+              onButtonPressed: () => setState(() {
+                text = text.toUpperCase();
+              }),
+            );
+          }),
+        );
+        await tester.pump();
+
+        const email = 'BBB@EXAMPLE.COM';
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        final span = findSpan(email);
+        tapDownSpan(span);
+        await tester.pump();
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(tappedText, equals(email));
+      },
+    );
+
+    testWidgets(
+      'text change is reflected to onTap specified in CustomText '
+      'when the widget is rebuilt',
+      (tester) async {
+        var text = 'aaa bbb@example.com';
+
+        await tester.pumpWidget(
+          StatefulBuilder(builder: (context, setState) {
+            return CustomTextWidget(
+              text,
+              onTap: (_, text) => onTap(null, text),
+              onButtonPressed: () => setState(() {
+                text = text.toUpperCase();
+              }),
+            );
+          }),
+        );
+        await tester.pump();
+
+        const email = 'BBB@EXAMPLE.COM';
+
+        await tapButton(tester);
+        await tester.pumpAndSettle();
+
+        final span = findSpan(email);
+        tapDownSpan(span);
+        await tester.pump();
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(tappedText, equals(email));
+      },
+    );
+  });
 }

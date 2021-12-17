@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 bool? isTap;
@@ -21,7 +21,7 @@ void onLongPress(Type? type, String text) {
 
 RichText findRichText() {
   final finder = find.byType(RichText);
-  return finder.evaluate().single.widget as RichText;
+  return finder.evaluate().first.widget as RichText;
 }
 
 List<InlineSpan> getSpans() {
@@ -59,4 +59,9 @@ void tapUpSpan(InlineSpan? span) {
     final onTapUp = (span.recognizer as TapGestureRecognizer?)?.onTapUp;
     onTapUp?.call(TapUpDetails(kind: PointerDeviceKind.touch));
   }
+}
+
+Future<void> tapButton(WidgetTester tester) async {
+  final finder = find.byType(ElevatedButton);
+  await tester.tap(finder);
 }
