@@ -103,34 +103,31 @@ class SelectiveCustomTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: CustomText(
-        text,
-        textDirection: TextDirection.ltr,
-        definitions: [
-          const TextDefinition(
-            matcher: TelMatcher(),
-          ),
-          SelectiveDefinition(
-            matcher: const LinkMatcher(),
-            labelSelector: (groups) => groups[0] ?? '',
-            tapSelector: (groups) => groups[1] ?? '',
-            matchStyle: matchStyleInDef,
-            tapStyle: tapStyleInDef,
-            hoverStyle: hoverStyleInDef,
-            onTap: onTapInDef,
-            onLongPress: onLongPressInDef,
-            mouseCursor: mouseCursor,
-          ),
-        ],
-        style: style,
-        matchStyle: matchStyle,
-        tapStyle: tapStyle,
-        hoverStyle: hoverStyle,
-        onTap: onTap,
-        onLongPress: onLongPress,
-      ),
+    return CustomText(
+      text,
+      textDirection: TextDirection.ltr,
+      definitions: [
+        const TextDefinition(
+          matcher: TelMatcher(),
+        ),
+        SelectiveDefinition(
+          matcher: const LinkMatcher(),
+          labelSelector: (groups) => groups[0] ?? '',
+          tapSelector: (groups) => groups[1] ?? '',
+          matchStyle: matchStyleInDef,
+          tapStyle: tapStyleInDef,
+          hoverStyle: hoverStyleInDef,
+          onTap: onTapInDef,
+          onLongPress: onLongPressInDef,
+          mouseCursor: mouseCursor,
+        ),
+      ],
+      style: style,
+      matchStyle: matchStyle,
+      tapStyle: tapStyle,
+      hoverStyle: hoverStyle,
+      onTap: onTap,
+      onLongPress: onLongPress,
     );
   }
 }

@@ -161,7 +161,6 @@ void main() {
         final span = findSpan(link);
 
         tapDownSpan(span);
-        await tester.pump();
         await tester.pump(const Duration(milliseconds: 610));
         tapUpSpan(span);
         await tester.pump();
@@ -207,7 +206,6 @@ void main() {
         final span = findSpan(link);
 
         tapDownSpan(span);
-        await tester.pump();
         await tester.pump(const Duration(milliseconds: 610));
         tapUpSpan(span);
         await tester.pump();
