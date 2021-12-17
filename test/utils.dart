@@ -50,17 +50,13 @@ InlineSpan? findSpan(String text) {
 void tapDownSpan(InlineSpan? span) {
   if (span is TextSpan) {
     final onTapDown = (span.recognizer as TapGestureRecognizer?)?.onTapDown;
-    if (onTapDown != null) {
-      onTapDown(TapDownDetails());
-    }
+    onTapDown?.call(TapDownDetails());
   }
 }
 
 void tapUpSpan(InlineSpan? span) {
   if (span is TextSpan) {
     final onTapUp = (span.recognizer as TapGestureRecognizer?)?.onTapUp;
-    if (onTapUp != null) {
-      onTapUp(TapUpDetails(kind: PointerDeviceKind.touch));
-    }
+    onTapUp?.call(TapUpDetails(kind: PointerDeviceKind.touch));
   }
 }

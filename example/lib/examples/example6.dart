@@ -30,6 +30,8 @@ class _Example6State extends State<Example6> {
         SpanDefinition(
           matcher: const EmailMatcher(),
           builder: (text, groups) {
+            // SpanDefinition does not provide tap callbacks.
+            // You need to take care of gesture recognizers for yourself.
             _recognizers[text] ??= TapGestureRecognizer();
 
             return TextSpan(

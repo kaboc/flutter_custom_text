@@ -8,7 +8,7 @@ This widget is useful for making part of text tappable, such as URLs, email addr
 phone numbers, or for only highlighting partial strings in text with colors and different
 font settings depending on the types of the elements parsed by regular expressions.
 
-## Examples / Usage
+## Usage by examples
 
 Most of the examples here are contained in the sample app in the [example/][example] folder.
 Just click on the link below to open its web version and see what this package can achieve.
@@ -159,10 +159,9 @@ parentheses within the match pattern.
 For details of `groups`, see the document of the [text_parser][text_parser] package that this package uses internally.
 
 ```dart
-// This matcher comes with the package, so
-// there's no need to prepare it yourself.
+// This matcher comes with the package, so there's no need to prepare it yourself.
 class LinkMatcher extends TextMatcher {
-  const LinkMatcher() : super(r'\[(.+?)\]\((.*?)\)');
+  const LinkMatcher([String pattern = r'\[(.+?)\]\((.*?)\)']) : super(pattern);
 }
 ```
 
@@ -254,9 +253,8 @@ CustomText(
 
 - `SpanDefinition` does not have arguments for styles and tap callbacks, so it is totally
   up to you how the `InlineSpan` returned from it is decorated and how it reacts to gestures.
-- The `builder` function is called on every rebuild. If you create a `GestureRecognizer`
-  inside the function, store it in such a way that you can check if one already exists to
-  avoid so many recognizers being created.
+- The `builder` function is called on every rebuild. Be careful not to create a `GestureRecognizer`
+  inside the function, or make sure to dispose of existing recognizers before creating a new one.
 
 ### Changing mouse cursor and text style on hover
 
@@ -283,7 +281,7 @@ CustomText(
         color: Colors.grey,
         decoration: TextDecoration.lineThrough,
       ),
-      // `SystemMouseCursors.forbidden` is used for email addresses.
+      // `SystemMouseCursors.forbidden` is used for URLs.
       mouseCursor: SystemMouseCursors.forbidden,
     ),
     TextDefinition(

@@ -152,7 +152,6 @@ void main() {
         final span = findSpan(email);
 
         tapDownSpan(span);
-        await tester.pump();
         await tester.pump(const Duration(milliseconds: 610));
         tapUpSpan(span);
         await tester.pump();
@@ -195,7 +194,6 @@ void main() {
       final span = findSpan(email);
 
       tapDownSpan(span);
-      await tester.pump();
       await tester.pump(const Duration(milliseconds: 610));
       tapUpSpan(span);
       await tester.pump();
@@ -203,28 +201,27 @@ void main() {
       expect(isTap, isFalse);
       expect(isLongPress, isTrue);
     });
+
+    testWidgets(
+      'specified long-press duration is used instead of default value',
+      (tester) async {
+        await tester.pumpWidget(const CustomTextWidget(
+          'aaa bbb@example.com',
+          onLongPress: onLongPress,
+          longPressDuration: Duration(milliseconds: 300),
+        ));
+        await tester.pump();
+
+        const email = 'bbb@example.com';
+        final span = findSpan(email);
+
+        tapDownSpan(span);
+        await tester.pump(const Duration(milliseconds: 310));
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(isLongPress, isTrue);
+      },
+    );
   });
-
-  testWidgets(
-    'specified long-press duration is used instead of default value',
-    (tester) async {
-      await tester.pumpWidget(const CustomTextWidget(
-        'aaa bbb@example.com',
-        onLongPress: onLongPress,
-        longPressDuration: Duration(milliseconds: 300),
-      ));
-      await tester.pump();
-
-      const email = 'bbb@example.com';
-      final span = findSpan(email);
-
-      tapDownSpan(span);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 310));
-      tapUpSpan(span);
-      await tester.pump();
-
-      expect(isLongPress, isTrue);
-    },
-  );
 }
