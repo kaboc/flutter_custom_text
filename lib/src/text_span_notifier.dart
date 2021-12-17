@@ -46,6 +46,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   Timer? _timer;
   int? _tapIndex;
   int? _hoverIndex;
+  Offset? _hoverPosition;
 
   @override
   void dispose() {
@@ -118,7 +119,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       style: _hoverIndex == index ? hoverStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
       onEnter: hasHoverStyle
-          ? (_) => _updateHoverIndex(
+          ? (event) => _updateHoverIndex(
+                position: event.position,
                 index: index,
                 hovered: true,
                 text: text,
@@ -126,7 +128,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
               )
           : null,
       onExit: hasHoverStyle
-          ? (_) => _updateHoverIndex(
+          ? (event) => _updateHoverIndex(
+                position: event.position,
                 index: index,
                 hovered: false,
                 text: text,
@@ -171,7 +174,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       recognizer: _tapRecognizers[index],
       mouseCursor: definition.mouseCursor,
       onEnter: hasHoverStyle
-          ? (_) => _updateHoverIndex(
+          ? (event) => _updateHoverIndex(
+                position: event.position,
                 index: index,
                 hovered: true,
                 text: text,
@@ -180,7 +184,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
               )
           : null,
       onExit: hasHoverStyle
-          ? (_) => _updateHoverIndex(
+          ? (event) => _updateHoverIndex(
+                position: event.position,
                 index: index,
                 hovered: false,
                 text: text,
@@ -306,6 +311,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   void _updateHoverIndex({
+    required Offset position,
     required int index,
     required bool hovered,
     required String text,
@@ -313,8 +319,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     String? link,
   }) {
     // Updates only if the span is not being pressed.
-    if (_tapIndex == null) {
+    // The previous and current hovering positions are checked for
+    // preventing repetitive rebuilds that can happen when
+    // CustomText.selectable is used.
+    if (_tapIndex == null && position != _hoverPosition) {
       _hoverIndex = hovered ? index : null;
+      _hoverPosition = hovered ? position : null;
 
       link == null
           ? _updateNonTappableSpan(
