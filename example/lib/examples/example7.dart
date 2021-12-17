@@ -19,7 +19,7 @@ class Example7 extends StatelessWidget {
             color: Colors.grey,
             decoration: TextDecoration.lineThrough,
           ),
-          // `SystemMouseCursors.forbidden` is used for email addresses.
+          // `SystemMouseCursors.forbidden` is used for URLs.
           mouseCursor: SystemMouseCursors.forbidden,
         ),
         TextDefinition(
