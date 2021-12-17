@@ -123,16 +123,14 @@ class CustomText extends StatefulWidget {
 }
 
 class _CustomTextState extends State<CustomText> {
-  late Future<List<TextElement>> _futureElements;
-
   late CustomTextSpanNotifier _textSpanNotifier;
 
   @override
   void initState() {
     super.initState();
 
+    _textSpanNotifier = _initSpanNotifier();
     _parse();
-    _initSpanNotifier();
   }
 
   @override
@@ -156,23 +154,47 @@ class _CustomTextState extends State<CustomText> {
         widget.longPressDuration != oldWidget.longPressDuration;
 
     if (shouldParse) {
-      _parse();
-    }
-
-    if (shouldParse || shouldUpdateSpan) {
-      _disposeSpanNotifier();
-      _initSpanNotifier();
+      _parse(shouldUpdateSpan: shouldUpdateSpan);
+    } else if (shouldUpdateSpan) {
+      _textSpanNotifier = _updateSpanNotifier();
     }
   }
 
   @override
   void dispose() {
-    _disposeSpanNotifier();
+    _textSpanNotifier.dispose();
     super.dispose();
   }
 
-  void _parse() {
-    _futureElements = TextParser(
+  CustomTextSpanNotifier _initSpanNotifier() {
+    return CustomTextSpanNotifier(
+      text: widget.text,
+      definitions: widget.definitions,
+      style: widget.style,
+      matchStyle: widget.matchStyle,
+      tapStyle: widget.tapStyle,
+      hoverStyle: widget.hoverStyle,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      longPressDuration: widget.longPressDuration,
+    );
+  }
+
+  CustomTextSpanNotifier _updateSpanNotifier() {
+    final oldNotifier = _textSpanNotifier;
+    final notifier = _initSpanNotifier();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      notifier.elements = oldNotifier.elements;
+      notifier.buildSpan();
+      oldNotifier.dispose();
+    });
+
+    return notifier;
+  }
+
+  Future<void> _parse({bool shouldUpdateSpan = false}) async {
+    _textSpanNotifier.elements = await TextParser(
       matchers: widget.definitions.map((def) => def.matcher).toList(),
       multiLine: widget.parserOptions.multiLine,
       caseSensitive: widget.parserOptions.caseSensitive,
@@ -183,36 +205,10 @@ class _CustomTextState extends State<CustomText> {
       useIsolate: widget.preventBlocking,
     );
 
-    _initSpanNotifier();
-  }
-
-  void _initSpanNotifier() {
-    _textSpanNotifier = CustomTextSpanNotifier(
-      text: widget.text,
-      definitions: widget.definitions,
-      matchStyle: widget.matchStyle,
-      tapStyle: widget.tapStyle,
-      hoverStyle: widget.hoverStyle,
-      onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
-      longPressDuration: widget.longPressDuration,
-    );
-
-    // Causes a rebuild when notified of a change
-    // in the value of SpanState.
-    _textSpanNotifier.addListener(_rebuild);
-  }
-
-  void _disposeSpanNotifier() {
-    _textSpanNotifier.removeListener(_rebuild);
-    _textSpanNotifier.dispose();
-  }
-
-  void _rebuild() {
-    // Makes sure that the state object is still mounted
-    // to prevent the issues #6 and #9.
-    if (mounted) {
-      setState(() {});
+    if (shouldUpdateSpan) {
+      _textSpanNotifier = _updateSpanNotifier();
+    } else {
+      _textSpanNotifier.buildSpan();
     }
   }
 
@@ -244,19 +240,15 @@ class _CustomTextState extends State<CustomText> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TextElement>>(
-      future: _futureElements,
-      initialData: const [],
-      builder: (_, snapshot) => _richText(snapshot.data!),
+    return ValueListenableBuilder<TextSpan>(
+      valueListenable: _textSpanNotifier,
+      builder: (context, span, _) => _richText(span),
     );
   }
 
-  Text _richText(List<TextElement> elements) {
+  Text _richText(TextSpan span) {
     return Text.rich(
-      _textSpanNotifier.span(
-        elements: elements,
-        style: widget.style,
-      ),
+      span,
       strutStyle: widget.strutStyle,
       textAlign: widget.textAlign,
       textDirection: widget.textDirection,

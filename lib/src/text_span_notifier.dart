@@ -11,28 +11,11 @@ import 'definitions.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
 
-@immutable
-class _SpanState {
-  const _SpanState({this.tapIndex, this.hoverIndex});
-
-  final int? tapIndex;
-  final int? hoverIndex;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _SpanState &&
-          tapIndex == other.tapIndex &&
-          hoverIndex == other.hoverIndex;
-
-  @override
-  int get hashCode => tapIndex.hashCode ^ hoverIndex.hashCode;
-}
-
-class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
+class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
     required this.text,
     required List<Definition> definitions,
+    this.style,
     this.matchStyle,
     this.tapStyle,
     this.hoverStyle,
@@ -43,19 +26,26 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
           for (final def in definitions) def.matcher.runtimeType: def,
         },
         _longPressDuration = longPressDuration ?? _kLongPressDuration,
-        super(const _SpanState());
+        super(TextSpan(text: text, style: style));
 
   final String text;
   final Map<Type, Definition> _definitions;
+  final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
-  void Function(Type, String)? onTap;
-  void Function(Type, String)? onLongPress;
+  final void Function(Type, String)? onTap;
+  final void Function(Type, String)? onLongPress;
   final Duration _longPressDuration;
 
+  bool _disposed = false;
+
+  List<TextElement> elements = [];
   final Map<int, TapGestureRecognizer> _tapRecognizers = {};
+
   Timer? _timer;
+  int? _tapIndex;
+  int? _hoverIndex;
 
   @override
   void dispose() {
@@ -63,83 +53,86 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
     _tapRecognizers
       ..forEach((_, recognizer) => recognizer.dispose())
       ..clear();
+    _disposed = true;
 
     super.dispose();
   }
 
-  TextSpan span({
-    required List<TextElement> elements,
-    TextStyle? style,
-  }) {
-    // Replacing only inner TextSpan when parsing is done causes
-    // the issue #5, so this outer TextSpan is replaced instead.
-    return elements.isEmpty
-        ? TextSpan(text: text)
-        : TextSpan(
-            children: elements.asMap().entries.map((entry) {
-              final index = entry.key;
-              final elm = entry.value;
+  void buildSpan() {
+    value = TextSpan(
+      children: elements.asMap().entries.map((entry) {
+        final index = entry.key;
+        final elm = entry.value;
 
-              final def = _definitions[elm.matcherType];
-              if (def == null) {
-                return TextSpan(text: elm.text, style: style);
-              }
-              if (def is SpanDefinition) {
-                return def.builder!(elm.text, elm.groups);
-              }
+        final def = _definitions[elm.matcherType];
+        if (def == null) {
+          return TextSpan(text: elm.text, style: style);
+        }
+        if (def is SpanDefinition) {
+          return def.builder!(elm.text, elm.groups);
+        }
 
-              final isTappable = def.onTap != null ||
-                  def.onLongPress != null ||
-                  onTap != null ||
-                  onLongPress != null;
+        final isTappable = def.onTap != null ||
+            def.onLongPress != null ||
+            onTap != null ||
+            onLongPress != null;
 
-              final spanText = def.labelSelector == null
-                  ? elm.text
-                  : def.labelSelector!(elm.groups);
+        final spanText = def.labelSelector == null
+            ? elm.text
+            : def.labelSelector!(elm.groups);
 
-              return isTappable
-                  ? _tappableTextSpan(
-                      index: index,
-                      text: spanText,
-                      link: def.tapSelector == null
-                          ? elm.text
-                          : def.tapSelector!(elm.groups),
-                      definition: def,
-                      style: style,
-                      onTap: onTap,
-                      onLongPress: onLongPress,
-                    )
-                  : _nonTappableTextSpan(
-                      index: index,
-                      text: spanText,
-                      definition: def,
-                      style: style,
-                    );
-            }).toList(),
-          );
+        return isTappable
+            ? _tappableTextSpan(
+                index: index,
+                text: spanText,
+                link: def.tapSelector == null
+                    ? elm.text
+                    : def.tapSelector!(elm.groups),
+                definition: def,
+              )
+            : _nonTappableTextSpan(
+                index: index,
+                text: spanText,
+                definition: def,
+              );
+      }).toList(),
+    );
   }
 
   TextSpan _nonTappableTextSpan({
     required int index,
     required String text,
     required Definition definition,
-    required TextStyle? style,
   }) {
     var matchStyle = definition.matchStyle ?? this.matchStyle;
     var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
     final hasHoverStyle = hoverStyle != null;
 
     if (style != null) {
-      matchStyle = style.merge(matchStyle);
-      hoverStyle = style.merge(hoverStyle);
+      matchStyle = style!.merge(matchStyle);
+      hoverStyle = style!.merge(hoverStyle);
     }
 
     return TextSpan(
       text: text,
-      style: value.hoverIndex == index ? hoverStyle : matchStyle,
+      style: _hoverIndex == index ? hoverStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
-      onEnter: hasHoverStyle ? (_) => _updateHoverIndex(index) : null,
-      onExit: hasHoverStyle ? (_) => _updateHoverIndex() : null,
+      onEnter: hasHoverStyle
+          ? (_) => _updateHoverIndex(
+                index: index,
+                hovered: true,
+                text: text,
+                definition: definition,
+              )
+          : null,
+      onExit: hasHoverStyle
+          ? (_) => _updateHoverIndex(
+                index: index,
+                hovered: false,
+                text: text,
+                definition: definition,
+              )
+          : null,
     );
   }
 
@@ -148,9 +141,6 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
     required String text,
     required String link,
     required Definition definition,
-    required TextStyle? style,
-    required void Function(Type, String)? onTap,
-    required void Function(Type, String)? onLongPress,
   }) {
     var matchStyle = definition.matchStyle ?? this.matchStyle;
     var tapStyle = definition.tapStyle ?? this.tapStyle ?? matchStyle;
@@ -158,37 +148,61 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
     final hasHoverStyle = hoverStyle != null;
 
     if (style != null) {
-      matchStyle = style.merge(matchStyle);
-      tapStyle = style.merge(tapStyle);
-      hoverStyle = style.merge(hoverStyle);
+      matchStyle = style!.merge(matchStyle);
+      tapStyle = style!.merge(tapStyle);
+      hoverStyle = style!.merge(hoverStyle);
     }
+
+    _configureRecognizer(
+      index: index,
+      text: text,
+      link: link,
+      definition: definition,
+      style: style,
+      onTap: onTap,
+      onLongPress: onLongPress,
+    );
 
     return TextSpan(
       text: text,
-      style: value.tapIndex == index
+      style: _tapIndex == index
           ? tapStyle
-          : (value.hoverIndex == index ? hoverStyle : matchStyle),
-      recognizer: _tapRecognizers[index] ??= _recognizer(
-        index: index,
-        link: link,
-        definition: definition,
-        onTap: onTap,
-        onLongPress: onLongPress,
-      ),
+          : (_hoverIndex == index ? hoverStyle : matchStyle),
+      recognizer: _tapRecognizers[index],
       mouseCursor: definition.mouseCursor,
-      onEnter: hasHoverStyle ? (_) => _updateHoverIndex(index) : null,
-      onExit: hasHoverStyle ? (_) => _updateHoverIndex() : null,
+      onEnter: hasHoverStyle
+          ? (_) => _updateHoverIndex(
+                index: index,
+                hovered: true,
+                text: text,
+                link: link,
+                definition: definition,
+              )
+          : null,
+      onExit: hasHoverStyle
+          ? (_) => _updateHoverIndex(
+                index: index,
+                hovered: false,
+                text: text,
+                link: link,
+                definition: definition,
+              )
+          : null,
     );
   }
 
-  TapGestureRecognizer _recognizer({
+  void _configureRecognizer({
     required int index,
+    required String text,
     required String link,
     required Definition definition,
+    required TextStyle? style,
     required void Function(Type, String)? onTap,
     required void Function(Type, String)? onLongPress,
   }) {
-    return TapGestureRecognizer()
+    _tapRecognizers[index] ??= TapGestureRecognizer();
+
+    _tapRecognizers[index]!
       ..onTapDown = (_) {
         if (definition.onLongPress != null) {
           _timer = Timer(
@@ -202,7 +216,13 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
           );
         }
 
-        _updateTapIndex(index);
+        _updateTapIndex(
+          index: index,
+          tapped: true,
+          text: text,
+          link: link,
+          definition: definition,
+        );
       }
       ..onTapUp = (_) {
         if (_timer?.isActive ?? true) {
@@ -212,27 +232,102 @@ class CustomTextSpanNotifier extends ValueNotifier<_SpanState> {
             onTap(definition.matcher.runtimeType, link);
           }
         }
-        _timer?.cancel();
-        _timer = null;
-
-        _updateTapIndex();
+        _tapRecognizers[index]!.onTapCancel!();
       }
       ..onTapCancel = () {
         _timer?.cancel();
         _timer = null;
 
-        _updateTapIndex();
+        _updateTapIndex(
+          index: index,
+          tapped: false,
+          text: text,
+          link: link,
+          definition: definition,
+        );
       };
   }
 
-  void _updateTapIndex([int? index]) {
-    value = _SpanState(tapIndex: index);
+  void _updateNonTappableSpan({
+    required int index,
+    required String text,
+    required Definition definition,
+  }) {
+    // For causing a redraw, it is necessary to replace
+    // the whole TextSpan as well as update a child.
+    value = TextSpan(
+      children: List.of(value.children!)
+        ..[index] = _nonTappableTextSpan(
+          index: index,
+          text: text,
+          definition: definition,
+        ),
+    );
   }
 
-  void _updateHoverIndex([int? index]) {
-    // Should update only if the span is not being pressed.
-    if (value.tapIndex == null) {
-      value = _SpanState(hoverIndex: index);
+  void _updateTappableSpan({
+    required int index,
+    required String text,
+    required String link,
+    required Definition definition,
+  }) {
+    // Prevents the issue #6 by avoiding updating the value
+    // after the notifier is no longer available.
+    if (!_disposed) {
+      // For causing a redraw, it is necessary to replace
+      // the whole TextSpan as well as update a child.
+      value = TextSpan(
+        children: List.of(value.children!)
+          ..[index] = _tappableTextSpan(
+            index: index,
+            text: text,
+            link: link,
+            definition: definition,
+          ),
+      );
+    }
+  }
+
+  void _updateTapIndex({
+    required int index,
+    required bool tapped,
+    required String text,
+    required String link,
+    required Definition definition,
+  }) {
+    _tapIndex = tapped ? index : null;
+
+    _updateTappableSpan(
+      index: index,
+      text: text,
+      link: link,
+      definition: definition,
+    );
+  }
+
+  void _updateHoverIndex({
+    required int index,
+    required bool hovered,
+    required String text,
+    required Definition definition,
+    String? link,
+  }) {
+    // Updates only if the span is not being pressed.
+    if (_tapIndex == null) {
+      _hoverIndex = hovered ? index : null;
+
+      link == null
+          ? _updateNonTappableSpan(
+              index: index,
+              text: text,
+              definition: definition,
+            )
+          : _updateTappableSpan(
+              index: index,
+              text: text,
+              link: link,
+              definition: definition,
+            );
     }
   }
 }
