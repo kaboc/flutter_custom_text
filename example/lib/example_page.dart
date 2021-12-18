@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:custom_text_example/widgets/appbar.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:custom_text_example/widgets/description.dart';
+import 'package:custom_text_example/widgets/layouts.dart';
 
 class ExamplePage extends StatefulWidget {
-  const ExamplePage(
-    this.title,
-    this.filename,
-    this.description,
-    this.builder, {
+  const ExamplePage({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.builder,
     this.hasOutput = true,
     this.additionalInfo,
   });
 
+  final int id;
   final String title;
-  final String filename;
   final String description;
   final Widget Function(void Function(String)) builder;
   final bool hasOutput;
@@ -38,10 +40,9 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     final description = Description(
-      widget.description,
-      filename: widget.filename,
+      id: widget.id,
+      description: widget.description,
     );
-
     final example = _Example(
       builder: widget.builder,
       additionalInfo: widget.additionalInfo,
@@ -53,37 +54,50 @@ class _ExamplePageState extends State<ExamplePage> {
     );
 
     return Scaffold(
-      appBar: appBar(context, title: widget.title, filename: widget.filename),
+      appBar: AppBar(
+        title: Text(
+          widget.title,
+          overflow: TextOverflow.fade,
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.article),
+            onPressed: () => context.go('/${widget.id}/code'),
+          ),
+        ],
+      ),
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
-        child: widget.hasOutput
-            ? LayoutBuilder(
-                builder: (context, constraints) {
-                  return constraints.maxWidth > constraints.maxHeight
-                      ? _HorizontalLayout(
-                          maxWidth: constraints.maxWidth,
-                          description: description,
-                          example: example,
-                          output: output,
-                        )
-                      : _VerticalLayout(
-                          maxHeight: constraints.maxHeight,
-                          description: description,
-                          example: example,
-                          output: output,
-                        );
-                },
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    description,
-                    example,
-                  ],
+        child: SafeArea(
+          child: widget.hasOutput
+              ? LayoutBuilder(
+                  builder: (context, constraints) {
+                    return constraints.maxWidth > constraints.maxHeight
+                        ? HorizontalLayout(
+                            maxWidth: constraints.maxWidth,
+                            description: description,
+                            example: example,
+                            output: output,
+                          )
+                        : VerticalLayout(
+                            maxHeight: constraints.maxHeight,
+                            description: description,
+                            example: example,
+                            output: output,
+                          );
+                  },
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      description,
+                      example,
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -169,99 +183,6 @@ class _Output extends StatelessWidget {
       scrollController.position.maxScrollExtent,
       curve: Curves.linear,
       duration: const Duration(milliseconds: 80),
-    );
-  }
-}
-
-class _HorizontalLayout extends StatelessWidget {
-  const _HorizontalLayout({
-    required this.maxWidth,
-    required this.description,
-    required this.example,
-    required this.output,
-  });
-
-  final double maxWidth;
-  final Description description;
-  final Widget example;
-  final Widget output;
-
-  @override
-  Widget build(BuildContext context) {
-    final paneWidth = (maxWidth ~/ 2).toDouble();
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: paneWidth - 1.0,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                description,
-                example,
-              ],
-            ),
-          ),
-        ),
-        const VerticalDivider(
-          width: 1.0,
-          thickness: 1.0,
-          color: Colors.black26,
-        ),
-        SizedBox(
-          width: paneWidth,
-          height: double.infinity,
-          child: output,
-        ),
-      ],
-    );
-  }
-}
-
-class _VerticalLayout extends StatelessWidget {
-  const _VerticalLayout({
-    required this.maxHeight,
-    required this.description,
-    required this.example,
-    required this.output,
-  });
-
-  final double maxHeight;
-  final Description description;
-  final Widget example;
-  final Widget output;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: maxHeight,
-        ),
-        child: IntrinsicHeight(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              description,
-              Expanded(
-                child: example,
-              ),
-              const Divider(
-                height: 1.0,
-                thickness: 1.0,
-                color: Colors.black26,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 150.0,
-                child: output,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

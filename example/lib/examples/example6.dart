@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:custom_text/custom_text.dart';
 
 class Example6 extends StatefulWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:custom_text/custom_text_editing_controller.dart';
-
 import 'package:custom_text_example/examples/example4.dart';
 
 class Example9 extends StatefulWidget {
@@ -53,6 +51,7 @@ class _Example9State extends State<Example9> {
     return TextField(
       controller: _controller,
       maxLines: null,
+      style: const TextStyle(height: 1.4),
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
       ),

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:custom_text/custom_text.dart';
-
-import 'package:custom_text_example/code_view_page.dart';
+import 'package:go_router/go_router.dart';
 
 class Description extends StatelessWidget {
-  const Description(this.description, {required this.filename});
+  const Description({required this.id, required this.description});
 
+  final int id;
   final String description;
-  final String filename;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class Description extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              filename,
+              'example$id.dart',
               definitions: [
                 TextDefinition(
                   matcher: const _FilenameMatcher(),
@@ -31,11 +30,7 @@ class Description extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
                   tapStyle: const TextStyle(),
-                  onTap: (filename) => Navigator.of(context).push<void>(
-                    MaterialPageRoute(
-                      builder: (_) => CodeViewPage(filename: filename),
-                    ),
-                  ),
+                  onTap: (_) => context.go('/$id/code'),
                 ),
               ],
               style: TextStyle(

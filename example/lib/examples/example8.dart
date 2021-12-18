@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:custom_text/custom_text.dart';
 
 class Example8 extends StatelessWidget {
