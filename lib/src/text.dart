@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:text_parser/text_parser.dart';
@@ -11,13 +13,13 @@ import 'text_span_notifier.dart';
 /// A widget that decorates parts of text and/or enables taps/long-presses
 /// on them according to specified definitions.
 ///
-/// This widget is useful for making strings such as URLs, email addresses
-/// or phone numbers clickable, or for only highlighting some parts of
-/// text with colors and different font settings depending on the types
-/// of string elements.
+/// This widget is useful for making strings in selectable/non-selectable
+/// text such as URLs, email addresses or phone numbers clickable, or for
+/// only highlighting some parts of text with colors and different font
+/// settings depending on the types of string elements.
 class CustomText extends StatefulWidget {
-  /// Creates a widget that decorates parts of text and/or enables clicks
-  /// on them according to specified definitions.
+  /// Creates a text widget that decorates strings in it and/or enables
+  /// clicks on them according to specified definitions.
   const CustomText(
     this.text, {
     Key? key,
@@ -42,7 +44,71 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
-  }) : super(key: key);
+  })  : _isSelectable = false,
+        focusNode = null,
+        showCursor = false,
+        autofocus = false,
+        toolbarOptions = null,
+        minLines = null,
+        cursorWidth = 0.0,
+        cursorHeight = null,
+        cursorRadius = null,
+        cursorColor = null,
+        selectionHeightStyle = null,
+        selectionWidthStyle = null,
+        dragStartBehavior = null,
+        enableInteractiveSelection = false,
+        selectionControls = null,
+        scrollPhysics = null,
+        onSelectionChanged = null,
+        super(key: key);
+
+  /// Creates a selectable text widget that decorates strings in it
+  /// and/or enables clicks on them according to specified definitions.
+  const CustomText.selectable(
+    this.text, {
+    Key? key,
+    required this.definitions,
+    this.parserOptions = const ParserOptions(),
+    this.style,
+    this.matchStyle,
+    this.tapStyle,
+    this.hoverStyle,
+    this.onTap,
+    this.onLongPress,
+    this.longPressDuration,
+    this.preventBlocking = false,
+    this.focusNode,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.textScaleFactor,
+    this.showCursor = false,
+    this.autofocus = false,
+    this.toolbarOptions,
+    this.minLines,
+    this.maxLines,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorColor,
+    this.selectionHeightStyle,
+    this.selectionWidthStyle,
+    this.dragStartBehavior,
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.scrollPhysics,
+    this.semanticsLabel,
+    this.textHeightBehavior,
+    this.textWidthBasis,
+    this.onSelectionChanged,
+  })  : _isSelectable = true,
+        locale = null,
+        softWrap = null,
+        overflow = null,
+        super(key: key);
+
+  final bool _isSelectable;
 
   /// The text to parse and show.
   final String text;
@@ -117,6 +183,24 @@ class CustomText extends StatefulWidget {
   final String? semanticsLabel;
   final TextWidthBasis? textWidthBasis;
   final TextHeightBehavior? textHeightBehavior;
+
+  // For SelectableText
+  final FocusNode? focusNode;
+  final bool showCursor;
+  final bool autofocus;
+  final ToolbarOptions? toolbarOptions;
+  final int? minLines;
+  final double cursorWidth;
+  final double? cursorHeight;
+  final Radius? cursorRadius;
+  final Color? cursorColor;
+  final ui.BoxHeightStyle? selectionHeightStyle;
+  final ui.BoxWidthStyle? selectionWidthStyle;
+  final DragStartBehavior? dragStartBehavior;
+  final bool enableInteractiveSelection;
+  final TextSelectionControls? selectionControls;
+  final ScrollPhysics? scrollPhysics;
+  final SelectionChangedCallback? onSelectionChanged;
 
   @override
   _CustomTextState createState() => _CustomTextState();
@@ -242,7 +326,8 @@ class _CustomTextState extends State<CustomText> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<TextSpan>(
       valueListenable: _textSpanNotifier,
-      builder: (context, span, _) => _richText(span),
+      builder: (context, span, _) =>
+          widget._isSelectable ? _richSelectableText(span) : _richText(span),
     );
   }
 
@@ -260,6 +345,38 @@ class _CustomTextState extends State<CustomText> {
       semanticsLabel: widget.semanticsLabel,
       textWidthBasis: widget.textWidthBasis,
       textHeightBehavior: widget.textHeightBehavior,
+    );
+  }
+
+  SelectableText _richSelectableText(TextSpan span) {
+    return SelectableText.rich(
+      span,
+      focusNode: widget.focusNode,
+      style: widget.style,
+      strutStyle: widget.strutStyle,
+      textAlign: widget.textAlign,
+      textDirection: widget.textDirection,
+      textScaleFactor: widget.textScaleFactor,
+      showCursor: widget.showCursor,
+      autofocus: widget.autofocus,
+      toolbarOptions: widget.toolbarOptions,
+      minLines: widget.minLines,
+      maxLines: widget.maxLines,
+      cursorWidth: widget.cursorWidth,
+      cursorHeight: widget.cursorHeight,
+      cursorRadius: widget.cursorRadius,
+      cursorColor: widget.cursorColor,
+      selectionHeightStyle:
+          widget.selectionHeightStyle ?? ui.BoxHeightStyle.tight,
+      selectionWidthStyle: widget.selectionWidthStyle ?? ui.BoxWidthStyle.tight,
+      dragStartBehavior: widget.dragStartBehavior ?? DragStartBehavior.start,
+      enableInteractiveSelection: widget.enableInteractiveSelection,
+      selectionControls: widget.selectionControls,
+      scrollPhysics: widget.scrollPhysics,
+      semanticsLabel: widget.semanticsLabel,
+      textHeightBehavior: widget.textHeightBehavior,
+      textWidthBasis: widget.textWidthBasis,
+      onSelectionChanged: widget.onSelectionChanged,
     );
   }
 }

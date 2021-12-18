@@ -305,6 +305,29 @@ CustomText(
 )
 ```
 
+### CustomText.selectable
+
+[example8.dart][example8]
+
+![example8](https://user-images.githubusercontent.com/20254485/146570773-41495fc9-9d27-4754-a71e-b2b06e706d4a.gif)
+
+This example is almost the same as example2, but with the `CustomText.selectable` constructor.
+It is based on `SelectableText.rich`, so text can be selected while it is partially decorated/tappable.
+
+```dart
+CustomText.selectable(
+  'URL: https://example.com/\n'
+  'Email: foo@example.com\n'
+  'Tel: +1-012-3456-7890',
+  definitions: [
+    const TextDefinition(matcher: UrlMatcher()),
+    ...,
+  ],
+  matchStyle: const TextStyle(...),
+  ...,
+)
+```
+
 ## Limitations
 
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
@@ -325,6 +348,7 @@ as is if your app targets Safari.
 [example5]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example5.dart
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
+[example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html

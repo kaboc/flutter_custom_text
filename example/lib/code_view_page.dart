@@ -53,7 +53,7 @@ class _View extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomText(
+    return CustomText.selectable(
       code,
       definitions: const [
         TextDefinition(

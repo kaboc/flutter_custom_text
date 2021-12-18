@@ -8,6 +8,7 @@ import 'package:custom_text_example/examples/example4.dart';
 import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
+import 'package:custom_text_example/examples/example8.dart';
 
 void main() => runApp(MyApp());
 
@@ -127,6 +128,18 @@ class MyApp extends StatelessWidget {
                 additionalInfo:
                     'Run the app on desktop to see how this example looks '
                     'and behaves on hover over some strings.',
+              ),
+            ),
+            _ListTile(
+              title: 'CustomText.selectable',
+              builder: (title) => ExamplePage(
+                title,
+                'example8.dart',
+                'A example of selectable CustomText.\n'
+                    'This is almost the same as example2, but different in '
+                    'that this one is based on `SelectableText`, allowing '
+                    'text to be selected.',
+                (outputFunc) => Example8(outputFunc),
               ),
             ),
           ],
