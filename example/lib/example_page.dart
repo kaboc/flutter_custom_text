@@ -54,33 +54,37 @@ class _ExamplePageState extends State<ExamplePage> {
 
     return Scaffold(
       appBar: appBar(context, title: widget.title, filename: widget.filename),
-      body: widget.hasOutput
-          ? LayoutBuilder(
-              builder: (context, constraints) {
-                return constraints.maxWidth > constraints.maxHeight
-                    ? _HorizontalLayout(
-                        maxWidth: constraints.maxWidth,
-                        description: description,
-                        example: example,
-                        output: output,
-                      )
-                    : _VerticalLayout(
-                        maxHeight: constraints.maxHeight,
-                        description: description,
-                        example: example,
-                        output: output,
-                      );
-              },
-            )
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  description,
-                  example,
-                ],
+      resizeToAvoidBottomInset: false,
+      body: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: widget.hasOutput
+            ? LayoutBuilder(
+                builder: (context, constraints) {
+                  return constraints.maxWidth > constraints.maxHeight
+                      ? _HorizontalLayout(
+                          maxWidth: constraints.maxWidth,
+                          description: description,
+                          example: example,
+                          output: output,
+                        )
+                      : _VerticalLayout(
+                          maxHeight: constraints.maxHeight,
+                          description: description,
+                          example: example,
+                          output: output,
+                        );
+                },
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    description,
+                    example,
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
