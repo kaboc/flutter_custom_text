@@ -15,7 +15,6 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
     required this.text,
     required List<Definition> definitions,
-    this.style,
     this.matchStyle,
     this.tapStyle,
     this.hoverStyle,
@@ -26,11 +25,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           for (final def in definitions) def.matcher.runtimeType: def,
         },
         _longPressDuration = longPressDuration ?? _kLongPressDuration,
-        super(TextSpan(text: text, style: style));
+        super(TextSpan(text: text));
 
   final String text;
   final Map<Type, Definition> _definitions;
-  final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
@@ -40,6 +38,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
   bool _disposed = false;
 
+  TextStyle? _style;
   List<TextElement> elements = [];
   final Map<int, TapGestureRecognizer> _tapRecognizers = {};
 
@@ -59,7 +58,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     super.dispose();
   }
 
-  void buildSpan() {
+  void buildSpan({required TextStyle? style}) {
+    _style = style;
+
     value = TextSpan(
       children: elements.asMap().entries.map((entry) {
         final index = entry.key;
@@ -109,9 +110,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
     final hasHoverStyle = hoverStyle != null;
 
-    if (style != null) {
-      matchStyle = style!.merge(matchStyle);
-      hoverStyle = style!.merge(hoverStyle);
+    if (_style != null) {
+      matchStyle = _style!.merge(matchStyle);
+      hoverStyle = _style!.merge(hoverStyle);
     }
 
     return TextSpan(
@@ -150,10 +151,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
     final hasHoverStyle = hoverStyle != null;
 
-    if (style != null) {
-      matchStyle = style!.merge(matchStyle);
-      tapStyle = style!.merge(tapStyle);
-      hoverStyle = style!.merge(hoverStyle);
+    if (_style != null) {
+      matchStyle = _style!.merge(matchStyle);
+      tapStyle = _style!.merge(tapStyle);
+      hoverStyle = _style!.merge(hoverStyle);
     }
 
     _configureRecognizer(
@@ -161,7 +162,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       text: text,
       link: link,
       definition: definition,
-      style: style,
+      style: _style,
       onTap: onTap,
       onLongPress: onLongPress,
     );
@@ -321,7 +322,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     // Updates only if the span is not being pressed.
     // The previous and current hovering positions are checked for
     // preventing repetitive rebuilds that can happen when
-    // CustomText.selectable is used.
+    // CustomText.selectable or CustomTextEditingController is used.
     if (_tapIndex == null && position != _hoverPosition) {
       _hoverIndex = hovered ? index : null;
       _hoverPosition = hovered ? position : null;

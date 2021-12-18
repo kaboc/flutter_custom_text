@@ -328,6 +328,45 @@ CustomText.selectable(
 )
 ```
 
+### CustomTextEditingController
+
+[example9.dart][example9]
+
+![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
+
+The features of text decoration and tap/long-press gestures are also available for editable text fields
+via `CustomTextEditingController`.
+
+```dart
+final controller = CustomTextEditingController(
+  text: 'abcde foo@example.com\nhttps://example.com/ #hashtag',
+  definitions: [
+    const TextDefinition(
+      matcher: HashTagMatcher(),
+      matchStyle: TextStyle(color: Colors.orange),
+      hoverStyle: TextStyle(color: Colors.red),
+    ),
+    ...
+  ],
+);
+
+...
+
+@override
+Widget build(BuildContext context) {
+  return TextField(
+    controller: controller,
+    ...,
+  );
+}
+```
+
+#### Notes
+
+- `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
+  It only accepts `TextDefinition`.
+  
+
 ## Limitations
 
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
@@ -348,7 +387,8 @@ as is if your app targets Safari.
 [example5]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example5.dart
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
-[example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
+[example8]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example8.dart
+[example9]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example9.dart
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
