@@ -9,6 +9,7 @@ import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
+import 'package:custom_text_example/examples/example9.dart';
 
 void main() => runApp(MyApp());
 
@@ -140,6 +141,23 @@ class MyApp extends StatelessWidget {
                     'that this one is based on `SelectableText`, allowing '
                     'text to be selected.',
                 (outputFunc) => Example8(outputFunc),
+              ),
+            ),
+            _ListTile(
+              title: 'CustomTextEditingController',
+              builder: (title) => ExamplePage(
+                title,
+                'example9.dart',
+                'An example to decorate URLs, email addresses and hashtags '
+                    'in `TextField` using `CustomTextEditingController`.\n\n'
+                    'Note that only `TextDefinition` is available for '
+                    '`CustomTextEditingController`.',
+                (outputFunc) => Example9(outputFunc),
+                additionalInfo: 'Try editing the text in the box above.\n'
+                    'URLs, email addresses and hashtags are decorated, '
+                    'and URLs can be tapped.\n\n'
+                    'Be careful not to use CustomTextEditingController '
+                    'for too long text. It will lead to poor performance.',
               ),
             ),
           ],
