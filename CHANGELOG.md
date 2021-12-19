@@ -1,3 +1,12 @@
+## 0.6.0-dev.1
+
+- Bug fixes and major refactors. (eb0e6f7, 760cb45, #12, #15)
+- New features (experimental)
+    - Add `CustomText.selectable`. (#16)
+    - Add `CustomTextEditingController`. (#17)
+- Depend on meta.
+- Require Flutter >=2.8.0.
+
 ## 0.5.1
 
 - Minor improvements.
@@ -15,7 +24,7 @@
 - Add `ParserOptions` for tweaking RegExp settings.
 - Add `parserOptions` parameter to `CustomText`.
 - Add `LinkMatcher`.
-- Depends on `text_parser` >=0.2.0.
+- Depend on `text_parser` >=0.2.0.
 
 ## 0.3.1
 

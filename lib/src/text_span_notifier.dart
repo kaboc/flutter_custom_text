@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/painting.dart';
 
-import 'package:text_parser/text_parser.dart';
+import 'package:text_parser/text_parser.dart' show TextElement;
 
 import 'definition_base.dart';
 import 'definitions.dart';

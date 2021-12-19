@@ -13,7 +13,7 @@ font settings depending on the types of the elements parsed by regular expressio
 Most of the examples here are contained in the sample app in the [example/][example] folder.
 Just click on the link below to open its web version and see what this package can achieve.
 
-**[Web Demo](https://kaboc.github.io/flutter_custom_text/)**
+**[Web Demo][demo]**
 
 The app also shows the source code with keywords highlighted, which itself is made possible
 by this package.
@@ -22,7 +22,7 @@ by this package.
 
 ### Simplest example
 
-[example1.dart][example1]
+example1.dart ([Code][example1] / [Demo][example1_demo])
 
 ![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
@@ -47,7 +47,7 @@ CustomText(
 
 ### Unique styles and actions per definition
 
-[example2.dart][example2]
+example2.dart ([Code][example2] / [Demo][example2_demo])
 
 ![example2](https://user-images.githubusercontent.com/20254485/100355833-c74c5300-3035-11eb-80d2-de64056417a1.gif)
 
@@ -93,7 +93,7 @@ CustomText(
 
 ### Overwriting match patterns
 
-[example3.dart][example3]
+example3.dart ([Code][example3] / [Demo][example3_demo])
 
 ![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
@@ -115,7 +115,7 @@ CustomText(
 
 ### Custom matchers
 
-[example4.dart][example4]
+example4.dart ([Code][example4] / [Demo][example4_demo])
 
 ![example4](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
 
@@ -145,7 +145,7 @@ CustomText(
 
 ### SelectiveDefinition
 
-[example5.dart][example5]
+example5.dart ([Code][example5] / [Demo][example5_demo])
 
 ![example5](https://user-images.githubusercontent.com/20254485/100355868-d0d5bb00-3035-11eb-836f-863f1af599ac.png)
 
@@ -207,7 +207,7 @@ CustomText(
 
 ### SpanDefinition
 
-[example6.dart][example6]
+example6.dart ([Code][example6] / [Demo][example6_demo])
 
 ![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
 
@@ -258,7 +258,7 @@ CustomText(
 
 ### Changing mouse cursor and text style on hover
 
-[example7.dart][example7]
+example7.dart ([Code][example7] / [Demo][example7_demo])
 
 ![example7](https://user-images.githubusercontent.com/20254485/119790338-cf1a8080-bf0e-11eb-8c76-3116a540b159.gif)
 
@@ -307,7 +307,7 @@ CustomText(
 
 ### CustomText.selectable
 
-[example8.dart][example8]
+example8.dart ([Code][example8] / [Demo][example8_demo])
 
 ![example8](https://user-images.githubusercontent.com/20254485/146570773-41495fc9-9d27-4754-a71e-b2b06e706d4a.gif)
 
@@ -330,11 +330,11 @@ CustomText.selectable(
 
 ### CustomTextEditingController
 
-[example9.dart][example9]
+example9.dart ([Code][example9] / [Demo][example9_demo])
 
 ![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
 
-The features of text decoration and tap/long-press gestures are also available for editable text fields
+Text decoration, tap/long-press actions and hover effects are available also in an editable text field
 via `CustomTextEditingController`.
 
 ```dart
@@ -379,6 +379,7 @@ as is if your app targets Safari.
     - CustomText is dependent on the `text_parser` package made by the same author.
     See its documentation for details if you're interested or for troubleshooting on parsing.
 
+[demo]: https://kaboc.github.io/flutter_custom_text/
 [example]: https://github.com/kaboc/flutter_custom_text/tree/main/example
 [example1]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example1.dart
 [example2]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example2.dart
@@ -389,6 +390,15 @@ as is if your app targets Safari.
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
 [example8]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example8.dart
 [example9]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example9.dart
+[example1_demo]: https://kaboc.github.io/flutter_custom_text/#/1
+[example2_demo]: https://kaboc.github.io/flutter_custom_text/#/2
+[example3_demo]: https://kaboc.github.io/flutter_custom_text/#/3
+[example4_demo]: https://kaboc.github.io/flutter_custom_text/#/4
+[example5_demo]: https://kaboc.github.io/flutter_custom_text/#/5
+[example6_demo]: https://kaboc.github.io/flutter_custom_text/#/6
+[example7_demo]: https://kaboc.github.io/flutter_custom_text/#/7
+[example8_demo]: https://kaboc.github.io/flutter_custom_text/#/8
+[example9_demo]: https://kaboc.github.io/flutter_custom_text/#/9
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html

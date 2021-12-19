@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:ui' as ui;
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
-import 'package:flutter/gestures.dart';
+import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
 
 import 'package:text_parser/text_parser.dart';
