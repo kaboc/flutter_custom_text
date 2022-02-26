@@ -303,6 +303,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }) {
     _tapIndex = tapped ? index : null;
 
+    // Resetting hover values is necessary here.
+    // Otherwise, the hover style remains if a press is
+    // cancelled after the pointer leaves the text.
+    _hoverIndex = null;
+    _hoverPosition = null;
+
     _updateTappableSpan(
       index: index,
       text: text,
