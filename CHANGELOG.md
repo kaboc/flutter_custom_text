@@ -1,3 +1,9 @@
+## 0.6.0-dev.2
+
+- Fix issue of persistent hover style.
+- Update text_parser to 0.3.3.
+- Minor improvements.
+
 ## 0.6.0-dev.1
 
 - Bug fixes and major refactors. (eb0e6f7, 760cb45, #12, #15)
