@@ -33,7 +33,6 @@ class CustomTextEditingController extends TextEditingController {
     this.onLongPress,
     this.longPressDuration,
   }) : super(text: text) {
-    addListener(_onTextChanged);
     _init();
   }
 
@@ -55,7 +54,6 @@ class CustomTextEditingController extends TextEditingController {
     this.onLongPress,
     this.longPressDuration,
   }) : super.fromValue(value) {
-    addListener(_onTextChanged);
     _init();
   }
 
@@ -128,6 +126,8 @@ class CustomTextEditingController extends TextEditingController {
   }
 
   void _init() {
+    addListener(_onTextChanged);
+
     _parser = TextParser(
       matchers: definitions.map((def) => def.matcher).toList(),
       multiLine: parserOptions.multiLine,
