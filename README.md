@@ -143,6 +143,14 @@ CustomText(
 )
 ```
 
+Alternatively, you can use `PatternMatcher`.
+
+```dart
+TextDefinition(
+  matcher: PatternMatcher(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
+),
+```
+
 ### SelectiveDefinition
 
 example5.dart ([Code][example5] / [Demo][example5_demo])
@@ -399,7 +407,8 @@ as is if your app targets Safari.
 [example7_demo]: https://kaboc.github.io/flutter_custom_text/#/7
 [example8_demo]: https://kaboc.github.io/flutter_custom_text/#/8
 [example9_demo]: https://kaboc.github.io/flutter_custom_text/#/9
-[TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher/TelMatcher.html
+[TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher-class.html
+[PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
