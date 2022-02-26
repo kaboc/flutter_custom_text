@@ -43,6 +43,7 @@ final router = GoRouter(
         return '/';
       }
     }
+    return null;
   },
 );
 

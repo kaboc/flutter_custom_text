@@ -53,12 +53,14 @@ class _ExamplePageState extends State<ExamplePage> {
       scrollController: _scrollController,
     );
 
+    // MediaQueryData is used instead of LayoutBuilder to
+    // avoid size changes by a software keyboard that trigger
+    // switching of layout modes.
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.title,
-          overflow: TextOverflow.fade,
-        ),
+        title: Text(widget.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.article),
@@ -66,28 +68,23 @@ class _ExamplePageState extends State<ExamplePage> {
           ),
         ],
       ),
-      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: SafeArea(
           child: widget.hasOutput
-              ? LayoutBuilder(
-                  builder: (context, constraints) {
-                    return constraints.maxWidth > constraints.maxHeight
-                        ? HorizontalLayout(
-                            maxWidth: constraints.maxWidth,
-                            description: description,
-                            example: example,
-                            output: output,
-                          )
-                        : VerticalLayout(
-                            maxHeight: constraints.maxHeight,
-                            description: description,
-                            example: example,
-                            output: output,
-                          );
-                  },
-                )
+              ? size.width > size.height
+                  ? HorizontalLayout(
+                      maxWidth: size.width,
+                      description: description,
+                      example: example,
+                      output: output,
+                    )
+                  : VerticalLayout(
+                      maxHeight: size.height,
+                      description: description,
+                      example: example,
+                      output: output,
+                    )
               : SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
