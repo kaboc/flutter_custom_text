@@ -11,7 +11,6 @@ class Example3 extends StatelessWidget {
     return CustomText(
       'Tel: +1-012-3456-7890',
       definitions: const [
-        // Match patterns of preset matchers can be overwritten.
         TextDefinition(matcher: TelMatcher(r'\d{3}-\d{4}-\d{4}')),
       ],
       matchStyle: const TextStyle(color: Colors.lightBlue),

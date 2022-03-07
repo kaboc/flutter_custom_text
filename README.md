@@ -38,10 +38,6 @@ CustomText(
     TextDefinition(matcher: EmailMatcher()),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
-  // `tapStyle` is not used if both `onTap` and `onLongPress`
-  // are null or not set.
-  tapStyle: const TextStyle(color: Colors.yellow),
-  onTap: null,
 )
 ```
 
@@ -105,7 +101,6 @@ The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` format as a 
 CustomText(
   'Tel: +1-012-3456-7890',
   definitions: const [
-    // Match patterns of preset matchers can be overwritten.
     TextDefinition(matcher: TelMatcher(r'\d{3}-\d{4}-\d{4}')),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
@@ -126,14 +121,22 @@ as a string that starts with "#" followed by an alphabet and then by alphanumeri
 and is enclosed with white spaces.
 
 ```dart
-// You can create a custom matcher easily by extending TextMatcher.
+TextDefinition(
+  matcher: PatternMatcher(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
+),
+```
+
+Alternatively, you can define a matcher by extending [TextMatcher][TextMatcher].
+This is useful when you want to define one and use it in various places.
+
+```dart
 class HashTagMatcher extends TextMatcher {
   const HashTagMatcher()
       : super(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
 }
+```
 
-...
-
+```dart
 CustomText(
   'Hello world! #CustomText',
   definitions: const [
@@ -141,14 +144,6 @@ CustomText(
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
 )
-```
-
-Alternatively, you can use `PatternMatcher`.
-
-```dart
-TextDefinition(
-  matcher: PatternMatcher(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
-),
 ```
 
 ### SelectiveDefinition
@@ -227,31 +222,24 @@ an `InlineSpan` flexibly with them.
 
 ```dart
 CustomText(
-  'Email 1: foo@example.com\n'
-  'Email 2: bar@example.com',
+  'Email 1: [@] foo@example.com\n'
+  'Email 2: [@] bar@example.com',
   definitions: [
     SpanDefinition(
-      matcher: const EmailMatcher(),
-      builder: (text, groups) => TextSpan(
-        children: [
-          const WidgetSpan(
-            child: Icon(
-              Icons.email,
-              color: Colors.blueGrey,
-              size: 18.0,
-            ),
-            alignment: PlaceholderAlignment.middle,
-          ),
-          const WidgetSpan(
-            child: SizedBox(width: 6.0),
-          ),
-          TextSpan(
-            text: text,
-            style: const TextStyle(color: Colors.lightBlue),
-            recognizer: ...,
-          ),
-        ],
+      matcher: const PatternMatcher(r'\[@\]'),
+      builder: (text, groups) => const WidgetSpan(
+        child: Icon(
+          Icons.email,
+          color: Colors.blueGrey,
+          size: 18.0,
+        ),
+        alignment: PlaceholderAlignment.middle,
       ),
+    ),
+    TextDefinition(
+      matcher: const EmailMatcher(),
+      matchStyle: const TextStyle(color: Colors.lightBlue),
+      onTap: (email) => output(email),
     ),
   ],
 )
@@ -261,8 +249,9 @@ CustomText(
 
 - `SpanDefinition` does not have arguments for styles and tap callbacks, so it is totally
   up to you how the `InlineSpan` returned from it is decorated and how it reacts to gestures.
-- The `builder` function is called on every rebuild. Be careful not to create a `GestureRecognizer`
-  inside the function, or make sure to dispose of existing recognizers before creating a new one.
+- The `builder` function is called on every rebuild. If you use `GestureRecognizer` to make a
+  WidgetSpan tappable, be careful not to create it inside the function, or make sure to
+  dispose of existing recognizers before creating a new one.
 
 ### Changing mouse cursor and text style on hover
 

@@ -11,20 +11,19 @@ class Example4 extends StatelessWidget {
     return CustomText(
       'Hello world! #CustomText',
       definitions: const [
-        TextDefinition(matcher: HashTagMatcher()),
+        TextDefinition(
+          // Matcher for hashtags (provided a hashtag is defined as a string
+          // that starts with "#" followed by an alphabet and then alpha-
+          // numerics, and is enclosed with white spaces)
+          matcher: PatternMatcher(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
+          // TODO: Replace above with below if Safari supports lookbehind.
+          // matcher:
+          //     PatternMatcher(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
+        ),
       ],
       matchStyle: const TextStyle(color: Colors.lightBlue),
       tapStyle: const TextStyle(color: Colors.lightGreen),
       onTap: (_, tag) => output(tag),
     );
   }
-}
-
-/// Matcher for hashtags (provided a hashtag is defined as a string
-/// that starts with "#" followed by an alphabet and then alphanumerics,
-/// and is enclosed with white spaces)
-class HashTagMatcher extends TextMatcher {
-  // TODO: Replace the pattern if Safari supports lookbehind.
-  const HashTagMatcher() : super(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
-  // const HashTagMatcher() : super(r'(?<=\s|^)\#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)');
 }

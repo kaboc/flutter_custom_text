@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text_editing_controller.dart';
-import 'package:custom_text_example/examples/example4.dart';
 
 class Example9 extends StatefulWidget {
   const Example9(this.output);
@@ -33,7 +32,7 @@ class _Example9State extends State<Example9> {
         ),
       ),
       const TextDefinition(
-        matcher: HashTagMatcher(),
+        matcher: PatternMatcher(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
         matchStyle: TextStyle(color: Colors.orange),
         hoverStyle: TextStyle(color: Colors.red),
       ),

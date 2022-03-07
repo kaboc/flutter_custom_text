@@ -79,7 +79,7 @@ final pages = {
   ),
   4: ExamplePage(
     id: 4,
-    title: 'Custom matchers',
+    title: 'Custom pattern',
     description: 'An example to parse hashtags using a custom matcher '
         'and apply styles to them.\n'
         'A hashtag has a wide variety of definitions, but here as an '
