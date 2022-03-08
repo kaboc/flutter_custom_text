@@ -14,10 +14,12 @@ void main() {
 
   group('Styles', () {
     testWidgets('DefaultTextStyle is used for RichText itself', (tester) async {
-      await tester.pumpWidget(const DefaultTextStyle(
-        style: TextStyle(color: Color(0xFF111111)),
-        child: CustomTextWidget('aaa bbb@example.com'),
-      ));
+      await tester.pumpWidget(
+        const DefaultTextStyle(
+          style: TextStyle(color: Color(0xFF111111)),
+          child: CustomTextWidget('aaa bbb@example.com'),
+        ),
+      );
       await tester.pump();
 
       final richText = findRichText();
@@ -27,11 +29,13 @@ void main() {
     testWidgets(
       'style and matchStyle are used even if w/o onTap',
       (tester) async {
-        await tester.pumpWidget(const CustomTextWidget(
-          'aaa bbb@example.com',
-          style: TextStyle(color: Color(0xFF111111)),
-          matchStyle: TextStyle(color: Color(0xFF222222)),
-        ));
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            style: TextStyle(color: Color(0xFF111111)),
+            matchStyle: TextStyle(color: Color(0xFF222222)),
+          ),
+        );
         await tester.pump();
 
         final span1 = findSpan('aaa ');
@@ -44,11 +48,13 @@ void main() {
     testWidgets(
       'tapStyle specified is not applied if tap callbacks are not set',
       (tester) async {
-        await tester.pumpWidget(const CustomTextWidget(
-          'aaa bbb@example.com',
-          style: TextStyle(color: Color(0xFF111111)),
-          tapStyle: TextStyle(color: Color(0xFF222222)),
-        ));
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            style: TextStyle(color: Color(0xFF111111)),
+            tapStyle: TextStyle(color: Color(0xFF222222)),
+          ),
+        );
         await tester.pump();
 
         final spanA = findSpan('bbb@example.com');
@@ -61,13 +67,15 @@ void main() {
     );
 
     testWidgets('tapStyle is applied if onTap is set', (tester) async {
-      await tester.pumpWidget(const CustomTextWidget(
-        'aaa bbb@example.com https://example.com/',
-        style: TextStyle(color: Color(0xFF111111)),
-        matchStyle: TextStyle(color: Color(0xFF222222)),
-        tapStyle: TextStyle(color: Color(0xFF333333)),
-        onTap: onTap,
-      ));
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com https://example.com/',
+          style: TextStyle(color: Color(0xFF111111)),
+          matchStyle: TextStyle(color: Color(0xFF222222)),
+          tapStyle: TextStyle(color: Color(0xFF333333)),
+          onTap: onTap,
+        ),
+      );
       await tester.pump();
 
       final span2A = findSpan('bbb@example.com');
@@ -89,13 +97,15 @@ void main() {
     });
 
     testWidgets('tapStyle is applied if onLongPress is set', (tester) async {
-      await tester.pumpWidget(const CustomTextWidget(
-        'aaa bbb@example.com https://example.com/',
-        style: TextStyle(color: Color(0xFF111111)),
-        matchStyle: TextStyle(color: Color(0xFF222222)),
-        tapStyle: TextStyle(color: Color(0xFF333333)),
-        onLongPress: onLongPress,
-      ));
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com https://example.com/',
+          style: TextStyle(color: Color(0xFF111111)),
+          matchStyle: TextStyle(color: Color(0xFF222222)),
+          tapStyle: TextStyle(color: Color(0xFF333333)),
+          onLongPress: onLongPress,
+        ),
+      );
       await tester.pump();
 
       final span2A = findSpan('bbb@example.com');
@@ -163,11 +173,13 @@ void main() {
     );
 
     testWidgets('Only onTap is called on short tap', (tester) async {
-      await tester.pumpWidget(const CustomTextWidget(
-        'aaa bbb@example.com',
-        onTap: onTap,
-        onLongPress: onLongPress,
-      ));
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com',
+          onTap: onTap,
+          onLongPress: onLongPress,
+        ),
+      );
       await tester.pump();
 
       const email = 'bbb@example.com';
@@ -183,11 +195,13 @@ void main() {
     });
 
     testWidgets('Only onLongPress is called on long-press', (tester) async {
-      await tester.pumpWidget(const CustomTextWidget(
-        'aaa bbb@example.com',
-        onTap: onTap,
-        onLongPress: onLongPress,
-      ));
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com',
+          onTap: onTap,
+          onLongPress: onLongPress,
+        ),
+      );
       await tester.pump();
 
       const email = 'bbb@example.com';
@@ -205,11 +219,13 @@ void main() {
     testWidgets(
       'specified long-press duration is used instead of default value',
       (tester) async {
-        await tester.pumpWidget(const CustomTextWidget(
-          'aaa bbb@example.com',
-          onLongPress: onLongPress,
-          longPressDuration: Duration(milliseconds: 300),
-        ));
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            onLongPress: onLongPress,
+            longPressDuration: Duration(milliseconds: 300),
+          ),
+        );
         await tester.pump();
 
         const email = 'bbb@example.com';
@@ -233,16 +249,18 @@ void main() {
         var tapStyle = const TextStyle(color: Color(0xFF111111));
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              'aaa bbb@example.com',
-              tapStyleInDef: tapStyle,
-              onTapInDef: (_) {},
-              onButtonPressed: () => setState(() {
-                tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
-              }),
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaa bbb@example.com',
+                tapStyleInDef: tapStyle,
+                onTapInDef: (_) {},
+                onButtonPressed: () => setState(() {
+                  tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
+                }),
+              );
+            },
+          ),
         );
         await tester.pump();
 
@@ -270,16 +288,18 @@ void main() {
         var tapStyle = const TextStyle(color: Color(0xFF111111));
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              'aaa bbb@example.com',
-              tapStyle: tapStyle,
-              onTap: (_, __) {},
-              onButtonPressed: () => setState(() {
-                tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
-              }),
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaa bbb@example.com',
+                tapStyle: tapStyle,
+                onTap: (_, __) {},
+                onButtonPressed: () => setState(() {
+                  tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
+                }),
+              );
+            },
+          ),
         );
         await tester.pump();
 
@@ -309,15 +329,17 @@ void main() {
         var callback = onTap;
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              'aaa bbb@example.com',
-              onTapInDef: (text) => callback(null, text),
-              onButtonPressed: () {
-                setState(() => callback = onTap2);
-              },
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaa bbb@example.com',
+                onTapInDef: (text) => callback(null, text),
+                onButtonPressed: () {
+                  setState(() => callback = onTap2);
+                },
+              );
+            },
+          ),
         );
         await tester.pump();
 
@@ -345,15 +367,17 @@ void main() {
         var callback = onTap;
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              'aaa bbb@example.com',
-              onTap: (_, text) => callback(null, text),
-              onButtonPressed: () {
-                setState(() => callback = onTap2);
-              },
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaa bbb@example.com',
+                onTap: (_, text) => callback(null, text),
+                onButtonPressed: () {
+                  setState(() => callback = onTap2);
+                },
+              );
+            },
+          ),
         );
         await tester.pump();
 
@@ -379,15 +403,17 @@ void main() {
         var text = 'aaa bbb@example.com';
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              text,
-              onTapInDef: (text) => onTap(null, text),
-              onButtonPressed: () => setState(() {
-                text = text.toUpperCase();
-              }),
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                text,
+                onTapInDef: (text) => onTap(null, text),
+                onButtonPressed: () => setState(() {
+                  text = text.toUpperCase();
+                }),
+              );
+            },
+          ),
         );
         await tester.pump();
 
@@ -413,15 +439,17 @@ void main() {
         var text = 'aaa bbb@example.com';
 
         await tester.pumpWidget(
-          StatefulBuilder(builder: (context, setState) {
-            return CustomTextWidget(
-              text,
-              onTap: (_, text) => onTap(null, text),
-              onButtonPressed: () => setState(() {
-                text = text.toUpperCase();
-              }),
-            );
-          }),
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                text,
+                onTap: (_, text) => onTap(null, text),
+                onButtonPressed: () => setState(() {
+                  text = text.toUpperCase();
+                }),
+              );
+            },
+          ),
         );
         await tester.pump();
 

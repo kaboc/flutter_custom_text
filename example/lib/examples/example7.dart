@@ -36,7 +36,7 @@ class Example7 extends StatelessWidget {
           // `SystemMouseCursors.click` is used for URLs automatically
           // even if `mouseCursor` is not set because a tap has been
           // enabled by the `onTap` callback.
-          onTap: (text) => output(text),
+          onTap: output,
         ),
       ],
     );

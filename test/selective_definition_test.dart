@@ -17,10 +17,12 @@ void main() {
     testWidgets(
       'matchStyle specified in definition is used even if without onTap',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          matchStyleInDef: TextStyle(color: Color(0xFF111111)),
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            matchStyleInDef: TextStyle(color: Color(0xFF111111)),
+          ),
+        );
         await tester.pump();
 
         final span = findSpan('bbb');
@@ -50,11 +52,13 @@ void main() {
     testWidgets(
       'matchStyle specified in definition takes priority',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          matchStyle: TextStyle(color: Color(0xFF111111)),
-          matchStyleInDef: TextStyle(color: Color(0xFF222222)),
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            matchStyle: TextStyle(color: Color(0xFF111111)),
+            matchStyleInDef: TextStyle(color: Color(0xFF222222)),
+          ),
+        );
         await tester.pump();
 
         final span = findSpan('bbb');
@@ -66,11 +70,13 @@ void main() {
       'tapStyle specified in definition is not applied '
       'if tap callbacks are not set',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          style: TextStyle(color: Color(0xFF111111)),
-          tapStyleInDef: TextStyle(color: Color(0xFF222222)),
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            style: TextStyle(color: Color(0xFF111111)),
+            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+          ),
+        );
         await tester.pump();
 
         final spanA = findSpan('bbb');
@@ -85,12 +91,14 @@ void main() {
     testWidgets(
       'tapStyle specified in definition is only applied to relevant element',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd 012-3456-7890',
-          matchStyle: TextStyle(color: Color(0xFF111111)),
-          tapStyleInDef: TextStyle(color: Color(0xFF222222)),
-          onTap: onTap,
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd 012-3456-7890',
+            matchStyle: TextStyle(color: Color(0xFF111111)),
+            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            onTap: onTap,
+          ),
+        );
         await tester.pump();
 
         final span1A = findSpan('bbb');
@@ -107,12 +115,14 @@ void main() {
     testWidgets(
       'tapStyle specified in definition takes priority',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          tapStyle: TextStyle(color: Color(0xFF111111)),
-          tapStyleInDef: TextStyle(color: Color(0xFF222222)),
-          onTap: onTap,
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            tapStyle: TextStyle(color: Color(0xFF111111)),
+            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            onTap: onTap,
+          ),
+        );
         await tester.pump();
 
         final spanA = findSpan('bbb');
@@ -151,10 +161,12 @@ void main() {
     testWidgets(
       'Correct string is passed to onLongPress specified in CustomText',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          onLongPress: onLongPress,
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            onLongPress: onLongPress,
+          ),
+        );
         await tester.pump();
 
         const link = 'bbb';
@@ -174,10 +186,12 @@ void main() {
     testWidgets(
       'Correct string is passed to onTap specified in definition',
       (tester) async {
-        await tester.pumpWidget(SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          onTapInDef: (text) => onTap(null, text),
-        ));
+        await tester.pumpWidget(
+          SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            onTapInDef: (text) => onTap(null, text),
+          ),
+        );
         await tester.pump();
 
         const link = 'bbb';
@@ -196,10 +210,12 @@ void main() {
     testWidgets(
       'Correct string is passed to onLongPress specified in definition',
       (tester) async {
-        await tester.pumpWidget(SelectiveCustomTextWidget(
-          'aaa[bbb](ccc)ddd',
-          onLongPressInDef: (text) => onLongPress(null, text),
-        ));
+        await tester.pumpWidget(
+          SelectiveCustomTextWidget(
+            'aaa[bbb](ccc)ddd',
+            onLongPressInDef: (text) => onLongPress(null, text),
+          ),
+        );
         await tester.pump();
 
         const link = 'bbb';
@@ -220,10 +236,12 @@ void main() {
     testWidgets(
       'default mouse cursors for TextSpan with/without tap callbacks',
       (tester) async {
-        await tester.pumpWidget(SelectiveCustomTextWidget(
-          'aaa [bbb](ccc)',
-          onTap: (_, __) {},
-        ));
+        await tester.pumpWidget(
+          SelectiveCustomTextWidget(
+            'aaa [bbb](ccc)',
+            onTap: (_, __) {},
+          ),
+        );
         await tester.pump();
 
         final span1 = findSpan('aaa ');
@@ -236,10 +254,12 @@ void main() {
     testWidgets(
       'mouse cursor for TextSpan with mouseCursor set',
       (tester) async {
-        await tester.pumpWidget(const SelectiveCustomTextWidget(
-          'aaa [bbb](ccc)',
-          mouseCursor: SystemMouseCursors.grab,
-        ));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget(
+            'aaa [bbb](ccc)',
+            mouseCursor: SystemMouseCursors.grab,
+          ),
+        );
         await tester.pump();
 
         final span1 = findSpan('aaa ');
@@ -250,13 +270,15 @@ void main() {
     );
 
     testWidgets('hoverStyle', (tester) async {
-      await tester.pumpWidget(const SelectiveCustomTextWidget(
-        'aaa [bbbbbbbbbbbb](ccc) 012-3456-7890',
-        style: TextStyle(color: Color(0xFF111111)),
-        matchStyle: TextStyle(color: Color(0xFF222222)),
-        hoverStyle: TextStyle(color: Color(0xFF333333)),
-        hoverStyleInDef: TextStyle(color: Color(0xFF444444)),
-      ));
+      await tester.pumpWidget(
+        const SelectiveCustomTextWidget(
+          'aaa [bbbbbbbbbbbb](ccc) 012-3456-7890',
+          style: TextStyle(color: Color(0xFF111111)),
+          matchStyle: TextStyle(color: Color(0xFF222222)),
+          hoverStyle: TextStyle(color: Color(0xFF333333)),
+          hoverStyleInDef: TextStyle(color: Color(0xFF444444)),
+        ),
+      );
       await tester.pump();
 
       final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
@@ -289,13 +311,15 @@ void main() {
     testWidgets(
       'tapStyle is used while being tapped even if hoverStyle is set',
       (tester) async {
-        await tester.pumpWidget(SelectiveCustomTextWidget(
-          'aaa [bbbbbbbbbbbb](ccc)',
-          style: const TextStyle(color: Color(0xFF111111)),
-          tapStyle: const TextStyle(color: Color(0xFF222222)),
-          hoverStyle: const TextStyle(color: Color(0xFF333333)),
-          onTap: (_, __) {},
-        ));
+        await tester.pumpWidget(
+          SelectiveCustomTextWidget(
+            'aaa [bbbbbbbbbbbb](ccc)',
+            style: const TextStyle(color: Color(0xFF111111)),
+            tapStyle: const TextStyle(color: Color(0xFF222222)),
+            hoverStyle: const TextStyle(color: Color(0xFF333333)),
+            onTap: (_, __) {},
+          ),
+        );
         await tester.pump();
 
         final gesture =

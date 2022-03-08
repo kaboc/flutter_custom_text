@@ -1,9 +1,9 @@
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:text_parser/text_parser.dart';
 
 import 'definition_base.dart';
+import 'text.dart';
 
 /// A class that defines parsing rules, text styles and actions for
 /// tap/long-press events.

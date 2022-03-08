@@ -268,8 +268,9 @@ class _CustomTextState extends State<CustomText> {
     final notifier = _initSpanNotifier();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      notifier.elements = oldNotifier.elements;
-      notifier.buildSpan(style: widget.style);
+      notifier
+        ..elements = oldNotifier.elements
+        ..buildSpan(style: widget.style);
       oldNotifier.dispose();
     });
 

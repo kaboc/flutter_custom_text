@@ -23,7 +23,7 @@ class Example8 extends StatelessWidget {
             decoration: TextDecoration.underline,
           ),
           tapStyle: const TextStyle(color: Colors.orange),
-          onTap: (tel) => output(tel),
+          onTap: output,
           onLongPress: (tel) => output('[Long press on Tel#] $tel'),
         ),
       ],

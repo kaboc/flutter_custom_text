@@ -155,8 +155,9 @@ class CustomTextEditingController extends TextEditingController {
   Future<void> _onTextChanged() async {
     final oldText = _textSpanNotifier.elements.map((v) => v.text).join();
     if (text != oldText) {
-      _textSpanNotifier.elements = await _parser.parse(text, useIsolate: false);
-      _textSpanNotifier.buildSpan(style: style ?? _style);
+      _textSpanNotifier
+        ..elements = await _parser.parse(text, useIsolate: false)
+        ..buildSpan(style: style ?? _style);
     }
   }
 

@@ -16,6 +16,9 @@ dependencies:
   go_router: ^3.0.2
   google_fonts: ^2.3.1
 
+dev_dependencies:
+  flutter_lints: ^1.0.4
+
 flutter:
   uses-material-design: true
 

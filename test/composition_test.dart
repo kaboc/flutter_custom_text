@@ -46,9 +46,11 @@ void main() {
     testWidgets(
       'CustomText with SpanDefinition composes correct spans',
       (tester) async {
-        await tester.pumpWidget(const SpanCustomTextWidget1(
-          'Email: foo@example.com, Tel: 012-3456-7890',
-        ));
+        await tester.pumpWidget(
+          const SpanCustomTextWidget1(
+            'Email: foo@example.com, Tel: 012-3456-7890',
+          ),
+        );
         await tester.pump();
 
         final spans = getSpans();
