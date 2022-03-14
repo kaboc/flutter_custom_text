@@ -19,14 +19,38 @@ void onLongPress(Type? type, String text) {
   tappedText = text;
 }
 
+Text findText() {
+  final finder = find.byType(Text);
+  return finder.evaluate().first.widget as Text;
+}
+
+SelectableText findSelectableText() {
+  final finder = find.byType(SelectableText);
+  return finder.evaluate().first.widget as SelectableText;
+}
+
 RichText findRichText() {
   final finder = find.byType(RichText);
   return finder.evaluate().first.widget as RichText;
 }
 
+EditableText findEditableText() {
+  final finder = find.byType(EditableText);
+  return finder.evaluate().first.widget as EditableText;
+}
+
 List<InlineSpan> getSpans() {
   final spans = <InlineSpan>[];
-  findRichText().text.visitChildren((span) {
+  findText().textSpan?.visitChildren((span) {
+    spans.add(span);
+    return true;
+  });
+  return spans;
+}
+
+List<InlineSpan> getSelectableSpans() {
+  final spans = <InlineSpan>[];
+  findSelectableText().textSpan?.visitChildren((span) {
     spans.add(span);
     return true;
   });
@@ -35,7 +59,21 @@ List<InlineSpan> getSpans() {
 
 InlineSpan? findSpan(String text) {
   InlineSpan? span;
-  findRichText().text.visitChildren(
+  findText().textSpan?.visitChildren(
+    (visitor) {
+      if (visitor is TextSpan && visitor.text == text) {
+        span = visitor;
+        return false;
+      }
+      return true;
+    },
+  );
+  return span;
+}
+
+InlineSpan? findSelectableSpan(String text) {
+  InlineSpan? span;
+  findSelectableText().textSpan?.visitChildren(
     (visitor) {
       if (visitor is TextSpan && visitor.text == text) {
         span = visitor;

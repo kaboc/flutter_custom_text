@@ -203,3 +203,94 @@ class SpanCustomTextWidget2 extends StatelessWidget {
     );
   }
 }
+
+class SelectableCustomTextWidget extends StatelessWidget {
+  const SelectableCustomTextWidget(
+    this.text, {
+    this.style,
+    this.matchStyle,
+    this.tapStyle,
+    this.hoverStyle,
+    this.matchStyleInDef,
+    this.tapStyleInDef,
+    this.hoverStyleInDef,
+    this.onTap,
+    this.onLongPress,
+    this.onTapInDef,
+    this.onLongPressInDef,
+    this.longPressDuration,
+    this.mouseCursor,
+    this.onButtonPressed,
+    this.onSelectionChanged,
+    this.withNavigator = false,
+  });
+
+  final String text;
+  final TextStyle? style;
+  final TextStyle? matchStyle;
+  final TextStyle? tapStyle;
+  final TextStyle? hoverStyle;
+  final TextStyle? matchStyleInDef;
+  final TextStyle? tapStyleInDef;
+  final TextStyle? hoverStyleInDef;
+  final void Function(Type, String)? onTap;
+  final void Function(Type, String)? onLongPress;
+  final void Function(String)? onTapInDef;
+  final void Function(String)? onLongPressInDef;
+  final Duration? longPressDuration;
+  final MouseCursor? mouseCursor;
+  final VoidCallback? onButtonPressed;
+  final void Function(TextSelection)? onSelectionChanged;
+  final bool withNavigator;
+
+  @override
+  Widget build(BuildContext context) {
+    final child = Column(
+      children: [
+        CustomText.selectable(
+          text,
+          definitions: [
+            const TextDefinition(
+              matcher: UrlMatcher(),
+            ),
+            TextDefinition(
+              matcher: const EmailMatcher(),
+              matchStyle: matchStyleInDef,
+              tapStyle: tapStyleInDef,
+              hoverStyle: hoverStyleInDef,
+              onTap: onTapInDef,
+              onLongPress: onLongPressInDef,
+              mouseCursor: mouseCursor,
+            ),
+          ],
+          style: style,
+          matchStyle: matchStyle,
+          tapStyle: tapStyle,
+          hoverStyle: hoverStyle,
+          onTap: onTap,
+          onLongPress: onLongPress,
+          longPressDuration: longPressDuration,
+          onSelectionChanged: (sel, _) => onSelectionChanged?.call(sel),
+        ),
+        ElevatedButton(
+          child: const Text('Button'),
+          onPressed: onButtonPressed,
+        ),
+      ],
+    );
+
+    return MediaQuery(
+      data: const MediaQueryData(),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: withNavigator
+            ? Navigator(
+                onGenerateRoute: (_) {
+                  return MaterialPageRoute<void>(builder: (context) => child);
+                },
+              )
+            : child,
+      ),
+    );
+  }
+}
