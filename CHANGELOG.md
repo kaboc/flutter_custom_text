@@ -1,3 +1,12 @@
+## 0.6.0-dev.3
+
+- Add tests for CustomText.selectable.
+- Suppress warnings in Flutter 3.
+- Minor refactoring.
+- Update lint rules.
+- Update and improve the example app.
+- Improve documentation.
+
 ## 0.6.0-dev.2
 
 - Fix issue of persistent hover style.
