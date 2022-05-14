@@ -526,6 +526,8 @@ void main() {
       await tester.pump();
 
       final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      addTearDown(gesture.removePointer);
+
       await gesture.addPointer(location: Offset.zero);
       final center = tester.getCenter(find.byType(RichText).first);
 
@@ -548,8 +550,6 @@ void main() {
       expect(span1B?.style?.color, const Color(0xFF111111));
       expect(span2B?.style?.color, const Color(0xFF222222));
       expect(span3B?.style?.color, const Color(0xFF333333));
-
-      await gesture.removePointer();
     });
 
     testWidgets(
@@ -568,14 +568,14 @@ void main() {
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pump();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF333333));
-
-        await gesture.removePointer();
 
         tapDownSpan(spanA);
         await tester.pump();

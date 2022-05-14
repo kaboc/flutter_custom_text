@@ -23,7 +23,7 @@ class ExamplePage extends StatefulWidget {
   final String? additionalInfo;
 
   @override
-  _ExamplePageState createState() => _ExamplePageState();
+  State<ExamplePage> createState() => _ExamplePageState();
 }
 
 class _ExamplePageState extends State<ExamplePage> {

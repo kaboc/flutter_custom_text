@@ -203,7 +203,7 @@ class CustomText extends StatefulWidget {
   final SelectionChangedCallback? onSelectionChanged;
 
   @override
-  _CustomTextState createState() => _CustomTextState();
+  State<CustomText> createState() => _CustomTextState();
 }
 
 class _CustomTextState extends State<CustomText> {

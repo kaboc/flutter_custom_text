@@ -7,7 +7,7 @@ class Example9 extends StatefulWidget {
   final void Function(String) output;
 
   @override
-  _Example9State createState() => _Example9State();
+  State<Example9> createState() => _Example9State();
 }
 
 class _Example9State extends State<Example9> {
