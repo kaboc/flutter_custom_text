@@ -267,7 +267,10 @@ class _CustomTextState extends State<CustomText> {
     final oldNotifier = _textSpanNotifier;
     final notifier = _initSpanNotifier();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // TODO: Remove this when if supporting only Flutter >=3.0.0.
+    T? _ambiguate<T>(T? value) => value;
+
+    _ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
       notifier
         ..elements = oldNotifier.elements
         ..buildSpan(style: widget.style);
