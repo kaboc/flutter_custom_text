@@ -111,6 +111,7 @@ class CustomTextEditingController extends TextEditingController {
 
   TextStyle? _style;
 
+  /// The list of [TextElement]s as a result of parsing.
   List<TextElement> get elements =>
       List.unmodifiable(_textSpanNotifier.elements);
 

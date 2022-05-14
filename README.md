@@ -41,6 +41,17 @@ CustomText(
 )
 ```
 
+#### Preset matchers
+
+The matchers listed below are for general use.
+If stricter patterns are necessary, create custom matchers instead of using these.
+
+- [UrlMatcher][UrlMatcher] for URLs
+- [EmailMatcher][EmailMatcher] for email addresses
+- [TelMatcher][TelMatcher] for phone numbers
+- [LinkMatcher][LinkMatcher] for Markdown-style links or for use with
+  [SelectiveDefinition][SelectiveDefinition]
+
 ### Unique styles and actions per definition
 
 example2.dart ([Code][example2] / [Demo][example2_demo])
@@ -87,13 +98,13 @@ CustomText(
 )
 ```
 
-### Overwriting match patterns
+### Overwriting patterns
 
 example3.dart ([Code][example3] / [Demo][example3_demo])
 
 ![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
-An example to overwrite the default match pattern of [TelMatcher][TelMatcher].
+An example to overwrite the default pattern of [TelMatcher][TelMatcher].
 
 The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` format as a phone number.
 
@@ -108,13 +119,13 @@ CustomText(
 )
 ```
 
-### Custom matchers
+### Custom pattern
 
 example4.dart ([Code][example4] / [Demo][example4_demo])
 
 ![example4](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
 
-An example to parse hashtags using a custom matcher and apply styles to them.
+An example to parse hashtags with a custom pattern and apply styles to them.
 
 A hashtag has a wide variety of definitions, but here as an example, it is defined
 as a string that starts with "#" followed by an alphabet and then by alphanumerics,
@@ -192,7 +203,7 @@ CustomText(
 ```
 
 `LinkMatcher` used together with `SelectiveDefinition` is handy not only for making a text link
-but also for just decorating the bracketed strings (but not showing the brackets).
+but also for just decorating the bracketed strings (but not showing the bracket symbols).
 
 ```dart
 // "def" and "jkl" are displayed in red.
@@ -217,7 +228,7 @@ example6.dart ([Code][example6] / [Demo][example6_demo])
 An example to show both strings and icons using [SpanDefinition][SpanDefinition].
 
 The builder parameter takes a function returning an [InlineSpan][InlineSpan].
-The function is provided with matched string and groups, so it is possible to compose
+The function is provided with the matching string and groups, so it is possible to compose
 an `InlineSpan` flexibly with them.
 
 ```dart
@@ -346,9 +357,9 @@ final controller = CustomTextEditingController(
     ...
   ],
 );
+```
 
-...
-
+```dart
 @override
 Widget build(BuildContext context) {
   return TextField(
@@ -367,14 +378,16 @@ Widget build(BuildContext context) {
 ## Limitations
 
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
-[Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using `TelMatcher`
-as is if your app targets Safari.
+  [Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using
+  `TelMatcher` as is if your app targets Safari.
+- Highlight of selected text in `CustomText.selectable` is lost if the widget is rebuild,
+  e.g. when `hoverStyle` is applied or removed.
 
 ## Links
 
 - [text_parser][text_parser]
     - CustomText is dependent on the `text_parser` package made by the same author.
-    See its documentation for details if you're interested or for troubleshooting on parsing.
+      See its documentation for details if you're interested or for troubleshooting on parsing.
 
 [demo]: https://kaboc.github.io/flutter_custom_text/
 [example]: https://github.com/kaboc/flutter_custom_text/tree/main/example
@@ -396,7 +409,11 @@ as is if your app targets Safari.
 [example7_demo]: https://kaboc.github.io/flutter_custom_text/#/7
 [example8_demo]: https://kaboc.github.io/flutter_custom_text/#/8
 [example9_demo]: https://kaboc.github.io/flutter_custom_text/#/9
+[TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
+[UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
+[EmailMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/EmailMatcher-class.html
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher-class.html
+[LinkMatcher]: https://pub.dev/documentation/custom_text/latest/custom_text/LinkMatcher-class.html
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
