@@ -58,26 +58,26 @@ final pages = {
     additionalInfo: 'Tapping on text in this example does not print '
         'anything here.',
   ),
-  2: ExamplePage(
+  2: const ExamplePage(
     id: 2,
     title: 'Unique styles and actions',
     description: 'An example to apply styles to URLs, email addresses and '
         'phone numbers, and enable them to be tapped / long-pressed.\n'
         'Phone numbers are styled differently according to the `matchStyle` '
         'and `tapStyle` set in the definition.',
-    builder: (outputFunc) => Example2(outputFunc),
+    builder: Example2.new,
     additionalInfo: 'Try tapping / long-pressing on coloured strings.',
   ),
-  3: ExamplePage(
+  3: const ExamplePage(
     id: 3,
     title: 'Overwritten match pattern',
     description: 'An example to overwrite the default match pattern of '
         '`TelMatcher`.\n'
         'The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` '
         'format as a phone number.',
-    builder: (outputFunc) => Example3(outputFunc),
+    builder: Example3.new,
   ),
-  4: ExamplePage(
+  4: const ExamplePage(
     id: 4,
     title: 'Custom pattern',
     description: 'An example to parse hashtags using a custom matcher '
@@ -86,9 +86,9 @@ final pages = {
         'example, it is defined as a string that starts with `#` followed '
         'by an alphabet and then by alphanumerics, and is enclosed with '
         'white spaces.',
-    builder: (outputFunc) => Example4(outputFunc),
+    builder: Example4.new,
   ),
-  5: ExamplePage(
+  5: const ExamplePage(
     id: 5,
     title: 'SelectiveDefinition',
     description:
@@ -98,9 +98,9 @@ final pages = {
         'the tap callbacks is selected individually from the fragments '
         '(`groups`) that have matched the patterns enclosed with '
         'parentheses within the match pattern.',
-    builder: (outputFunc) => Example5(outputFunc),
+    builder: Example5.new,
   ),
-  6: ExamplePage(
+  6: const ExamplePage(
     id: 6,
     title: 'SpanDefinition',
     description: 'An example to show both strings and icons using '
@@ -108,28 +108,28 @@ final pages = {
         'The builder parameter takes a function returning an `InlineSpan`.\n'
         'The function is provided with matched string and groups, so '
         'it is possible to construct an `InlineSpan` flexibly with them.',
-    builder: (outputFunc) => Example6(outputFunc),
+    builder: Example6.new,
   ),
-  7: ExamplePage(
+  7: const ExamplePage(
     id: 7,
     title: 'Mouse cursor and text style on hover',
     description: 'An example to show the feature of changing the mouse '
         'cursor and the text style on hover.\n'
         'The mouse cursor type set to `mouseCursor` of a definition is '
         'used while the mouse pointer hovers over a matching string.',
-    builder: (outputFunc) => Example7(outputFunc),
+    builder: Example7.new,
     additionalInfo: 'Run the app on desktop to see how this example '
         'looks and behaves on hover over some strings.',
   ),
-  8: ExamplePage(
+  8: const ExamplePage(
     id: 8,
     title: 'CustomText.selectable',
     description: 'A example of selectable CustomText.\n'
         'This is almost the same as example2, but different in that this '
         'one is based on `SelectableText`, allowing text to be selected.',
-    builder: (outputFunc) => Example8(outputFunc),
+    builder: Example8.new,
   ),
-  9: ExamplePage(
+  9: const ExamplePage(
     id: 9,
     title: 'CustomTextEditingController',
     description: 'An example to decorate URLs, email addresses and '
@@ -138,7 +138,7 @@ final pages = {
         '`CustomTextEditingController`.\n'
         'Also be careful not to use CustomTextEditingController for '
         'long text. It will lead to poor performance.',
-    builder: (outputFunc) => Example9(outputFunc),
+    builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
         'URLs become tappable, and a hover effect is enabled on hashtags.',
