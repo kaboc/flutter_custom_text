@@ -259,6 +259,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required String text,
     required Definition definition,
   }) {
+    // Avoids the range error that occurs if text spans are
+    // reduced while one of them is still hovered on.
+    if (index >= value.children!.length) {
+      return;
+    }
+
     // For causing a redraw, it is necessary to replace
     // the whole TextSpan as well as update a child.
     value = TextSpan(
@@ -277,6 +283,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required String link,
     required Definition definition,
   }) {
+    // Avoids the range error that occurs if text spans are
+    // reduced while one of them is still hovered on.
+    if (index >= value.children!.length) {
+      return;
+    }
+
     // Prevents the issue #6 by avoiding updating the value
     // after the notifier is no longer available.
     if (!_disposed) {
