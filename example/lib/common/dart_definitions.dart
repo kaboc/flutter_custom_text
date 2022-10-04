@@ -46,7 +46,7 @@ const dartDefinitions = [
 class _DartCommentMatcher extends TextMatcher {
   const _DartCommentMatcher()
       : super(
-          r'//.*',
+          '//.*',
         );
 }
 
@@ -56,10 +56,10 @@ class _DartKeywordMatcher extends TextMatcher {
           // Avoid lookbehind assertion for Safari
           // r'(?<=\s|^)'
           r'(\s|^)'
-          r'(?:import|part|const|var|final|class|mixin|extends|implements|'
-          r'with|super|assert|@override|required|return|if|else|for|in|'
-          r'switch|do|while|continue|break|is|async|await|static|get|set|'
-          r'late|covariant|print)'
+          '(?:import|part|const|var|final|class|mixin|extends|implements|'
+          'with|super|assert|@override|required|return|if|else|for|in|'
+          'switch|do|while|continue|break|is|async|await|static|get|set|'
+          'late|covariant|print)'
           r'(?=[\s(.;]|$)',
         );
 }
@@ -70,7 +70,7 @@ class _DartTypeMatcher extends TextMatcher {
           // Avoid lookbehind assertion for Safari
           // r'(?<=\s|^)'
           r'(\s|^)'
-          r'(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
+          '(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
           r'(?=[\s<]|$)',
         );
 }
@@ -100,18 +100,18 @@ class _DartValueMatcher extends TextMatcher {
 }
 
 class _DartStringMatcher extends TextMatcher {
-  const _DartStringMatcher() : super(r"r?'.*'");
+  const _DartStringMatcher() : super("r?'.*'");
 }
 
 class _ClassMatcher extends TextMatcher {
   const _ClassMatcher()
       : super(
-          r'(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
-          r'SelectiveDefinition|SpanDefinition|HashTagMatcher|LinkMatcher|'
-          r'TextMatcher)',
+          '(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
+          'SelectiveDefinition|SpanDefinition|HashTagMatcher|LinkMatcher|'
+          'TextMatcher)',
         );
 }
 
 class _ParameterMatcher extends TextMatcher {
-  const _ParameterMatcher() : super(r'[a-zA-Z]+(?=:)');
+  const _ParameterMatcher() : super('[a-zA-Z]+(?=:)');
 }

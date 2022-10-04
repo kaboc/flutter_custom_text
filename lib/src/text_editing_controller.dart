@@ -22,7 +22,7 @@ class CustomTextEditingController extends TextEditingController {
   /// to decorate parts of editable text and/or enable clicks on them
   /// according to specified definitions.
   CustomTextEditingController({
-    String? text,
+    super.text,
     required this.definitions,
     this.parserOptions = const ParserOptions(),
     this.style,
@@ -32,7 +32,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onTap,
     this.onLongPress,
     this.longPressDuration,
-  }) : super(text: text) {
+  }) {
     _init();
   }
 
@@ -43,7 +43,7 @@ class CustomTextEditingController extends TextEditingController {
   /// to decorate parts of editable text and/or enable clicks on them
   /// according to specified definitions.
   CustomTextEditingController.fromValue(
-    TextEditingValue? value, {
+    super.value, {
     required this.definitions,
     this.parserOptions = const ParserOptions(),
     this.style,
@@ -53,7 +53,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onTap,
     this.onLongPress,
     this.longPressDuration,
-  }) : super.fromValue(value) {
+  }) : super.fromValue() {
     _init();
   }
 

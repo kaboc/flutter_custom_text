@@ -70,8 +70,8 @@ class CustomTextWidget extends StatelessWidget {
             longPressDuration: longPressDuration,
           ),
           ElevatedButton(
-            child: const Text('Button'),
             onPressed: onButtonPressed,
+            child: const Text('Button'),
           ),
         ],
       ),
@@ -273,8 +273,8 @@ class SelectableCustomTextWidget extends StatelessWidget {
           onSelectionChanged: (sel, _) => onSelectionChanged?.call(sel),
         ),
         ElevatedButton(
-          child: const Text('Button'),
           onPressed: onButtonPressed,
+          child: const Text('Button'),
         ),
       ],
     );

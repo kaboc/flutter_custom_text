@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:text_parser/text_parser.dart';
-
 import 'definition_base.dart';
 import 'text.dart';
 
@@ -24,22 +22,14 @@ class TextDefinition extends Definition {
   /// [SystemMouseCursors.click] is automatically used if [onTap] or
   /// [onLongPress] is set.
   const TextDefinition({
-    required TextMatcher matcher,
-    TextStyle? matchStyle,
-    TextStyle? tapStyle,
-    TextStyle? hoverStyle,
-    void Function(String)? onTap,
-    void Function(String)? onLongPress,
-    MouseCursor? mouseCursor,
-  }) : super(
-          matcher: matcher,
-          matchStyle: matchStyle,
-          tapStyle: tapStyle,
-          hoverStyle: hoverStyle,
-          onTap: onTap,
-          onLongPress: onLongPress,
-          mouseCursor: mouseCursor,
-        );
+    required super.matcher,
+    super.matchStyle,
+    super.tapStyle,
+    super.hoverStyle,
+    super.onTap,
+    super.onLongPress,
+    super.mouseCursor,
+  });
 }
 
 /// A class that is similar to [TextDefinition] but different in that this
@@ -69,26 +59,16 @@ class SelectiveDefinition extends Definition {
   /// [SystemMouseCursors.click] is automatically used if [onTap] or
   /// [onLongPress] is set.
   const SelectiveDefinition({
-    required TextMatcher matcher,
-    required String Function(List<String?>) labelSelector,
-    String Function(List<String?>)? tapSelector,
-    TextStyle? matchStyle,
-    TextStyle? tapStyle,
-    TextStyle? hoverStyle,
-    void Function(String)? onTap,
-    void Function(String)? onLongPress,
-    MouseCursor? mouseCursor,
-  }) : super(
-          matcher: matcher,
-          labelSelector: labelSelector,
-          tapSelector: tapSelector,
-          matchStyle: matchStyle,
-          tapStyle: tapStyle,
-          hoverStyle: hoverStyle,
-          onTap: onTap,
-          onLongPress: onLongPress,
-          mouseCursor: mouseCursor,
-        );
+    required super.matcher,
+    required super.labelSelector,
+    super.tapSelector,
+    super.matchStyle,
+    super.tapStyle,
+    super.hoverStyle,
+    super.onTap,
+    super.onLongPress,
+    super.mouseCursor,
+  });
 }
 
 /// A class that defines parsing rules and the string or widget to be
@@ -102,10 +82,7 @@ class SpanDefinition extends Definition {
   /// function to return an object of a type derived from [InlineSpan],
   /// like [WidgetSpan], to display it instead of the matched string.
   const SpanDefinition({
-    required TextMatcher matcher,
-    required InlineSpan Function(String, List<String?>) builder,
-  }) : super(
-          matcher: matcher,
-          builder: builder,
-        );
+    required super.matcher,
+    required super.builder,
+  });
 }

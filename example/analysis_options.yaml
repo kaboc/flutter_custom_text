@@ -2,5 +2,4 @@ include: ../analysis_options.yaml
 
 linter:
   rules:
-    unnecessary_raw_strings: false
     use_key_in_widget_constructors: false

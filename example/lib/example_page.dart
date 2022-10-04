@@ -155,9 +155,7 @@ class _Output extends StatelessWidget {
         color: Colors.grey.shade300,
         child: Scrollbar(
           controller: scrollController,
-          // TODO: Update here if supporting only Flutter >=3.0.0.
-          // ignore: deprecated_member_use
-          isAlwaysShown: true,
+          thumbVisibility: true,
           child: SingleChildScrollView(
             controller: scrollController,
             child: Padding(
@@ -165,9 +163,7 @@ class _Output extends StatelessWidget {
               child: ValueListenableBuilder<String>(
                 valueListenable: resultNotifier,
                 builder: (_, result, __) {
-                  // TODO: Update here if supporting only Flutter >=3.0.0.
-                  // ignore: unnecessary_non_null_assertion
-                  WidgetsBinding.instance!
+                  WidgetsBinding.instance
                       .addPostFrameCallback((_) => _scroll());
                   return Text(result);
                 },

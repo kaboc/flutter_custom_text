@@ -66,5 +66,5 @@ class _FilenameMatcher extends TextMatcher {
 }
 
 class _CodeMatcher extends TextMatcher {
-  const _CodeMatcher() : super(r'`(.+?)`');
+  const _CodeMatcher() : super('`(.+?)`');
 }

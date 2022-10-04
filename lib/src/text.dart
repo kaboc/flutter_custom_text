@@ -22,7 +22,7 @@ class CustomText extends StatefulWidget {
   /// clicks on them according to specified definitions.
   const CustomText(
     this.text, {
-    Key? key,
+    super.key,
     required this.definitions,
     this.parserOptions = const ParserOptions(),
     this.style,
@@ -60,14 +60,13 @@ class CustomText extends StatefulWidget {
         enableInteractiveSelection = false,
         selectionControls = null,
         scrollPhysics = null,
-        onSelectionChanged = null,
-        super(key: key);
+        onSelectionChanged = null;
 
   /// Creates a selectable text widget that decorates strings in it
   /// and/or enables clicks on them according to specified definitions.
   const CustomText.selectable(
     this.text, {
-    Key? key,
+    super.key,
     required this.definitions,
     this.parserOptions = const ParserOptions(),
     this.style,
@@ -105,8 +104,7 @@ class CustomText extends StatefulWidget {
   })  : _isSelectable = true,
         locale = null,
         softWrap = null,
-        overflow = null,
-        super(key: key);
+        overflow = null;
 
   final bool _isSelectable;
 
@@ -267,10 +265,7 @@ class _CustomTextState extends State<CustomText> {
     final oldNotifier = _textSpanNotifier;
     final notifier = _initSpanNotifier();
 
-    // TODO: Remove this when if supporting only Flutter >=3.0.0.
-    T? _ambiguate<T>(T? value) => value;
-
-    _ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       notifier
         ..elements = oldNotifier.elements
         ..buildSpan(style: widget.style);

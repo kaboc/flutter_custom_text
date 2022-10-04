@@ -7,5 +7,5 @@ class LinkMatcher extends TextMatcher {
   /// format.
   ///
   /// The preset pattern is overwritten if a custom pattern is provided.
-  const LinkMatcher([String pattern = r'\[(.+?)\]\((.*?)\)']) : super(pattern);
+  const LinkMatcher([super.pattern = r'\[(.+?)\]\((.*?)\)']);
 }
