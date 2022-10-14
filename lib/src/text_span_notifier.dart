@@ -39,6 +39,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   List<TextElement> elements = [];
   final Map<int, TapGestureRecognizer> _tapRecognizers = {};
   bool _disposed = false;
+  bool _isBuilding = false;
 
   TextStyle? _style;
   Timer? _longPressTimer;
@@ -58,6 +59,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   void buildSpan({required TextStyle? style, required int oldElementsLength}) {
+    _isBuilding = true;
     _style = style;
 
     value = TextSpan(
@@ -108,6 +110,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       _tapRecognizers[i]?.dispose();
       _tapRecognizers.remove(i);
     }
+
+    _isBuilding = false;
   }
 
   TextSpan _nonTappableTextSpan({
@@ -130,7 +134,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     return TextSpan(
       text: label,
-      style: _hoverIndex == index ? hoverStyle : matchStyle,
+      // hoverStyle is cancelled when text spans are built.
+      // Otherwise, if a span with hoverStyle is being hovered on
+      // during it and then gets a different index in new spans, the
+      // style is mistakenly applied to a new span at the original index.
+      style: _hoverIndex == index && !_isBuilding ? hoverStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
       onEnter: hasHoverStyle
           ? (event) => _updateHoverIndex(
@@ -186,9 +194,15 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     return TextSpan(
       text: label,
-      style: _tapIndex == index
-          ? tapStyle
-          : (_hoverIndex == index ? hoverStyle : matchStyle),
+      // tapStyle and hoverStyle are cancelled when text spans are build.
+      // Otherwise, if a span with such a style is being tapped / hovered
+      // on during it and then gets a different index in new spans, the
+      // style is mistakenly applied to a new span at the original index.
+      style: _isBuilding
+          ? matchStyle
+          : _tapIndex == index
+              ? tapStyle
+              : (_hoverIndex == index ? hoverStyle : matchStyle),
       recognizer: _tapRecognizers[index],
       mouseCursor: definition.mouseCursor,
       onEnter: hasHoverStyle
