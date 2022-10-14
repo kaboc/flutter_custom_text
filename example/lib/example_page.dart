@@ -7,7 +7,7 @@ import 'package:custom_text_example/widgets/layouts.dart';
 
 class ExamplePage extends StatefulWidget {
   const ExamplePage({
-    required this.id,
+    required this.page,
     required this.title,
     required this.description,
     required this.builder,
@@ -15,7 +15,7 @@ class ExamplePage extends StatefulWidget {
     this.additionalInfo,
   });
 
-  final int id;
+  final int page;
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
@@ -40,7 +40,7 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     final description = Description(
-      id: widget.id,
+      page: widget.page,
       description: widget.description,
     );
     final example = _Example(
@@ -53,10 +53,8 @@ class _ExamplePageState extends State<ExamplePage> {
       scrollController: _scrollController,
     );
 
-    // MediaQueryData is used instead of LayoutBuilder to
-    // avoid size changes by a software keyboard that trigger
-    // switching of layout modes.
-    final size = MediaQuery.of(context).size;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +62,7 @@ class _ExamplePageState extends State<ExamplePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.article),
-            onPressed: () => context.go('/${widget.id}/code'),
+            onPressed: () => context.go('/${widget.page}/code'),
           ),
         ],
       ),
@@ -72,19 +70,23 @@ class _ExamplePageState extends State<ExamplePage> {
         onTap: FocusScope.of(context).unfocus,
         child: SafeArea(
           child: widget.hasOutput
-              ? size.width > size.height
-                  ? HorizontalLayout(
-                      maxWidth: size.width,
-                      description: description,
-                      example: example,
-                      output: output,
-                    )
-                  : VerticalLayout(
-                      maxHeight: size.height,
-                      description: description,
-                      example: example,
-                      output: output,
-                    )
+              ? LayoutBuilder(
+                  builder: (context, constraints) {
+                    return isLandscape
+                        ? HorizontalLayout(
+                            maxWidth: constraints.maxWidth,
+                            description: description,
+                            example: example,
+                            output: output,
+                          )
+                        : VerticalLayout(
+                            maxHeight: constraints.maxHeight,
+                            description: description,
+                            example: example,
+                            output: output,
+                          );
+                  },
+                )
               : SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

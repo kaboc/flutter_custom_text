@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(fontSize: 18.0, height: 1.5),
         ),
       ),
+      routeInformationProvider: router.routeInformationProvider,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
     );

@@ -4,9 +4,9 @@ import 'package:custom_text/custom_text.dart';
 import 'package:go_router/go_router.dart';
 
 class Description extends StatelessWidget {
-  const Description({required this.id, required this.description});
+  const Description({required this.page, required this.description});
 
-  final int id;
+  final int page;
   final String description;
 
   @override
@@ -21,7 +21,7 @@ class Description extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              'example$id.dart',
+              'example$page.dart',
               definitions: [
                 TextDefinition(
                   matcher: const _FilenameMatcher(),
@@ -30,7 +30,7 @@ class Description extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
                   tapStyle: const TextStyle(),
-                  onTap: (_) => context.go('/$id/code'),
+                  onTap: (_) => context.go('/$page/code'),
                 ),
               ],
               style: TextStyle(

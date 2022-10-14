@@ -13,8 +13,8 @@ import 'package:custom_text_example/examples/example8.dart';
 import 'package:custom_text_example/examples/example9.dart';
 import 'package:custom_text_example/home_page.dart';
 
-int? _id(GoRouterState state) {
-  return int.tryParse(state.params['id'] ?? '');
+extension on GoRouterState {
+  int? get page => int.tryParse(params['page'] ?? '');
 }
 
 final router = GoRouter(
@@ -24,32 +24,29 @@ final router = GoRouter(
       builder: (_, __) => const HomePage(),
       routes: [
         GoRoute(
-          path: ':id',
-          builder: (_, state) => pages[_id(state)]!,
+          path: ':page',
+          builder: (_, state) => pages[state.page]!,
           routes: [
             GoRoute(
               path: 'code',
-              builder: (_, state) => CodeViewPage(id: _id(state)!),
+              builder: (_, state) {
+                return CodeViewPage(filename: 'example${state.page}.dart');
+              },
             ),
           ],
+          redirect: (state) {
+            final page = state.page;
+            return page == null || page < 0 || page > pages.length ? '/' : null;
+          },
         ),
       ],
     ),
   ],
-  redirect: (state) {
-    if (state.params.containsKey('id')) {
-      final id = _id(state);
-      if (id == null || id < 0 || id > pages.length) {
-        return '/';
-      }
-    }
-    return null;
-  },
 );
 
 final pages = {
   1: ExamplePage(
-    id: 1,
+    page: 1,
     title: 'Simple',
     description: 'A very basic example to apply a colour to URLs and email '
         'addresses.\nThey are not tappable in this example.',
@@ -59,7 +56,7 @@ final pages = {
         'anything here.',
   ),
   2: const ExamplePage(
-    id: 2,
+    page: 2,
     title: 'Unique styles and actions',
     description: 'An example to apply styles to URLs, email addresses and '
         'phone numbers, and enable them to be tapped / long-pressed.\n'
@@ -69,7 +66,7 @@ final pages = {
     additionalInfo: 'Try tapping / long-pressing on coloured strings.',
   ),
   3: const ExamplePage(
-    id: 3,
+    page: 3,
     title: 'Overwritten match pattern',
     description: 'An example to overwrite the default match pattern of '
         '`TelMatcher`.\n'
@@ -78,7 +75,7 @@ final pages = {
     builder: Example3.new,
   ),
   4: const ExamplePage(
-    id: 4,
+    page: 4,
     title: 'Custom pattern',
     description: 'An example to parse hashtags using a custom matcher '
         'and apply styles to them.\n'
@@ -89,7 +86,7 @@ final pages = {
     builder: Example4.new,
   ),
   5: const ExamplePage(
-    id: 5,
+    page: 5,
     title: 'SelectiveDefinition',
     description:
         'An example to parse markdown-style links, like `[label](url)` '
@@ -101,7 +98,7 @@ final pages = {
     builder: Example5.new,
   ),
   6: const ExamplePage(
-    id: 6,
+    page: 6,
     title: 'SpanDefinition',
     description: 'An example to show both strings and icons using '
         '`SpanDefinition`.\n'
@@ -111,7 +108,7 @@ final pages = {
     builder: Example6.new,
   ),
   7: const ExamplePage(
-    id: 7,
+    page: 7,
     title: 'Mouse cursor and text style on hover',
     description: 'An example to show the feature of changing the mouse '
         'cursor and the text style on hover.\n'
@@ -122,7 +119,7 @@ final pages = {
         'looks and behaves on hover over some strings.',
   ),
   8: const ExamplePage(
-    id: 8,
+    page: 8,
     title: 'CustomText.selectable',
     description: 'A example of selectable CustomText.\n'
         'This is almost the same as example2, but different in that this '
@@ -130,14 +127,14 @@ final pages = {
     builder: Example8.new,
   ),
   9: const ExamplePage(
-    id: 9,
+    page: 9,
     title: 'CustomTextEditingController',
-    description: 'An example to decorate URLs, email addresses and '
-        'hashtags in `TextField` using `CustomTextEditingController`.\n\n'
-        'Note that only `TextDefinition` is available for '
-        '`CustomTextEditingController`.\n'
-        'Also be careful not to use CustomTextEditingController for '
-        'long text. It will lead to poor performance.',
+    description: 'An example to decorate strings in `TextField` using '
+        '`CustomTextEditingController`.\n\n'
+        'Notice:\n'
+        '* SelectiveDefinition and SpanDefinition are not available '
+        'for CustomTextEditingController.\n'
+        '* Not suitable for extremely long text.',
     builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
