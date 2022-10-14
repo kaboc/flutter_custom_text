@@ -170,7 +170,10 @@ class CustomTextEditingController extends TextEditingController {
     if (newText != oldText) {
       _textSpanNotifier
         ..elements = await _parser.parse(text, useIsolate: false)
-        ..buildSpan(style: style ?? _style);
+        ..buildSpan(
+          style: style ?? _style,
+          oldElementsLength: _textSpanNotifier.elements.length,
+        );
     }
   }
 }

@@ -268,7 +268,10 @@ class _CustomTextState extends State<CustomText> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifier
         ..elements = oldNotifier.elements
-        ..buildSpan(style: widget.style);
+        ..buildSpan(
+          style: widget.style,
+          oldElementsLength: oldNotifier.elements.length,
+        );
       oldNotifier.dispose();
     });
 
@@ -290,7 +293,10 @@ class _CustomTextState extends State<CustomText> {
     if (shouldUpdateSpan) {
       _textSpanNotifier = _updateSpanNotifier();
     } else {
-      _textSpanNotifier.buildSpan(style: widget.style);
+      _textSpanNotifier.buildSpan(
+        style: widget.style,
+        oldElementsLength: _textSpanNotifier.elements.length,
+      );
     }
   }
 

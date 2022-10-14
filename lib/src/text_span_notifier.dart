@@ -57,7 +57,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     super.dispose();
   }
 
-  void buildSpan({required TextStyle? style}) {
+  void buildSpan({required TextStyle? style, required int oldElementsLength}) {
     _style = style;
 
     value = TextSpan(
@@ -98,6 +98,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
               );
       }).toList(),
     );
+
+    // If the number of new elements is smaller than that of
+    // the previous ones, the elements after the current max index
+    // are no longer necessary.
+    for (var i = elements.length; i < oldElementsLength; i++) {
+      _tapRecognizers[i]?.dispose();
+      _tapRecognizers.remove(i);
+    }
   }
 
   TextSpan _nonTappableTextSpan({
@@ -113,6 +121,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       matchStyle = _style!.merge(matchStyle);
       hoverStyle = _style!.merge(hoverStyle);
     }
+
+    _tapRecognizers[index]?.dispose();
+    _tapRecognizers.remove(index);
 
     return TextSpan(
       text: text,
@@ -205,10 +216,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required void Function(Type, String)? onTap,
     required void Function(Type, String)? onLongPress,
   }) {
+    // Reuses the tap recognizer instead of discarding
+    // the previous one and creating a new one.
     _tapRecognizers[index] ??= TapGestureRecognizer();
 
-    _tapRecognizers[index]!
-      ..onTapDown = (_) {
+    _tapRecognizers[index]
+      ?..onTapDown = (_) {
         if (definition.onLongPress != null) {
           _longPressTimer = Timer(
             _longPressDuration,
