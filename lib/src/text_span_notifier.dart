@@ -36,20 +36,19 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   final void Function(Type, String)? onLongPress;
   final Duration _longPressDuration;
 
+  List<TextElement> elements = [];
+  final Map<int, TapGestureRecognizer> _tapRecognizers = {};
   bool _disposed = false;
 
   TextStyle? _style;
-  List<TextElement> elements = [];
-  final Map<int, TapGestureRecognizer> _tapRecognizers = {};
-
-  Timer? _timer;
+  Timer? _longPressTimer;
   int? _tapIndex;
   int? _hoverIndex;
   Offset? _hoverPosition;
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _longPressTimer?.cancel();
     _tapRecognizers
       ..forEach((_, recognizer) => recognizer.dispose())
       ..clear();
@@ -64,14 +63,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     value = TextSpan(
       children: elements.asMap().entries.map((entry) {
         final index = entry.key;
-        final elm = entry.value;
+        final element = entry.value;
 
-        final def = _definitions[elm.matcherType];
+        final def = _definitions[element.matcherType];
         if (def == null) {
-          return TextSpan(text: elm.text, style: style);
+          return TextSpan(text: element.text, style: style);
         }
         if (def is SpanDefinition) {
-          return def.builder!(elm.text, elm.groups);
+          return def.builder!(element.text, element.groups);
         }
 
         final isTappable = def.onTap != null ||
@@ -80,16 +79,16 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onLongPress != null;
 
         final spanText = def.labelSelector == null
-            ? elm.text
-            : def.labelSelector!(elm.groups);
+            ? element.text
+            : def.labelSelector!(element.groups);
 
         return isTappable
             ? _tappableTextSpan(
                 index: index,
                 text: spanText,
                 link: def.tapSelector == null
-                    ? elm.text
-                    : def.tapSelector!(elm.groups),
+                    ? element.text
+                    : def.tapSelector!(element.groups),
                 definition: def,
               )
             : _nonTappableTextSpan(
@@ -211,12 +210,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _tapRecognizers[index]!
       ..onTapDown = (_) {
         if (definition.onLongPress != null) {
-          _timer = Timer(
+          _longPressTimer = Timer(
             _longPressDuration,
             () => definition.onLongPress!(link),
           );
         } else if (onLongPress != null) {
-          _timer = Timer(
+          _longPressTimer = Timer(
             _longPressDuration,
             () => onLongPress(definition.matcher.runtimeType, link),
           );
@@ -231,18 +230,22 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         );
       }
       ..onTapUp = (_) {
-        if (_timer?.isActive ?? true) {
+        // A tap is valid if long presses are not enabled
+        // or if the press was shorter than a long press and
+        // therefore the timer is still active.
+        final timer = _longPressTimer;
+        if (timer == null || timer.isActive) {
           if (definition.onTap != null) {
             definition.onTap!(link);
           } else if (onTap != null) {
             onTap(definition.matcher.runtimeType, link);
           }
         }
-        _tapRecognizers[index]!.onTapCancel!();
+        _tapRecognizers[index]?.onTapCancel!();
       }
       ..onTapCancel = () {
-        _timer?.cancel();
-        _timer = null;
+        _longPressTimer?.cancel();
+        _longPressTimer = null;
 
         _updateTapIndex(
           index: index,

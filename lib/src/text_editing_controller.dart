@@ -106,9 +106,8 @@ class CustomTextEditingController extends TextEditingController {
   final Duration? longPressDuration;
 
   late TextParser _parser;
-
   late CustomTextSpanNotifier _textSpanNotifier;
-
+  String _oldText = '';
   TextStyle? _style;
 
   /// The list of [TextElement]s as a result of parsing.
@@ -124,6 +123,16 @@ class CustomTextEditingController extends TextEditingController {
       ..dispose();
 
     super.dispose();
+  }
+
+  @override
+  TextSpan buildTextSpan({
+    required BuildContext context,
+    TextStyle? style,
+    required bool withComposing,
+  }) {
+    _style = style;
+    return _textSpanNotifier.value;
   }
 
   void _init() {
@@ -154,21 +163,14 @@ class CustomTextEditingController extends TextEditingController {
   }
 
   Future<void> _onTextChanged() async {
-    final oldText = _textSpanNotifier.elements.map((v) => v.text).join();
-    if (text != oldText) {
+    final oldText = _oldText;
+    final newText = text;
+    _oldText = text;
+
+    if (newText != oldText) {
       _textSpanNotifier
         ..elements = await _parser.parse(text, useIsolate: false)
         ..buildSpan(style: style ?? _style);
     }
-  }
-
-  @override
-  TextSpan buildTextSpan({
-    required BuildContext context,
-    TextStyle? style,
-    required bool withComposing,
-  }) {
-    _style = style;
-    return _textSpanNotifier.value;
   }
 }

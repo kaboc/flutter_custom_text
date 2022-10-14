@@ -32,17 +32,19 @@ class ParserOptions {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ParserOptions &&
+          runtimeType == other.runtimeType &&
           multiLine == other.multiLine &&
           caseSensitive == other.caseSensitive &&
           unicode == other.unicode &&
           dotAll == other.dotAll;
 
   @override
-  int get hashCode =>
-      multiLine.hashCode ^
-      caseSensitive.hashCode ^
-      unicode.hashCode ^
-      dotAll.hashCode;
+  int get hashCode => Object.hashAll([
+        multiLine,
+        caseSensitive,
+        unicode,
+        dotAll,
+      ]);
 
   @override
   String toString() => 'ParserOptions('
