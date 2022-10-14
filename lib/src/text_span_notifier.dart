@@ -78,14 +78,15 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onTap != null ||
             onLongPress != null;
 
-        final spanText = def.labelSelector == null
+        final label = def.labelSelector == null
             ? element.text
             : def.labelSelector!(element.groups);
 
         return isTappable
             ? _tappableTextSpan(
                 index: index,
-                text: spanText,
+                text: element.text,
+                label: label,
                 link: def.tapSelector == null
                     ? element.text
                     : def.tapSelector!(element.groups),
@@ -93,7 +94,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
               )
             : _nonTappableTextSpan(
                 index: index,
-                text: spanText,
+                text: element.text,
+                label: label,
                 definition: def,
               );
       }).toList(),
@@ -111,6 +113,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   TextSpan _nonTappableTextSpan({
     required int index,
     required String text,
+    required String label,
     required Definition definition,
   }) {
     var matchStyle = definition.matchStyle ?? this.matchStyle;
@@ -126,7 +129,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _tapRecognizers.remove(index);
 
     return TextSpan(
-      text: text,
+      text: label,
       style: _hoverIndex == index ? hoverStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
       onEnter: hasHoverStyle
@@ -135,6 +138,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
                 index: index,
                 hovered: true,
                 text: text,
+                label: label,
                 definition: definition,
               )
           : null,
@@ -144,6 +148,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
                 index: index,
                 hovered: false,
                 text: text,
+                label: label,
                 definition: definition,
               )
           : null,
@@ -153,6 +158,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   TextSpan _tappableTextSpan({
     required int index,
     required String text,
+    required String label,
     required String link,
     required Definition definition,
   }) {
@@ -170,6 +176,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _configureRecognizer(
       index: index,
       text: text,
+      label: label,
       link: link,
       definition: definition,
       style: _style,
@@ -178,7 +185,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     );
 
     return TextSpan(
-      text: text,
+      text: label,
       style: _tapIndex == index
           ? tapStyle
           : (_hoverIndex == index ? hoverStyle : matchStyle),
@@ -190,6 +197,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
                 index: index,
                 hovered: true,
                 text: text,
+                label: label,
                 link: link,
                 definition: definition,
               )
@@ -200,6 +208,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
                 index: index,
                 hovered: false,
                 text: text,
+                label: label,
                 link: link,
                 definition: definition,
               )
@@ -210,6 +219,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   void _configureRecognizer({
     required int index,
     required String text,
+    required String label,
     required String link,
     required Definition definition,
     required TextStyle? style,
@@ -238,6 +248,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           index: index,
           tapped: true,
           text: text,
+          label: label,
           link: link,
           definition: definition,
         );
@@ -264,6 +275,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           index: index,
           tapped: false,
           text: text,
+          label: label,
           link: link,
           definition: definition,
         );
@@ -273,11 +285,17 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   void _updateNonTappableSpan({
     required int index,
     required String text,
+    required String label,
     required Definition definition,
   }) {
     // Avoids the range error that occurs if text spans are
     // reduced while one of them is still hovered on.
-    if (index >= value.children!.length) {
+    //
+    // Also suppresses an update of the span if the text at the index
+    // has changed because it means this method has been triggered by
+    // the hover handler of the old span.
+    // If it is not suppressed, the new span will get a wrong text.
+    if (index >= value.children!.length || elements[index].text != text) {
       return;
     }
 
@@ -288,6 +306,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         ..[index] = _nonTappableTextSpan(
           index: index,
           text: text,
+          label: label,
           definition: definition,
         ),
     );
@@ -296,12 +315,18 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   void _updateTappableSpan({
     required int index,
     required String text,
+    required String label,
     required String link,
     required Definition definition,
   }) {
     // Avoids the range error that occurs if text spans are
     // reduced while one of them is still hovered on.
-    if (index >= value.children!.length) {
+    //
+    // Also suppresses an update of the span if the text at the index
+    // has changed because it means this method has been triggered by
+    // the hover handler of the old span.
+    // If it is not suppressed, the new span will get a wrong text.
+    if (index >= value.children!.length || elements[index].text != text) {
       return;
     }
 
@@ -315,6 +340,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           ..[index] = _tappableTextSpan(
             index: index,
             text: text,
+            label: label,
             link: link,
             definition: definition,
           ),
@@ -326,6 +352,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required int index,
     required bool tapped,
     required String text,
+    required String label,
     required String link,
     required Definition definition,
   }) {
@@ -340,6 +367,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _updateTappableSpan(
       index: index,
       text: text,
+      label: label,
       link: link,
       definition: definition,
     );
@@ -350,6 +378,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required int index,
     required bool hovered,
     required String text,
+    required String label,
     required Definition definition,
     String? link,
   }) {
@@ -365,11 +394,13 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           ? _updateNonTappableSpan(
               index: index,
               text: text,
+              label: label,
               definition: definition,
             )
           : _updateTappableSpan(
               index: index,
               text: text,
+              label: label,
               link: link,
               definition: definition,
             );
