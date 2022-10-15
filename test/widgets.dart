@@ -247,6 +247,7 @@ class SelectableCustomTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = Column(
       children: [
+        // ignore: deprecated_member_use_from_same_package
         CustomText.selectable(
           text,
           definitions: [

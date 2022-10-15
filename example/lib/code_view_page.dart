@@ -53,6 +53,7 @@ class _CodeViewPageState extends State<CodeViewPage> {
                       controller: _horizontalScrollController,
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.all(16.0),
+                      // ignore: deprecated_member_use
                       child: CustomText.selectable(
                         snapshot.data!,
                         definitions: dartDefinitions,

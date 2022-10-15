@@ -125,6 +125,8 @@ final pages = {
         'This is almost the same as example2, but different in that this '
         'one is based on `SelectableText`, allowing text to be selected.',
     builder: Example8.new,
+    additionalInfo: 'Will be removed in favour of the SelectionArea '
+        'widget in the near future.',
   ),
   9: const ExamplePage(
     page: 9,

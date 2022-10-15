@@ -64,6 +64,10 @@ class CustomText extends StatefulWidget {
 
   /// Creates a selectable text widget that decorates strings in it
   /// and/or enables clicks on them according to specified definitions.
+  @Deprecated(
+    'Use SelectionArea on Flutter 3.3 and above, or '
+    '`TextField.readOnly` with `CustomTextEditingController`',
+  )
   const CustomText.selectable(
     this.text, {
     super.key,
