@@ -21,11 +21,14 @@ class HomePage extends StatelessWidget {
                 title: Text('$i. ${pages[i]!.title}'),
                 subtitle: i < 8
                     ? null
-                    : const Padding(
-                        padding: EdgeInsets.only(left: 18.0),
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 18.0),
                         child: Text(
-                          'Available on v0.6.0 and newer (experimental)',
-                          style: TextStyle(fontSize: 12.0),
+                          [
+                            'Available on v0.6.0-dev.1 and above',
+                            if (i == 8) '\nDeprecated'
+                          ].join(),
+                          style: const TextStyle(fontSize: 12.0),
                         ),
                       ),
                 trailing: const Icon(Icons.chevron_right),

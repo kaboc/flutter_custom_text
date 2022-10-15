@@ -8,6 +8,7 @@ class Example8 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return CustomText.selectable(
       'URL: https://example.com/\n'
       'Email: foo@example.com\n'
