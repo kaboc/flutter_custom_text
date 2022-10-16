@@ -1,6 +1,20 @@
+## 0.6.0-dev.4
+
+- Require Flutter >=3.0.0.
+- Deprecate:
+    - `CustomText.selectable` constructor is now deprecated (#19)
+        - Use SelectionArea on Flutter 3.3 and above
+        - If SelectionArea is insufficient, use TextField.readOnly with CustomTextEditingController.
+- New (experimental):
+    - Add `debounceDuration` to `CustomTextEditingController` for somewhat better performance with long text. (#20)
+- Fix behaviour of `CustomTextEditingController` when text spans are rebuilt while one of them is hovered/pressed on.
+- Discard gesture recognizers more thoroughly.
+- Add tests for `CustomTextEditingController`.
+- Minor refactoring.
+
 ## 0.6.0-dev.3
 
-- Add tests for CustomText.selectable.
+- Add tests for `CustomText.selectable`.
 - Suppress warnings in Flutter 3.
 - Minor refactoring.
 - Update lint rules.
@@ -16,7 +30,7 @@
 ## 0.6.0-dev.1
 
 - Bug fixes and major refactors. (eb0e6f7, 760cb45, #12, #15)
-- New features (experimental)
+- New (experimental):
     - Add `CustomText.selectable`. (#16)
     - Add `CustomTextEditingController`. (#17)
 - Depend on meta.
@@ -36,9 +50,10 @@
 
 ## 0.4.0
 
-- Add `ParserOptions` for tweaking RegExp settings.
-- Add `parserOptions` parameter to `CustomText`.
-- Add `LinkMatcher`.
+- New:
+    - Add `ParserOptions` for tweaking RegExp settings.
+    - Add `parserOptions` parameter to `CustomText`.
+    - Add `LinkMatcher`.
 - Depend on `text_parser` >=0.2.0.
 
 ## 0.3.1
@@ -47,15 +62,15 @@
 
 ## 0.3.0
 
-- **Breaking change**
+- **Breaking change**:
     - Use the `mouseCursor` property of `TextSpan` for changing the mouse cursor. (#4)
         - `cursorOnHover`, which was experimental, was removed from `CustomText`.
         - `mouseCursor` was added to `TextDefinition` and `SelectiveDefinition`.
-- Deprecated
+- Deprecate:
     - `onLongTap` is now deprecated; use `onLongPress` instead.
-- New feature
+- New:
     - Add `hoverStyle` to `CustomText`, `TextDefinition` and `SelectiveDefinition`.
-- Refactoring and enhancement
+- Refactoring and enhancement:
     - Improve management of tap state.
     - Prevent unnecessary rebuilds and duplicate recognizer creations.
     - Update example project.
@@ -75,7 +90,7 @@
 - Fix to properly dispose of `TapGestureRecognizer`.
 - Remove note on web limitations.
 - Refactoring and some improvements.
-- Experimental
+- New (experimental):
     - Add feature to change mouse cursor on hover over clickable element.
 
 ## 0.1.0

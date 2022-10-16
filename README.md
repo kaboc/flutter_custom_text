@@ -1,5 +1,6 @@
 [![Pub Version](https://img.shields.io/pub/v/custom_text)](https://pub.dev/packages/custom_text)
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
+[![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/dev/graph/badge.svg?token=H7ILK6CS0V)](https://app.codecov.io/gh/kaboc/flutter_custom_text/tree/dev)
 
 A highly customisable text widget that allows styles and tap gestures to be applied to
 strings in it flexibly.
