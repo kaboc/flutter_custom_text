@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+import 'package:meta/meta.dart';
 import 'package:text_parser/text_parser.dart';
 
 import 'definitions.dart';
 import 'parser_options.dart';
 import 'text_span_notifier.dart';
+import 'transient_elements_builder.dart';
 
 /// A widget that decorates parts of editable text and/or enables
 /// taps/long-presses according on them according to specified definitions.
@@ -32,6 +34,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onTap,
     this.onLongPress,
     this.longPressDuration,
+    this.debounceDuration,
   }) {
     _init();
   }
@@ -53,6 +56,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onTap,
     this.onLongPress,
     this.longPressDuration,
+    this.debounceDuration,
   }) : super.fromValue() {
     _init();
   }
@@ -105,10 +109,38 @@ class CustomTextEditingController extends TextEditingController {
   /// [onLongPress] function is called.
   final Duration? longPressDuration;
 
+  /// The debouncing duration after every text input action.
+  ///
+  /// **This is experimental for now. Use it at your own risk.**
+  ///
+  /// This is not perfect but somewhat effective in long text.
+  /// Parsing is scheduled to be performed after the duration
+  /// set to this property, but it is rescheduled on every event,
+  /// such as a change in the text and a move of the cursor.
+  /// It reduces the frequency of text parsing and thus making
+  /// text updates a little more performant.
+  ///
+  /// The default value is `null`, meaning debouncing is disabled.
+  /// The initial parsing is not debounced even if a duration above
+  /// zero is set.
+  ///
+  /// A new value can be assigned to change the duration span
+  /// or turn debouncing on/off.
+  @experimental
+  Duration? debounceDuration;
+
   late TextParser _parser;
   late CustomTextSpanNotifier _textSpanNotifier;
   String _oldText = '';
   TextStyle? _style;
+  Future<void> Function()? _delayedParse;
+  Timer? _debounceTimer;
+
+  Duration? get _correctedDebounceDuration => debounceDuration == null ||
+          debounceDuration == Duration.zero ||
+          debounceDuration!.isNegative
+      ? null
+      : debounceDuration;
 
   /// The list of [TextElement]s as a result of parsing.
   List<TextElement> get elements =>
@@ -116,6 +148,7 @@ class CustomTextEditingController extends TextEditingController {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     removeListener(_onTextChanged);
 
     _textSpanNotifier
@@ -163,17 +196,66 @@ class CustomTextEditingController extends TextEditingController {
   }
 
   Future<void> _onTextChanged() async {
+    _debounceTimer?.cancel();
+
+    final debounceDuration = _correctedDebounceDuration;
+
     final oldText = _oldText;
     final newText = text;
     _oldText = text;
 
     if (newText != oldText) {
-      _textSpanNotifier
-        ..elements = await _parser.parse(text, useIsolate: false)
-        ..buildSpan(
-          style: style ?? _style,
-          oldElementsLength: _textSpanNotifier.elements.length,
+      final oldElementsLength = _textSpanNotifier.elements.length;
+
+      if (debounceDuration == null || oldElementsLength == 0) {
+        _textSpanNotifier
+          ..elements = await _parser.parse(newText, useIsolate: false)
+          ..buildSpan(
+            style: style ?? _style,
+            oldElementsLength: 0,
+          );
+      } else {
+        final elements = _textSpanNotifier.elements;
+        final builder = TransientTextElementsBuilder(
+          oldElements: elements,
+          oldText: oldText,
+          newText: newText,
         );
+        final changeRange = builder.findUpdatedElementsRange();
+        if (changeRange.isInvalid) {
+          return;
+        }
+
+        final result = builder.build(changeRange: changeRange);
+
+        _textSpanNotifier
+          ..elements = result.elements
+          ..buildTransientSpan(
+            style: style ?? _style,
+            replaceRange: result.replaceRange,
+            spanRange: result.spanRange,
+          );
+
+        _delayedParse = () async {
+          _textSpanNotifier
+            ..elements = await _parser.parse(newText, useIsolate: false)
+            ..buildSpan(
+              style: style ?? _style,
+              oldElementsLength: oldElementsLength,
+            );
+        };
+      }
+    }
+
+    final timer = _debounceTimer;
+    final needDebounce =
+        _delayedParse != null && (timer == null || !timer.isActive);
+
+    if (needDebounce) {
+      _debounceTimer = Timer(debounceDuration!, () async {
+        await _delayedParse?.call();
+        _delayedParse = null;
+      });
     }
   }
 }

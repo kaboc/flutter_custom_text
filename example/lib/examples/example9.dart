@@ -47,13 +47,38 @@ class _Example9State extends State<Example9> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      maxLines: null,
-      style: const TextStyle(height: 1.4),
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-      ),
+    const debounceDuration = Duration(seconds: 1);
+
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          maxLines: null,
+          style: const TextStyle(height: 1.4),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Text(
+              'Debounce\n(experimental)',
+              style: TextStyle(fontSize: 11.0, height: 1.1),
+              textAlign: TextAlign.center,
+            ),
+            Switch(
+              value: _controller.debounceDuration != null,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              onChanged: (on) {
+                setState(() {
+                  _controller.debounceDuration = on ? debounceDuration : null;
+                });
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

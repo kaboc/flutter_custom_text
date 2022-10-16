@@ -136,7 +136,7 @@ final pages = {
         'Notice:\n'
         '* SelectiveDefinition and SpanDefinition are not available '
         'for CustomTextEditingController.\n'
-        '* Not suitable for extremely long text.',
+        '* Not suitable for extremely long text, even with debouncing enabled.',
     builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
