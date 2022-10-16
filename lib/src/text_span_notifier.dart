@@ -8,6 +8,7 @@ import 'package:text_parser/text_parser.dart' show TextElement;
 
 import 'definition_base.dart';
 import 'definitions.dart';
+import 'transient_elements_builder.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
 
@@ -58,6 +59,42 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     super.dispose();
   }
 
+  InlineSpan _span(int index, TextElement element) {
+    final def = _definitions[element.matcherType];
+    if (def == null) {
+      return TextSpan(text: element.text, style: _style);
+    }
+    if (def is SpanDefinition) {
+      return def.builder!(element.text, element.groups);
+    }
+
+    final isTappable = def.onTap != null ||
+        def.onLongPress != null ||
+        onTap != null ||
+        onLongPress != null;
+
+    final label = def.labelSelector == null
+        ? element.text
+        : def.labelSelector!(element.groups);
+
+    return isTappable
+        ? _tappableTextSpan(
+            index: index,
+            text: element.text,
+            label: label,
+            link: def.tapSelector == null
+                ? element.text
+                : def.tapSelector!(element.groups),
+            definition: def,
+          )
+        : _nonTappableTextSpan(
+            index: index,
+            text: element.text,
+            label: label,
+            definition: def,
+          );
+  }
+
   void buildSpan({required TextStyle? style, required int oldElementsLength}) {
     _isBuilding = true;
     _style = style;
@@ -66,40 +103,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       children: elements.asMap().entries.map((entry) {
         final index = entry.key;
         final element = entry.value;
-
-        final def = _definitions[element.matcherType];
-        if (def == null) {
-          return TextSpan(text: element.text, style: style);
-        }
-        if (def is SpanDefinition) {
-          return def.builder!(element.text, element.groups);
-        }
-
-        final isTappable = def.onTap != null ||
-            def.onLongPress != null ||
-            onTap != null ||
-            onLongPress != null;
-
-        final label = def.labelSelector == null
-            ? element.text
-            : def.labelSelector!(element.groups);
-
-        return isTappable
-            ? _tappableTextSpan(
-                index: index,
-                text: element.text,
-                label: label,
-                link: def.tapSelector == null
-                    ? element.text
-                    : def.tapSelector!(element.groups),
-                definition: def,
-              )
-            : _nonTappableTextSpan(
-                index: index,
-                text: element.text,
-                label: label,
-                definition: def,
-              );
+        return _span(index, element);
       }).toList(),
     );
 
@@ -112,6 +116,24 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     }
 
     _isBuilding = false;
+  }
+
+  void buildTransientSpan({
+    required TextStyle? style,
+    required Range replaceRange,
+    required Range spanRange,
+  }) {
+    _style = style;
+
+    final spans = [
+      for (var i = spanRange.start; i < spanRange.end; i++)
+        _span(i, elements[i]),
+    ];
+
+    value = TextSpan(
+      children: List.of(value.children!)
+        ..replaceRange(replaceRange.start, replaceRange.end + 1, spans),
+    );
   }
 
   TextSpan _nonTappableTextSpan({
