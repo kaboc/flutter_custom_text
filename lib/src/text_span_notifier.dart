@@ -49,6 +49,13 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   Offset? _hoverPosition;
 
   @override
+  set value(TextSpan span) {
+    if (!_disposed) {
+      super.value = span;
+    }
+  }
+
+  @override
   void dispose() {
     _longPressTimer?.cancel();
     _tapRecognizers
