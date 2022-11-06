@@ -151,7 +151,8 @@ class CustomText extends StatefulWidget {
   /// under the mouse pointer.
   ///
   /// This is used only if `hoverStyle` is not set in the relative
-  /// definition.
+  /// definition. If no style is provided in both, styling on hover
+  /// itself is not enabled, so [matchStyle] is used instead.
   final TextStyle? hoverStyle;
 
   /// The callback function called when tappable elements are tapped.
