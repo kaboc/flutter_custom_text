@@ -248,10 +248,10 @@ CustomText(
         alignment: PlaceholderAlignment.middle,
       ),
     ),
-    TextDefinition(
-      matcher: const EmailMatcher(),
-      matchStyle: const TextStyle(color: Colors.lightBlue),
-      onTap: (email) => output(email),
+    const TextDefinition(
+      matcher: EmailMatcher(),
+      matchStyle: TextStyle(color: Colors.lightBlue),
+      onTap: print,
     ),
   ],
 )
@@ -322,6 +322,14 @@ example8.dart ([Code][example8] / [Demo][example8_demo])
 
 ![example8](https://user-images.githubusercontent.com/20254485/146570773-41495fc9-9d27-4754-a71e-b2b06e706d4a.gif)
 
+`CustomText.selectable` is now deprecated. Use either of the followings instead:
+
+- [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) available on Flutter 3.3 and above
+- [CustomTextEditingController][CustomTextEditingController] and `TextField` with `readOnly: true`
+
+<details>
+<summary>Click to view details</summary>
+
 This example is almost the same as example2, but with the `CustomText.selectable` constructor.
 It is based on `SelectableText.rich`, so text can be selected while it is partially decorated/tappable.
 
@@ -338,6 +346,7 @@ CustomText.selectable(
   ...,
 )
 ```
+</details>
 
 ### CustomTextEditingController
 
@@ -346,7 +355,7 @@ example9.dart ([Code][example9] / [Demo][example9_demo])
 ![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in an editable text field
-via `CustomTextEditingController`.
+via [CustomTextEditingController][CustomTextEditingController].
 
 ```dart
 final controller = CustomTextEditingController(
@@ -376,7 +385,13 @@ Widget build(BuildContext context) {
 
 - `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
   It only accepts `TextDefinition`.
-  
+- Debouncing of text parsing is available as an experimental feature for getting slightly better
+  performance in handling long text.
+    - Pass some duration to `debounceDuration` to enable the feature.
+    - Use it at your own risk.
+    - Text input will be still slow even with debouncing because
+      [Flutter itself has performance issues](https://github.com/flutter/flutter/issues/114158)
+      in editable text.
 
 ## Limitations
 
@@ -420,5 +435,6 @@ Widget build(BuildContext context) {
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
+[CustomTextEditingController]: https://pub.dev/documentation/custom_text/0.6.0-dev.4/custom_text_editing_controller/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser

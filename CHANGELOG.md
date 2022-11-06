@@ -1,10 +1,18 @@
+## 0.6.0-dev.5
+
+- Maybe breaking
+    - Use `hoverStyle` on tap if `tapStyle` is not provided.
+- Suppress error caused by updates of value after dispose().
+- Add test for behaviour on hover without `hoverStyle`.
+- Improve documentation, example app, etc.
+
 ## 0.6.0-dev.4
 
 - Require Flutter >=3.0.0.
 - Deprecate:
-    - `CustomText.selectable` constructor is now deprecated (#19)
-        - Use SelectionArea on Flutter 3.3 and above
-        - If SelectionArea is insufficient, use TextField.readOnly with CustomTextEditingController.
+    - `CustomText.selectable` constructor is now deprecated. (#19)
+        - Use SelectionArea on Flutter 3.3 and above.
+        - If SelectionArea is insufficient, use CustomTextEditingController and TextField with `readOnly: true`.
 - New (experimental):
     - Add `debounceDuration` to `CustomTextEditingController` for somewhat better performance with long text. (#20)
 - Fix behaviour of `CustomTextEditingController` when text spans are rebuilt while one of them is hovered/pressed on.
