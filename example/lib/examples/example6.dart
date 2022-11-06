@@ -4,7 +4,7 @@ import 'package:custom_text/custom_text.dart';
 class Example6 extends StatelessWidget {
   const Example6(this.output);
 
-  final Function(String) output;
+  final void Function(String) output;
 
   @override
   Widget build(BuildContext context) {

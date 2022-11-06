@@ -1,7 +1,8 @@
-import 'package:custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 
-const dartDefinitions = [
+import 'package:custom_text/custom_text.dart';
+
+const kDartDefinitions = [
   TextDefinition(
     matcher: _DartCommentMatcher(),
     matchStyle: TextStyle(color: Color(0xFFBDBDBD)),

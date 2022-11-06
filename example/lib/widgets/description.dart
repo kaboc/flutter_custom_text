@@ -25,16 +25,15 @@ class Description extends StatelessWidget {
               definitions: [
                 TextDefinition(
                   matcher: const _FilenameMatcher(),
-                  matchStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                  hoverStyle: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
-                  tapStyle: const TextStyle(),
                   onTap: (_) => context.go('/$page/code'),
                 ),
               ],
               style: TextStyle(
                 fontSize: 16.0,
+                fontWeight: FontWeight.bold,
                 color: Colors.lightBlue.shade100,
               ),
             ),

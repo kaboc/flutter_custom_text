@@ -34,7 +34,7 @@ final router = GoRouter(
               },
             ),
           ],
-          redirect: (state) {
+          redirect: (_, state) {
             final page = state.page;
             return page == null || page < 0 || page > pages.length ? '/' : null;
           },
@@ -67,7 +67,7 @@ final pages = {
   ),
   3: const ExamplePage(
     page: 3,
-    title: 'Overwritten match pattern',
+    title: 'Overwriting match pattern',
     description: 'An example to overwrite the default match pattern of '
         '`TelMatcher`.\n'
         'The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` '

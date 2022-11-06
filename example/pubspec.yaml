@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -12,8 +12,9 @@ dependencies:
 
   custom_text:
     path: ../
-  go_router: ^4.5.1
+  go_router: ^5.1.5
   google_fonts: ^3.0.1
+  url_launcher: ^6.1.6
 
 dev_dependencies:
   flutter_lints: ^2.0.1

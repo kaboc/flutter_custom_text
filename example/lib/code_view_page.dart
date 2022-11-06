@@ -56,7 +56,7 @@ class _CodeViewPageState extends State<CodeViewPage> {
                       // ignore: deprecated_member_use
                       child: CustomText.selectable(
                         snapshot.data!,
-                        definitions: dartDefinitions,
+                        definitions: kDartDefinitions,
                         style: GoogleFonts.inconsolata(
                           fontSize: 15.0,
                           height: 1.2,

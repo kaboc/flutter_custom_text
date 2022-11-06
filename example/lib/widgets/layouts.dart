@@ -17,13 +17,11 @@ class HorizontalLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paneWidth = (maxWidth ~/ 2).toDouble();
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: paneWidth - 1.0,
+        Expanded(
+          flex: 2,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +37,11 @@ class HorizontalLayout extends StatelessWidget {
           thickness: 1.0,
           color: Colors.black26,
         ),
-        SizedBox(
-          width: paneWidth,
-          height: double.infinity,
-          child: output,
+        Expanded(
+          child: SizedBox(
+            height: double.infinity,
+            child: output,
+          ),
         ),
       ],
     );
