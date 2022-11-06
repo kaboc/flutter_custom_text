@@ -279,6 +279,8 @@ is automatically used for the string that the tap callback is applied to.
 
 A different text style can also be applied on hover using `hoverStyle` either in `CustomText` or in definitions.
 
+Tip: Use `hoverStyle` and omit `tapStyle` if you want the same style to be applied on tap and hover.
+
 ```dart
 CustomText(
   'URL: https://example.com/\n'

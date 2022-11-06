@@ -584,5 +584,37 @@ void main() {
         expect(spanB?.style?.color, const Color(0xFF222222));
       },
     );
+
+    testWidgets(
+      'hoverStyle is used while being tapped if tapStyle is not set',
+      (tester) async {
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            style: const TextStyle(color: Color(0xFF111111)),
+            hoverStyle: const TextStyle(color: Color(0xFF222222)),
+            onTap: (_, __) {},
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
+        await tester.pump();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF222222));
+
+        tapDownSpan(spanA);
+        await tester.pump();
+
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, const Color(0xFF222222));
+      },
+    );
   });
 }

@@ -138,10 +138,13 @@ class CustomText extends StatefulWidget {
   final TextStyle? matchStyle;
 
   /// The default text style used for matched strings while they are
-  /// pressed.
+  /// being pressed.
+  ///
+  /// If this is not specified, [hoverStyle] or [matchStyle] is used
+  /// instead if specified.
   ///
   /// This is used only if neither `matchStyle` nor `tapStyle` is set
-  /// in the relative definition,
+  /// in the relative definition.
   final TextStyle? tapStyle;
 
   /// The default text style used for matched strings while they are

@@ -200,8 +200,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required Definition definition,
   }) {
     var matchStyle = definition.matchStyle ?? this.matchStyle;
-    var tapStyle = definition.tapStyle ?? this.tapStyle ?? matchStyle;
     var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
+    var tapStyle = definition.tapStyle ?? this.tapStyle;
+    tapStyle ??= hoverStyle ?? matchStyle;
     final hasHoverStyle = hoverStyle != null;
 
     if (_style != null) {
