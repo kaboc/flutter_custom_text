@@ -246,7 +246,7 @@ packages:
       name: text_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.3"
+    version: "0.4.0"
   typed_data:
     dependency: transitive
     description:
