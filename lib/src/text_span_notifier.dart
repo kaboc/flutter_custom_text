@@ -12,9 +12,8 @@ import 'transient_elements_builder.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
 
-class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
-  CustomTextSpanNotifier({
-    required this.text,
+class NotifierSettings {
+  NotifierSettings({
     required List<Definition> definitions,
     this.matchStyle,
     this.tapStyle,
@@ -22,20 +21,29 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     this.onTap,
     this.onLongPress,
     Duration? longPressDuration,
-  })  : _definitions = {
+  })  : definitions = {
           for (final def in definitions) def.matcher.runtimeType: def,
         },
-        _longPressDuration = longPressDuration ?? _kLongPressDuration,
-        super(TextSpan(text: text));
+        longPressDuration = longPressDuration ?? _kLongPressDuration;
 
-  final String text;
-  final Map<Type, Definition> _definitions;
+  final Map<Type, Definition> definitions;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
   final void Function(Type, String)? onTap;
   final void Function(Type, String)? onLongPress;
-  final Duration _longPressDuration;
+  final Duration longPressDuration;
+}
+
+class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
+  CustomTextSpanNotifier({
+    required this.text,
+    required NotifierSettings settings,
+  })  : _settings = settings,
+        super(TextSpan(text: text));
+
+  final String text;
+  NotifierSettings _settings;
 
   List<TextElement> elements = [];
   final Map<int, TapGestureRecognizer> _tapRecognizers = {};
@@ -66,8 +74,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     super.dispose();
   }
 
+  void updateSettings(NotifierSettings settings) {
+    _settings = settings;
+  }
+
   InlineSpan _span(int index, TextElement element) {
-    final def = _definitions[element.matcherType];
+    final def = _settings.definitions[element.matcherType];
     if (def == null) {
       return TextSpan(text: element.text, style: _style);
     }
@@ -77,8 +89,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     final isTappable = def.onTap != null ||
         def.onLongPress != null ||
-        onTap != null ||
-        onLongPress != null;
+        _settings.onTap != null ||
+        _settings.onLongPress != null;
 
     final label = def.labelSelector == null
         ? element.text
@@ -149,8 +161,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required String label,
     required Definition definition,
   }) {
-    var matchStyle = definition.matchStyle ?? this.matchStyle;
-    var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
+    var matchStyle = definition.matchStyle ?? _settings.matchStyle;
+    var hoverStyle = definition.hoverStyle ?? _settings.hoverStyle;
     final hasHoverStyle = hoverStyle != null;
 
     if (_style != null) {
@@ -199,9 +211,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required String link,
     required Definition definition,
   }) {
-    var matchStyle = definition.matchStyle ?? this.matchStyle;
-    var hoverStyle = definition.hoverStyle ?? this.hoverStyle;
-    var tapStyle = definition.tapStyle ?? this.tapStyle;
+    var matchStyle = definition.matchStyle ?? _settings.matchStyle;
+    var hoverStyle = definition.hoverStyle ?? _settings.hoverStyle;
+    var tapStyle = definition.tapStyle ?? _settings.tapStyle;
     tapStyle ??= hoverStyle ?? matchStyle;
     final hasHoverStyle = hoverStyle != null;
 
@@ -218,8 +230,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       link: link,
       definition: definition,
       style: _style,
-      onTap: onTap,
-      onLongPress: onLongPress,
+      onTap: _settings.onTap,
+      onLongPress: _settings.onLongPress,
     );
 
     return TextSpan(
@@ -278,12 +290,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       ?..onTapDown = (_) {
         if (definition.onLongPress != null) {
           _longPressTimer = Timer(
-            _longPressDuration,
+            _settings.longPressDuration,
             () => definition.onLongPress!(link),
           );
         } else if (onLongPress != null) {
           _longPressTimer = Timer(
-            _longPressDuration,
+            _settings.longPressDuration,
             () => onLongPress(definition.matcher.runtimeType, link),
           );
         }

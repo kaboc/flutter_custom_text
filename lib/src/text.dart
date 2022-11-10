@@ -215,11 +215,24 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
 
+  NotifierSettings get _notifierSettings => NotifierSettings(
+        definitions: widget.definitions,
+        matchStyle: widget.matchStyle,
+        tapStyle: widget.tapStyle,
+        hoverStyle: widget.hoverStyle,
+        onTap: widget.onTap,
+        onLongPress: widget.onLongPress,
+        longPressDuration: widget.longPressDuration,
+      );
+
   @override
   void initState() {
     super.initState();
 
-    _textSpanNotifier = _initSpanNotifier();
+    _textSpanNotifier = CustomTextSpanNotifier(
+      text: widget.text,
+      settings: _notifierSettings,
+    );
     _parse();
   }
 
@@ -243,10 +256,17 @@ class _CustomTextState extends State<CustomText> {
         widget.hoverStyle != oldWidget.hoverStyle ||
         widget.longPressDuration != oldWidget.longPressDuration;
 
+    if (shouldUpdateSpan) {
+      _textSpanNotifier.updateSettings(_notifierSettings);
+    }
+
     if (shouldParse) {
-      _parse(shouldUpdateSpan: shouldUpdateSpan);
+      _parse();
     } else if (shouldUpdateSpan) {
-      _textSpanNotifier = _updateSpanNotifier();
+      _textSpanNotifier.buildSpan(
+        style: widget.style,
+        oldElementsLength: _textSpanNotifier.elements.length,
+      );
     }
   }
 
@@ -256,38 +276,8 @@ class _CustomTextState extends State<CustomText> {
     super.dispose();
   }
 
-  CustomTextSpanNotifier _initSpanNotifier() {
-    return CustomTextSpanNotifier(
-      text: widget.text,
-      definitions: widget.definitions,
-      matchStyle: widget.matchStyle,
-      tapStyle: widget.tapStyle,
-      hoverStyle: widget.hoverStyle,
-      onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
-      longPressDuration: widget.longPressDuration,
-    );
-  }
-
-  CustomTextSpanNotifier _updateSpanNotifier() {
-    final oldNotifier = _textSpanNotifier;
-    final notifier = _initSpanNotifier();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      notifier
-        ..elements = oldNotifier.elements
-        ..buildSpan(
-          style: widget.style,
-          oldElementsLength: oldNotifier.elements.length,
-        );
-      oldNotifier.dispose();
-    });
-
-    return notifier;
-  }
-
-  Future<void> _parse({bool shouldUpdateSpan = false}) async {
-    _textSpanNotifier.elements = await TextParser(
+  Future<void> _parse() async {
+    final elements = await TextParser(
       matchers: widget.definitions.map((def) => def.matcher).toList(),
       multiLine: widget.parserOptions.multiLine,
       caseSensitive: widget.parserOptions.caseSensitive,
@@ -298,14 +288,12 @@ class _CustomTextState extends State<CustomText> {
       useIsolate: widget.preventBlocking,
     );
 
-    if (shouldUpdateSpan) {
-      _textSpanNotifier = _updateSpanNotifier();
-    } else {
-      _textSpanNotifier.buildSpan(
+    _textSpanNotifier
+      ..elements = elements
+      ..buildSpan(
         style: widget.style,
         oldElementsLength: _textSpanNotifier.elements.length,
       );
-    }
   }
 
   bool _hasNewMatchers(CustomText oldWidget) {

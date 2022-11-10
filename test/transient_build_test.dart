@@ -32,7 +32,10 @@ void main() {
     ),
   ];
   final matchers = definitions.map((def) => def.matcher).toList();
-  final notifier = CustomTextSpanNotifier(text: '', definitions: definitions);
+  final notifier = CustomTextSpanNotifier(
+    text: '',
+    settings: NotifierSettings(definitions: definitions),
+  );
 
   late List<TextElement> elements;
 
