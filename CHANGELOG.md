@@ -1,7 +1,12 @@
+## 0.6.0-dev.6
+
+- Bump text_parser to 0.4.0.
+- Fix issue where changes of some properties were not reflected. (#21)
+
 ## 0.6.0-dev.5
 
-- Maybe breaking
-    - Use `hoverStyle` on tap if `tapStyle` is not provided.
+- Maybe breaking:
+    - Use `hoverStyle` while being pressed if `tapStyle` is not provided.
 - Suppress error caused by updates of value after dispose().
 - Add test for behaviour on hover without `hoverStyle`.
 - Improve documentation, example app, etc.

@@ -46,8 +46,7 @@ class Description extends StatelessWidget {
                   labelSelector: (groups) => groups[0] ?? '',
                   matchStyle: const TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

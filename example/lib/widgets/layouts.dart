@@ -21,7 +21,7 @@ class HorizontalLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 2,
+          flex: 5,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,6 +38,7 @@ class HorizontalLayout extends StatelessWidget {
           color: Colors.black26,
         ),
         Expanded(
+          flex: 3,
           child: SizedBox(
             height: double.infinity,
             child: output,

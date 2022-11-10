@@ -65,7 +65,7 @@ them to be tapped/long-pressed.
 All of the three are styled, but only phone numbers among them are given unique `matchStyle`
 and `tapStyle`.
 
-Tip: Use [url_launcher](https://pub.dev/packages/url_launcher) or its equivalent to open
+**Tip**: Use [url_launcher](https://pub.dev/packages/url_launcher) or its equivalent to open
 a browser or another app by a tap/long-press on a string.
 
 ```dart
@@ -279,7 +279,7 @@ is automatically used for the string that the tap callback is applied to.
 
 A different text style can also be applied on hover using `hoverStyle` either in `CustomText` or in definitions.
 
-Tip: Use `hoverStyle` and omit `tapStyle` if you want the same style to be applied on tap and hover.
+**Tip**: Use `hoverStyle` and omit `tapStyle` if you want the same style to be applied on tap and hover.
 
 ```dart
 CustomText(

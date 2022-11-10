@@ -93,7 +93,7 @@ final pages = {
         'using `SelectiveDefinition`, and make them tappable.\n'
         'Each of the string shown in the widget and the string passed to '
         'the tap callbacks is selected individually from the fragments '
-        '(`groups`) that have matched the patterns enclosed with '
+        '(groups) that have matched the patterns enclosed with '
         'parentheses within the match pattern.',
     builder: Example5.new,
   ),

@@ -283,8 +283,7 @@ void main() {
     });
 
     testWidgets(
-      'change of tapStyle specified in definition is reflected '
-      'when the widget is rebuilt',
+      'change of tapStyle specified in definition is reflected by rebuild',
       (tester) async {
         var tapStyle = const TextStyle(color: Color(0xFF111111));
 
@@ -322,8 +321,7 @@ void main() {
     );
 
     testWidgets(
-      'change of tapStyle specified in CustomText is reflected '
-      'when the widget is rebuilt',
+      'change of tapStyle specified in CustomText is reflected by rebuild',
       (tester) async {
         var tapStyle = const TextStyle(color: Color(0xFF111111));
 
@@ -361,8 +359,7 @@ void main() {
     );
 
     testWidgets(
-      'change of tap callback specified in definition is reflected '
-      'when the widget is rebuilt',
+      'change of tap callback specified in definition is reflected by rebuild',
       (tester) async {
         void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
 
@@ -399,8 +396,7 @@ void main() {
     );
 
     testWidgets(
-      'change of tap callback specified in CustomText is reflected '
-      'when the widget is rebuilt',
+      'change of tap callback specified in CustomText is reflected by rebuild',
       (tester) async {
         void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
 
@@ -437,8 +433,7 @@ void main() {
     );
 
     testWidgets(
-      'text change is reflected to onTap specified in definition '
-      'when the widget is rebuilt',
+      'text change is reflected to onTap specified in definition by rebuild',
       (tester) async {
         var text = 'aaa bbb@example.com';
 
@@ -473,8 +468,7 @@ void main() {
     );
 
     testWidgets(
-      'text change is reflected to onTap specified in CustomText '
-      'when the widget is rebuilt',
+      'text change is reflected to onTap specified in CustomText by rebuild',
       (tester) async {
         var text = 'aaa bbb@example.com';
 
