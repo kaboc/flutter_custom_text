@@ -7,6 +7,7 @@ import 'package:custom_text/custom_text.dart';
 class CustomTextWidget extends StatelessWidget {
   const CustomTextWidget(
     this.text, {
+    this.definitions,
     this.style,
     this.matchStyle,
     this.tapStyle,
@@ -24,6 +25,7 @@ class CustomTextWidget extends StatelessWidget {
   });
 
   final String text;
+  final List<TextDefinition>? definitions;
   final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
@@ -47,20 +49,21 @@ class CustomTextWidget extends StatelessWidget {
         children: [
           CustomText(
             text,
-            definitions: [
-              const TextDefinition(
-                matcher: UrlMatcher(),
-              ),
-              TextDefinition(
-                matcher: const EmailMatcher(),
-                matchStyle: matchStyleInDef,
-                tapStyle: tapStyleInDef,
-                hoverStyle: hoverStyleInDef,
-                onTap: onTapInDef,
-                onLongPress: onLongPressInDef,
-                mouseCursor: mouseCursor,
-              ),
-            ],
+            definitions: definitions ??
+                [
+                  const TextDefinition(
+                    matcher: UrlMatcher(),
+                  ),
+                  TextDefinition(
+                    matcher: const EmailMatcher(),
+                    matchStyle: matchStyleInDef,
+                    tapStyle: tapStyleInDef,
+                    hoverStyle: hoverStyleInDef,
+                    onTap: onTapInDef,
+                    onLongPress: onLongPressInDef,
+                    mouseCursor: mouseCursor,
+                  ),
+                ],
             style: style,
             matchStyle: matchStyle,
             tapStyle: tapStyle,

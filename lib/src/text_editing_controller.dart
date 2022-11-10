@@ -181,13 +181,15 @@ class CustomTextEditingController extends TextEditingController {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: text,
-      definitions: definitions,
-      matchStyle: matchStyle,
-      tapStyle: tapStyle,
-      hoverStyle: hoverStyle,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      longPressDuration: longPressDuration,
+      settings: NotifierSettings(
+        definitions: definitions,
+        matchStyle: matchStyle,
+        tapStyle: tapStyle,
+        hoverStyle: hoverStyle,
+        onTap: onTap,
+        onLongPress: onLongPress,
+        longPressDuration: longPressDuration,
+      ),
     )..addListener(notifyListeners);
 
     if (text.isNotEmpty) {

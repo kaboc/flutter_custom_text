@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:text_parser/text_parser.dart';
+import 'package:custom_text/custom_text.dart';
 
 import 'utils.dart';
 import 'widgets.dart';
@@ -242,6 +242,46 @@ void main() {
   });
 
   group('Updating properties', () {
+    testWidgets('change of matcher is reflected by rebuild', (tester) async {
+      String? value;
+      var definitions = const [
+        TextDefinition(matcher: PatternMatcher('aaa')),
+      ];
+
+      await tester.pumpWidget(
+        StatefulBuilder(
+          builder: (_, setState) {
+            return CustomTextWidget(
+              'aaa bbb',
+              definitions: definitions,
+              onTap: (_, text) => value = text,
+              onButtonPressed: () => setState(() {
+                definitions = const [
+                  TextDefinition(matcher: PatternMatcher('bbb')),
+                ];
+              }),
+            );
+          },
+        ),
+      );
+      await tester.pump();
+
+      final span1 = findSpan('aaa');
+      tapDownSpan(span1);
+      tapUpSpan(span1);
+      await tester.pump();
+      expect(value, equals('aaa'));
+
+      await tapButton(tester);
+      await tester.pumpAndSettle();
+
+      final span2 = findSpan('bbb');
+      tapDownSpan(span2);
+      tapUpSpan(span2);
+      await tester.pump();
+      expect(value, equals('bbb'));
+    });
+
     testWidgets(
       'change of tapStyle specified in definition is reflected '
       'when the widget is rebuilt',
