@@ -241,28 +241,28 @@ class _CustomTextState extends State<CustomText> {
     super.didUpdateWidget(oldWidget);
 
     final isMatcherUpdated = _hasNewMatchers(oldWidget);
-    final isDefinitionUpdated =
-        isMatcherUpdated || _hasNewDefinitions(oldWidget);
+    final isDefinitionUpdated = _hasNewDefinitions(oldWidget);
 
-    final shouldParse = isMatcherUpdated ||
+    final needsParse = isMatcherUpdated ||
         widget.text != oldWidget.text ||
         widget.parserOptions != oldWidget.parserOptions ||
         widget.preventBlocking != oldWidget.preventBlocking;
 
-    final shouldUpdateSpan = isDefinitionUpdated ||
+    final needsSpanUpdate = isMatcherUpdated ||
+        isDefinitionUpdated ||
         widget.style != oldWidget.style ||
         widget.matchStyle != oldWidget.matchStyle ||
         widget.tapStyle != oldWidget.tapStyle ||
         widget.hoverStyle != oldWidget.hoverStyle ||
         widget.longPressDuration != oldWidget.longPressDuration;
 
-    if (shouldUpdateSpan) {
+    if (needsSpanUpdate) {
       _textSpanNotifier.updateSettings(_notifierSettings);
     }
 
-    if (shouldParse) {
+    if (needsParse) {
       _parse();
-    } else if (shouldUpdateSpan) {
+    } else if (needsSpanUpdate) {
       _textSpanNotifier.buildSpan(
         style: widget.style,
         oldElementsLength: _textSpanNotifier.elements.length,
@@ -274,26 +274,6 @@ class _CustomTextState extends State<CustomText> {
   void dispose() {
     _textSpanNotifier.dispose();
     super.dispose();
-  }
-
-  Future<void> _parse() async {
-    final elements = await TextParser(
-      matchers: widget.definitions.map((def) => def.matcher).toList(),
-      multiLine: widget.parserOptions.multiLine,
-      caseSensitive: widget.parserOptions.caseSensitive,
-      unicode: widget.parserOptions.unicode,
-      dotAll: widget.parserOptions.dotAll,
-    ).parse(
-      widget.text,
-      useIsolate: widget.preventBlocking,
-    );
-
-    _textSpanNotifier
-      ..elements = elements
-      ..buildSpan(
-        style: widget.style,
-        oldElementsLength: _textSpanNotifier.elements.length,
-      );
   }
 
   bool _hasNewMatchers(CustomText oldWidget) {
@@ -320,6 +300,26 @@ class _CustomTextState extends State<CustomText> {
       }
     }
     return false;
+  }
+
+  Future<void> _parse() async {
+    final elements = await TextParser(
+      matchers: widget.definitions.map((def) => def.matcher).toList(),
+      multiLine: widget.parserOptions.multiLine,
+      caseSensitive: widget.parserOptions.caseSensitive,
+      unicode: widget.parserOptions.unicode,
+      dotAll: widget.parserOptions.dotAll,
+    ).parse(
+      widget.text,
+      useIsolate: widget.preventBlocking,
+    );
+
+    _textSpanNotifier
+      ..elements = elements
+      ..buildSpan(
+        style: widget.style,
+        oldElementsLength: _textSpanNotifier.elements.length,
+      );
   }
 
   @override
