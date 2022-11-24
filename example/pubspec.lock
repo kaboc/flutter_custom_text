@@ -80,7 +80,7 @@ packages:
       name: go_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.5"
+    version: "5.1.10"
   google_fonts:
     dependency: "direct main"
     description:
@@ -246,7 +246,7 @@ packages:
       name: text_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.1"
   typed_data:
     dependency: transitive
     description:
@@ -260,7 +260,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.6"
+    version: "6.1.7"
   url_launcher_android:
     dependency: transitive
     description:

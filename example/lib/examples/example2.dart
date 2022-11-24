@@ -18,8 +18,8 @@ class Example2 extends StatelessWidget {
         TextDefinition(
           // TODO: Replace with default TelMatcher if Safari supports lookbehind
           matcher: const TelMatcher(r'(?:\+?[1-9]\d{0,4})?(?:[- ]?\d{1,4})+'),
-          // `matchStyle`, `tapStyle`, `onTap` and `onLongPress` here
-          // override the equivalent parameters of CustomText.
+          // Parameters of a definition override the equivalent
+          // parameters of CustomText.
           matchStyle: const TextStyle(
             color: Colors.green,
             decoration: TextDecoration.underline,

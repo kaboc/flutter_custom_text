@@ -16,19 +16,26 @@ class CodeViewPage extends StatefulWidget {
 }
 
 class _CodeViewPageState extends State<CodeViewPage> {
-  late Future<String> _loadCode;
   final _horizontalScrollController = ScrollController();
+
+  String _code = '';
 
   @override
   void initState() {
     super.initState();
-    _loadCode = rootBundle.loadString('lib/examples/${widget.filename}');
+    _loadSourceCode();
   }
 
   @override
   void dispose() {
     _horizontalScrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadSourceCode() async {
+    final path = 'lib/examples/${widget.filename}';
+    final code = await rootBundle.loadString(path);
+    setState(() => _code = code);
   }
 
   @override
@@ -38,36 +45,32 @@ class _CodeViewPageState extends State<CodeViewPage> {
         title: Text(widget.filename),
       ),
       body: SafeArea(
-        child: FutureBuilder<String>(
-          future: _loadCode,
-          initialData: '',
-          builder: (context, snapshot) {
-            return SizedBox.expand(
-              child: Scrollbar(
-                thickness: 8.0,
-                child: SingleChildScrollView(
-                  primary: true,
-                  child: Scrollbar(
+        child: SizedBox.expand(
+          child: SelectionArea(
+            child: Scrollbar(
+              thickness: 8.0,
+              child: SingleChildScrollView(
+                primary: true,
+                child: Scrollbar(
+                  controller: _horizontalScrollController,
+                  child: SingleChildScrollView(
                     controller: _horizontalScrollController,
-                    child: SingleChildScrollView(
-                      controller: _horizontalScrollController,
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.all(16.0),
-                      // ignore: deprecated_member_use
-                      child: CustomText.selectable(
-                        snapshot.data!,
-                        definitions: kDartDefinitions,
-                        style: GoogleFonts.inconsolata(
-                          fontSize: 15.0,
-                          height: 1.2,
-                        ),
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.all(16.0),
+                    // ignore: deprecated_member_use
+                    child: CustomText(
+                      _code,
+                      definitions: kDartDefinitions,
+                      style: GoogleFonts.inconsolata(
+                        fontSize: 15.0,
+                        height: 1.2,
                       ),
                     ),
                   ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

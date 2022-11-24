@@ -61,6 +61,7 @@ class _ExamplePageState extends State<ExamplePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
+            tooltip: 'View code',
             icon: const Icon(Icons.article),
             onPressed: () => context.go('/${widget.page}/code'),
           ),

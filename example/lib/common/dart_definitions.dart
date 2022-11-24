@@ -9,7 +9,7 @@ const kDartDefinitions = [
   ),
   TextDefinition(
     matcher: _DartKeywordMatcher(),
-    matchStyle: TextStyle(color: Colors.orange),
+    matchStyle: TextStyle(color: Color(0xFFFFA726)),
   ),
   TextDefinition(
     matcher: _DartTypeMatcher(),
@@ -17,7 +17,7 @@ const kDartDefinitions = [
   ),
   TextDefinition(
     matcher: _DartSymbolMatcher(),
-    matchStyle: TextStyle(color: Colors.green),
+    matchStyle: TextStyle(color: Color(0xFF90A4AE)),
   ),
   TextDefinition(
     matcher: _DartVariableMatcher(),
@@ -32,15 +32,12 @@ const kDartDefinitions = [
     matchStyle: TextStyle(color: Colors.teal),
   ),
   TextDefinition(
-    matcher: _ClassMatcher(),
-    matchStyle: TextStyle(
-      color: Color(0xFF7CB342),
-      fontWeight: FontWeight.bold,
-    ),
+    matcher: _ParameterNameMatcher(),
+    matchStyle: TextStyle(color: Color(0xFFA1887F)),
   ),
   TextDefinition(
-    matcher: _ParameterMatcher(),
-    matchStyle: TextStyle(color: Color(0xFFA1887F)),
+    matcher: _CustomTextKeywordsMatcher(),
+    matchStyle: TextStyle(color: Color(0xFF7CB342)),
   ),
 ];
 
@@ -57,10 +54,12 @@ class _DartKeywordMatcher extends TextMatcher {
           // Avoid lookbehind assertion for Safari
           // r'(?<=\s|^)'
           r'(\s|^)'
-          '(?:import|part|const|var|final|class|mixin|extends|implements|'
-          'with|super|assert|@override|required|return|if|else|for|in|'
-          'switch|do|while|continue|break|is|async|await|static|get|set|'
-          'late|covariant|print)'
+          '(?:library|import|export|part|as|show|hide|deferred|const|var|'
+          'final|abstract|class|mixin|enum|typedef|extends|implements|with|'
+          'on|assert|factory|return|if|else|for|in|switch|case|default|do|'
+          'while|continue|break|is|async|sync|await|static|get|set|late|'
+          'required|print|external|yield|rethrow|throw|Function|operator|'
+          '@[a-zA-Z]+)'
           r'(?=[\s(.;]|$)',
         );
 }
@@ -70,14 +69,18 @@ class _DartTypeMatcher extends TextMatcher {
       : super(
           // Avoid lookbehind assertion for Safari
           // r'(?<=\s|^)'
-          r'(\s|^)'
-          '(?:Type|void|bool|int|double|String|Map|List|Set|Future)'
-          r'(?=[\s<]|$)',
+          r'(\s|^|)'
+          '(?:Type|void|dynamic|covariant|bool|num|int|double|String|Map|'
+          'List|Set|Iterable|FutureOr|Future|Error|Exception)'
+          r'(?=[\s<)]|$)',
         );
 }
 
 class _DartSymbolMatcher extends TextMatcher {
-  const _DartSymbolMatcher() : super(r'[?:[.,;:<>(){}\[\]=+\-*/!&|]');
+  const _DartSymbolMatcher()
+      : super(
+          r'[?:[.,;:<>(){}\[\]=+\-*/!&|]',
+        );
 }
 
 class _DartVariableMatcher extends TextMatcher {
@@ -86,7 +89,7 @@ class _DartVariableMatcher extends TextMatcher {
           // Avoid lookbehind assertion for Safari
           // r'(?<=\s|^)'
           r'(\s|^)'
-          r'(?:super|this|widget)(?=[\s.]|$)',
+          r'(?:super|this)(?=[\s.]|$)',
         );
 }
 
@@ -96,23 +99,29 @@ class _DartValueMatcher extends TextMatcher {
           // Avoid lookbehind assertion for Safari
           // r'(?<![a-zA-Z])'
           r'(\s|^)'
-          r'(?:true|false|\d+\.\d+|\d|0x[0-9a-fA-F]+)(?![a-zA-Z])',
+          r'(?:true|false|null|\d+\.\d+|\d|0x[0-9a-fA-F]+)(?![a-zA-Z])',
         );
 }
 
 class _DartStringMatcher extends TextMatcher {
-  const _DartStringMatcher() : super("r?'.*'");
-}
-
-class _ClassMatcher extends TextMatcher {
-  const _ClassMatcher()
+  const _DartStringMatcher()
       : super(
-          '(?:CustomText|UrlMatcher|EmailMatcher|TelMatcher|TextDefinition|'
-          'SelectiveDefinition|SpanDefinition|HashTagMatcher|LinkMatcher|'
-          'TextMatcher)',
+          "r?'.*'",
         );
 }
 
-class _ParameterMatcher extends TextMatcher {
-  const _ParameterMatcher() : super('[a-zA-Z]+(?=:)');
+class _ParameterNameMatcher extends TextMatcher {
+  const _ParameterNameMatcher()
+      : super(
+          '[a-zA-Z]+(?=:)',
+        );
+}
+
+class _CustomTextKeywordsMatcher extends TextMatcher {
+  const _CustomTextKeywordsMatcher()
+      : super(
+          '(?:CustomTextEditingController|CustomText|TextMatcher|'
+          'PatternMatcher|UrlMatcher|EmailMatcher|TelMatcher|LinkMatcher|'
+          'HashTagMatcher|TextDefinition|SelectiveDefinition|SpanDefinition)',
+        );
 }

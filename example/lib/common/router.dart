@@ -52,8 +52,8 @@ final pages = {
         'addresses.\nThey are not tappable in this example.',
     builder: (_) => const Example1(),
     hasOutput: false,
-    additionalInfo: 'Tapping on text in this example does not print '
-        'anything here.',
+    additionalInfo: 'Tapping on text in this example does not trigger '
+        'anything.',
   ),
   2: const ExamplePage(
     page: 2,
@@ -103,8 +103,8 @@ final pages = {
     description: 'An example to show both strings and icons using '
         '`SpanDefinition`.\n'
         'The builder parameter takes a function returning an `InlineSpan`.\n'
-        'The function is provided with matched string and groups, so '
-        'it is possible to construct an `InlineSpan` flexibly with them.',
+        'Matched string and groups are given to the function, so it is '
+        'possible to construct an `InlineSpan` flexibly with them.',
     builder: Example6.new,
   ),
   7: const ExamplePage(
