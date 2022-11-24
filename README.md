@@ -1,13 +1,14 @@
 [![Pub Version](https://img.shields.io/pub/v/custom_text)](https://pub.dev/packages/custom_text)
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
-[![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/dev/graph/badge.svg?token=H7ILK6CS0V)](https://app.codecov.io/gh/kaboc/flutter_custom_text/tree/dev)
+[![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/main/graph/badge.svg?token=H7ILK6CS0V)](https://codecov.io/gh/kaboc/flutter_custom_text)
 
-A highly customisable text widget that allows styles and tap gestures to be applied to
-strings in it flexibly.
+A highly customisable text widget that enables decorations and tap/hover gestures on strings,
+and the TextEditingController that makes most of the functionality available in TextField too.
 
-This widget is useful for making part of text tappable, such as URLs, email addresses or
-phone numbers, or for only highlighting partial strings in text with colors and different
-font settings depending on the types of the elements parsed by regular expressions.
+This package is useful for making part of text (e.g. URLs, email addresses or phone numbers)
+react to taps / long-presses / hover, or for only highlighting partial strings with colors
+and different font settings. You can configure the appearance and the behaviour using multiple
+definitions consisting of regular expressions, text styles, gesture callbacks, etc.
 
 ## Usage by examples
 
@@ -19,7 +20,7 @@ Just click on the link below to open its web version and see what this package c
 The app also shows the source code with keywords highlighted, which itself is made possible
 by this package.
 
-![highlighting](https://user-images.githubusercontent.com/20254485/100355884-d9c68c80-3035-11eb-8460-545afebf683c.png)
+![Code highlighting](https://user-images.githubusercontent.com/20254485/203714827-af1bdd43-666b-417a-9f29-96a7c7f18b35.png)
 
 ### Simplest example
 
@@ -27,8 +28,9 @@ example1.dart ([Code][example1] / [Demo][example1_demo])
 
 ![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
-A very basic example with URLs and email addresses styled.
-They are not tappable in this example.
+A very basic example showing how to apply a colour to URLs and email addresses.
+
+The coloured strings are not tappable in this example.
 
 ```dart
 CustomText(
@@ -59,7 +61,7 @@ example2.dart ([Code][example2] / [Demo][example2_demo])
 
 ![example2](https://user-images.githubusercontent.com/20254485/100355833-c74c5300-3035-11eb-80d2-de64056417a1.gif)
 
-An example to apply styles to URLs, email addresses and phone numbers, and also enable
+An example to decorate URLs, email addresses and phone numbers, and also enable
 them to be tapped/long-pressed.
 
 All of the three are styled, but only phone numbers among them are given unique `matchStyle`
@@ -78,8 +80,8 @@ CustomText(
     const TextDefinition(matcher: EmailMatcher()),
     TextDefinition(
       matcher: const TelMatcher(),
-      // `matchStyle`, `tapStyle`, `onTap` and `onLongPress` here
-      // override the equivalent parameters of CustomText.
+      // Parameters of a definition override the equivalent
+      // parameters of CustomText.
       matchStyle: const TextStyle(
         color: Colors.green,
         decoration: TextDecoration.underline,
@@ -139,7 +141,7 @@ TextDefinition(
 ```
 
 Alternatively, you can define a matcher by extending [TextMatcher][TextMatcher].
-This is useful when you want to define one and use it in various places.
+This allows you to distinguish the custom matcher from others by its unique type.
 
 ```dart
 class HashTagMatcher extends TextMatcher {
@@ -155,6 +157,11 @@ CustomText(
     TextDefinition(matcher: HashTagMatcher()),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
+  onTap: (type, text) {
+    if (type == HashTagMatcher) {
+      ...; 
+    }
+  },
 )
 ```
 
@@ -416,8 +423,8 @@ Widget build(BuildContext context) {
 [example5]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example5.dart
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
-[example8]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example8.dart
-[example9]: https://github.com/kaboc/flutter_custom_text/blob/dev/example/lib/examples/example9.dart
+[example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
+[example9]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example9.dart
 [example1_demo]: https://kaboc.github.io/flutter_custom_text/#/1
 [example2_demo]: https://kaboc.github.io/flutter_custom_text/#/2
 [example3_demo]: https://kaboc.github.io/flutter_custom_text/#/3
@@ -435,6 +442,6 @@ Widget build(BuildContext context) {
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
-[CustomTextEditingController]: https://pub.dev/documentation/custom_text/0.6.0-dev.4/custom_text_editing_controller/CustomTextEditingController-class.html
+[CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text_editing_controller/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser

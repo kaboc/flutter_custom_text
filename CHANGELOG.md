@@ -1,3 +1,18 @@
+## 0.6.0
+
+- New:
+    - Add `CustomText.selectable`. (#16)
+        - Deprecated. (#19)
+        - Will be removed in the future in favour of `SelectionArea`.
+    - Add `CustomTextEditingController`. (#17, #20)
+- Maybe breaking:
+    - Use `hoverStyle` while being pressed if `tapStyle` is not provided.
+- Many bug fixes, improvements and major refactors. (eb0e6f7, 760cb45, #12, #15, etc)
+    - Please see the history of dev versions for details. 
+- Require Flutter >=3.0.0.
+- Depend on meta.
+- Update dependencies.
+
 ## 0.6.0-dev.6
 
 - Bump text_parser to 0.4.0.
