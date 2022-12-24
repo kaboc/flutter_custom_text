@@ -46,12 +46,4 @@ class ParserOptions {
         unicode,
         dotAll,
       ]);
-
-  @override
-  String toString() => 'ParserOptions('
-      'multiLine: $multiLine, '
-      'caseSensitive: $caseSensitive, '
-      'unicode: $unicode, '
-      'dotAll: $dotAll'
-      ')';
 }
