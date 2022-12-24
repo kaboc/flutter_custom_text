@@ -40,6 +40,7 @@ class ParserOptions {
 
   @override
   int get hashCode => Object.hashAll([
+        runtimeType,
         multiLine,
         caseSensitive,
         unicode,

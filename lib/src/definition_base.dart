@@ -44,6 +44,7 @@ abstract class Definition {
 
   @override
   int get hashCode => Object.hashAll([
+        runtimeType,
         matcher,
         matchStyle,
         tapStyle,
