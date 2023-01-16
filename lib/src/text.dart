@@ -10,16 +10,16 @@ import 'definition_base.dart';
 import 'parser_options.dart';
 import 'text_span_notifier.dart';
 
-/// A widget that decorates parts of text and/or enables taps/long-presses
-/// on them according to specified definitions.
+/// A widget that decorates parts of text and/or enables
+/// tap/long-press/hover gestures based on flexible definitions.
 ///
 /// This widget is useful for making strings in selectable/non-selectable
 /// text such as URLs, email addresses or phone numbers clickable, or for
 /// only highlighting some parts of text with colors and different font
 /// settings depending on the types of string elements.
 class CustomText extends StatefulWidget {
-  /// Creates a text widget that decorates strings in it and/or enables
-  /// clicks on them according to specified definitions.
+  /// Creates a text widget that decorates strings and/or enables
+  /// tap/long-press/hover gestures based on flexible definitions.
   const CustomText(
     this.text, {
     super.key,
@@ -62,8 +62,8 @@ class CustomText extends StatefulWidget {
         scrollPhysics = null,
         onSelectionChanged = null;
 
-  /// Creates a selectable text widget that decorates strings in it
-  /// and/or enables clicks on them according to specified definitions.
+  /// Creates a selectable text widget that decorates strings in it and/or
+  /// enables tap/long-press/hover gestures based on flexible definitions.
   @Deprecated(
     'Use SelectionArea on Flutter 3.3 and above, or '
     '`TextField.readOnly` with `CustomTextEditingController`',
@@ -116,7 +116,7 @@ class CustomText extends StatefulWidget {
   final String text;
 
   /// Definitions that specify parsing rules, text styles and actions
-  /// for tap/long-press events.
+  /// for tap/long-press/hover events.
   final List<Definition> definitions;
 
   /// The options for [RegExp] that configures how a regular expression

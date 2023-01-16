@@ -2,8 +2,9 @@
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
 [![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/main/graph/badge.svg?token=H7ILK6CS0V)](https://codecov.io/gh/kaboc/flutter_custom_text)
 
-A highly customisable text widget that enables decorations and tap/hover gestures on strings,
-and the TextEditingController that makes most of the functionality available in TextField too.
+A highly customisable text widget that enables decorations and gestures on strings, and
+the special TextEditingController that makes most of the functionality available in an
+editable text field too.
 
 This package is useful for making part of text (e.g. URLs, email addresses or phone numbers)
 react to taps / long-presses / hover, or for only highlighting partial strings with colors
@@ -28,7 +29,8 @@ example1.dart ([Code][example1] / [Demo][example1_demo])
 
 ![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
-A very basic example showing how to apply a colour to URLs and email addresses.
+A very basic example showing how to apply a colour to URLs and email addresses using preset
+matchers.
 
 The coloured strings are not tappable in this example.
 

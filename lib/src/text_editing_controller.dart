@@ -11,18 +11,19 @@ import 'text_span_notifier.dart';
 import 'transient_elements_builder.dart';
 
 /// A widget that decorates parts of editable text and/or enables
-/// taps/long-presses according on them according to specified definitions.
+/// tap/long-press/hover gestures based on flexible definitions.
 ///
-/// This widget is useful for making strings in editable text such as
-/// URLs, email addresses or phone numbers clickable, or for only
+/// This widget is useful for making strings in an editable text such
+/// as URLs, email addresses or phone numbers clickable, or for only
 /// highlighting some parts of text with colors and different font
 /// settings depending on the types of string elements.
 class CustomTextEditingController extends TextEditingController {
   /// Creates a controller for an editable text field.
   ///
-  /// Unlike [TextEditingController], this controller has the features
-  /// to decorate parts of editable text and/or enable clicks on them
-  /// according to specified definitions.
+  /// {@template customText.TextEditingController}
+  /// Unlike [TextEditingController], this controller enables decorations
+  /// and tap/long-press/hover gestures based on flexible definitions.
+  /// {@endtemplate}
   CustomTextEditingController({
     super.text,
     required this.definitions,
@@ -42,9 +43,7 @@ class CustomTextEditingController extends TextEditingController {
   /// Creates a controller for an editable text field from an initial
   /// [TextEditingValue].
   ///
-  /// Unlike [TextEditingController], this controller has the features
-  /// to decorate parts of editable text and/or enable clicks on them
-  /// according to specified definitions.
+  /// {@macro customText.TextEditingController}
   CustomTextEditingController.fromValue(
     super.value, {
     required this.definitions,
