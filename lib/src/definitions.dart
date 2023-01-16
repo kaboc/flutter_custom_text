@@ -60,7 +60,7 @@ class SelectiveDefinition extends Definition {
   /// [onLongPress] is set.
   const SelectiveDefinition({
     required super.matcher,
-    required super.labelSelector,
+    required LabelSelector super.labelSelector,
     super.tapSelector,
     super.matchStyle,
     super.tapStyle,
@@ -83,6 +83,6 @@ class SpanDefinition extends Definition {
   /// like [WidgetSpan], to display it instead of the matched string.
   const SpanDefinition({
     required super.matcher,
-    required super.builder,
+    required SpanBuilder super.builder,
   });
 }

@@ -5,6 +5,10 @@ import 'package:flutter/services.dart';
 
 import 'package:text_parser/text_parser.dart';
 
+typedef LabelSelector = String Function(List<String?>);
+typedef TapSelector = String Function(List<String?>);
+typedef SpanBuilder = InlineSpan Function(String, List<String?>);
+
 @immutable
 abstract class Definition {
   const Definition({
@@ -21,9 +25,9 @@ abstract class Definition {
   });
 
   final TextMatcher matcher;
-  final String Function(List<String?>)? labelSelector;
-  final String Function(List<String?>)? tapSelector;
-  final InlineSpan Function(String, List<String?>)? builder;
+  final LabelSelector? labelSelector;
+  final TapSelector? tapSelector;
+  final SpanBuilder? builder;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
