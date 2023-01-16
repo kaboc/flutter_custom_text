@@ -12,7 +12,7 @@ dependencies:
 
   custom_text:
     path: ../
-  go_router: 5.1.10 # Pinned to this version to avoid issue (https://github.com/flutter/flutter/issues/115832)
+  go_router: ^6.0.1
   google_fonts: ^3.0.1
   url_launcher: ^6.1.7
 

@@ -33,18 +33,15 @@ class HomePage extends StatelessWidget {
             for (var i = 1; i <= 9; i++)
               ListTile(
                 title: Text('$i. ${pages[i]!.title}'),
-                subtitle: i < 8
-                    ? null
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 18.0),
+                subtitle: i == 8
+                    ? const Padding(
+                        padding: EdgeInsets.only(left: 18.0),
                         child: Text(
-                          [
-                            'Available on v0.6.0-dev.1 and above',
-                            if (i == 8) '\nDeprecated'
-                          ].join(),
-                          style: const TextStyle(fontSize: 12.0),
+                          'Deprecated',
+                          style: TextStyle(fontSize: 12.0),
                         ),
-                      ),
+                      )
+                    : null,
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => context.go('/$i'),
               )
