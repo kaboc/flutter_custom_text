@@ -245,8 +245,7 @@ class _CustomTextState extends State<CustomText> {
 
     final needsParse = isMatcherUpdated ||
         widget.text != oldWidget.text ||
-        widget.parserOptions != oldWidget.parserOptions ||
-        widget.preventBlocking != oldWidget.preventBlocking;
+        widget.parserOptions != oldWidget.parserOptions;
 
     final needsSpanUpdate = isMatcherUpdated ||
         isDefinitionUpdated ||
