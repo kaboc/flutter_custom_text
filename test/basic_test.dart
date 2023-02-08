@@ -46,7 +46,7 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle is not applied if tap callbacks are not set',
+      'tapStyle is not applied if tap callbacks are not specified',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -66,7 +66,7 @@ void main() {
       },
     );
 
-    testWidgets('tapStyle is applied if onTap is set', (tester) async {
+    testWidgets('tapStyle is applied if onTap is specified', (tester) async {
       await tester.pumpWidget(
         const CustomTextWidget(
           'aaa bbb@example.com https://example.com/',
@@ -96,35 +96,38 @@ void main() {
       expect(span2C?.style?.color, const Color(0xFF222222));
     });
 
-    testWidgets('tapStyle is applied if onLongPress is set', (tester) async {
-      await tester.pumpWidget(
-        const CustomTextWidget(
-          'aaa bbb@example.com https://example.com/',
-          style: TextStyle(color: Color(0xFF111111)),
-          matchStyle: TextStyle(color: Color(0xFF222222)),
-          tapStyle: TextStyle(color: Color(0xFF333333)),
-          onLongPress: onLongPress,
-        ),
-      );
-      await tester.pump();
+    testWidgets(
+      'tapStyle is applied if onLongPress is specified',
+      (tester) async {
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com https://example.com/',
+            style: TextStyle(color: Color(0xFF111111)),
+            matchStyle: TextStyle(color: Color(0xFF222222)),
+            tapStyle: TextStyle(color: Color(0xFF333333)),
+            onLongPress: onLongPress,
+          ),
+        );
+        await tester.pump();
 
-      final span2A = findSpan('bbb@example.com');
-      tapDownSpan(span2A);
-      await tester.pump();
+        final span2A = findSpan('bbb@example.com');
+        tapDownSpan(span2A);
+        await tester.pump();
 
-      final span1 = findSpan('aaa ');
-      final span2B = findSpan('bbb@example.com');
-      final span3 = findSpan('https://example.com/');
-      expect(span1?.style?.color, const Color(0xFF111111));
-      expect(span2B?.style?.color, const Color(0xFF333333));
-      expect(span3?.style?.color, const Color(0xFF222222));
+        final span1 = findSpan('aaa ');
+        final span2B = findSpan('bbb@example.com');
+        final span3 = findSpan('https://example.com/');
+        expect(span1?.style?.color, const Color(0xFF111111));
+        expect(span2B?.style?.color, const Color(0xFF333333));
+        expect(span3?.style?.color, const Color(0xFF222222));
 
-      tapUpSpan(span2B);
-      await tester.pump();
+        tapUpSpan(span2B);
+        await tester.pump();
 
-      final span2C = findSpan('bbb@example.com');
-      expect(span2C?.style?.color, const Color(0xFF222222));
-    });
+        final span2C = findSpan('bbb@example.com');
+        expect(span2C?.style?.color, const Color(0xFF222222));
+      },
+    );
   });
 
   group('Tap callbacks', () {

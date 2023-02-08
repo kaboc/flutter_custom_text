@@ -48,28 +48,27 @@ final pages = {
   1: ExamplePage(
     page: 1,
     title: 'Simple',
-    description: 'A very basic example to apply a colour to URLs and email '
-        'addresses.\nThey are not tappable in this example.',
+    description: 'A very basic example to apply a colour to URLs and '
+        'email addresses using preset matchers.',
     builder: (_) => const Example1(),
     hasOutput: false,
-    additionalInfo: 'Tapping on text in this example does not trigger '
-        'anything.',
+    additionalInfo: 'Tapping on text does not trigger anything in '
+        'this example.',
   ),
   2: const ExamplePage(
     page: 2,
     title: 'Unique styles and actions',
-    description: 'An example to apply styles to URLs, email addresses and '
-        'phone numbers, and enable them to be tapped / long-pressed.\n'
-        'Phone numbers are styled differently according to the `matchStyle` '
-        'and `tapStyle` set in the definition.',
+    description: 'An example to decorate URLs, email addresses and phone '
+        'numbers, and also enable them to be tapped and long-pressed.\n'
+        'Phone numbers are styled differently with the unique `matchStyle` '
+        'and `tapStyle`.',
     builder: Example2.new,
-    additionalInfo: 'Try tapping / long-pressing on coloured strings.',
+    additionalInfo: 'Try tapping or long-pressing on coloured strings.',
   ),
   3: const ExamplePage(
     page: 3,
     title: 'Overwriting match pattern',
-    description: 'An example to overwrite the default match pattern of '
-        '`TelMatcher`.\n'
+    description: 'An example to replace the default pattern of `TelMatcher`.\n'
         'The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` '
         'format as a phone number.',
     builder: Example3.new,
@@ -77,12 +76,11 @@ final pages = {
   4: const ExamplePage(
     page: 4,
     title: 'Custom pattern',
-    description: 'An example to parse hashtags using a custom matcher '
+    description: 'An example to parse hashtags with a custom matcher '
         'and apply styles to them.\n'
-        'A hashtag has a wide variety of definitions, but here as an '
-        'example, it is defined as a string that starts with `#` followed '
-        'by an alphabet and then by alphanumerics, and is enclosed with '
-        'white spaces.',
+        'Here as an example, a hashtag is defined as a string that starts '
+        'with `#` followed by an alphabet and then alphanumerics, and is '
+        'enclosed with white spaces.',
     builder: Example4.new,
   ),
   5: const ExamplePage(
@@ -92,9 +90,8 @@ final pages = {
         'An example to parse markdown-style links, like `[label](url)` '
         'using `SelectiveDefinition`, and make them tappable.\n'
         'Each of the string shown in the widget and the string passed to '
-        'the tap callbacks is selected individually from the fragments '
-        '(groups) that have matched the patterns enclosed with '
-        'parentheses within the match pattern.',
+        'the tap callbacks is selected individually from the groups of '
+        'matched strings.',
     builder: Example5.new,
   ),
   6: const ExamplePage(
@@ -102,18 +99,18 @@ final pages = {
     title: 'SpanDefinition',
     description: 'An example to show both strings and icons using '
         '`SpanDefinition`.\n'
-        'The builder parameter takes a function returning an `InlineSpan`.\n'
-        'Matched string and groups are given to the function, so it is '
-        'possible to construct an `InlineSpan` flexibly with them.',
+        'The `builder` argument takes a function returning an `InlineSpan`.\n'
+        'The function can use the matched string and groups passed to it '
+        'to build an `InlineSpan` flexibly with them.',
     builder: Example6.new,
   ),
   7: const ExamplePage(
     page: 7,
     title: 'Mouse cursor and text style on hover',
-    description: 'An example to show the feature of changing the mouse '
-        'cursor and the text style on hover.\n'
-        'The mouse cursor type set to `mouseCursor` of a definition is '
-        'used while the mouse pointer hovers over a matching string.',
+    description: 'An example to change the mouse cursor and text style '
+        'on hover.\n'
+        'The mouse cursor type passed to `mouseCursor` of a definition '
+        'is used for matched string while the mouse pointer hovers over it.',
     builder: Example7.new,
     additionalInfo: 'Run the app on desktop to see how this example '
         'looks and behaves on hover over some strings.',
@@ -121,9 +118,10 @@ final pages = {
   8: const ExamplePage(
     page: 8,
     title: 'CustomText.selectable',
-    description: 'A example of selectable CustomText.\n'
-        'This is almost the same as example2, but different in that this '
-        'one is based on `SelectableText`, allowing text to be selected.',
+    description: 'An example of selectable CustomText.\n'
+        'This is almost the same as example2 except for the '
+        '`CustomText.selectable` constructor that allows text to '
+        'be selected.',
     builder: Example8.new,
     additionalInfo: 'Will be removed in favour of the SelectionArea '
         'widget in the near future.',
@@ -131,12 +129,12 @@ final pages = {
   9: const ExamplePage(
     page: 9,
     title: 'CustomTextEditingController',
-    description: 'An example to decorate strings in `TextField` using '
-        '`CustomTextEditingController`.\n\n'
+    description: 'An example to use most `CustomText` features in '
+        '`TextField` too using `CustomTextEditingController`.\n\n'
         'Notice:\n'
         '* SelectiveDefinition and SpanDefinition are not available '
         'for CustomTextEditingController.\n'
-        '* Not suitable for extremely long text, even with debouncing enabled.',
+        '* Not suitable for long text, even with debouncing enabled.',
     builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '

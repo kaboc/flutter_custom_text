@@ -10,16 +10,20 @@ import 'definition_base.dart';
 import 'parser_options.dart';
 import 'text_span_notifier.dart';
 
-/// A widget that decorates parts of text and/or enables
-/// tap/long-press/hover gestures based on flexible definitions.
+/// A text widget that decorates strings in it and enables tap,
+/// long-press and/or hover gestures based on flexible definitions.
 ///
-/// This widget is useful for making strings in selectable/non-selectable
-/// text such as URLs, email addresses or phone numbers clickable, or for
-/// only highlighting some parts of text with colors and different font
-/// settings depending on the types of string elements.
+/// {@template customText.CustomText}
+/// This widget is useful for making partial strings in text such as URLs,
+/// email addresses or phone numbers clickable, or for only highlighting
+/// some parts of text with colors and different font settings depending
+/// on the types of text elements.
+/// {@endtemplate}
 class CustomText extends StatefulWidget {
-  /// Creates a text widget that decorates strings and/or enables
-  /// tap/long-press/hover gestures based on flexible definitions.
+  /// Creates a text widget that decorates strings and enables tap,
+  /// long-press and/or hover gestures based on flexible definitions.
+  ///
+  /// {@macro customText.CustomText}
   const CustomText(
     this.text, {
     super.key,
@@ -62,8 +66,9 @@ class CustomText extends StatefulWidget {
         scrollPhysics = null,
         onSelectionChanged = null;
 
-  /// Creates a selectable text widget that decorates strings in it and/or
-  /// enables tap/long-press/hover gestures based on flexible definitions.
+  /// Creates a selectable text widget that decorates strings in it
+  /// and enables tap, long-press and/or hover gestures based on
+  /// flexible definitions.
   @Deprecated(
     'Use SelectionArea on Flutter 3.3 and above, or '
     '`TextField.readOnly` with `CustomTextEditingController`',
@@ -112,61 +117,80 @@ class CustomText extends StatefulWidget {
 
   final bool _isSelectable;
 
-  /// The text to parse and show.
+  /// The text to parse and display.
   final String text;
 
-  /// Definitions that specify parsing rules, text styles and actions
-  /// for tap/long-press/hover events.
+  /// Definitions that specify rules for parsing, appearance and actions.
   final List<Definition> definitions;
 
-  /// The options for [RegExp] that configures how a regular expression
-  /// is treated.
+  /// The options for [RegExp] that configure how regular expressions
+  /// are treated.
   final ParserOptions parserOptions;
 
   /// The text style for strings that did not match any match patterns.
   ///
   /// This is also used for matched strings if neither [CustomText.matchStyle]
-  /// nor `matchStyle` in the relative definition is set.
+  /// nor `matchStyle` in the relevant definition is specified.
   ///
-  /// If no style is set, [DefaultTextStyle] is used instead.
+  /// If no style is specified, [DefaultTextStyle] is used instead.
   final TextStyle? style;
 
+  /// {@template customText.matchStyle}
   /// The default text style for matched strings.
   ///
-  /// This is used only if `matchStyle` is not set in the relative
-  /// definition.
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  /// {@endtemplate}
   final TextStyle? matchStyle;
 
-  /// The default text style used for matched strings while they are
+  /// {@template customText.tapStyle}
+  /// The default text style used for tappable strings while they are
   /// being pressed.
+  ///
+  /// This is used only if a tap or long-press is enabled on the string
+  /// by [onTap] or [onLongPress].
   ///
   /// If this is not specified, [hoverStyle] or [matchStyle] is used
   /// instead if specified.
   ///
-  /// This is used only if neither `matchStyle` nor `tapStyle` is set
-  /// in the relative definition.
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  /// {@endtemplate}
   final TextStyle? tapStyle;
 
+  /// {@template customText.hoverStyle}
   /// The default text style used for matched strings while they are
   /// under the mouse pointer.
   ///
-  /// This is used only if `hoverStyle` is not set in the relative
-  /// definition. If no style is provided in both, styling on hover
-  /// itself is not enabled, so [matchStyle] is used instead.
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  /// {@endtemplate}
   final TextStyle? hoverStyle;
 
-  /// The callback function called when tappable elements are tapped.
+  /// {@template customText.onTap}
+  /// The callback function called when a tappable element is tapped.
+  ///
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  /// {@endtemplate}
   final void Function(Type, String)? onTap;
 
-  /// The callback function called when tappable elements are long-pressed.
+  /// {@template customText.onLongPress}
+  /// The callback function called when a tappable element is long-pressed.
+  ///
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  /// {@endtemplate}
   final void Function(Type, String)? onLongPress;
 
+  /// {@template customText.longPressDuration}
   /// The duration before a tap is regarded as a long-press and the
   /// [onLongPress] function is called.
+  /// {@endtemplate}
   final Duration? longPressDuration;
 
   /// Parsing is executed in an isolate to prevent blocking of the UI
-  /// if set to `true`, except on the web where isolates are not supported,
+  /// if set to `true`, except on the web where isolates are not supported.
   ///
   /// Using an isolate has the adverse effect of adding an overhead,
   /// resulting in a slightly longer execution, but it is sometimes better
@@ -175,7 +199,7 @@ class CustomText extends StatefulWidget {
   /// How long parsing takes depends on the text length, the number and
   /// complexity of match patterns, the device performance, etc.
   /// Try both `true` and `false` to see which is suitable if you are
-  /// unsure of it.
+  /// unsure.
   final bool preventBlocking;
 
   final StrutStyle? strutStyle;

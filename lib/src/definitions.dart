@@ -2,25 +2,31 @@ import 'package:flutter/widgets.dart';
 
 import 'definition_base.dart';
 import 'text.dart';
+import 'text_editing_controller.dart';
 
-/// A class that defines parsing rules, text styles and actions for
-/// tap/long-press events.
+/// A class that defines rules for parsing, appearance and actions
+/// for [CustomText] and [CustomTextEditingController].
 class TextDefinition extends Definition {
-  /// Creates a [TextDefinition] that defines parsing rules, text styles,
-  /// and actions for tap/long-press events.
+  /// Creates a [TextDefinition] that defines rules for parsing,
+  /// appearance and actions for [CustomText] and [CustomTextEditingController].
   ///
-  /// If the pattern set in [matcher] has matches, the matching strings are
+  /// {@template customText.definition.matcherAndStyle}
+  /// The strings that have matched the pattern defined in [matcher] are
   /// styled according to the styles specified by [matchStyle], [tapStyle]
-  /// and [hoverStyle], which are used while the string element is not
-  /// pressed, being pressed, and being hovered respectively.
+  /// and [hoverStyle], which are applied to a TextSpan while it is not
+  /// pressed, being pressed, and being hovered, respectively.
+  /// {@endtemplate}
   ///
-  /// [onTap] / [onLongPress] are callback functions called when the element
-  /// is tapped/long-pressed. The matched string is passed in to the functions.
+  /// [onTap] and [onLongPress] are handler functions called when a
+  /// TextSpan is tapped and long-pressed respectively. The matched
+  /// string is passed in to the functions.
   ///
-  /// [mouseCursor] is a mouse cursor type used while the mouse hovers over
-  /// the matching text elements. Note that even if this is omitted,
+  /// {@template customText.definition.mouseCursor}
+  /// [mouseCursor] is a mouse cursor type used while the mouse hovers
+  /// over a matching text element. Note that even if this is omitted,
   /// [SystemMouseCursors.click] is automatically used if [onTap] or
-  /// [onLongPress] is set.
+  /// [onLongPress] is specified.
+  /// {@endtemplate}
   const TextDefinition({
     required super.matcher,
     super.matchStyle,
@@ -32,32 +38,29 @@ class TextDefinition extends Definition {
   });
 }
 
-/// A class that is similar to [TextDefinition] but different in that this
-/// enables to choose the string to be displayed and the one passed to the
-/// tap/long-press callbacks.
+/// A class that defines rules for parsing, appearance and actions
+/// for [CustomText] and [CustomTextEditingController].
+///
+/// This is similar to [TextDefinition] but different in that
+/// it configures separately the string to be displayed and the
+/// one to be passed to the tap and long-press callbacks.
 class SelectiveDefinition extends Definition {
-  /// Creates a [SelectiveDefinition] that is similar to [TextDefinition] but
-  /// allows more flexible settings.,
+  /// Creates a [SelectiveDefinition] that defines rules for parsing,
+  /// appearance and actions similarly to [TextDefinition] but allows
+  /// a little more flexible settings.
   ///
-  /// If the pattern set in [matcher] has matches, the matching strings are
-  /// styled according to the styles specified by [matchStyle], [tapStyle]
-  /// and [hoverStyle], which are used while the string element is not
-  /// pressed, being pressed, and being hover respectively.
+  /// {@macro customText.definition.matcherAndStyle}
   ///
-  /// [labelSelector] and [tapSelector] are functions provided with groups
-  /// (an array of strings) that have matched the fragments enclosed with
-  /// parentheses within the match pattern. The string returned by
-  /// [labelSelector] is displayed, and the one returned by [tapSelector]
-  /// is passed to [onTap] and [onLongPress].
+  /// [onTap] and [onLongPress] are handler functions called when a
+  /// TextSpan is tapped and long-pressed respectively.
   ///
-  /// [onTap] / [onLongPress] are callback functions called when the element
-  /// is tapped/long-pressed. The string set by [tapSelector] is passed
-  /// in to the functions.
+  /// [labelSelector] and [tapSelector] are functions for selecting
+  /// a string. It receives a list of strings that have matched the
+  /// fragments enclosed in parentheses within the match pattern.
+  /// The string returned by [labelSelector] is displayed, and the one
+  /// returned by [tapSelector] is passed to [onTap] and [onLongPress].
   ///
-  /// [mouseCursor] is a mouse cursor type used while the mouse hovers over
-  /// the matching text elements. Note that even if this is omitted,
-  /// [SystemMouseCursors.click] is automatically used if [onTap] or
-  /// [onLongPress] is set.
+  /// {@macro customText.definition.mouseCursor}
   const SelectiveDefinition({
     required super.matcher,
     required LabelSelector super.labelSelector,
@@ -71,16 +74,17 @@ class SelectiveDefinition extends Definition {
   });
 }
 
-/// A class that defines parsing rules and the string or widget to be
-/// displayed inside [CustomText].
+/// A class that defines rules for parsing, appearance and widget
+/// to be displayed inside [CustomText].
 class SpanDefinition extends Definition {
-  /// A [SpanDefinition] that defines parsing rules and the widget to
-  /// be displayed inside [CustomText].
+  /// A [SpanDefinition] that defines parsing rules and the widget
+  /// to be displayed inside [CustomText].
   ///
-  /// The whole matched string and the string that has matched the pattern
-  /// specified in matcher are passed in to the [builder] function. Use the
-  /// function to return an object of a type derived from [InlineSpan],
-  /// like [WidgetSpan], to display it instead of the matched string.
+  /// The [builder] function receives the entire matched string and
+  /// a list of strings that have matched the fragments enclosed in
+  /// parentheses within the match pattern. Use the function to return
+  /// an object of [InlineSpan] or its subtype (e.g. [WidgetSpan]) to
+  /// display it instead of the matched string.
   const SpanDefinition({
     required super.matcher,
     required SpanBuilder super.builder,

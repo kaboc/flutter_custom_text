@@ -14,13 +14,12 @@ class Example5 extends StatelessWidget {
       definitions: [
         SelectiveDefinition(
           matcher: const LinkMatcher(),
-          // `labelSelector` is used to choose the string to show.
-          // `groups` provided to `labelSelector` is an array of
-          // strings matching the fragments enclosed in parentheses
-          // within the match pattern.
+          // `labelSelector` is used to choose the string to display.
+          // It receives a list of strings that have matched the
+          // fragments enclosed in parentheses within the match pattern.
           labelSelector: (groups) => groups[0]!,
           // `tapSelector` is used to choose the string to be passed
-          // to the `onTap` and `onLongPress` callbacks.
+          // to the `onTap` and `onLongPress` handlers.
           tapSelector: (groups) => groups[1]!,
         ),
       ],

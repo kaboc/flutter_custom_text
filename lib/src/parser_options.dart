@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart' show immutable;
 
-/// A class that configures how a regular expression is treated.
+/// A class that configures how a regular expressions are treated.
 @immutable
 class ParserOptions {
-  /// Creates a [ParserOptions] that configures how a regular
-  /// expression is treated.
+  /// Creates a [ParserOptions] that configures how regular expressions
+  /// are treated.
   const ParserOptions({
     this.multiLine = false,
     this.caseSensitive = true,

@@ -16,10 +16,10 @@ class Example2 extends StatelessWidget {
         const TextDefinition(matcher: UrlMatcher()),
         const TextDefinition(matcher: EmailMatcher()),
         TextDefinition(
-          // TODO: Replace with default TelMatcher if Safari supports lookbehind
+          // TODO: Use default TelMatcher if Safari supports lookbehind.
           matcher: const TelMatcher(r'(?:\+?[1-9]\d{0,4})?(?:[- ]?\d{1,4})+'),
-          // Parameters of a definition override the equivalent
-          // parameters of CustomText.
+          // Styles and handlers specified in a definition take
+          // precedence over the equivalent arguments of CustomText.
           matchStyle: const TextStyle(
             color: Colors.green,
             decoration: TextDecoration.underline,

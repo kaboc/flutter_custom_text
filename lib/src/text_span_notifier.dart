@@ -99,8 +99,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     return isTappable
         ? _tappableTextSpan(
             index: index,
+            // The entire text of the element.
             text: element.text,
+            // The text to be shown.
             label: label,
+            // The text to be passed to tap callbacks.
             link: def.tapSelector == null
                 ? element.text
                 : def.tapSelector!(element.groups),
@@ -175,9 +178,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     return TextSpan(
       text: label,
-      // hoverStyle is cancelled when text spans are built.
+      // hoverStyle must be cancelled when text spans are built.
       // Otherwise, if a span with hoverStyle is being hovered on
-      // during it and then gets a different index in new spans, the
+      // during a build and then gets a different index in new spans, the
       // style is mistakenly applied to a new span at the original index.
       style: _hoverIndex == index && !_isBuilding ? hoverStyle : matchStyle,
       mouseCursor: definition.mouseCursor,
@@ -236,10 +239,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     return TextSpan(
       text: label,
-      // tapStyle and hoverStyle are cancelled when text spans are build.
-      // Otherwise, if a span with such a style is being tapped / hovered
-      // on during it and then gets a different index in new spans, the
-      // style is mistakenly applied to a new span at the original index.
+      // tapStyle and hoverStyle must be cancelled when text spans are built.
+      // Otherwise, if a span with such a style is being tapped or hovered
+      // on during a build and then gets a different index in new spans,
+      // the style is mistakenly applied to a new span at the original index.
       style: _isBuilding
           ? matchStyle
           : _tapIndex == index
@@ -387,7 +390,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     }
 
     // Prevents the issue #6 by avoiding updating the value
-    // after the notifier is no longer available.
+    // when the notifier is no longer available.
     if (!_disposed) {
       // For causing a redraw, it is necessary to replace
       // the whole TextSpan as well as update a child.

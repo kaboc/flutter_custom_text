@@ -33,9 +33,8 @@ class Example7 extends StatelessWidget {
             color: Colors.lightBlue,
             shadows: [_shadow(Colors.lightBlue)],
           ),
-          // `SystemMouseCursors.click` is used for URLs automatically
-          // even if `mouseCursor` is not set because a tap has been
-          // enabled by the `onTap` callback.
+          // `SystemMouseCursors.click` is automatically used for
+          // tappable elements even if `mouseCursor` is not specified.
           onTap: output,
         ),
       ],

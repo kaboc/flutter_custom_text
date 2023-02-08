@@ -68,7 +68,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is not applied '
-      'if tap callbacks are not set',
+      'if tap callbacks are not specified',
       (tester) async {
         await tester.pumpWidget(
           const SelectiveCustomTextWidget(
@@ -234,7 +234,7 @@ void main() {
 
   group('mouse hover', () {
     testWidgets(
-      'default mouse cursors for TextSpan with/without tap callbacks',
+      'default mouse cursor is used for element with/without tap callback',
       (tester) async {
         await tester.pumpWidget(
           SelectiveCustomTextWidget(
@@ -251,23 +251,20 @@ void main() {
       },
     );
 
-    testWidgets(
-      'mouse cursor for TextSpan with mouseCursor set',
-      (tester) async {
-        await tester.pumpWidget(
-          const SelectiveCustomTextWidget(
-            'aaa [bbb](ccc)',
-            mouseCursor: SystemMouseCursors.grab,
-          ),
-        );
-        await tester.pump();
+    testWidgets('specified mouse cursor is used', (tester) async {
+      await tester.pumpWidget(
+        const SelectiveCustomTextWidget(
+          'aaa [bbb](ccc)',
+          mouseCursor: SystemMouseCursors.grab,
+        ),
+      );
+      await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2 = findSpan('bbb');
-        expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
-        expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
-      },
-    );
+      final span1 = findSpan('aaa ');
+      final span2 = findSpan('bbb');
+      expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+      expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
+    });
 
     testWidgets('hoverStyle', (tester) async {
       await tester.pumpWidget(
@@ -309,7 +306,7 @@ void main() {
     });
 
     testWidgets(
-      'tapStyle is used while being tapped even if hoverStyle is set',
+      'tapStyle is used while being tapped even if hoverStyle is specified',
       (tester) async {
         await tester.pumpWidget(
           SelectiveCustomTextWidget(

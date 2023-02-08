@@ -1,11 +1,17 @@
 import 'package:text_parser/text_parser.dart';
 
-/// A variant of [TextMatcher] that is useful for parsing Markdown link
-/// format.
+import 'definitions.dart';
+
+/// A variant of [TextMatcher] for parsing Markdown link format.
+///
+/// {@template customText.LinkMatcher}
+/// This matcher is basically used with [SelectiveDefinition].
+///
+/// The preset pattern is overwritten if a custom pattern is provided.
+/// {@endtemplate}
 class LinkMatcher extends TextMatcher {
-  /// Creates a [LinkMatcher] that is useful for parsing Markdown link
-  /// format.
+  /// Creates a [LinkMatcher] for parsing Markdown link format.
   ///
-  /// The preset pattern is overwritten if a custom pattern is provided.
+  /// {@macro customText.LinkMatcher}
   const LinkMatcher([super.pattern = r'\[(.+?)\]\((.*?)\)']);
 }

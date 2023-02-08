@@ -10,20 +10,20 @@ import 'parser_options.dart';
 import 'text_span_notifier.dart';
 import 'transient_elements_builder.dart';
 
-/// A widget that decorates parts of editable text and/or enables
-/// tap/long-press/hover gestures based on flexible definitions.
+/// A variant of [TextEditingController] that decorates strings in
+/// an editable text field and enables tap, long-press and/or hover
+/// gestures based on flexible definitions.
 ///
-/// This widget is useful for making strings in an editable text such
+/// {@template customText.TextEditingController}
+/// This controller is useful for making partial strings in text such
 /// as URLs, email addresses or phone numbers clickable, or for only
 /// highlighting some parts of text with colors and different font
-/// settings depending on the types of string elements.
+/// settings depending on the types of text elements.
+/// {@endtemplate}
 class CustomTextEditingController extends TextEditingController {
   /// Creates a controller for an editable text field.
   ///
-  /// {@template customText.TextEditingController}
-  /// Unlike [TextEditingController], this controller enables decorations
-  /// and tap/long-press/hover gestures based on flexible definitions.
-  /// {@endtemplate}
+  /// {@macro customText.TextEditingController}
   CustomTextEditingController({
     super.text,
     required this.definitions,
@@ -60,52 +60,40 @@ class CustomTextEditingController extends TextEditingController {
     _init();
   }
 
-  /// Definitions that specify parsing rules, text styles and actions
-  /// for tap/long-press events.
+  /// [TextDefinition]s that specify rules for parsing, appearance and
+  /// actions.
   final List<TextDefinition> definitions;
 
-  /// The options for [RegExp] that configures how a regular expression
-  /// is treated.
+  /// The options for [RegExp] that configure how regular expressions
+  /// are treated.
   final ParserOptions parserOptions;
 
   /// The text style for strings that did not match any match patterns.
   ///
   /// This is also used for matched strings if neither
   /// [CustomTextEditingController.matchStyle] nor `matchStyle` in the
-  /// relative definition is set.
+  /// relevant definition is specified.
   ///
-  /// If no style is set, the `style` of the editable text field that
+  /// If no style is specified, the `style` of the editable text field that
   /// this controller is associated with is used instead.
   final TextStyle? style;
 
-  /// The default text style for matched strings.
-  ///
-  /// This is used only if `matchStyle` is not set in the relative
-  /// definition.
+  /// {@macro customText.matchStyle}
   final TextStyle? matchStyle;
 
-  /// The default text style used for matched strings while they are
-  /// pressed.
-  ///
-  /// This is used only if neither `matchStyle` nor `tapStyle` is set
-  /// in the relative definition,
+  /// {@macro customText.tapStyle}
   final TextStyle? tapStyle;
 
-  /// The default text style used for matched strings while they are
-  /// under the mouse pointer.
-  ///
-  /// This is used only if `hoverStyle` is not set in the relative
-  /// definition.
+  /// {@macro customText.hoverStyle}
   final TextStyle? hoverStyle;
 
-  /// The callback function called when tappable elements are tapped.
+  /// {@macro customText.onTap}
   final void Function(Type, String)? onTap;
 
-  /// The callback function called when tappable elements are long-pressed.
+  /// {@macro customText.onLongPress}
   final void Function(Type, String)? onLongPress;
 
-  /// The duration before a tap is regarded as a long-press and the
-  /// [onLongPress] function is called.
+  /// {@macro customText.longPressDuration}
   final Duration? longPressDuration;
 
   /// The debouncing duration after every text input action.
@@ -113,15 +101,14 @@ class CustomTextEditingController extends TextEditingController {
   /// **This is experimental for now. Use it at your own risk.**
   ///
   /// This is not perfect but somewhat effective in long text.
-  /// Parsing is scheduled to be performed after the duration
-  /// set to this property, but it is rescheduled on every event,
-  /// such as a change in the text and a move of the cursor.
-  /// It reduces the frequency of text parsing and thus making
-  /// text updates a little more performant.
+  /// Parsing is scheduled to be performed after the specified duration,
+  /// but it is rescheduled if any event happens, such as a text change
+  /// and a cursor move. It reduces the frequency of text parsing and
+  /// thus making text updates a little more performant.
   ///
   /// The default value is `null`, meaning debouncing is disabled.
   /// The initial parsing is not debounced even if a duration above
-  /// zero is set.
+  /// zero is given.
   ///
   /// A new value can be assigned to change the duration span
   /// or turn debouncing on/off.

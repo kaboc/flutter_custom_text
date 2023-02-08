@@ -3,18 +3,19 @@
 [![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/main/graph/badge.svg?token=H7ILK6CS0V)](https://codecov.io/gh/kaboc/flutter_custom_text)
 
 A highly customisable text widget that enables decorations and gestures on strings, and
-the special TextEditingController that makes most of the functionality available in an
-editable text field too.
+a special TextEditingController that makes most of the functionality of CustomText available
+in an editable text field too.
 
-This package is useful for making part of text (e.g. URLs, email addresses or phone numbers)
-react to taps / long-presses / hover, or for only highlighting partial strings with colors
-and different font settings. You can configure the appearance and the behaviour using multiple
-definitions consisting of regular expressions, text styles, gesture callbacks, etc.
+This package is useful for making partial strings in text (e.g. URLs, email addresses
+or phone numbers) react to tap, long-press and hover gestures, or for only highlighting
+particular strings with colors and different font settings. You can configure the appearance
+and the behaviour using multiple definitions consisting of regular expressions, text styles,
+gesture handlers, etc.
 
 ## Usage by examples
 
 Most of the examples here are contained in the sample app in the [example/][example] folder.
-Just click on the link below to open its web version and see what this package can achieve.
+Just click on the link below to open its web version and see what this package can do.
 
 **[Web Demo][demo]**
 
@@ -23,13 +24,13 @@ by this package.
 
 ![Code highlighting](https://user-images.githubusercontent.com/20254485/203714827-af1bdd43-666b-417a-9f29-96a7c7f18b35.png)
 
-### Simplest example
+### 🌺 <b>Simplest example</b>
 
 example1.dart ([Code][example1] / [Demo][example1_demo])
 
 ![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
-A very basic example showing how to apply a colour to URLs and email addresses using preset
+A very basic example of how to apply a colour to URLs and email addresses using preset
 matchers.
 
 The coloured strings are not tappable in this example.
@@ -49,28 +50,30 @@ CustomText(
 #### Preset matchers
 
 The matchers listed below are for general use.
-If stricter patterns are necessary, create custom matchers instead of using these.
+If a stricter pattern is necessary, overwrite the preset pattern or create a custom matcher.
 
 - [UrlMatcher][UrlMatcher] for URLs
 - [EmailMatcher][EmailMatcher] for email addresses
 - [TelMatcher][TelMatcher] for phone numbers
-- [LinkMatcher][LinkMatcher] for Markdown-style links or for use with
-  [SelectiveDefinition][SelectiveDefinition]
+- [LinkMatcher][LinkMatcher] for Markdown-style links or for other strings to be handled
+  by [SelectiveDefinition][SelectiveDefinition]
 
-### Unique styles and actions per definition
+### 🌺 <b>Unique styles and actions per definition</b>
 
 example2.dart ([Code][example2] / [Demo][example2_demo])
 
 ![example2](https://user-images.githubusercontent.com/20254485/100355833-c74c5300-3035-11eb-80d2-de64056417a1.gif)
 
-An example to decorate URLs, email addresses and phone numbers, and also enable
-them to be tapped/long-pressed.
+An example to decorate URLs, email addresses and phone numbers, and also enable them
+to be tapped and long-pressed.
 
-All of the three are styled, but only phone numbers among them are given unique `matchStyle`
-and `tapStyle`.
+All the three are styled, but only phone numbers among them are styled differently with
+the unique `matchStyle` and `tapStyle`.
 
-**Tip**: Use [url_launcher](https://pub.dev/packages/url_launcher) or its equivalent to open
-a browser or another app by a tap/long-press on a string.
+**Tip**:\
+To open a browser or another app when a string is tapped or long-pressed,
+use [url_launcher](https://pub.dev/packages/url_launcher) or equivalent in
+the `onTap` and/or `onLongPress` handlers.
 
 ```dart
 CustomText(
@@ -82,8 +85,8 @@ CustomText(
     const TextDefinition(matcher: EmailMatcher()),
     TextDefinition(
       matcher: const TelMatcher(),
-      // Parameters of a definition override the equivalent
-      // parameters of CustomText.
+      // Styles and handlers specified in a definition take
+      // precedence over the equivalent arguments of CustomText.
       matchStyle: const TextStyle(
         color: Colors.green,
         decoration: TextDecoration.underline,
@@ -103,15 +106,16 @@ CustomText(
 )
 ```
 
-### Overwriting patterns
+### 🌺 <b>Overwriting pattern</b>
 
 example3.dart ([Code][example3] / [Demo][example3_demo])
 
 ![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
-An example to overwrite the default pattern of [TelMatcher][TelMatcher].
+An example to replace the default pattern of [TelMatcher][TelMatcher].
 
-The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` format as a phone number.
+The new pattern here regards only the `{3 digits}-{4 digits}-{4 digits}` format
+as a phone number.
 
 ```dart
 CustomText(
@@ -124,7 +128,7 @@ CustomText(
 )
 ```
 
-### Custom pattern
+### 🌺 <b>Custom pattern</b>
 
 example4.dart ([Code][example4] / [Demo][example4_demo])
 
@@ -133,7 +137,7 @@ example4.dart ([Code][example4] / [Demo][example4_demo])
 An example to parse hashtags with a custom pattern and apply styles to them.
 
 A hashtag has a wide variety of definitions, but here as an example, it is defined
-as a string that starts with "#" followed by an alphabet and then by alphanumerics,
+as a string that starts with "#" followed by an alphabet and then alphanumerics,
 and is enclosed with white spaces.
 
 ```dart
@@ -167,7 +171,7 @@ CustomText(
 )
 ```
 
-### SelectiveDefinition
+### 🌺 <b>SelectiveDefinition</b>
 
 example5.dart ([Code][example5] / [Demo][example5_demo])
 
@@ -176,18 +180,11 @@ example5.dart ([Code][example5] / [Demo][example5_demo])
 An example to parse markdown-style links, like `[label](url)` using
 [SelectiveDefinition][SelectiveDefinition], and make them tappable.
 
-Each of the string shown in the widget and the string passed to the tap callbacks is selected
-individually from the fragments (`groups`) that have matched the patterns enclosed with
-parentheses within the match pattern.
+Each of the string shown in the widget and the string passed to the tap handlers
+is selected individually from the groups of matched strings.
 
-For details of `groups`, see the document of the [text_parser][text_parser] package that this package uses internally.
-
-```dart
-// This matcher comes with the package, so there's no need to prepare it yourself.
-class LinkMatcher extends TextMatcher {
-  const LinkMatcher([String pattern = r'\[(.+?)\]\((.*?)\)']) : super(pattern);
-}
-```
+For details of `groups`, see the document of the [text_parser][text_parser] package
+used internally in this package.
 
 ```dart
 CustomText(
@@ -196,13 +193,12 @@ CustomText(
   definitions: [
     SelectiveDefinition(
       matcher: const LinkMatcher(),
-      // `labelSelector` is used to choose the string to show.
-      // `groups` provided to `labelSelector` is an array of
-      // strings matching the fragments enclosed in parentheses
-      // within the match pattern.
+      // `labelSelector` is used to choose the string to display.
+      // It receives a list of strings that have matched the
+      // fragments enclosed in parentheses within the match pattern.
       labelSelector: (groups) => groups[0]!,
       // `tapSelector` is used to choose the string to be passed
-      // to the `onTap` and `onLongPress` callbacks.
+      // to the `onTap` and `onLongPress` handlers.
       tapSelector: (groups) => groups[1]!,
     ),
   ],
@@ -213,7 +209,7 @@ CustomText(
 ```
 
 `LinkMatcher` used together with `SelectiveDefinition` is handy not only for making a text link
-but also for just decorating the bracketed strings (but not showing the bracket symbols).
+but also for just decorating the bracketed strings (without showing the bracket symbols).
 
 ```dart
 // "def" and "jkl" are displayed in red.
@@ -229,16 +225,16 @@ CustomText(
 )
 ```
 
-### SpanDefinition
+### 🌺 <b>SpanDefinition</b>
 
 example6.dart ([Code][example6] / [Demo][example6_demo])
 
 ![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
 
-An example to show both strings and icons using [SpanDefinition][SpanDefinition].
+An example to display both strings and icons using [SpanDefinition][SpanDefinition].
 
-The builder parameter takes a function returning an [InlineSpan][InlineSpan].
-The function is provided with the matching string and groups, so it is possible to compose
+The `builder` parameter takes a function returning an [InlineSpan][InlineSpan].
+The function can use the matching string and groups passed to it to compose
 an `InlineSpan` flexibly with them.
 
 ```dart
@@ -268,27 +264,30 @@ CustomText(
 
 #### Notes
 
-- `SpanDefinition` does not have arguments for styles and tap callbacks, so it is totally
-  up to you how the `InlineSpan` returned from it is decorated and how it reacts to gestures.
-- The `builder` function is called on every rebuild. If you use `GestureRecognizer` to make a
-  WidgetSpan tappable, be careful not to create it inside the function, or make sure to
+- `SpanDefinition` does not have arguments for styles and tap handlers, so it depends
+  entirely on how the `InlineSpan` is configured.
+- The `builder` function is called on every rebuild. If you use `GestureRecognizer` to make
+  a WidgetSpan tappable, be careful not to create it inside the function, or make sure to
   dispose of existing recognizers before creating a new one.
 
-### Changing mouse cursor and text style on hover
+### 🌺 <b>Changing mouse cursor and text style on hover</b>
 
 example7.dart ([Code][example7] / [Demo][example7_demo])
 
 ![example7](https://user-images.githubusercontent.com/20254485/119790338-cf1a8080-bf0e-11eb-8c76-3116a540b159.gif)
 
-`TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor type set to it
-is used while the pointer hovers over a string that has matched the matcher specified in the definition.
+`TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor
+type passed to it is used for a string that has matched the match pattern while the pointer
+hovers over it.
 
-If a tap callback (`onTap` or `onLongPress`) is set and `mouseCursor` is not set, `SystemMouseCursors.click`
-is automatically used for the string that the tap callback is applied to.
+If a tap handler (`onTap` or `onLongPress`) is specified and `mouseCursor` is not,
+`SystemMouseCursors.click` is automatically used for the tappable element.
 
-A different text style can also be applied on hover using `hoverStyle` either in `CustomText` or in definitions.
+A different text style can also be applied on hover using `hoverStyle` either in `CustomText`
+or in a definition.
 
-**Tip**: Use `hoverStyle` and omit `tapStyle` if you want the same style to be applied on tap and hover.
+**Tip**:\
+Use `hoverStyle` and omit `tapStyle` if you want the same style for tap and hover.
 
 ```dart
 CustomText(
@@ -316,16 +315,15 @@ CustomText(
         color: Colors.lightBlue,
         shadows: ...,
       ),
-      // `SystemMouseCursors.click` is used for URLs automatically
-      // even if `mouseCursor` is not set because a tap has been
-      // enabled by the `onTap` callback.
+      // `SystemMouseCursors.click` is automatically used for
+      // tappable elements even if `mouseCursor` is not specified.
       onTap: (text) => output(text),
     ),
   ],
 )
 ```
 
-### CustomText.selectable
+### 🌺 <b>CustomText.selectable</b>
 
 example8.dart ([Code][example8] / [Demo][example8_demo])
 
@@ -333,14 +331,16 @@ example8.dart ([Code][example8] / [Demo][example8_demo])
 
 `CustomText.selectable` is now deprecated. Use either of the followings instead:
 
-- [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) available on Flutter 3.3 and above
+- [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) available
+  on Flutter 3.3 and above
 - [CustomTextEditingController][CustomTextEditingController] and `TextField` with `readOnly: true`
 
 <details>
 <summary>Click to view details</summary>
 
-This example is almost the same as example2, but with the `CustomText.selectable` constructor.
-It is based on `SelectableText.rich`, so text can be selected while it is partially decorated/tappable.
+This example is almost the same as example2 except for the `CustomText.selectable` constructor.
+It is based on `SelectableText.rich`, so text can be selected while decorations and actions
+are still available.
 
 ```dart
 CustomText.selectable(
@@ -357,14 +357,14 @@ CustomText.selectable(
 ```
 </details>
 
-### CustomTextEditingController
+### 🌺 <b>CustomTextEditingController</b>
 
 example9.dart ([Code][example9] / [Demo][example9_demo])
 
 ![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
 
-Text decoration, tap/long-press actions and hover effects are available also in an editable text field
-via [CustomTextEditingController][CustomTextEditingController].
+Text decoration, tap/long-press actions and hover effects are available also in
+an editable text field via [CustomTextEditingController][CustomTextEditingController].
 
 ```dart
 final controller = CustomTextEditingController(
@@ -394,8 +394,8 @@ Widget build(BuildContext context) {
 
 - `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
   It only accepts `TextDefinition`.
-- Debouncing of text parsing is available as an experimental feature for getting slightly better
-  performance in handling long text.
+- Debouncing of text parsing is available as an experimental feature for getting slightly
+  better performance in handling long text.
     - Pass some duration to `debounceDuration` to enable the feature.
     - Use it at your own risk.
     - Text input will be still slow even with debouncing because
@@ -407,14 +407,14 @@ Widget build(BuildContext context) {
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
   [Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using
   `TelMatcher` as is if your app targets Safari.
-- Highlight of selected text in `CustomText.selectable` is lost if the widget is rebuild,
+- Highlight of selected text in `CustomText.selectable` is lost if the widget is rebuilt;
   e.g. when `hoverStyle` is applied or removed.
 
 ## Links
 
 - [text_parser][text_parser]
     - CustomText is dependent on the `text_parser` package made by the same author.
-      See its documentation for details if you're interested or for troubleshooting on parsing.
+      See its documents for details if you're interested or seek troubleshooting on parsing.
 
 [demo]: https://kaboc.github.io/flutter_custom_text/
 [example]: https://github.com/kaboc/flutter_custom_text/tree/main/example

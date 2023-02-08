@@ -69,7 +69,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is not applied '
-      'if tap callbacks are not set',
+      'if tap callbacks are not specified',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -139,7 +139,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in CustomText is applied '
-      'if onTap is set in definition',
+      'if onTap is specified in definition',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -173,7 +173,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in CustomText is applied '
-      'if onLongPress is set in definition',
+      'if onLongPress is specified in definition',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -207,7 +207,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onTap is set in CustomText',
+      'if onTap is specified in CustomText',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -238,7 +238,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onLongPress is set in CustomText',
+      'if onLongPress is specified in CustomText',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -269,7 +269,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onTap is set in definition',
+      'if onTap is specified in definition',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -300,7 +300,7 @@ void main() {
 
     testWidgets(
       'tapStyle specified in definition is applied '
-      'if onLongPress is set in definition',
+      'if onLongPress is specified in definition',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -476,7 +476,7 @@ void main() {
     );
 
     testWidgets(
-      'default mouse cursors for TextSpan with/without tap callbacks',
+      'default mouse cursor is used for element with/without tap callback',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -495,23 +495,20 @@ void main() {
   });
 
   group('mouse hover', () {
-    testWidgets(
-      'mouse cursor for TextSpan with mouseCursor set',
-      (tester) async {
-        await tester.pumpWidget(
-          const CustomTextWidget(
-            'aaa bbb@example.com',
-            mouseCursor: SystemMouseCursors.grab,
-          ),
-        );
-        await tester.pump();
+    testWidgets('specified mouse cursor is used', (tester) async {
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com',
+          mouseCursor: SystemMouseCursors.grab,
+        ),
+      );
+      await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2 = findSpan('bbb@example.com');
-        expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
-        expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
-      },
-    );
+      final span1 = findSpan('aaa ');
+      final span2 = findSpan('bbb@example.com');
+      expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+      expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
+    });
 
     testWidgets('hoverStyle', (tester) async {
       await tester.pumpWidget(
@@ -578,7 +575,7 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle is used while being tapped even if hoverStyle is set',
+      'tapStyle is used while being tapped even if hoverStyle is specified',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
@@ -611,7 +608,7 @@ void main() {
     );
 
     testWidgets(
-      'hoverStyle is used while being tapped if tapStyle is not set',
+      'hoverStyle is used while being tapped if tapStyle is not specified',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
