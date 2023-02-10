@@ -10,7 +10,6 @@ import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
-import 'package:custom_text_example/examples/example9.dart';
 import 'package:custom_text_example/home_page.dart';
 
 extension on GoRouterState {
@@ -117,17 +116,6 @@ final pages = {
   ),
   8: const ExamplePage(
     page: 8,
-    title: 'CustomText.selectable',
-    description: 'An example of selectable CustomText.\n'
-        'This is almost the same as example2 except for the '
-        '`CustomText.selectable` constructor that allows text to '
-        'be selected.',
-    builder: Example8.new,
-    additionalInfo: 'Will be removed in favour of the SelectionArea '
-        'widget in the near future.',
-  ),
-  9: const ExamplePage(
-    page: 9,
     title: 'CustomTextEditingController',
     description: 'An example to use most `CustomText` features in '
         '`TextField` too using `CustomTextEditingController`.\n\n'
@@ -135,7 +123,7 @@ final pages = {
         '* SelectiveDefinition and SpanDefinition are not available '
         'for CustomTextEditingController.\n'
         '* Not suitable for long text, even with debouncing enabled.',
-    builder: Example9.new,
+    builder: Example8.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
         'URLs become tappable, and a hover effect is enabled on hashtags.',

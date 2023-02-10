@@ -1,40 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:custom_text/custom_text.dart';
+import 'package:custom_text/custom_text_editing_controller.dart';
 
-class Example8 extends StatelessWidget {
+class Example8 extends StatefulWidget {
   const Example8(this.output);
 
   final void Function(String) output;
 
   @override
+  State<Example8> createState() => _Example8State();
+}
+
+class _Example8State extends State<Example8> {
+  late final _controller = CustomTextEditingController(
+    text: 'abcde foo@example.com\nhttps://example.com/ #hashtag',
+    definitions: [
+      TextDefinition(
+        matcher: const UrlMatcher(),
+        matchStyle: const TextStyle(
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+        tapStyle: const TextStyle(color: Colors.indigo),
+        onTap: (url) => widget.output(url),
+        onLongPress: (url) => widget.output('long: $url'),
+      ),
+      TextDefinition(
+        matcher: const EmailMatcher(),
+        matchStyle: TextStyle(
+          color: Colors.green,
+          backgroundColor: Colors.lightGreen.withOpacity(0.2),
+        ),
+      ),
+      const TextDefinition(
+        matcher: PatternMatcher(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
+        matchStyle: TextStyle(color: Colors.orange),
+        hoverStyle: TextStyle(color: Colors.red),
+      ),
+    ],
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
-    return CustomText.selectable(
-      'URL: https://example.com/\n'
-      'Email: foo@example.com\n'
-      'Tel: +1-012-3456-7890',
-      definitions: [
-        const TextDefinition(matcher: UrlMatcher()),
-        const TextDefinition(matcher: EmailMatcher()),
-        TextDefinition(
-          // TODO: Replace with default TelMatcher if Safari supports lookbehind
-          matcher: const TelMatcher(r'(?:\+?[1-9]\d{0,4})?(?:[- ]?\d{1,4})+'),
-          matchStyle: const TextStyle(
-            color: Colors.green,
-            decoration: TextDecoration.underline,
+    const debounceDuration = Duration(seconds: 1);
+
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          maxLines: null,
+          style: const TextStyle(height: 1.4),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
           ),
-          tapStyle: const TextStyle(color: Colors.orange),
-          onTap: output,
-          onLongPress: (tel) => output('[Long press on Tel#] $tel'),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Text(
+              'Debounce\n(experimental)',
+              style: TextStyle(fontSize: 11.0, height: 1.1),
+              textAlign: TextAlign.center,
+            ),
+            Switch(
+              value: _controller.debounceDuration != null,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              onChanged: (on) {
+                setState(() {
+                  _controller.debounceDuration = on ? debounceDuration : null;
+                });
+              },
+            ),
+          ],
         ),
       ],
-      matchStyle: const TextStyle(
-        color: Colors.lightBlue,
-        decoration: TextDecoration.underline,
-      ),
-      tapStyle: const TextStyle(color: Colors.indigo),
-      onTap: (type, text) => output(text),
-      onLongPress: (type, text) => output('[Long press] $text'),
     );
   }
 }

@@ -323,45 +323,11 @@ CustomText(
 )
 ```
 
-### 🌺 <b>CustomText.selectable</b>
+### 🌺 <b>CustomTextEditingController</b>
 
 example8.dart ([Code][example8] / [Demo][example8_demo])
 
-![example8](https://user-images.githubusercontent.com/20254485/146570773-41495fc9-9d27-4754-a71e-b2b06e706d4a.gif)
-
-`CustomText.selectable` is now deprecated. Use either of the followings instead:
-
-- [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) available
-  on Flutter 3.3 and above
-- [CustomTextEditingController][CustomTextEditingController] and `TextField` with `readOnly: true`
-
-<details>
-<summary>Click to view details</summary>
-
-This example is almost the same as example2 except for the `CustomText.selectable` constructor.
-It is based on `SelectableText.rich`, so text can be selected while decorations and actions
-are still available.
-
-```dart
-CustomText.selectable(
-  'URL: https://example.com/\n'
-  'Email: foo@example.com\n'
-  'Tel: +1-012-3456-7890',
-  definitions: [
-    const TextDefinition(matcher: UrlMatcher()),
-    ...,
-  ],
-  matchStyle: const TextStyle(...),
-  ...,
-)
-```
-</details>
-
-### 🌺 <b>CustomTextEditingController</b>
-
-example9.dart ([Code][example9] / [Demo][example9_demo])
-
-![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
+![example8](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in
 an editable text field via [CustomTextEditingController][CustomTextEditingController].
@@ -407,8 +373,6 @@ Widget build(BuildContext context) {
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
   [Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using
   `TelMatcher` as is if your app targets Safari.
-- Highlight of selected text in `CustomText.selectable` is lost if the widget is rebuilt;
-  e.g. when `hoverStyle` is applied or removed.
 
 ## Links
 
@@ -426,7 +390,6 @@ Widget build(BuildContext context) {
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
 [example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
-[example9]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example9.dart
 [example1_demo]: https://kaboc.github.io/flutter_custom_text/#/1
 [example2_demo]: https://kaboc.github.io/flutter_custom_text/#/2
 [example3_demo]: https://kaboc.github.io/flutter_custom_text/#/3
@@ -435,7 +398,6 @@ Widget build(BuildContext context) {
 [example6_demo]: https://kaboc.github.io/flutter_custom_text/#/6
 [example7_demo]: https://kaboc.github.io/flutter_custom_text/#/7
 [example8_demo]: https://kaboc.github.io/flutter_custom_text/#/8
-[example9_demo]: https://kaboc.github.io/flutter_custom_text/#/9
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
 [EmailMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/EmailMatcher-class.html

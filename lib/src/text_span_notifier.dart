@@ -386,7 +386,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     // Updates only if the span is not being pressed.
     // The previous and current hovering positions are checked for
     // preventing repetitive rebuilds that can happen when
-    // CustomText.selectable or CustomTextEditingController is used.
+    // CustomTextEditingController is used.
     if (_tapIndex == null && globalPosition != _hoverPosition) {
       _hoverIndex = hovered ? spanData.index : null;
       _hoverPosition = hovered ? globalPosition : null;
