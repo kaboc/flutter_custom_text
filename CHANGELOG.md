@@ -1,3 +1,10 @@
+## 0.7.0
+
+- Raise minimum Flutter SDK version to 3.3.0.
+- Refactor `TextSpanNotifier` to make it easier to add features in future versions.
+- Remove an inappropriate condition from didUpdateWidget.
+- Add screenshots to pubspec.yaml.
+
 ## 0.6.1
 
 - Fix `Definition` and `ParserOptions` to use also `runtimeType` for `hashCode` calculation.
