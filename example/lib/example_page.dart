@@ -141,7 +141,7 @@ class _Example extends StatelessWidget {
   }
 }
 
-class _Output extends StatelessWidget {
+class _Output extends StatefulWidget {
   const _Output({
     required this.resultNotifier,
     required this.scrollController,
@@ -151,38 +151,51 @@ class _Output extends StatelessWidget {
   final ScrollController scrollController;
 
   @override
+  State<_Output> createState() => _OutputState();
+}
+
+class _OutputState extends State<_Output> {
+  @override
+  void initState() {
+    super.initState();
+    widget.resultNotifier.addListener(_scroll);
+  }
+
+  @override
+  void dispose() {
+    widget.resultNotifier.removeListener(_scroll);
+    super.dispose();
+  }
+
+  void _scroll() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.scrollController.animateTo(
+        widget.scrollController.position.maxScrollExtent,
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 80),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyText1!,
-      child: ColoredBox(
-        color: Colors.grey.shade300,
-        child: Scrollbar(
-          controller: scrollController,
-          thumbVisibility: true,
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ValueListenableBuilder<String>(
-                valueListenable: resultNotifier,
-                builder: (_, result, __) {
-                  WidgetsBinding.instance
-                      .addPostFrameCallback((_) => _scroll());
-                  return Text(result);
-                },
-              ),
+    return ColoredBox(
+      color: Colors.grey.shade300,
+      child: Scrollbar(
+        controller: widget.scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: widget.scrollController,
+          padding: const EdgeInsets.all(16.0),
+          child: ValueListenableBuilder(
+            valueListenable: widget.resultNotifier,
+            builder: (_, result, __) => Text(
+              result,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
         ),
       ),
-    );
-  }
-
-  void _scroll() {
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      curve: Curves.linear,
-      duration: const Duration(milliseconds: 80),
     );
   }
 }
