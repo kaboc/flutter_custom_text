@@ -218,6 +218,7 @@ class CustomText extends StatefulWidget {
   final FocusNode? focusNode;
   final bool showCursor;
   final bool autofocus;
+  // ignore: deprecated_member_use
   final ToolbarOptions? toolbarOptions;
   final int? minLines;
   final double cursorWidth;
@@ -382,6 +383,7 @@ class _CustomTextState extends State<CustomText> {
       textScaleFactor: widget.textScaleFactor,
       showCursor: widget.showCursor,
       autofocus: widget.autofocus,
+      // ignore: deprecated_member_use
       toolbarOptions: widget.toolbarOptions,
       minLines: widget.minLines,
       maxLines: widget.maxLines,
