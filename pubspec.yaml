@@ -19,3 +19,11 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.1
+
+screenshots:
+  - description: 'Applying styles and triggering actions by gestures.'
+    path: screenshots/unique_styles_and_actions.gif
+  - description: 'Changing mouse cursor and text style on hover.'
+    path: screenshots/mouse_cursor_and_text_style_on_hover.gif
+  - description: 'CustomTextEditingController enables text styling and actions in editable text.'
+    path: screenshots/custom_text_editing_controller.gif
