@@ -180,7 +180,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     if (_style != null) {
       matchStyle = _style!.merge(matchStyle);
-      hoverStyle = _style!.merge(hoverStyle);
+      hoverStyle = hoverStyle == null ? null : _style!.merge(hoverStyle);
     }
 
     _tapRecognizers[spanData.index]?.dispose();
@@ -225,7 +225,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     if (_style != null) {
       matchStyle = _style!.merge(matchStyle);
       tapStyle = _style!.merge(tapStyle);
-      hoverStyle = _style!.merge(hoverStyle);
+      hoverStyle = hoverStyle == null ? null : _style!.merge(hoverStyle);
     }
 
     _configureRecognizer(
