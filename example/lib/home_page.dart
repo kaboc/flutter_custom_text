@@ -61,7 +61,7 @@ class _PubLink extends StatelessWidget {
             ),
           ],
           style: TextStyle(color: Colors.lightBlue.shade100),
-          onTap: (_, __) => followLink!(),
+          onTap: (_) => followLink!(),
         );
       },
     );

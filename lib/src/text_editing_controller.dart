@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:text_parser/text_parser.dart';
 
 import 'definitions.dart';
+import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'text_span_notifier.dart';
 import 'transient_elements_builder.dart';
@@ -88,10 +89,10 @@ class CustomTextEditingController extends TextEditingController {
   final TextStyle? hoverStyle;
 
   /// {@macro customText.onTap}
-  final void Function(Type, String)? onTap;
+  final void Function(GestureDetails)? onTap;
 
   /// {@macro customText.onLongPress}
-  final void Function(Type, String)? onLongPress;
+  final void Function(GestureDetails)? onLongPress;
 
   /// {@macro customText.longPressDuration}
   final Duration? longPressDuration;

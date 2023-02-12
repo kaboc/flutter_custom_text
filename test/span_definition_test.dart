@@ -5,10 +5,7 @@ import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
-  setUp(() {
-    isTap = isLongPress = false;
-    matcherType = tappedText = null;
-  });
+  setUp(reset);
 
   group('SpanDefinition', () {
     testWidgets(

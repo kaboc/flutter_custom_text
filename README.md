@@ -92,8 +92,8 @@ CustomText(
         decoration: TextDecoration.underline,
       ),
       tapStyle: const TextStyle(color: Colors.orange),
-      onTap: (tel) => print(tel),
-      onLongPress: (tel) => print('[Long press] $tel'),
+      onTap: (details) => print(details.text),
+      onLongPress: (details) => print('[Long press] ${details.text}'),
     ),
   ],
   matchStyle: const TextStyle(
@@ -101,8 +101,8 @@ CustomText(
     decoration: TextDecoration.underline,
   ),
   tapStyle: const TextStyle(color: Colors.indigo),
-  onTap: (type, text) => print(text),
-  onLongPress: (type, text) => print('[Long press] $text'),
+  onTap: (details) => print(details),
+  onLongPress: (details) => print('[Long press] ${details.text}'),
 )
 ```
 
@@ -124,7 +124,7 @@ CustomText(
     TextDefinition(matcher: TelMatcher(r'\d{3}-\d{4}-\d{4}')),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
-  onTap: (_, text) => print(text),
+  onTap: (details) => print(details.text),
 )
 ```
 
@@ -163,8 +163,8 @@ CustomText(
     TextDefinition(matcher: HashTagMatcher()),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
-  onTap: (type, text) {
-    if (type == HashTagMatcher) {
+  onTap: (details) {
+    if (details.matcherType == HashTagMatcher) {
       ...; 
     }
   },
@@ -204,7 +204,7 @@ CustomText(
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
   tapStyle: const TextStyle(color: Colors.green),
-  onTap: (_, text) => print(text),
+  onTap: (details) => print(details.text),
 )
 ```
 
@@ -256,7 +256,7 @@ CustomText(
     const TextDefinition(
       matcher: EmailMatcher(),
       matchStyle: TextStyle(color: Colors.lightBlue),
-      onTap: print,
+      onTap: (details) => print(details.text),
     ),
   ],
 )
@@ -317,7 +317,7 @@ CustomText(
       ),
       // `SystemMouseCursors.click` is automatically used for
       // tappable elements even if `mouseCursor` is not specified.
-      onTap: (text) => output(text),
+      onTap: (details) => print(details.text),
     ),
   ],
 )

@@ -7,10 +7,7 @@ import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
-  setUp(() {
-    isTap = isLongPress = false;
-    matcherType = tappedText = null;
-  });
+  setUp(reset);
 
   group('Styles', () {
     testWidgets('DefaultTextStyle is used for RichText itself', (tester) async {
@@ -131,56 +128,65 @@ void main() {
   });
 
   group('Tap callbacks', () {
-    testWidgets('Correct values are passed to onTap callback', (tester) async {
+    testWidgets('Correct info is passed to onTap callback', (tester) async {
       await tester.pumpWidget(
-        const CustomTextWidget('aaa bbb@example.com', onTap: onTap),
+        Container(
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+          child: const CustomTextWidget('aaa bbb@example.com', onTap: onTap),
+        ),
       );
       await tester.pump();
 
-      const email = 'bbb@example.com';
-      final span = findSpan(email);
+      final center = tester.getCenter(find.byType(RichText).first);
+      await tester.tapAt(center);
 
-      tapDownSpan(span);
-      await tester.pump();
-      tapUpSpan(span);
-      await tester.pump();
-
-      expect(isTap, isTrue);
+      expect(gestureType, equals(GestureType.tap));
       expect(matcherType, equals(EmailMatcher));
-      expect(tappedText, equals(email));
+      expect(labelText, equals('bbb@example.com'));
+      expect(tappedText, equals('bbb@example.com'));
+      expect(globalPosition, equals(center));
+      expect(localPosition, equals(center - const Offset(10.0, 10.0)));
     });
 
     testWidgets(
-      'Correct values are passed to onLongPress callback',
+      'Correct info is passed to onLongPress callback',
       (tester) async {
         await tester.pumpWidget(
-          const CustomTextWidget(
-            'aaa bbb@example.com',
-            onLongPress: onLongPress,
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const CustomTextWidget(
+              'aaa bbb@example.com',
+              onLongPress: onLongPress,
+            ),
           ),
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture = await tester.startGesture(center);
         await tester.pump(const Duration(milliseconds: 610));
-        tapUpSpan(span);
-        await tester.pump();
+        await gesture.up();
 
-        expect(isLongPress, isTrue);
+        expect(gestureType, equals(GestureType.longPress));
         expect(matcherType, equals(EmailMatcher));
-        expect(tappedText, equals(email));
+        expect(labelText, equals('bbb@example.com'));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets('Only onTap is called on short tap', (tester) async {
+      var tap = false;
+      var long = false;
+
       await tester.pumpWidget(
-        const CustomTextWidget(
+        CustomTextWidget(
           'aaa bbb@example.com',
-          onTap: onTap,
-          onLongPress: onLongPress,
+          onTap: (_) => tap = true,
+          onLongPress: (_) => long = true,
         ),
       );
       await tester.pump();
@@ -193,16 +199,19 @@ void main() {
       tapUpSpan(span);
       await tester.pump();
 
-      expect(isTap, isTrue);
-      expect(isLongPress, isFalse);
+      expect(tap, isTrue);
+      expect(long, isFalse);
     });
 
     testWidgets('Only onLongPress is called on long-press', (tester) async {
+      var tap = false;
+      var long = false;
+
       await tester.pumpWidget(
-        const CustomTextWidget(
+        CustomTextWidget(
           'aaa bbb@example.com',
-          onTap: onTap,
-          onLongPress: onLongPress,
+          onTap: (_) => tap = true,
+          onLongPress: (_) => long = true,
         ),
       );
       await tester.pump();
@@ -215,8 +224,8 @@ void main() {
       tapUpSpan(span);
       await tester.pump();
 
-      expect(isTap, isFalse);
-      expect(isLongPress, isTrue);
+      expect(tap, isFalse);
+      expect(long, isTrue);
     });
 
     testWidgets(
@@ -239,7 +248,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isLongPress, isTrue);
+        expect(gestureType, equals(GestureType.longPress));
       },
     );
   });
@@ -257,7 +266,7 @@ void main() {
             return CustomTextWidget(
               'aaa bbb',
               definitions: definitions,
-              onTap: (_, text) => value = text,
+              onTap: (details) => value = details.text,
               onButtonPressed: () => setState(() {
                 definitions = const [
                   TextDefinition(matcher: PatternMatcher('bbb')),
@@ -334,7 +343,7 @@ void main() {
               return CustomTextWidget(
                 'aaa bbb@example.com',
                 tapStyle: tapStyle,
-                onTap: (_, __) {},
+                onTap: (_) {},
                 onButtonPressed: () => setState(() {
                   tapStyle = tapStyle.copyWith(color: const Color(0xFF222222));
                 }),
@@ -364,7 +373,8 @@ void main() {
     testWidgets(
       'change of tap callback specified in definition is reflected by rebuild',
       (tester) async {
-        void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
+        void onTap2(GestureDetails details) =>
+            tappedText = details.text.toUpperCase();
 
         var callback = onTap;
 
@@ -373,7 +383,7 @@ void main() {
             builder: (_, setState) {
               return CustomTextWidget(
                 'aaa bbb@example.com',
-                onTapInDef: (text) => callback(null, text),
+                onTapInDef: (details) => callback(details),
                 onButtonPressed: () {
                   setState(() => callback = onTap2);
                 },
@@ -401,7 +411,8 @@ void main() {
     testWidgets(
       'change of tap callback specified in CustomText is reflected by rebuild',
       (tester) async {
-        void onTap2(Type? _, String text) => tappedText = text.toUpperCase();
+        void onTap2(GestureDetails details) =>
+            tappedText = details.text.toUpperCase();
 
         var callback = onTap;
 
@@ -410,7 +421,7 @@ void main() {
             builder: (_, setState) {
               return CustomTextWidget(
                 'aaa bbb@example.com',
-                onTap: (_, text) => callback(null, text),
+                onTap: (details) => callback(details),
                 onButtonPressed: () {
                   setState(() => callback = onTap2);
                 },
@@ -445,7 +456,7 @@ void main() {
             builder: (_, setState) {
               return CustomTextWidget(
                 text,
-                onTapInDef: (text) => onTap(null, text),
+                onTapInDef: onTap,
                 onButtonPressed: () => setState(() {
                   text = text.toUpperCase();
                 }),
@@ -480,7 +491,7 @@ void main() {
             builder: (_, setState) {
               return CustomTextWidget(
                 text,
-                onTap: (_, text) => onTap(null, text),
+                onTap: onTap,
                 onButtonPressed: () => setState(() {
                   text = text.toUpperCase();
                 }),
