@@ -33,10 +33,10 @@ class CustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final TextStyle? hoverStyleInDef;
-  final void Function(Type, String)? onTap;
-  final void Function(Type, String)? onLongPress;
-  final void Function(String)? onTapInDef;
-  final void Function(String)? onLongPressInDef;
+  final void Function(GestureDetails)? onTap;
+  final void Function(GestureDetails)? onLongPress;
+  final void Function(GestureDetails)? onTapInDef;
+  final void Function(GestureDetails)? onLongPressInDef;
   final Duration? longPressDuration;
   final MouseCursor? mouseCursor;
   final VoidCallback? onButtonPressed;
@@ -107,10 +107,10 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final TextStyle? hoverStyleInDef;
-  final void Function(Type, String)? onTap;
-  final void Function(Type, String)? onLongPress;
-  final void Function(String)? onTapInDef;
-  final void Function(String)? onLongPressInDef;
+  final void Function(GestureDetails)? onTap;
+  final void Function(GestureDetails)? onLongPress;
+  final void Function(GestureDetails)? onTapInDef;
+  final void Function(GestureDetails)? onLongPressInDef;
   final MouseCursor? mouseCursor;
 
   @override

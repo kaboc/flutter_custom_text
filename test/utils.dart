@@ -2,21 +2,40 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-bool? isTap;
-bool? isLongPress;
-Type? matcherType;
-String? tappedText;
+import 'package:custom_text/custom_text.dart';
 
-void onTap(Type? type, String text) {
-  isTap = true;
-  matcherType = type;
-  tappedText = text;
+GestureType? gestureType;
+Type? matcherType;
+String? labelText;
+String? tappedText;
+Offset? globalPosition;
+Offset? localPosition;
+
+void reset() {
+  gestureType = null;
+  matcherType = null;
+  labelText = null;
+  tappedText = null;
+  globalPosition = null;
+  localPosition = null;
 }
 
-void onLongPress(Type? type, String text) {
-  isLongPress = true;
-  matcherType = type;
-  tappedText = text;
+void onTap(GestureDetails details) {
+  gestureType = details.gestureType;
+  matcherType = details.matcherType;
+  labelText = details.label;
+  tappedText = details.text;
+  globalPosition = details.globalPosition;
+  localPosition = details.localPosition;
+}
+
+void onLongPress(GestureDetails details) {
+  gestureType = details.gestureType;
+  matcherType = details.matcherType;
+  labelText = details.label;
+  tappedText = details.text;
+  globalPosition = details.globalPosition;
+  localPosition = details.localPosition;
 }
 
 Text findText() {

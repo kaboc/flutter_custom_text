@@ -35,7 +35,7 @@ class Example7 extends StatelessWidget {
           ),
           // `SystemMouseCursors.click` is automatically used for
           // tappable elements even if `mouseCursor` is not specified.
-          onTap: output,
+          onTap: (details) => output(details.text),
         ),
       ],
     );

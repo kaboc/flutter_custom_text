@@ -8,6 +8,7 @@ import 'package:text_parser/text_parser.dart' show TextElement;
 
 import 'definition_base.dart';
 import 'definitions.dart';
+import 'gesture_details.dart';
 import 'transient_elements_builder.dart';
 
 const _kLongPressDuration = Duration(milliseconds: 600);
@@ -48,8 +49,8 @@ class NotifierSettings {
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
-  final void Function(Type, String)? onTap;
-  final void Function(Type, String)? onLongPress;
+  final void Function(GestureDetails)? onTap;
+  final void Function(GestureDetails)? onLongPress;
   final Duration longPressDuration;
 }
 
@@ -273,19 +274,25 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _tapRecognizers[spanData.index] ??= TapGestureRecognizer();
 
     _tapRecognizers[spanData.index]
-      ?..onTapDown = (_) {
+      ?..onTapDown = (d) {
+        final details = GestureDetails(
+          gestureType: GestureType.longPress,
+          matcherType: spanData.definition.matcher.runtimeType,
+          text: spanData.link,
+          label: spanData.label,
+          globalPosition: d.globalPosition,
+          localPosition: d.localPosition,
+        );
+
         if (spanData.definition.onLongPress != null) {
           _longPressTimer = Timer(
             _settings.longPressDuration,
-            () => spanData.definition.onLongPress!(spanData.link),
+            () => spanData.definition.onLongPress!(details),
           );
         } else if (_settings.onLongPress != null) {
           _longPressTimer = Timer(
             _settings.longPressDuration,
-            () => _settings.onLongPress?.call(
-              spanData.definition.matcher.runtimeType,
-              spanData.link,
-            ),
+            () => _settings.onLongPress?.call(details),
           );
         }
 
@@ -294,17 +301,25 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           tapped: true,
         );
       }
-      ..onTapUp = (_) {
+      ..onTapUp = (d) {
         // A tap is valid if long presses are not enabled
         // or if the press was shorter than a long press and
         // therefore the timer is still active.
         final timer = _longPressTimer;
         if (timer == null || timer.isActive) {
+          final details = GestureDetails(
+            gestureType: GestureType.tap,
+            matcherType: spanData.definition.matcher.runtimeType,
+            text: spanData.link,
+            label: spanData.label,
+            globalPosition: d.globalPosition,
+            localPosition: d.localPosition,
+          );
+
           if (spanData.definition.onTap != null) {
-            spanData.definition.onTap!(spanData.link);
+            spanData.definition.onTap!(details);
           } else if (_settings.onTap != null) {
-            _settings.onTap
-                ?.call(spanData.definition.matcher.runtimeType, spanData.link);
+            _settings.onTap?.call(details);
           }
         }
         _tapRecognizers[spanData.index]?.onTapCancel!();

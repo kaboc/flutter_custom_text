@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:text_parser/text_parser.dart';
 
+import 'gesture_details.dart';
+
 typedef LabelSelector = String Function(List<String?>);
 typedef TapSelector = String Function(List<String?>);
 typedef SpanBuilder = InlineSpan Function(String, List<String?>);
@@ -31,8 +33,8 @@ abstract class Definition {
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
-  final void Function(String)? onTap;
-  final void Function(String)? onLongPress;
+  final void Function(GestureDetails)? onTap;
+  final void Function(GestureDetails)? onLongPress;
   final MouseCursor? mouseCursor;
 
   @override

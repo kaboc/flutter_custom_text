@@ -8,10 +8,7 @@ import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
-  setUp(() {
-    isTap = isLongPress = false;
-    matcherType = tappedText = null;
-  });
+  setUp(reset);
 
   group('Styles for SelectiveDefinition', () {
     testWidgets(
@@ -137,97 +134,114 @@ void main() {
 
   group('Tap callbacks of SelectiveDefinition', () {
     testWidgets(
-      'Correct string is passed to onTap specified in CustomText',
+      'Correct info is passed to onTap specified in CustomText',
       (tester) async {
         await tester.pumpWidget(
-          const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd', onTap: onTap),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onTap: onTap,
+            ),
+          ),
         );
         await tester.pump();
 
-        const link = 'bbb';
-        final span = findSpan(link);
+        final center = tester.getCenter(find.byType(RichText).first);
+        await tester.tapAt(center);
 
-        tapDownSpan(span);
-        await tester.pump();
-        tapUpSpan(span);
-        await tester.pump();
-
-        expect(isTap, isTrue);
+        expect(gestureType, equals(GestureType.tap));
         expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
         expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets(
-      'Correct string is passed to onLongPress specified in CustomText',
+      'Correct info is passed to onLongPress specified in CustomText',
       (tester) async {
         await tester.pumpWidget(
-          const SelectiveCustomTextWidget(
-            'aaa[bbb](ccc)ddd',
-            onLongPress: onLongPress,
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onLongPress: onLongPress,
+            ),
           ),
         );
         await tester.pump();
 
-        const link = 'bbb';
-        final span = findSpan(link);
-
-        tapDownSpan(span);
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture = await tester.startGesture(center);
         await tester.pump(const Duration(milliseconds: 610));
-        tapUpSpan(span);
-        await tester.pump();
+        await gesture.up();
 
-        expect(isLongPress, isTrue);
+        expect(gestureType, equals(GestureType.longPress));
         expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
         expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets(
-      'Correct string is passed to onTap specified in definition',
+      'Correct info is passed to onTap specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          SelectiveCustomTextWidget(
-            'aaa[bbb](ccc)ddd',
-            onTapInDef: (text) => onTap(null, text),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onTapInDef: onTap,
+            ),
           ),
         );
         await tester.pump();
 
-        const link = 'bbb';
-        final span = findSpan(link);
+        final center = tester.getCenter(find.byType(RichText).first);
+        await tester.tapAt(center);
 
-        tapDownSpan(span);
-        await tester.pump();
-        tapUpSpan(span);
-        await tester.pump();
-
-        expect(isTap, isTrue);
+        expect(gestureType, equals(GestureType.tap));
+        expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
         expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets(
-      'Correct string is passed to onLongPress specified in definition',
+      'Correct info is passed to onLongPress specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          SelectiveCustomTextWidget(
-            'aaa[bbb](ccc)ddd',
-            onLongPressInDef: (text) => onLongPress(null, text),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onLongPressInDef: onLongPress,
+            ),
           ),
         );
         await tester.pump();
 
-        const link = 'bbb';
-        final span = findSpan(link);
-
-        tapDownSpan(span);
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture = await tester.startGesture(center);
         await tester.pump(const Duration(milliseconds: 610));
-        tapUpSpan(span);
-        await tester.pump();
+        await gesture.up();
 
-        expect(isLongPress, isTrue);
+        expect(gestureType, equals(GestureType.longPress));
+        expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
         expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
   });
@@ -239,7 +253,7 @@ void main() {
         await tester.pumpWidget(
           SelectiveCustomTextWidget(
             'aaa [bbb](ccc)',
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();
@@ -314,7 +328,7 @@ void main() {
             style: const TextStyle(color: Color(0xFF111111)),
             tapStyle: const TextStyle(color: Color(0xFF222222)),
             hoverStyle: const TextStyle(color: Color(0xFF333333)),
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();

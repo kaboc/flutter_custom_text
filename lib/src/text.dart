@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:text_parser/text_parser.dart';
 
 import 'definition_base.dart';
+import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'text_span_notifier.dart';
 
@@ -104,7 +105,7 @@ class CustomText extends StatefulWidget {
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
   /// {@endtemplate}
-  final void Function(Type, String)? onTap;
+  final void Function(GestureDetails)? onTap;
 
   /// {@template customText.onLongPress}
   /// The callback function called when a tappable element is long-pressed.
@@ -112,7 +113,7 @@ class CustomText extends StatefulWidget {
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
   /// {@endtemplate}
-  final void Function(Type, String)? onLongPress;
+  final void Function(GestureDetails)? onLongPress;
 
   /// {@template customText.longPressDuration}
   /// The duration before a tap is regarded as a long-press and the

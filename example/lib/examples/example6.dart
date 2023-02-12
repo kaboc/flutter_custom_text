@@ -26,7 +26,7 @@ class Example6 extends StatelessWidget {
         TextDefinition(
           matcher: const EmailMatcher(),
           matchStyle: const TextStyle(color: Colors.lightBlue),
-          onTap: output,
+          onTap: (details) => output(details.text),
         ),
       ],
     );

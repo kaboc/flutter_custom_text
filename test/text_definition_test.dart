@@ -2,14 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:custom_text/custom_text.dart';
+
 import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
-  setUp(() {
-    isTap = isLongPress = false;
-    matcherType = tappedText = null;
-  });
+  setUp(reset);
 
   group('Styles for TextDefinition', () {
     testWidgets(
@@ -51,7 +50,7 @@ void main() {
     );
 
     testWidgets(
-      'matchStyle specified in definition takes priority',
+      'matchStyle specified in definition takes precedence',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -116,7 +115,7 @@ void main() {
     );
 
     testWidgets(
-      'tapStyle specified in definition takes priority',
+      'tapStyle specified in definition takes precedence',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -142,12 +141,12 @@ void main() {
       'if onTap is specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
+          const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: const TextStyle(color: Color(0xFF111111)),
-            matchStyle: const TextStyle(color: Color(0xFF222222)),
-            tapStyle: const TextStyle(color: Color(0xFF333333)),
-            onTapInDef: (text) => onTap(null, text),
+            style: TextStyle(color: Color(0xFF111111)),
+            matchStyle: TextStyle(color: Color(0xFF222222)),
+            tapStyle: TextStyle(color: Color(0xFF333333)),
+            onTapInDef: onTap,
           ),
         );
         await tester.pump();
@@ -176,12 +175,12 @@ void main() {
       'if onLongPress is specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
+          const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: const TextStyle(color: Color(0xFF111111)),
-            matchStyle: const TextStyle(color: Color(0xFF222222)),
-            tapStyle: const TextStyle(color: Color(0xFF333333)),
-            onLongPressInDef: (text) => onLongPress(null, text),
+            style: TextStyle(color: Color(0xFF111111)),
+            matchStyle: TextStyle(color: Color(0xFF222222)),
+            tapStyle: TextStyle(color: Color(0xFF333333)),
+            onLongPressInDef: onLongPress,
           ),
         );
         await tester.pump();
@@ -272,11 +271,11 @@ void main() {
       'if onTap is specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
+          const CustomTextWidget(
             'aaa bbb@example.com',
-            style: const TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: const TextStyle(color: Color(0xFF222222)),
-            onTapInDef: (text) => onTap(null, text),
+            style: TextStyle(color: Color(0xFF111111)),
+            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            onTapInDef: onTap,
           ),
         );
         await tester.pump();
@@ -303,11 +302,11 @@ void main() {
       'if onLongPress is specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
+          const CustomTextWidget(
             'aaa bbb@example.com',
-            style: const TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: const TextStyle(color: Color(0xFF222222)),
-            onLongPressInDef: (text) => onLongPress(null, text),
+            style: TextStyle(color: Color(0xFF111111)),
+            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            onLongPressInDef: onLongPress,
           ),
         );
         await tester.pump();
@@ -332,61 +331,72 @@ void main() {
 
   group('Tap callbacks of TextDefinition', () {
     testWidgets(
-      'Correct string is passed to onTap specified in definition',
+      'Correct info is passed to onTap specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
-            'aaa bbb@example.com',
-            onTapInDef: (text) => onTap(null, text),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const CustomTextWidget(
+              'aaa bbb@example.com',
+              onTapInDef: onTap,
+            ),
           ),
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
+        final center = tester.getCenter(find.byType(RichText).first);
+        await tester.tapAt(center);
 
-        tapDownSpan(span);
-        await tester.pump();
-        tapUpSpan(span);
-        await tester.pump();
-
-        expect(isTap, isTrue);
-        expect(tappedText, equals(email));
+        expect(gestureType, equals(GestureType.tap));
+        expect(matcherType, equals(EmailMatcher));
+        expect(labelText, equals('bbb@example.com'));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets(
-      'Correct string is passed to onLongPress specified in definition',
+      'Correct info is passed to onLongPress specified in definition',
       (tester) async {
         await tester.pumpWidget(
-          CustomTextWidget(
-            'aaa bbb@example.com',
-            onLongPressInDef: (text) => onLongPress(null, text),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const CustomTextWidget(
+              'aaa bbb@example.com',
+              onLongPressInDef: onLongPress,
+            ),
           ),
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture = await tester.startGesture(center);
         await tester.pump(const Duration(milliseconds: 610));
-        tapUpSpan(span);
-        await tester.pump();
+        await gesture.up();
 
-        expect(isLongPress, isTrue);
-        expect(tappedText, equals(email));
+        expect(gestureType, equals(GestureType.longPress));
+        expect(matcherType, equals(EmailMatcher));
+        expect(labelText, equals('bbb@example.com'));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
     );
 
     testWidgets(
       'Only onTap specified in definition is called on short tap',
       (tester) async {
+        var tap = false;
+        var long = false;
+
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onTapInDef: (text) => onTap(null, text),
-            onLongPressInDef: (text) => onLongPress(null, text),
+            onTapInDef: (_) => tap = true,
+            onLongPressInDef: (_) => long = true,
           ),
         );
         await tester.pump();
@@ -399,19 +409,22 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isTap, isTrue);
-        expect(isLongPress, isFalse);
+        expect(tap, isTrue);
+        expect(long, isFalse);
       },
     );
 
     testWidgets(
       'Only onLongPress specified in definition is called on long-press',
       (tester) async {
+        var tap = false;
+        var long = false;
+
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onTapInDef: (text) => onTap(null, text),
-            onLongPressInDef: (text) => onLongPress(null, text),
+            onTapInDef: (_) => tap = true,
+            onLongPressInDef: (_) => long = true,
           ),
         );
         await tester.pump();
@@ -424,40 +437,71 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(isTap, isFalse);
-        expect(isLongPress, isTrue);
+        expect(tap, isFalse);
+        expect(long, isTrue);
       },
     );
 
-    testWidgets('onTap specified in definition takes priority', (tester) async {
-      await tester.pumpWidget(
-        CustomTextWidget(
-          'aaa bbb@example.com',
-          onTap: (_, __) => onTap(null, 'tap1'),
-          onTapInDef: (_) => onTap(null, 'tap2'),
-        ),
-      );
-      await tester.pump();
-
-      const email = 'bbb@example.com';
-      final span = findSpan(email);
-
-      tapDownSpan(span);
-      await tester.pump();
-      tapUpSpan(span);
-      await tester.pump();
-
-      expect(tappedText, 'tap2');
-    });
-
     testWidgets(
-      'onLongPress specified in definition takes priority',
+      'onTap specified in definition takes precedence',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onLongPress: (_, __) => onLongPress(null, 'longPress1'),
-            onLongPressInDef: (_) => onLongPress(null, 'longPress2'),
+            onTap: (details) => onTap(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'tap1',
+                label: 'tap1',
+              ),
+            ),
+            onTapInDef: (details) => onTap(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'tap2',
+                label: 'tap2',
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        const email = 'bbb@example.com';
+        final span = findSpan(email);
+
+        tapDownSpan(span);
+        await tester.pump();
+        tapUpSpan(span);
+        await tester.pump();
+
+        expect(tappedText, 'tap2');
+      },
+    );
+
+    testWidgets(
+      'onLongPress specified in definition takes precedence',
+      (tester) async {
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            onLongPress: (details) => onLongPress(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'long1',
+                label: 'long1',
+              ),
+            ),
+            onLongPressInDef: (details) => onLongPress(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'long2',
+                label: 'long2',
+              ),
+            ),
           ),
         );
         await tester.pump();
@@ -471,7 +515,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, 'longPress2');
+        expect(tappedText, 'long2');
       },
     );
 
@@ -481,7 +525,7 @@ void main() {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();
@@ -556,7 +600,7 @@ void main() {
           CustomTextWidget(
             'aaa bbb@example.com',
             style: const TextStyle(color: Color(0xFF111111)),
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();
@@ -583,7 +627,7 @@ void main() {
             style: const TextStyle(color: Color(0xFF111111)),
             tapStyle: const TextStyle(color: Color(0xFF222222)),
             hoverStyle: const TextStyle(color: Color(0xFF333333)),
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();
@@ -615,7 +659,7 @@ void main() {
             'aaa bbb@example.com',
             style: const TextStyle(color: Color(0xFF111111)),
             hoverStyle: const TextStyle(color: Color(0xFF222222)),
-            onTap: (_, __) {},
+            onTap: (_) {},
           ),
         );
         await tester.pump();
