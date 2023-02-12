@@ -92,6 +92,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     super.dispose();
   }
 
+  // ignore: use_setters_to_change_properties
   void updateSettings(NotifierSettings settings) {
     _settings = settings;
   }

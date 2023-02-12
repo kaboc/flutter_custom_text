@@ -131,7 +131,7 @@ class _Example extends StatelessWidget {
               additionalInfo!,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(color: Colors.black38),
             )
           ],
@@ -191,7 +191,7 @@ class _OutputState extends State<_Output> {
             valueListenable: widget.resultNotifier,
             builder: (_, result, __) => Text(
               result,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ),
