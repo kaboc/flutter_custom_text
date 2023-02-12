@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
+import 'package:custom_text/src/text_span_notifier.dart';
+
+final kTestLongPressDuration =
+    kLongPressDuration + const Duration(milliseconds: 10);
 
 GestureType? gestureType;
 Type? matcherType;

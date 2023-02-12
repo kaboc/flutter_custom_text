@@ -11,7 +11,7 @@ import 'definitions.dart';
 import 'gesture_details.dart';
 import 'transient_elements_builder.dart';
 
-const _kLongPressDuration = Duration(milliseconds: 600);
+const kLongPressDuration = Duration(milliseconds: 600);
 
 class SpanData {
   SpanData({
@@ -43,7 +43,7 @@ class NotifierSettings {
   })  : definitions = {
           for (final def in definitions) def.matcher.runtimeType: def,
         },
-        longPressDuration = longPressDuration ?? _kLongPressDuration;
+        longPressDuration = longPressDuration ?? kLongPressDuration;
 
   final Map<Type, Definition> definitions;
   final TextStyle? matchStyle;

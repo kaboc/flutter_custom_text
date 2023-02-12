@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,7 +25,7 @@ void main() {
     });
 
     testWidgets(
-      'style and matchStyle are used even if w/o onTap',
+      'style and matchStyle are used even if tap callbacks are not specified',
       (tester) async {
         await tester.pumpWidget(
           const CustomTextWidget(
@@ -127,7 +128,7 @@ void main() {
     );
   });
 
-  group('Tap callbacks', () {
+  group('onTap and onLongPress', () {
     testWidgets('Correct info is passed to onTap callback', (tester) async {
       await tester.pumpWidget(
         Container(
@@ -166,7 +167,7 @@ void main() {
 
         final center = tester.getCenter(find.byType(RichText).first);
         final gesture = await tester.startGesture(center);
-        await tester.pump(const Duration(milliseconds: 610));
+        await tester.pump(kTestLongPressDuration);
         await gesture.up();
 
         expect(gestureType, equals(GestureType.longPress));
@@ -220,7 +221,7 @@ void main() {
       final span = findSpan(email);
 
       tapDownSpan(span);
-      await tester.pump(const Duration(milliseconds: 610));
+      await tester.pump(kTestLongPressDuration);
       tapUpSpan(span);
       await tester.pump();
 
@@ -249,6 +250,128 @@ void main() {
         await tester.pump();
 
         expect(gestureType, equals(GestureType.longPress));
+      },
+    );
+  });
+
+  group('Mouse hover', () {
+    testWidgets('default mouse cursor is used', (tester) async {
+      await tester.pumpWidget(
+        CustomTextWidget(
+          'aaa bbb@example.com',
+          onTap: (_) {},
+        ),
+      );
+      await tester.pump();
+
+      final span1 = findSpan('aaa ');
+      final span2 = findSpan('bbb@example.com');
+      expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+      expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.click);
+    });
+
+    testWidgets('Specified mouse cursor is used', (tester) async {
+      await tester.pumpWidget(
+        const CustomTextWidget(
+          'aaa bbb@example.com',
+          mouseCursor: SystemMouseCursors.grab,
+        ),
+      );
+      await tester.pump();
+
+      final span1 = findSpan('aaa ');
+      final span2 = findSpan('bbb@example.com');
+      expect((span1 as TextSpan?)?.mouseCursor, MouseCursor.defer);
+      expect((span2 as TextSpan?)?.mouseCursor, SystemMouseCursors.grab);
+    });
+
+    testWidgets(
+      'matchStyle is used if hoverStyle is not specified.',
+      (tester) async {
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            style: TextStyle(color: Color(0xFF111111)),
+            matchStyle: TextStyle(color: Color(0xFF222222)),
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
+        await tester.pump();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF222222));
+      },
+    );
+
+    testWidgets(
+      'tapStyle is used while being pressed even if hoverStyle is specified',
+      (tester) async {
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            style: const TextStyle(color: Color(0xFF111111)),
+            tapStyle: const TextStyle(color: Color(0xFF222222)),
+            hoverStyle: const TextStyle(color: Color(0xFF333333)),
+            onTap: (_) {},
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
+        await tester.pump();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF333333));
+
+        tapDownSpan(spanA);
+        await tester.pump();
+
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, const Color(0xFF222222));
+      },
+    );
+
+    testWidgets(
+      'hoverStyle is used while being pressed if tapStyle is not specified',
+      (tester) async {
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            style: const TextStyle(color: Color(0xFF111111)),
+            hoverStyle: const TextStyle(color: Color(0xFF222222)),
+            onTap: (_) {},
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
+        await tester.pump();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF222222));
+
+        tapDownSpan(spanA);
+        await tester.pump();
+
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, const Color(0xFF222222));
       },
     );
   });
