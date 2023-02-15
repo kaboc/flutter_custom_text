@@ -23,6 +23,7 @@ abstract class Definition {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.mouseCursor,
   });
 
@@ -35,6 +36,7 @@ abstract class Definition {
   final TextStyle? hoverStyle;
   final void Function(GestureDetails)? onTap;
   final void Function(GestureDetails)? onLongPress;
+  final void Function(GestureDetails)? onGesture;
   final MouseCursor? mouseCursor;
 
   @override

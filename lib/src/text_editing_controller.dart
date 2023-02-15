@@ -35,6 +35,7 @@ class CustomTextEditingController extends TextEditingController {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
   }) {
@@ -55,6 +56,7 @@ class CustomTextEditingController extends TextEditingController {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
   }) : super.fromValue() {
@@ -93,6 +95,9 @@ class CustomTextEditingController extends TextEditingController {
 
   /// {@macro customText.onLongPress}
   final void Function(GestureDetails)? onLongPress;
+
+  /// {@macro customText.onGesture}
+  final void Function(GestureDetails)? onGesture;
 
   /// {@macro customText.longPressDuration}
   final Duration? longPressDuration;
