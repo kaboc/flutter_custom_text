@@ -344,13 +344,13 @@ void main() {
     );
 
     testWidgets(
-      'hoverStyle is used while being pressed if tapStyle is not specified',
+      'hoverStyle is used while being pressed '
+      'if both style and tapStyle are not specified',
       (tester) async {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            style: const TextStyle(color: Color(0xFF111111)),
-            hoverStyle: const TextStyle(color: Color(0xFF222222)),
+            hoverStyle: const TextStyle(color: Color(0xFF111111)),
             onTap: (_) {},
           ),
         );
@@ -365,13 +365,13 @@ void main() {
         await tester.pump();
 
         final spanA = findSpan('bbb@example.com');
-        expect(spanA?.style?.color, const Color(0xFF222222));
+        expect(spanA?.style?.color, const Color(0xFF111111));
 
         tapDownSpan(spanA);
         await tester.pump();
 
         final spanB = findSpan('bbb@example.com');
-        expect(spanB?.style?.color, const Color(0xFF222222));
+        expect(spanB?.style?.color, const Color(0xFF111111));
       },
     );
   });

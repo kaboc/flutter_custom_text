@@ -220,13 +220,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     var matchStyle = spanData.definition.matchStyle ?? _settings.matchStyle;
     var hoverStyle = spanData.definition.hoverStyle ?? _settings.hoverStyle;
     var tapStyle = spanData.definition.tapStyle ?? _settings.tapStyle;
+    tapStyle ??= hoverStyle ?? matchStyle;
     final hasHoverStyle = hoverStyle != null;
 
     final style = _style;
     if (style != null) {
       matchStyle = style.merge(matchStyle);
       hoverStyle = hoverStyle == null ? null : style.merge(hoverStyle);
-      tapStyle = style.merge(tapStyle ?? hoverStyle ?? matchStyle);
+      tapStyle = style.merge(tapStyle);
     }
 
     _configureRecognizer(
