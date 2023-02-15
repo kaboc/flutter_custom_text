@@ -162,6 +162,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required Range replaceRange,
     required Range spanRange,
   }) {
+    _isBuilding = true;
     _style = style;
 
     final spans = [
@@ -173,6 +174,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       children: List.of(value.children!)
         ..replaceRange(replaceRange.start, replaceRange.end + 1, spans),
     );
+
+    _isBuilding = false;
   }
 
   TextSpan _nonTappableTextSpan({required SpanData spanData}) {
