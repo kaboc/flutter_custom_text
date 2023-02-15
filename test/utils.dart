@@ -42,6 +42,15 @@ void onLongPress(GestureDetails details) {
   localPosition = details.localPosition;
 }
 
+void onGesture(GestureDetails details) {
+  gestureType = details.gestureType;
+  matcherType = details.matcherType;
+  labelText = details.label;
+  tappedText = details.text;
+  globalPosition = details.globalPosition;
+  localPosition = details.localPosition;
+}
+
 Text findText() {
   final finder = find.byType(Text);
   return finder.evaluate().first.widget as Text;

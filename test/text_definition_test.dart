@@ -520,6 +520,119 @@ void main() {
     );
   });
 
+  group('onGesture', () {
+    testWidgets(
+      'Correct info is passed to onGesture specified in definition',
+      (tester) async {
+        await tester.pumpWidget(
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const CustomTextWidget(
+              'aaa bbb@example.com',
+              onGesture: onGesture,
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+
+        await tester.tapAt(center, buttons: kSecondaryButton);
+        expect(gestureType, equals(GestureType.secondaryTap));
+        expect(matcherType, equals(EmailMatcher));
+        expect(labelText, equals('bbb@example.com'));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+        tappedText = globalPosition = localPosition = null;
+        await tester.tapAt(center, buttons: kTertiaryButton);
+        expect(gestureType, equals(GestureType.tertiaryTap));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        tappedText = globalPosition = localPosition = null;
+        await gesture.addPointer(location: Offset(center.dx, 9.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.enter));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+        tappedText = globalPosition = localPosition = null;
+        await gesture.moveTo(Offset(center.dx, 9.0));
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.exit));
+        expect(tappedText, equals('bbb@example.com'));
+        expect(globalPosition, equals(Offset(center.dx, 9.0)));
+        expect(localPosition, equals(Offset(center.dx - 10.0, -1.0)));
+      },
+    );
+
+    testWidgets(
+      'onGesture specified in definition takes precedence',
+      (tester) async {
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            onGesture: (details) => onGesture(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'gesture1',
+                label: 'gesture1',
+              ),
+            ),
+            onGestureInDef: (details) => onGesture(
+              GestureDetails(
+                gestureType: details.gestureType,
+                matcherType: details.matcherType,
+                text: 'gesture2',
+                label: 'gesture2',
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+
+        await tester.tapAt(center, buttons: kSecondaryButton);
+        expect(gestureType, equals(GestureType.secondaryTap));
+        expect(tappedText, equals('gesture2'));
+
+        tappedText = null;
+        await tester.tapAt(center, buttons: kTertiaryButton);
+        expect(gestureType, equals(GestureType.tertiaryTap));
+        expect(tappedText, equals('gesture2'));
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        tappedText = null;
+        await gesture.addPointer(location: Offset(center.dx, 0.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.enter));
+        expect(tappedText, equals('gesture2'));
+
+        tappedText = null;
+        await gesture.moveTo(Offset(center.dx, -1.0));
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.exit));
+        expect(tappedText, equals('gesture2'));
+      },
+    );
+  });
+
   group('Mouse hover', () {
     testWidgets(
       'hoverStyle specified in definition takes precedence',
@@ -543,7 +656,7 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
 
         await gesture.moveTo(Offset(center.dx / 2, center.dy));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final span1A = findSpan('aaa ');
         final span2A = findSpan('bbb@example.com');
@@ -553,7 +666,7 @@ void main() {
         expect(span3A?.style?.color, const Color(0xFF222222));
 
         await gesture.moveTo(Offset(center.dx / 2 * 3, center.dy));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final span1B = findSpan('aaa ');
         final span2B = findSpan('bbb@example.com');
@@ -582,7 +695,7 @@ void main() {
 
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF222222));
@@ -609,13 +722,13 @@ void main() {
 
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF222222));
 
         tapDownSpan(spanA);
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanB = findSpan('bbb@example.com');
         expect(spanB?.style?.color, const Color(0xFF222222));

@@ -17,8 +17,10 @@ class CustomTextWidget extends StatelessWidget {
     this.hoverStyleInDef,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.onTapInDef,
     this.onLongPressInDef,
+    this.onGestureInDef,
     this.longPressDuration,
     this.mouseCursor,
     this.onButtonPressed,
@@ -35,8 +37,10 @@ class CustomTextWidget extends StatelessWidget {
   final TextStyle? hoverStyleInDef;
   final void Function(GestureDetails)? onTap;
   final void Function(GestureDetails)? onLongPress;
+  final void Function(GestureDetails)? onGesture;
   final void Function(GestureDetails)? onTapInDef;
   final void Function(GestureDetails)? onLongPressInDef;
+  final void Function(GestureDetails)? onGestureInDef;
   final Duration? longPressDuration;
   final MouseCursor? mouseCursor;
   final VoidCallback? onButtonPressed;
@@ -61,6 +65,7 @@ class CustomTextWidget extends StatelessWidget {
                     hoverStyle: hoverStyleInDef,
                     onTap: onTapInDef,
                     onLongPress: onLongPressInDef,
+                    onGesture: onGestureInDef,
                     mouseCursor: mouseCursor,
                   ),
                 ],
@@ -70,6 +75,7 @@ class CustomTextWidget extends StatelessWidget {
             hoverStyle: hoverStyle,
             onTap: onTap,
             onLongPress: onLongPress,
+            onGesture: onGesture,
             longPressDuration: longPressDuration,
           ),
           ElevatedButton(
@@ -94,8 +100,10 @@ class SelectiveCustomTextWidget extends StatelessWidget {
     this.hoverStyleInDef,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.onTapInDef,
     this.onLongPressInDef,
+    this.onGestureInDef,
     this.mouseCursor,
   });
 
@@ -109,8 +117,10 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final TextStyle? hoverStyleInDef;
   final void Function(GestureDetails)? onTap;
   final void Function(GestureDetails)? onLongPress;
+  final void Function(GestureDetails)? onGesture;
   final void Function(GestureDetails)? onTapInDef;
   final void Function(GestureDetails)? onLongPressInDef;
+  final void Function(GestureDetails)? onGestureInDef;
   final MouseCursor? mouseCursor;
 
   @override
@@ -131,6 +141,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
           hoverStyle: hoverStyleInDef,
           onTap: onTapInDef,
           onLongPress: onLongPressInDef,
+          onGesture: onGestureInDef,
           mouseCursor: mouseCursor,
         ),
       ],
@@ -140,6 +151,7 @@ class SelectiveCustomTextWidget extends StatelessWidget {
       hoverStyle: hoverStyle,
       onTap: onTap,
       onLongPress: onLongPress,
+      onGesture: onGesture,
     );
   }
 }
