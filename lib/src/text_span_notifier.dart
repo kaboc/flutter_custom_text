@@ -79,6 +79,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   int? _hoverIndex;
   Offset? _hoverPosition;
 
+  // For workaround to skip unwanted events in _onHover()
+  Timer? _hoverHandlerDebounceTimer;
+  int? _enterOrExitIndex;
+  GestureType? _lastHoverGestureType;
+
   @override
   set value(TextSpan span) {
     if (!_disposed) {
@@ -89,6 +94,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   @override
   void dispose() {
     _longPressTimer?.cancel();
+    _hoverHandlerDebounceTimer?.cancel();
     _tapRecognizers
       ..forEach((_, recognizer) => recognizer.dispose())
       ..clear();

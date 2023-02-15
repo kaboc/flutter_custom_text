@@ -148,15 +148,25 @@ extension on CustomTextSpanNotifier {
     required Offset localPosition,
     required bool styling,
   }) {
-    if (styling) {
-      _updateHoverIndex(
-        spanData: spanData,
-        hovered: gestureType == GestureType.enter,
-        globalPosition: globalPosition,
-      );
+    if (_disposed) {
+      return;
     }
 
-    if (_tapIndex == null) {
+    void handleHover({required bool force}) {
+      if (styling) {
+        _updateHoverIndex(
+          spanData: spanData,
+          hovered: gestureType == GestureType.enter,
+          globalPosition: globalPosition,
+        );
+      }
+
+      if (!force && gestureType == _lastHoverGestureType) {
+        return;
+      }
+      _lastHoverGestureType = gestureType;
+      _enterOrExitIndex = null;
+
       _onGesture(
         spanData: spanData,
         gestureType: gestureType,
@@ -164,5 +174,31 @@ extension on CustomTextSpanNotifier {
         localPosition: localPosition,
       );
     }
+
+    // This method is called not only when the mouse pointer entered
+    // and exited but also when the text span was rebuilt for an update
+    // of text style by a tap while the pointer was still on it.
+    // In the latter case, a sequence of exit and enter happens once
+    // or more within a very short period of time, causing unnecessary
+    // calls to _updateHoverIndex() and _onGesture(). To avoid it,
+    // those calls are debounced (i.e. the existing timer is cancelled
+    // and a new timer is started), and also a call to _onGesture()
+    // is skipped if the gesture type is same as the last.
+    //
+    // As an exception, however, if an enter or exit event happens at
+    // a different index, it is necessary to keep the existing timer
+    // running to complete the scheduled operation for the previous
+    // index (e.g. removing hoverStyle), and force a call to _onGesture()
+    // as it is an event at the new index.
+    final force = spanData.index != _enterOrExitIndex;
+    _enterOrExitIndex = spanData.index;
+
+    if (!force) {
+      _hoverHandlerDebounceTimer?.cancel();
+    }
+
+    _hoverHandlerDebounceTimer = Timer(const Duration(microseconds: 1), () {
+      handleHover(force: force);
+    });
   }
 }
