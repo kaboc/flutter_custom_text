@@ -8,8 +8,9 @@ import 'package:text_parser/text_parser.dart';
 import 'definitions.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
-import 'text_span_notifier.dart';
-import 'transient_elements_builder.dart';
+import 'text_span/data.dart';
+import 'text_span/text_span_notifier.dart';
+import 'text_span/transient_elements_builder.dart';
 
 /// A variant of [TextEditingController] that decorates strings in
 /// an editable text field and enables tap, long-press and/or hover
@@ -35,6 +36,7 @@ class CustomTextEditingController extends TextEditingController {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
   }) {
@@ -55,6 +57,7 @@ class CustomTextEditingController extends TextEditingController {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
   }) : super.fromValue() {
@@ -93,6 +96,9 @@ class CustomTextEditingController extends TextEditingController {
 
   /// {@macro customText.onLongPress}
   final void Function(GestureDetails)? onLongPress;
+
+  /// {@macro customText.onGesture}
+  final void Function(GestureDetails)? onGesture;
 
   /// {@macro customText.longPressDuration}
   final Duration? longPressDuration;

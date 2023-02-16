@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:meta/meta.dart';
 
-enum GestureType { tap, longPress }
+enum GestureType { tap, longPress, secondaryTap, tertiaryTap, enter, exit }
 
 /// A class with details on a gesture and the element where
 /// the gesture was detected.

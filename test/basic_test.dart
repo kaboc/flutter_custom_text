@@ -126,6 +126,31 @@ void main() {
         expect(span2C?.style?.color, const Color(0xFF222222));
       },
     );
+
+    testWidgets(
+      'tapStyle is not applied if onGesture is specified '
+      'without onTap and onLongPress',
+      (tester) async {
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com https://example.com/',
+            matchStyle: TextStyle(color: Color(0xFF111111)),
+            tapStyle: TextStyle(color: Color(0xFF222222)),
+            onGesture: onLongPress,
+          ),
+        );
+        await tester.pump();
+
+        final span1A = findSpan('bbb@example.com');
+        tapDownSpan(span1A);
+        await tester.pump();
+
+        final span1B = findSpan('bbb@example.com');
+        final span2 = findSpan('https://example.com/');
+        expect(span1B?.style?.color, const Color(0xFF111111));
+        expect(span2?.style?.color, const Color(0xFF111111));
+      },
+    );
   });
 
   group('onTap and onLongPress', () {
@@ -254,6 +279,148 @@ void main() {
     );
   });
 
+  group('onGesture', () {
+    testWidgets('Correct info is passed to onGesture callback', (tester) async {
+      await tester.pumpWidget(
+        Container(
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+          child: const CustomTextWidget(
+            'aaa bbb@example.com',
+            onGesture: onGesture,
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final center = tester.getCenter(find.byType(RichText).first);
+
+      await tester.tapAt(center, buttons: kSecondaryButton);
+      expect(gestureType, equals(GestureType.secondaryTap));
+      expect(matcherType, equals(EmailMatcher));
+      expect(labelText, equals('bbb@example.com'));
+      expect(tappedText, equals('bbb@example.com'));
+      expect(globalPosition, equals(center));
+      expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+      tappedText = globalPosition = localPosition = null;
+      await tester.tapAt(center, buttons: kTertiaryButton);
+      expect(gestureType, equals(GestureType.tertiaryTap));
+      expect(tappedText, equals('bbb@example.com'));
+      expect(globalPosition, equals(center));
+      expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      addTearDown(gesture.removePointer);
+
+      tappedText = globalPosition = localPosition = null;
+      await gesture.addPointer(location: Offset(center.dx, 9.0));
+      await gesture.moveTo(center);
+      await tester.pumpAndSettle();
+      expect(gestureType, equals(GestureType.enter));
+      expect(tappedText, equals('bbb@example.com'));
+      expect(globalPosition, equals(center));
+      expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+      tappedText = globalPosition = localPosition = null;
+      await gesture.moveTo(Offset(center.dx, 9.0));
+      await tester.pumpAndSettle();
+      expect(gestureType, equals(GestureType.exit));
+      expect(tappedText, equals('bbb@example.com'));
+      expect(globalPosition, equals(Offset(center.dx, 9.0)));
+      expect(localPosition, equals(Offset(center.dx - 10.0, -1.0)));
+    });
+
+    testWidgets(
+      'Exit and enter are not triggered by rebuild caused by tapStyle',
+      (tester) async {
+        final events = <String>[];
+
+        await tester.pumpWidget(
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: CustomTextWidget(
+              'aaa bbb@example.com',
+              tapStyle: const TextStyle(color: Color(0xFF111111)),
+              onTap: (details) => events.add(details.gestureType.name),
+              onGesture: (details) => events.add(details.gestureType.name),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset(center.dx, 9.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        expect(events, ['enter']);
+
+        await gesture.down(center);
+        await tester.pumpAndSettle();
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF111111));
+        expect(events, ['enter']);
+
+        await gesture.up();
+        await tester.pumpAndSettle();
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, isNull);
+        expect(events, ['enter', 'tap']);
+      },
+    );
+
+    testWidgets(
+      'Exit and enter are not triggered by rebuild by tapStyle and hoverStyle',
+      (tester) async {
+        final events = <String>[];
+
+        await tester.pumpWidget(
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: CustomTextWidget(
+              'aaa bbb@example.com',
+              tapStyle: const TextStyle(color: Color(0xFF111111)),
+              hoverStyle: const TextStyle(color: Color(0xFF222222)),
+              onTap: (details) => events.add(details.gestureType.name),
+              onGesture: (details) => events.add(details.gestureType.name),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset(center.dx, 9.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF222222));
+        expect(events, ['enter']);
+
+        await gesture.down(center);
+        await tester.pumpAndSettle();
+        final spanB = findSpan('bbb@example.com');
+        expect(spanB?.style?.color, const Color(0xFF111111));
+        expect(events, ['enter']);
+
+        await gesture.up();
+        await tester.pumpAndSettle();
+        final spanC = findSpan('bbb@example.com');
+        expect(spanC?.style?.color, const Color(0xFF222222));
+        expect(events, ['enter', 'tap']);
+      },
+    );
+  });
+
   group('Mouse hover', () {
     testWidgets('default mouse cursor is used', (tester) async {
       await tester.pumpWidget(
@@ -286,6 +453,67 @@ void main() {
     });
 
     testWidgets(
+      'hoverStyle is applied to only currently hovered text span '
+      'when mouse pointer is moved between spans quickly',
+      (tester) async {
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            '012-3456-7890https://example.com/',
+            definitions: [
+              TextDefinition(matcher: TelMatcher()),
+              TextDefinition(matcher: UrlMatcher()),
+            ],
+            hoverStyle: TextStyle(color: Color(0xFF111111)),
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        final center = tester.getCenter(find.byType(RichText).first);
+        await gesture.addPointer(location: Offset(center.dx / 2, center.dy));
+        await tester.pumpAndSettle();
+        final span1a = findSpan('012-3456-7890');
+        final span2a = findSpan('https://example.com/');
+        expect(span1a?.style?.color, const Color(0xFF111111));
+        expect(span2a?.style?.color, isNull);
+
+        await gesture.moveTo(Offset(center.dx / 2 * 3, center.dy));
+        await tester.pumpAndSettle();
+        final span1b = findSpan('012-3456-7890');
+        final span2b = findSpan('https://example.com/');
+        expect(span1b?.style?.color, isNull);
+        expect(span2b?.style?.color, const Color(0xFF111111));
+      },
+    );
+
+    testWidgets(
+      'hoverStyle is applied on hover even if onGesture is not specified',
+      (tester) async {
+        await tester.pumpWidget(
+          const CustomTextWidget(
+            'aaa bbb@example.com',
+            hoverStyle: TextStyle(color: Color(0xFF111111)),
+          ),
+        );
+        await tester.pump();
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
+        await tester.pumpAndSettle();
+
+        final spanA = findSpan('bbb@example.com');
+        expect(spanA?.style?.color, const Color(0xFF111111));
+      },
+    );
+
+    testWidgets(
       'matchStyle is used if hoverStyle is not specified.',
       (tester) async {
         await tester.pumpWidget(
@@ -303,7 +531,7 @@ void main() {
 
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF222222));
@@ -330,13 +558,13 @@ void main() {
 
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF333333));
 
         tapDownSpan(spanA);
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanB = findSpan('bbb@example.com');
         expect(spanB?.style?.color, const Color(0xFF222222));
@@ -362,13 +590,13 @@ void main() {
 
         await gesture.addPointer(location: Offset.zero);
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanA = findSpan('bbb@example.com');
         expect(spanA?.style?.color, const Color(0xFF111111));
 
         tapDownSpan(spanA);
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         final spanB = findSpan('bbb@example.com');
         expect(spanB?.style?.color, const Color(0xFF111111));

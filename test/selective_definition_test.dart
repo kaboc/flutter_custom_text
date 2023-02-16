@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -119,6 +120,112 @@ void main() {
         expect(tappedText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+      },
+    );
+  });
+
+  group('onGesture', () {
+    testWidgets(
+      'Correct info is passed to onGesture specified in CustomText',
+      (tester) async {
+        await tester.pumpWidget(
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onGesture: onGesture,
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+
+        await tester.tapAt(center, buttons: kSecondaryButton);
+        expect(gestureType, equals(GestureType.secondaryTap));
+        expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+        labelText = tappedText = null;
+        await tester.tapAt(center, buttons: kTertiaryButton);
+        expect(gestureType, equals(GestureType.tertiaryTap));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        labelText = tappedText = null;
+        await gesture.addPointer(location: Offset(center.dx, 9.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.enter));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+
+        labelText = tappedText = null;
+        await gesture.moveTo(Offset(center.dx, 9.0));
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.exit));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+      },
+    );
+
+    testWidgets(
+      'Correct info is passed to onGesture specified in definition',
+      (tester) async {
+        await tester.pumpWidget(
+          Container(
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            child: const SelectiveCustomTextWidget(
+              'aaa[bbb](ccc)ddd',
+              onGestureInDef: onGesture,
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final center = tester.getCenter(find.byType(RichText).first);
+
+        await tester.tapAt(center, buttons: kSecondaryButton);
+        expect(gestureType, equals(GestureType.secondaryTap));
+        expect(matcherType, equals(LinkMatcher));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+        expect(globalPosition, equals(center));
+        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+
+        labelText = tappedText = null;
+        await tester.tapAt(center, buttons: kTertiaryButton);
+        expect(gestureType, equals(GestureType.tertiaryTap));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+
+        final gesture =
+            await tester.createGesture(kind: PointerDeviceKind.mouse);
+        addTearDown(gesture.removePointer);
+
+        labelText = tappedText = null;
+        await gesture.addPointer(location: Offset(center.dx, 9.0));
+        await gesture.moveTo(center);
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.enter));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
+
+        labelText = tappedText = null;
+        await gesture.moveTo(Offset(center.dx, 9.0));
+        await tester.pumpAndSettle();
+        expect(gestureType, equals(GestureType.exit));
+        expect(labelText, equals('bbb'));
+        expect(tappedText, equals('ccc'));
       },
     );
   });

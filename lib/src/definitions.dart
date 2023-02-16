@@ -36,6 +36,7 @@ class TextDefinition extends Definition {
     super.hoverStyle,
     super.onTap,
     super.onLongPress,
+    super.onGesture,
     super.mouseCursor,
   });
 }
@@ -73,6 +74,7 @@ class SelectiveDefinition extends Definition {
     super.hoverStyle,
     super.onTap,
     super.onLongPress,
+    super.onGesture,
     super.mouseCursor,
   });
 }

@@ -7,7 +7,8 @@ import 'package:text_parser/text_parser.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
-import 'text_span_notifier.dart';
+import 'text_span/data.dart';
+import 'text_span/text_span_notifier.dart';
 
 /// A text widget that decorates strings in it and enables tap,
 /// long-press and/or hover gestures based on flexible definitions.
@@ -34,6 +35,7 @@ class CustomText extends StatefulWidget {
     this.hoverStyle,
     this.onTap,
     this.onLongPress,
+    this.onGesture,
     this.longPressDuration,
     this.preventBlocking = false,
     this.strutStyle,
@@ -115,6 +117,30 @@ class CustomText extends StatefulWidget {
   /// {@endtemplate}
   final void Function(GestureDetails)? onLongPress;
 
+  /// {@template customText.onGesture}
+  /// The callback function called when a gesture happens on a text element.
+  ///
+  /// The function is called on the following events:
+  /// * A press of the secondary button
+  /// * A press of the tertiary button
+  /// * An enter of the mouse pointer
+  /// * An exit of the mouse pointer
+  ///
+  /// The `gestureType` contained in the [GestureDetails] object
+  /// indicates which of the above events has triggered the function;
+  /// respectively [GestureType.secondaryTap], [GestureType.tertiaryTap],
+  /// [GestureType.enter] and [GestureType.exit].
+  ///
+  /// The argument with the same name in the relevant definition takes
+  /// precedence over this.
+  ///
+  /// Note that unlike [onTap] and [onLongPress], it does not affect
+  /// text styling whether this argument is specified or not.
+  ///
+  /// For a press event of the primary button, use [onTap] and [onLongPress].
+  /// {@endtemplate}
+  final void Function(GestureDetails)? onGesture;
+
   /// {@template customText.longPressDuration}
   /// The duration before a tap is regarded as a long-press and the
   /// [onLongPress] function is called.
@@ -160,6 +186,7 @@ class _CustomTextState extends State<CustomText> {
         hoverStyle: widget.hoverStyle,
         onTap: widget.onTap,
         onLongPress: widget.onLongPress,
+        onGesture: widget.onGesture,
         longPressDuration: widget.longPressDuration,
       );
 

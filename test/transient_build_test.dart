@@ -2,8 +2,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text_editing_controller.dart';
-import 'package:custom_text/src/text_span_notifier.dart';
-import 'package:custom_text/src/transient_elements_builder.dart';
+import 'package:custom_text/src/text_span/data.dart';
+import 'package:custom_text/src/text_span/text_span_notifier.dart';
+import 'package:custom_text/src/text_span/transient_elements_builder.dart';
 
 extension on List<TextElement> {
   String get text => map((v) => v.text).join();
