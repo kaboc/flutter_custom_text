@@ -8,8 +8,9 @@ import 'package:text_parser/text_parser.dart';
 import 'definitions.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
-import 'text_span_notifier.dart';
-import 'transient_elements_builder.dart';
+import 'text_span/data.dart';
+import 'text_span/text_span_notifier.dart';
+import 'text_span/transient_elements_builder.dart';
 
 /// A variant of [TextEditingController] that decorates strings in
 /// an editable text field and enables tap, long-press and/or hover

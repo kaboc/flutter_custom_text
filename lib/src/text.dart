@@ -7,7 +7,8 @@ import 'package:text_parser/text_parser.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
-import 'text_span_notifier.dart';
+import 'text_span/data.dart';
+import 'text_span/text_span_notifier.dart';
 
 /// A text widget that decorates strings in it and enables tap,
 /// long-press and/or hover gestures based on flexible definitions.
