@@ -1,5 +1,6 @@
 export 'package:text_parser/text_parser.dart';
 
+export 'src/definition_base.dart';
 export 'src/definitions.dart';
 export 'src/gesture_details.dart';
 export 'src/matchers.dart';
