@@ -5,3 +5,4 @@ export 'src/gesture_details.dart';
 export 'src/matchers.dart';
 export 'src/parser_options.dart';
 export 'src/text.dart';
+export 'src/text_editing_controller.dart';

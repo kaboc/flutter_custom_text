@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:custom_text/custom_text_editing_controller.dart';
+import 'package:custom_text/custom_text.dart';
 
 class Example8 extends StatefulWidget {
   const Example8(this.output);

@@ -406,6 +406,6 @@ Widget build(BuildContext context) {
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
-[CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text_editing_controller/CustomTextEditingController-class.html
+[CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser

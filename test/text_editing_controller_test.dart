@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:custom_text/custom_text_editing_controller.dart';
+import 'package:custom_text/custom_text.dart';
 
 class _EditorApp extends StatefulWidget {
   const _EditorApp({required this.controller, required this.onDispose});
