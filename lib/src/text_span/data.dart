@@ -1,5 +1,7 @@
 import 'package:flutter/painting.dart';
 
+import 'package:text_parser/text_parser.dart' show TextElement;
+
 import '../definition_base.dart';
 import '../gesture_details.dart';
 
@@ -8,6 +10,7 @@ const kLongPressDuration = Duration(milliseconds: 600);
 class SpanData {
   SpanData({
     required this.index,
+    required this.element,
     required this.text,
     required this.label,
     required this.link,
@@ -16,6 +19,7 @@ class SpanData {
   });
 
   final int index;
+  final TextElement element;
   final String text;
   final String label;
   final String link;

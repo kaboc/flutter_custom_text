@@ -20,7 +20,7 @@ class TextDefinition extends Definition {
   ///
   /// [onTap] and [onLongPress] are handler functions called when a
   /// TextSpan is tapped and long-pressed respectively. A [GestureDetails]
-  /// object that has details on the element and press (type, text, tap
+  /// object that has details on the element and press (kind, text, tap
   /// position, etc) is passed in to the functions.
   ///
   /// {@template customText.definition.mouseCursor}

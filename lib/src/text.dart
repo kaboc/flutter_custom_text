@@ -126,10 +126,10 @@ class CustomText extends StatefulWidget {
   /// * An enter of the mouse pointer
   /// * An exit of the mouse pointer
   ///
-  /// The `gestureType` contained in the [GestureDetails] object
+  /// The `gestureKind` contained in the [GestureDetails] object
   /// indicates which of the above events has triggered the function;
-  /// respectively [GestureType.secondaryTap], [GestureType.tertiaryTap],
-  /// [GestureType.enter] and [GestureType.exit].
+  /// respectively [GestureKind.secondaryTap], [GestureKind.tertiaryTap],
+  /// [GestureKind.enter] and [GestureKind.exit].
   ///
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.

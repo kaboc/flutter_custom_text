@@ -37,7 +37,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   // For workaround to skip unwanted events in _onHover()
   Timer? _hoverHandlerDebounceTimer;
   int? _enterOrExitIndex;
-  GestureType? _lastHoverGestureType;
+  GestureKind? _lastHoverGestureKind;
 
   @override
   set value(TextSpan span) {
@@ -85,6 +85,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     final spanData = SpanData(
       index: index,
+      element: element,
       text: element.text,
       label: label,
       link: def.tapSelector == null
@@ -173,7 +174,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       onEnter: hoverEnabled
           ? (event) => _onHover(
                 spanData: spanData,
-                gestureType: GestureType.enter,
+                gestureKind: GestureKind.enter,
+                pointerDeviceKind: event.kind,
                 globalPosition: event.position,
                 localPosition: event.localPosition,
                 styling: hoverStyle != null,
@@ -182,7 +184,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       onExit: hoverEnabled
           ? (event) => _onHover(
                 spanData: spanData,
-                gestureType: GestureType.exit,
+                gestureKind: GestureKind.exit,
+                pointerDeviceKind: event.kind,
                 globalPosition: event.position,
                 localPosition: event.localPosition,
                 styling: hoverStyle != null,
@@ -229,7 +232,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       onEnter: hoverEnabled
           ? (event) => _onHover(
                 spanData: spanData,
-                gestureType: GestureType.enter,
+                gestureKind: GestureKind.enter,
+                pointerDeviceKind: event.kind,
                 globalPosition: event.position,
                 localPosition: event.localPosition,
                 styling: hoverStyle != null,
@@ -238,7 +242,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       onExit: hoverEnabled
           ? (event) => _onHover(
                 spanData: spanData,
-                gestureType: GestureType.exit,
+                gestureKind: GestureKind.exit,
+                pointerDeviceKind: event.kind,
                 globalPosition: event.position,
                 localPosition: event.localPosition,
                 styling: hoverStyle != null,

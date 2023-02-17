@@ -164,7 +164,7 @@ CustomText(
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
   onTap: (details) {
-    if (details.matcherType == HashTagMatcher) {
+    if (details.element.matcherType == HashTagMatcher) {
       ...; 
     }
   },

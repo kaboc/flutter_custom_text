@@ -8,16 +8,18 @@ import 'package:custom_text/src/text_span/data.dart';
 final kTestLongPressDuration =
     kLongPressDuration + const Duration(milliseconds: 10);
 
-GestureType? gestureType;
-Type? matcherType;
+GestureKind? gestureKind;
+PointerDeviceKind? pointerDeviceKind;
+TextElement? element;
 String? labelText;
 String? tappedText;
 Offset? globalPosition;
 Offset? localPosition;
 
 void reset() {
-  gestureType = null;
-  matcherType = null;
+  gestureKind = null;
+  pointerDeviceKind = null;
+  element = null;
   labelText = null;
   tappedText = null;
   globalPosition = null;
@@ -25,8 +27,9 @@ void reset() {
 }
 
 void onTap(GestureDetails details) {
-  gestureType = details.gestureType;
-  matcherType = details.matcherType;
+  gestureKind = details.gestureKind;
+  pointerDeviceKind = details.pointerDeviceKind;
+  element = details.element;
   labelText = details.label;
   tappedText = details.text;
   globalPosition = details.globalPosition;
@@ -34,8 +37,9 @@ void onTap(GestureDetails details) {
 }
 
 void onLongPress(GestureDetails details) {
-  gestureType = details.gestureType;
-  matcherType = details.matcherType;
+  gestureKind = details.gestureKind;
+  pointerDeviceKind = details.pointerDeviceKind;
+  element = details.element;
   labelText = details.label;
   tappedText = details.text;
   globalPosition = details.globalPosition;
@@ -43,8 +47,9 @@ void onLongPress(GestureDetails details) {
 }
 
 void onGesture(GestureDetails details) {
-  gestureType = details.gestureType;
-  matcherType = details.matcherType;
+  gestureKind = details.gestureKind;
+  pointerDeviceKind = details.pointerDeviceKind;
+  element = details.element;
   labelText = details.label;
   tappedText = details.text;
   globalPosition = details.globalPosition;
@@ -101,4 +106,13 @@ void tapUpSpan(InlineSpan? span) {
 Future<void> tapButton(WidgetTester tester) async {
   final finder = find.byType(ElevatedButton);
   await tester.tap(finder);
+}
+
+class TestTextElement extends TextElement {
+  const TestTextElement({
+    String text = '',
+    List<String> groups = const [],
+    Type matcherType = TextMatcher,
+    int offset = 0,
+  }) : super(text, groups, matcherType, offset);
 }

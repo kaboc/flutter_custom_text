@@ -167,8 +167,9 @@ void main() {
       final center = tester.getCenter(find.byType(RichText).first);
       await tester.tapAt(center);
 
-      expect(gestureType, equals(GestureType.tap));
-      expect(matcherType, equals(EmailMatcher));
+      expect(gestureKind, equals(GestureKind.tap));
+      expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
+      expect(element?.matcherType, equals(EmailMatcher));
       expect(labelText, equals('bbb@example.com'));
       expect(tappedText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
@@ -195,8 +196,9 @@ void main() {
         await tester.pump(kTestLongPressDuration);
         await gesture.up();
 
-        expect(gestureType, equals(GestureType.longPress));
-        expect(matcherType, equals(EmailMatcher));
+        expect(gestureKind, equals(GestureKind.longPress));
+        expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
+        expect(element?.matcherType, equals(EmailMatcher));
         expect(labelText, equals('bbb@example.com'));
         expect(tappedText, equals('bbb@example.com'));
         expect(globalPosition, equals(center));
@@ -274,7 +276,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(gestureType, equals(GestureType.longPress));
+        expect(gestureKind, equals(GestureKind.longPress));
       },
     );
   });
@@ -296,8 +298,9 @@ void main() {
       final center = tester.getCenter(find.byType(RichText).first);
 
       await tester.tapAt(center, buttons: kSecondaryButton);
-      expect(gestureType, equals(GestureType.secondaryTap));
-      expect(matcherType, equals(EmailMatcher));
+      expect(gestureKind, equals(GestureKind.secondaryTap));
+      expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
+      expect(element?.matcherType, equals(EmailMatcher));
       expect(labelText, equals('bbb@example.com'));
       expect(tappedText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
@@ -305,7 +308,8 @@ void main() {
 
       tappedText = globalPosition = localPosition = null;
       await tester.tapAt(center, buttons: kTertiaryButton);
-      expect(gestureType, equals(GestureType.tertiaryTap));
+      expect(gestureKind, equals(GestureKind.tertiaryTap));
+      expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
       expect(tappedText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
@@ -317,7 +321,8 @@ void main() {
       await gesture.addPointer(location: Offset(center.dx, 9.0));
       await gesture.moveTo(center);
       await tester.pumpAndSettle();
-      expect(gestureType, equals(GestureType.enter));
+      expect(gestureKind, equals(GestureKind.enter));
+      expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
       expect(tappedText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
@@ -325,7 +330,8 @@ void main() {
       tappedText = globalPosition = localPosition = null;
       await gesture.moveTo(Offset(center.dx, 9.0));
       await tester.pumpAndSettle();
-      expect(gestureType, equals(GestureType.exit));
+      expect(gestureKind, equals(GestureKind.exit));
+      expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
       expect(tappedText, equals('bbb@example.com'));
       expect(globalPosition, equals(Offset(center.dx, 9.0)));
       expect(localPosition, equals(Offset(center.dx - 10.0, -1.0)));
@@ -343,8 +349,8 @@ void main() {
             child: CustomTextWidget(
               'aaa bbb@example.com',
               tapStyle: const TextStyle(color: Color(0xFF111111)),
-              onTap: (details) => events.add(details.gestureType.name),
-              onGesture: (details) => events.add(details.gestureType.name),
+              onTap: (details) => events.add(details.gestureKind.name),
+              onGesture: (details) => events.add(details.gestureKind.name),
             ),
           ),
         );
@@ -387,8 +393,8 @@ void main() {
               'aaa bbb@example.com',
               tapStyle: const TextStyle(color: Color(0xFF111111)),
               hoverStyle: const TextStyle(color: Color(0xFF222222)),
-              onTap: (details) => events.add(details.gestureType.name),
-              onGesture: (details) => events.add(details.gestureType.name),
+              onTap: (details) => events.add(details.gestureKind.name),
+              onGesture: (details) => events.add(details.gestureKind.name),
             ),
           ),
         );

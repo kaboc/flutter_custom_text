@@ -17,6 +17,7 @@ extension on CustomTextSpanNotifier {
         ?..onTapDown = (details) {
           _onTapDown(
             spanData: spanData,
+            pointerDeviceKind: details.kind ?? PointerDeviceKind.unknown,
             globalPosition: details.globalPosition,
             localPosition: details.localPosition,
           );
@@ -24,6 +25,7 @@ extension on CustomTextSpanNotifier {
         ..onTapUp = (details) {
           _onTapUp(
             spanData: spanData,
+            pointerDeviceKind: details.kind,
             globalPosition: details.globalPosition,
             localPosition: details.localPosition,
           );
@@ -44,7 +46,8 @@ extension on CustomTextSpanNotifier {
         ?..onSecondaryTapUp = (details) {
           _onGesture(
             spanData: spanData,
-            gestureType: GestureType.secondaryTap,
+            gestureKind: GestureKind.secondaryTap,
+            pointerDeviceKind: details.kind,
             globalPosition: details.globalPosition,
             localPosition: details.localPosition,
           );
@@ -52,7 +55,8 @@ extension on CustomTextSpanNotifier {
         ..onTertiaryTapUp = (details) {
           _onGesture(
             spanData: spanData,
-            gestureType: GestureType.tertiaryTap,
+            gestureKind: GestureKind.tertiaryTap,
+            pointerDeviceKind: details.kind,
             globalPosition: details.globalPosition,
             localPosition: details.localPosition,
           );
@@ -62,12 +66,14 @@ extension on CustomTextSpanNotifier {
 
   void _onTapDown({
     required SpanData spanData,
+    required PointerDeviceKind pointerDeviceKind,
     required Offset globalPosition,
     required Offset localPosition,
   }) {
     final details = GestureDetails(
-      gestureType: GestureType.longPress,
-      matcherType: spanData.definition.matcher.runtimeType,
+      gestureKind: GestureKind.longPress,
+      pointerDeviceKind: pointerDeviceKind,
+      element: spanData.element,
       text: spanData.link,
       label: spanData.label,
       globalPosition: globalPosition,
@@ -91,6 +97,7 @@ extension on CustomTextSpanNotifier {
 
   void _onTapUp({
     required SpanData spanData,
+    required PointerDeviceKind pointerDeviceKind,
     required Offset globalPosition,
     required Offset localPosition,
   }) {
@@ -101,8 +108,9 @@ extension on CustomTextSpanNotifier {
     // therefore the timer is still active.
     if (timer == null || timer.isActive) {
       final details = GestureDetails(
-        gestureType: GestureType.tap,
-        matcherType: spanData.definition.matcher.runtimeType,
+        gestureKind: GestureKind.tap,
+        pointerDeviceKind: pointerDeviceKind,
+        element: spanData.element,
         text: spanData.link,
         label: spanData.label,
         globalPosition: globalPosition,
@@ -121,13 +129,15 @@ extension on CustomTextSpanNotifier {
 
   void _onGesture({
     required SpanData spanData,
-    required GestureType gestureType,
+    required GestureKind gestureKind,
+    required PointerDeviceKind pointerDeviceKind,
     required Offset globalPosition,
     required Offset localPosition,
   }) {
     final details = GestureDetails(
-      gestureType: gestureType,
-      matcherType: spanData.definition.matcher.runtimeType,
+      gestureKind: gestureKind,
+      pointerDeviceKind: pointerDeviceKind,
+      element: spanData.element,
       text: spanData.link,
       label: spanData.label,
       globalPosition: globalPosition,
@@ -143,7 +153,8 @@ extension on CustomTextSpanNotifier {
 
   void _onHover({
     required SpanData spanData,
-    required GestureType gestureType,
+    required GestureKind gestureKind,
+    required PointerDeviceKind pointerDeviceKind,
     required Offset globalPosition,
     required Offset localPosition,
     required bool styling,
@@ -156,20 +167,21 @@ extension on CustomTextSpanNotifier {
       if (styling) {
         _updateHoverIndex(
           spanData: spanData,
-          hovered: gestureType == GestureType.enter,
+          hovered: gestureKind == GestureKind.enter,
           globalPosition: globalPosition,
         );
       }
 
-      if (!force && gestureType == _lastHoverGestureType) {
+      if (!force && gestureKind == _lastHoverGestureKind) {
         return;
       }
-      _lastHoverGestureType = gestureType;
+      _lastHoverGestureKind = gestureKind;
       _enterOrExitIndex = null;
 
       _onGesture(
         spanData: spanData,
-        gestureType: gestureType,
+        gestureKind: gestureKind,
+        pointerDeviceKind: pointerDeviceKind,
         globalPosition: globalPosition,
         localPosition: localPosition,
       );
@@ -183,7 +195,7 @@ extension on CustomTextSpanNotifier {
     // calls to _updateHoverIndex() and _onGesture(). To avoid it,
     // those calls are debounced (i.e. the existing timer is cancelled
     // and a new timer is started), and also a call to _onGesture()
-    // is skipped if the gesture type is same as the last.
+    // is skipped if the gesture kind is same as the last.
     //
     // As an exception, however, if an enter or exit event happens at
     // a different index, it is necessary to keep the existing timer
