@@ -181,6 +181,7 @@ class CustomTextEditingController extends TextEditingController {
         hoverStyle: hoverStyle,
         onTap: onTap,
         onLongPress: onLongPress,
+        onGesture: onGesture,
         longPressDuration: longPressDuration,
       ),
     )..addListener(notifyListeners);
