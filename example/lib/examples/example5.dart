@@ -14,18 +14,18 @@ class Example5 extends StatelessWidget {
       definitions: [
         SelectiveDefinition(
           matcher: const LinkMatcher(),
-          // `labelSelector` is used to choose the string to display.
+          // `shownText` is used to choose the string to display.
           // It receives a list of strings that have matched the
           // fragments enclosed in parentheses within the match pattern.
-          labelSelector: (groups) => groups[0]!,
-          // `tapSelector` is used to choose the string to be passed
-          // to the `onTap` and `onLongPress` handlers.
-          tapSelector: (groups) => groups[1]!,
+          shownText: (groups) => groups[0]!,
+          // `actionText` is used to choose the string to be passed
+          // to the `onTap`, `onLongPress` and `onGesture` handlers.
+          actionText: (groups) => groups[1]!,
         ),
       ],
       matchStyle: const TextStyle(color: Colors.lightBlue),
       tapStyle: const TextStyle(color: Colors.lightGreen),
-      onTap: (details) => output(details.text),
+      onTap: (details) => output(details.actionText),
     );
   }
 }

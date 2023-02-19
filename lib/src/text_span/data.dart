@@ -12,8 +12,8 @@ class SpanData {
     required this.index,
     required this.element,
     required this.text,
-    required this.label,
-    required this.link,
+    required this.shownText,
+    required this.actionText,
     required this.definition,
     required this.tappable,
   });
@@ -21,8 +21,8 @@ class SpanData {
   final int index;
   final TextElement element;
   final String text;
-  final String label;
-  final String link;
+  final String shownText;
+  final String actionText;
   final Definition definition;
   final bool tappable;
 }

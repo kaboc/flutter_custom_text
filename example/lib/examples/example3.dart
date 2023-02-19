@@ -15,7 +15,7 @@ class Example3 extends StatelessWidget {
       ],
       matchStyle: const TextStyle(color: Colors.lightBlue),
       tapStyle: const TextStyle(color: Colors.lightGreen),
-      onTap: (details) => output(details.text),
+      onTap: (details) => output(details.actionText),
     );
   }
 }

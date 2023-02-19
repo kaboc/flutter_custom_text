@@ -74,8 +74,8 @@ extension on CustomTextSpanNotifier {
       gestureKind: GestureKind.longPress,
       pointerDeviceKind: pointerDeviceKind,
       element: spanData.element,
-      text: spanData.link,
-      label: spanData.label,
+      shownText: spanData.shownText,
+      actionText: spanData.actionText,
       globalPosition: globalPosition,
       localPosition: localPosition,
     );
@@ -111,8 +111,8 @@ extension on CustomTextSpanNotifier {
         gestureKind: GestureKind.tap,
         pointerDeviceKind: pointerDeviceKind,
         element: spanData.element,
-        text: spanData.link,
-        label: spanData.label,
+        shownText: spanData.shownText,
+        actionText: spanData.actionText,
         globalPosition: globalPosition,
         localPosition: localPosition,
       );
@@ -138,8 +138,8 @@ extension on CustomTextSpanNotifier {
       gestureKind: gestureKind,
       pointerDeviceKind: pointerDeviceKind,
       element: spanData.element,
-      text: spanData.link,
-      label: spanData.label,
+      shownText: spanData.shownText,
+      actionText: spanData.actionText,
       globalPosition: globalPosition,
       localPosition: localPosition,
     );

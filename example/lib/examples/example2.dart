@@ -25,9 +25,9 @@ class Example2 extends StatelessWidget {
             decoration: TextDecoration.underline,
           ),
           tapStyle: const TextStyle(color: Colors.orange),
-          onTap: (details) => output(details.text),
+          onTap: (details) => output(details.actionText),
           onLongPress: (details) =>
-              output('[Long press on Tel#] ${details.text}'),
+              output('[Long press on Tel#] ${details.actionText}'),
         ),
       ],
       matchStyle: const TextStyle(
@@ -35,8 +35,8 @@ class Example2 extends StatelessWidget {
         decoration: TextDecoration.underline,
       ),
       tapStyle: const TextStyle(color: Colors.indigo),
-      onTap: (details) => output(details.text),
-      onLongPress: (details) => output('[Long press] ${details.text}'),
+      onTap: (details) => output(details.actionText),
+      onLongPress: (details) => output('[Long press] ${details.actionText}'),
     );
   }
 }

@@ -170,8 +170,8 @@ void main() {
       expect(gestureKind, equals(GestureKind.tap));
       expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
       expect(element?.matcherType, equals(EmailMatcher));
-      expect(labelText, equals('bbb@example.com'));
-      expect(tappedText, equals('bbb@example.com'));
+      expect(shownText, equals('bbb@example.com'));
+      expect(actionText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
     });
@@ -199,8 +199,8 @@ void main() {
         expect(gestureKind, equals(GestureKind.longPress));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(EmailMatcher));
-        expect(labelText, equals('bbb@example.com'));
-        expect(tappedText, equals('bbb@example.com'));
+        expect(shownText, equals('bbb@example.com'));
+        expect(actionText, equals('bbb@example.com'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
@@ -301,38 +301,38 @@ void main() {
       expect(gestureKind, equals(GestureKind.secondaryTap));
       expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
       expect(element?.matcherType, equals(EmailMatcher));
-      expect(labelText, equals('bbb@example.com'));
-      expect(tappedText, equals('bbb@example.com'));
+      expect(shownText, equals('bbb@example.com'));
+      expect(actionText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
 
-      tappedText = globalPosition = localPosition = null;
+      actionText = globalPosition = localPosition = null;
       await tester.tapAt(center, buttons: kTertiaryButton);
       expect(gestureKind, equals(GestureKind.tertiaryTap));
       expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-      expect(tappedText, equals('bbb@example.com'));
+      expect(actionText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
 
       final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
       addTearDown(gesture.removePointer);
 
-      tappedText = globalPosition = localPosition = null;
+      actionText = globalPosition = localPosition = null;
       await gesture.addPointer(location: Offset(center.dx, 9.0));
       await gesture.moveTo(center);
       await tester.pumpAndSettle();
       expect(gestureKind, equals(GestureKind.enter));
       expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-      expect(tappedText, equals('bbb@example.com'));
+      expect(actionText, equals('bbb@example.com'));
       expect(globalPosition, equals(center));
       expect(localPosition, equals(center - const Offset(10.0, 10.0)));
 
-      tappedText = globalPosition = localPosition = null;
+      actionText = globalPosition = localPosition = null;
       await gesture.moveTo(Offset(center.dx, 9.0));
       await tester.pumpAndSettle();
       expect(gestureKind, equals(GestureKind.exit));
       expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-      expect(tappedText, equals('bbb@example.com'));
+      expect(actionText, equals('bbb@example.com'));
       expect(globalPosition, equals(Offset(center.dx, 9.0)));
       expect(localPosition, equals(Offset(center.dx - 10.0, -1.0)));
     });
@@ -623,7 +623,7 @@ void main() {
             return CustomTextWidget(
               'aaa bbb',
               definitions: definitions,
-              onTap: (details) => value = details.text,
+              onTap: (details) => value = details.actionText,
               onButtonPressed: () => setState(() {
                 definitions = const [
                   TextDefinition(matcher: PatternMatcher('bbb')),
@@ -731,7 +731,7 @@ void main() {
       'change of tap callback specified in definition is reflected by rebuild',
       (tester) async {
         void onTap2(GestureDetails details) =>
-            tappedText = details.text.toUpperCase();
+            actionText = details.actionText.toUpperCase();
 
         var callback = onTap;
 
@@ -761,7 +761,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, equals(email.toUpperCase()));
+        expect(actionText, equals(email.toUpperCase()));
       },
     );
 
@@ -769,7 +769,7 @@ void main() {
       'change of tap callback specified in CustomText is reflected by rebuild',
       (tester) async {
         void onTap2(GestureDetails details) =>
-            tappedText = details.text.toUpperCase();
+            actionText = details.actionText.toUpperCase();
 
         var callback = onTap;
 
@@ -799,7 +799,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, equals(email.toUpperCase()));
+        expect(actionText, equals(email.toUpperCase()));
       },
     );
 
@@ -834,7 +834,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, equals(email));
+        expect(actionText, equals(email));
       },
     );
 
@@ -869,7 +869,7 @@ void main() {
         tapUpSpan(span);
         await tester.pump();
 
-        expect(tappedText, equals(email));
+        expect(actionText, equals(email));
       },
     );
   });

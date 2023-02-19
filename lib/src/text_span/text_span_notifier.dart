@@ -79,18 +79,15 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         def.onLongPress != null ||
         def.onGesture != null;
 
-    final label = def.labelSelector == null
-        ? element.text
-        : def.labelSelector!(element.groups);
-
     final spanData = SpanData(
       index: index,
       element: element,
       text: element.text,
-      label: label,
-      link: def.tapSelector == null
+      shownText:
+          def.shownText == null ? element.text : def.shownText!(element.groups),
+      actionText: def.actionText == null
           ? element.text
-          : def.tapSelector!(element.groups),
+          : def.actionText!(element.groups),
       definition: def,
       tappable: isTappable,
     );
@@ -162,7 +159,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         spanData.definition.onGesture != null;
 
     return TextSpan(
-      text: spanData.label,
+      text: spanData.shownText,
       // hoverStyle must be cancelled when text spans are built.
       // Otherwise, if a span with hoverStyle is being hovered on
       // during a build and then gets a different index in new spans, the
@@ -217,7 +214,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         spanData.definition.onGesture != null;
 
     return TextSpan(
-      text: spanData.label,
+      text: spanData.shownText,
       // tapStyle and hoverStyle must be cancelled when text spans are built.
       // Otherwise, if a span with such a style is being pressed or hovered
       // on during a build and then gets a different index in new spans,

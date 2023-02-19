@@ -9,11 +9,11 @@ import 'text.dart';
 import 'text_editing_controller.dart';
 
 /// The signature for a callback to select a string to display.
-typedef LabelSelector = String Function(List<String?>);
+typedef ShownTextSelector = String Function(List<String?>);
 
 /// The signature for a callback to select a string to be passed
 /// to gesture callbacks.
-typedef TapSelector = String Function(List<String?>);
+typedef ActionTextSelector = String Function(List<String?>);
 
 /// The signature for a callback to return an [InlineSpan] to
 /// be used as part of the text to display.
@@ -26,8 +26,8 @@ typedef SpanBuilder = InlineSpan Function(String, List<String?>);
 abstract class Definition {
   const Definition({
     required this.matcher,
-    this.labelSelector,
-    this.tapSelector,
+    this.shownText,
+    this.actionText,
     this.builder,
     this.matchStyle,
     this.tapStyle,
@@ -39,8 +39,8 @@ abstract class Definition {
   });
 
   final TextMatcher matcher;
-  final LabelSelector? labelSelector;
-  final TapSelector? tapSelector;
+  final ShownTextSelector? shownText;
+  final ActionTextSelector? actionText;
   final SpanBuilder? builder;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;

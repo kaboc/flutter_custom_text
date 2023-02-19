@@ -134,8 +134,8 @@ class SelectiveCustomTextWidget extends StatelessWidget {
         ),
         SelectiveDefinition(
           matcher: const LinkMatcher(),
-          labelSelector: (groups) => groups[0] ?? '',
-          tapSelector: (groups) => groups[1] ?? '',
+          shownText: (groups) => groups[0] ?? '',
+          actionText: (groups) => groups[1] ?? '',
           matchStyle: matchStyleInDef,
           tapStyle: tapStyleInDef,
           hoverStyle: hoverStyleInDef,

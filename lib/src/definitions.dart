@@ -57,18 +57,18 @@ class SelectiveDefinition extends Definition {
   /// [onTap] and [onLongPress] are handler functions called when a
   /// TextSpan is tapped and long-pressed respectively.
   ///
-  /// [labelSelector] and [tapSelector] are functions for selecting
+  /// [shownText] and [actionText] are functions for selecting
   /// a string. It receives a list of strings that have matched the
   /// fragments enclosed in parentheses within the match pattern.
-  /// The string returned by [labelSelector] is displayed, and the one
-  /// returned by [tapSelector] is included in the [GestureDetails]
-  /// object passed to [onTap] and [onLongPress].
+  /// The string returned by [shownText] is displayed, and the one
+  /// returned by [actionText] is included in the [GestureDetails]
+  /// object passed to [onTap], [onLongPress] and [onGesture].
   ///
   /// {@macro customText.definition.mouseCursor}
   const SelectiveDefinition({
     required super.matcher,
-    required LabelSelector super.labelSelector,
-    super.tapSelector,
+    required ShownTextSelector super.shownText,
+    super.actionText,
     super.matchStyle,
     super.tapStyle,
     super.hoverStyle,

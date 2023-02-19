@@ -11,8 +11,8 @@ final kTestLongPressDuration =
 GestureKind? gestureKind;
 PointerDeviceKind? pointerDeviceKind;
 TextElement? element;
-String? labelText;
-String? tappedText;
+String? shownText;
+String? actionText;
 Offset? globalPosition;
 Offset? localPosition;
 
@@ -20,8 +20,8 @@ void reset() {
   gestureKind = null;
   pointerDeviceKind = null;
   element = null;
-  labelText = null;
-  tappedText = null;
+  shownText = null;
+  actionText = null;
   globalPosition = null;
   localPosition = null;
 }
@@ -30,8 +30,8 @@ void onTap(GestureDetails details) {
   gestureKind = details.gestureKind;
   pointerDeviceKind = details.pointerDeviceKind;
   element = details.element;
-  labelText = details.label;
-  tappedText = details.text;
+  shownText = details.shownText;
+  actionText = details.actionText;
   globalPosition = details.globalPosition;
   localPosition = details.localPosition;
 }
@@ -40,8 +40,8 @@ void onLongPress(GestureDetails details) {
   gestureKind = details.gestureKind;
   pointerDeviceKind = details.pointerDeviceKind;
   element = details.element;
-  labelText = details.label;
-  tappedText = details.text;
+  shownText = details.shownText;
+  actionText = details.actionText;
   globalPosition = details.globalPosition;
   localPosition = details.localPosition;
 }
@@ -50,8 +50,8 @@ void onGesture(GestureDetails details) {
   gestureKind = details.gestureKind;
   pointerDeviceKind = details.pointerDeviceKind;
   element = details.element;
-  labelText = details.label;
-  tappedText = details.text;
+  shownText = details.shownText;
+  actionText = details.actionText;
   globalPosition = details.globalPosition;
   localPosition = details.localPosition;
 }

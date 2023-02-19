@@ -21,8 +21,8 @@ class _Example8State extends State<Example8> {
           decoration: TextDecoration.underline,
         ),
         tapStyle: const TextStyle(color: Colors.indigo),
-        onTap: (details) => widget.output(details.text),
-        onLongPress: (details) => widget.output('long: ${details.text}'),
+        onTap: (details) => widget.output(details.actionText),
+        onLongPress: (details) => widget.output('long: ${details.actionText}'),
       ),
       TextDefinition(
         matcher: const EmailMatcher(),

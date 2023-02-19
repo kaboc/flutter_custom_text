@@ -86,7 +86,7 @@ final pages = {
     page: 5,
     title: 'SelectiveDefinition',
     description:
-        'An example to parse markdown-style links, like `[label](url)` '
+        'An example to parse markdown-style links, like `[shown text](url)` '
         'using `SelectiveDefinition`, and make them tappable.\n'
         'Each of the string shown in the widget and the string passed to '
         'the tap callbacks is selected individually from the groups of '

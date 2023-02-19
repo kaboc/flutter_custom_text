@@ -32,8 +32,8 @@ void main() {
         expect(gestureKind, equals(GestureKind.tap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
@@ -62,8 +62,8 @@ void main() {
         expect(gestureKind, equals(GestureKind.longPress));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
@@ -90,8 +90,8 @@ void main() {
         expect(gestureKind, equals(GestureKind.tap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
@@ -120,8 +120,8 @@ void main() {
         expect(gestureKind, equals(GestureKind.longPress));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
       },
@@ -150,38 +150,38 @@ void main() {
         expect(gestureKind, equals(GestureKind.secondaryTap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
         expect(gestureKind, equals(GestureKind.tertiaryTap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
         expect(gestureKind, equals(GestureKind.enter));
         expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
         expect(gestureKind, equals(GestureKind.exit));
         expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
       },
     );
 
@@ -206,38 +206,38 @@ void main() {
         expect(gestureKind, equals(GestureKind.secondaryTap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
         expect(element?.matcherType, equals(LinkMatcher));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
         expect(globalPosition, equals(center));
         expect(localPosition, equals(center - const Offset(10.0, 10.0)));
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
         expect(gestureKind, equals(GestureKind.tertiaryTap));
         expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
         expect(gestureKind, equals(GestureKind.enter));
         expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
 
-        labelText = tappedText = null;
+        shownText = actionText = null;
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
         expect(gestureKind, equals(GestureKind.exit));
         expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(labelText, equals('bbb'));
-        expect(tappedText, equals('ccc'));
+        expect(shownText, equals('bbb'));
+        expect(actionText, equals('ccc'));
       },
     );
   });

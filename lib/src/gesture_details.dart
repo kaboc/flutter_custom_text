@@ -15,8 +15,8 @@ class GestureDetails {
     required this.gestureKind,
     required this.pointerDeviceKind,
     required this.element,
-    required this.label,
-    required this.text,
+    required this.shownText,
+    required this.actionText,
     this.globalPosition = Offset.zero,
     this.localPosition = Offset.zero,
   });
@@ -30,11 +30,12 @@ class GestureDetails {
   /// The text element where the gesture happened.
   final TextElement element;
 
-  /// The text to display.
-  final String label;
+  /// The string to display.
+  final String shownText;
 
-  /// The text to be passed to gesture callbacks.
-  final String text;
+  /// The string to be passed to gesture callbacks and used basically
+  /// for some action.
+  final String actionText;
 
   /// The global position where a gesture was detected.
   final Offset globalPosition;

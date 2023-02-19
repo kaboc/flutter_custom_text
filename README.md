@@ -92,8 +92,8 @@ CustomText(
         decoration: TextDecoration.underline,
       ),
       tapStyle: const TextStyle(color: Colors.orange),
-      onTap: (details) => print(details.text),
-      onLongPress: (details) => print('[Long press] ${details.text}'),
+      onTap: (details) => print(details.actionText),
+      onLongPress: (details) => print('[Long press] ${details.actionText}'),
     ),
   ],
   matchStyle: const TextStyle(
@@ -101,8 +101,8 @@ CustomText(
     decoration: TextDecoration.underline,
   ),
   tapStyle: const TextStyle(color: Colors.indigo),
-  onTap: (details) => print(details),
-  onLongPress: (details) => print('[Long press] ${details.text}'),
+  onTap: (details) => print(details.actionText),
+  onLongPress: (details) => print('[Long press] ${details.actionText}'),
 )
 ```
 
@@ -124,7 +124,7 @@ CustomText(
     TextDefinition(matcher: TelMatcher(r'\d{3}-\d{4}-\d{4}')),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
-  onTap: (details) => print(details.text),
+  onTap: (details) => print(details.actionText),
 )
 ```
 
@@ -177,7 +177,7 @@ example5.dart ([Code][example5] / [Demo][example5_demo])
 
 ![example5](https://user-images.githubusercontent.com/20254485/100355868-d0d5bb00-3035-11eb-836f-863f1af599ac.png)
 
-An example to parse markdown-style links, like `[label](url)` using
+An example to parse markdown-style links, like `[shown text](url)` using
 [SelectiveDefinition][SelectiveDefinition], and make them tappable.
 
 Each of the string shown in the widget and the string passed to the tap handlers
@@ -193,18 +193,18 @@ CustomText(
   definitions: [
     SelectiveDefinition(
       matcher: const LinkMatcher(),
-      // `labelSelector` is used to choose the string to display.
+      // `shownText` is used to choose the string to display.
       // It receives a list of strings that have matched the
       // fragments enclosed in parentheses within the match pattern.
-      labelSelector: (groups) => groups[0]!,
-      // `tapSelector` is used to choose the string to be passed
-      // to the `onTap` and `onLongPress` handlers.
-      tapSelector: (groups) => groups[1]!,
+      shownText: (groups) => groups[0]!,
+      // `actionText` is used to choose the string to be passed
+      // to the `onTap`, `onLongPress` and `onGesture` handlers.
+      actionText: (groups) => groups[1]!,
     ),
   ],
   matchStyle: const TextStyle(color: Colors.lightBlue),
   tapStyle: const TextStyle(color: Colors.green),
-  onTap: (details) => print(details.text),
+  onTap: (details) => print(details.actionText),
 )
 ```
 
@@ -218,7 +218,7 @@ CustomText(
   definitions: [
     SelectiveDefinition(
       matcher: const LinkMatcher(),
-      labelSelector: (groups) => groups[0]!,
+      shownText: (groups) => groups[0]!,
     ),
   ],
   matchStyle: const TextStyle(color: Colors.red),
@@ -256,7 +256,7 @@ CustomText(
     const TextDefinition(
       matcher: EmailMatcher(),
       matchStyle: TextStyle(color: Colors.lightBlue),
-      onTap: (details) => print(details.text),
+      onTap: (details) => print(details.actionText),
     ),
   ],
 )
@@ -317,7 +317,7 @@ CustomText(
       ),
       // `SystemMouseCursors.click` is automatically used for
       // tappable elements even if `mouseCursor` is not specified.
-      onTap: (details) => print(details.text),
+      onTap: (details) => print(details.actionText),
     ),
   ],
 )
