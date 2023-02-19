@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:custom_text_example/code_view_page.dart';
@@ -12,10 +13,6 @@ import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
 import 'package:custom_text_example/home_page.dart';
 
-extension on GoRouterState {
-  int? get page => int.tryParse(params['page'] ?? '');
-}
-
 final router = GoRouter(
   routes: [
     GoRoute(
@@ -23,19 +20,19 @@ final router = GoRouter(
       builder: (_, __) => const HomePage(),
       routes: [
         GoRoute(
-          path: ':page',
-          builder: (_, state) => pages[state.page]!,
+          path: ':path_string',
+          builder: (_, state) => state.pageWidget!,
           routes: [
             GoRoute(
               path: 'code',
               builder: (_, state) {
-                return CodeViewPage(filename: 'example${state.page}.dart');
+                final widget = state.pageWidget!;
+                return CodeViewPage(filename: widget.filename);
               },
             ),
           ],
           redirect: (_, state) {
-            final page = state.page;
-            return page == null || page < 0 || page > pages.length ? '/' : null;
+            return state.pageWidget == null ? '/' : null;
           },
         ),
       ],
@@ -43,9 +40,16 @@ final router = GoRouter(
   ],
 );
 
-final pages = {
-  1: ExamplePage(
-    page: 1,
+extension on GoRouterState {
+  ExamplePage? get pageWidget {
+    return pages.firstWhereOrNull((p) => p.pathString == params['path_string']);
+  }
+}
+
+final pages = [
+  ExamplePage(
+    pathString: 'simple',
+    filename: 'example1.dart',
     title: 'Simple',
     description: 'A very basic example to apply a colour to URLs and '
         'email addresses using preset matchers.',
@@ -54,8 +58,9 @@ final pages = {
     additionalInfo: 'Tapping on text does not trigger anything in '
         'this example.',
   ),
-  2: const ExamplePage(
-    page: 2,
+  const ExamplePage(
+    pathString: 'styles-and-actions',
+    filename: 'example2.dart',
     title: 'Unique styles and actions',
     description: 'An example to decorate URLs, email addresses and phone '
         'numbers, and also enable them to be tapped and long-pressed.\n'
@@ -64,16 +69,18 @@ final pages = {
     builder: Example2.new,
     additionalInfo: 'Try tapping or long-pressing on coloured strings.',
   ),
-  3: const ExamplePage(
-    page: 3,
+  const ExamplePage(
+    pathString: 'overwriting-pattern',
+    filename: 'example3.dart',
     title: 'Overwriting match pattern',
     description: 'An example to replace the default pattern of `TelMatcher`.\n'
         'The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` '
         'format as a phone number.',
     builder: Example3.new,
   ),
-  4: const ExamplePage(
-    page: 4,
+  const ExamplePage(
+    pathString: 'custom-pattern',
+    filename: 'example4.dart',
     title: 'Custom pattern',
     description: 'An example to parse hashtags with a custom matcher '
         'and apply styles to them.\n'
@@ -82,8 +89,9 @@ final pages = {
         'enclosed with white spaces.',
     builder: Example4.new,
   ),
-  5: const ExamplePage(
-    page: 5,
+  const ExamplePage(
+    pathString: 'selective-definition',
+    filename: 'example5.dart',
     title: 'SelectiveDefinition',
     description:
         'An example to parse markdown-style links, like `[shown text](url)` '
@@ -93,8 +101,9 @@ final pages = {
         'matched strings.',
     builder: Example5.new,
   ),
-  6: const ExamplePage(
-    page: 6,
+  const ExamplePage(
+    pathString: 'span-definition',
+    filename: 'example6.dart',
     title: 'SpanDefinition',
     description: 'An example to show both strings and icons using '
         '`SpanDefinition`.\n'
@@ -103,8 +112,9 @@ final pages = {
         'to build an `InlineSpan` flexibly with them.',
     builder: Example6.new,
   ),
-  7: const ExamplePage(
-    page: 7,
+  const ExamplePage(
+    pathString: 'hover',
+    filename: 'example7.dart',
     title: 'Mouse cursor and text style on hover',
     description: 'An example to change the mouse cursor and text style '
         'on hover.\n'
@@ -114,8 +124,9 @@ final pages = {
     additionalInfo: 'Run the app on desktop to see how this example '
         'looks and behaves on hover over some strings.',
   ),
-  8: const ExamplePage(
-    page: 8,
+  const ExamplePage(
+    pathString: 'text-editing-controller',
+    filename: 'example8.dart',
     title: 'CustomTextEditingController',
     description: 'An example to use most `CustomText` features in '
         '`TextField` too using `CustomTextEditingController`.\n\n'
@@ -128,4 +139,4 @@ final pages = {
         'As you type, email addresses, URLs and hashtags are decorated, '
         'URLs become tappable, and a hover effect is enabled on hashtags.',
   ),
-};
+];

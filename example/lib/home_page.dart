@@ -30,11 +30,11 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           children: [
-            for (var i = 1; i <= pages.length; i++)
+            for (var i = 0; i < pages.length; i++)
               ListTile(
-                title: Text('$i. ${pages[i]!.title}'),
+                title: Text(pages[i].title),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/$i'),
+                onTap: () => context.go('/${pages[i].pathString}'),
               )
           ],
         ),

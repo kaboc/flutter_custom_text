@@ -7,7 +7,8 @@ import 'package:custom_text_example/widgets/layouts.dart';
 
 class ExamplePage extends StatefulWidget {
   const ExamplePage({
-    required this.page,
+    required this.pathString,
+    required this.filename,
     required this.title,
     required this.description,
     required this.builder,
@@ -15,7 +16,8 @@ class ExamplePage extends StatefulWidget {
     this.additionalInfo,
   });
 
-  final int page;
+  final String pathString;
+  final String filename;
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
@@ -40,7 +42,8 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     final description = Description(
-      page: widget.page,
+      pathString: widget.pathString,
+      filename: widget.filename,
       description: widget.description,
     );
     final example = _Example(
@@ -63,7 +66,7 @@ class _ExamplePageState extends State<ExamplePage> {
           IconButton(
             tooltip: 'View code',
             icon: const Icon(Icons.article),
-            onPressed: () => context.go('/${widget.page}/code'),
+            onPressed: () => context.go('/${widget.pathString}/code'),
           ),
         ],
       ),

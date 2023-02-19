@@ -4,9 +4,14 @@ import 'package:custom_text/custom_text.dart';
 import 'package:go_router/go_router.dart';
 
 class Description extends StatelessWidget {
-  const Description({required this.page, required this.description});
+  const Description({
+    required this.pathString,
+    required this.filename,
+    required this.description,
+  });
 
-  final int page;
+  final String pathString;
+  final String filename;
   final String description;
 
   @override
@@ -21,14 +26,14 @@ class Description extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              'example$page.dart',
+              filename,
               definitions: [
                 TextDefinition(
                   matcher: const _FilenameMatcher(),
                   hoverStyle: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
-                  onTap: (_) => context.go('/$page/code'),
+                  onTap: (_) => context.go('/$pathString/code'),
                 ),
               ],
               style: TextStyle(
