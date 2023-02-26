@@ -1,6 +1,6 @@
 name: custom_text
 description: A highly customisable text widget that enables decorations and gestures on strings.
-version: 0.7.0
+version: 0.8.0
 repository: https://github.com/kaboc/flutter_custom_text
 
 environment:
@@ -25,5 +25,7 @@ screenshots:
     path: screenshots/unique_styles_and_actions.gif
   - description: 'Changing mouse cursor and text style on hover.'
     path: screenshots/mouse_cursor_and_text_style_on_hover.gif
+  - description: 'Showing a popup at the position of a mouse enter event.'
+    path: screenshots/event_position.gif
   - description: 'CustomTextEditingController enables text styling and actions in editable text.'
     path: screenshots/custom_text_editing_controller.gif

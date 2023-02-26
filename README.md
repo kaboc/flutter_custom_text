@@ -22,7 +22,9 @@ Just click on the link below to open its web version and see what this package c
 The app also shows the source code with keywords highlighted, which itself is made possible
 by this package.
 
-![Code highlighting](https://user-images.githubusercontent.com/20254485/203714827-af1bdd43-666b-417a-9f29-96a7c7f18b35.png)
+<a href="https://kaboc.github.io/flutter_custom_text/">
+<img src="https://user-images.githubusercontent.com/20254485/221410741-ff135ab1-2c18-4f14-89d0-99991355ac42.png" alt="Code highlighting" height="360">
+</a>
 
 ### ⭐ <b>Simplest example</b>
 
@@ -62,7 +64,7 @@ If a stricter pattern is necessary, overwrite the preset pattern or create a cus
 
 example2.dart ([Code][example2] / [Demo][example2_demo])
 
-![example2](https://user-images.githubusercontent.com/20254485/100355833-c74c5300-3035-11eb-80d2-de64056417a1.gif)
+![example2](https://user-images.githubusercontent.com/20254485/221410479-c1014891-2e4a-40d6-9fcf-db1a2b946dfd.gif)
 
 An example to decorate URLs, email addresses and phone numbers, and also enable them
 to be tapped and long-pressed.
@@ -229,7 +231,7 @@ CustomText(
 
 example6.dart ([Code][example6] / [Demo][example6_demo])
 
-![example6](https://user-images.githubusercontent.com/20254485/100355876-d501d880-3035-11eb-9ec5-f9694a7811cf.png)
+![example6](https://user-images.githubusercontent.com/20254485/221410494-c9d87a75-4a47-4dd1-af8a-0b566a393d59.png)
 
 An example to display both strings and icons using [SpanDefinition][SpanDefinition].
 
@@ -273,7 +275,7 @@ CustomText(
 
 example7.dart ([Code][example7] / [Demo][example7_demo])
 
-![example7](https://user-images.githubusercontent.com/20254485/119790338-cf1a8080-bf0e-11eb-8c76-3116a540b159.gif)
+![example7](https://user-images.githubusercontent.com/20254485/221410499-23e5dfd2-dc19-4234-b119-17c46ac80a77.gif)
 
 `TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor
 type passed to it is used for a string that has matched the match pattern while the pointer
@@ -347,7 +349,7 @@ where an event happened. It is useful for showing a popup or a menu at the posit
 
 example9.dart ([Code][example9] / [Demo][example9_demo])
 
-![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
+![example9](https://user-images.githubusercontent.com/20254485/221410504-f8af0c02-1ccb-4094-bdf1-bb6a1a454874.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in
 an editable text field via [CustomTextEditingController][CustomTextEditingController].

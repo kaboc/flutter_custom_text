@@ -1,3 +1,45 @@
+## 0.8.0
+
+- **Breaking**:
+    - Raise minimum Flutter SDK version to 3.7.0.
+    - Remove `CustomText.selectable` that had been deprecated since 0.6.0. (#24)
+    - Handler functions now get `GestureDetails` object instead of matcher type and text. (#25)
+        - This is for supporting wider use cases.
+          ```dart
+          onTap: (details) {
+            print(details.element.matcherType);
+            print(details.actionText);
+          
+            // or more
+            print(details.shownText);
+            print(details.gestureKind);
+            print(details.globalPosition);
+            ...
+          }
+          ```
+          instead of
+          ```dart
+          onTap: (type, text) {
+            print(type);
+            print(text);
+          }
+          ```
+    - Integrate `CustomTextEditingController` into `custom_text.dart`.
+        - Use
+          ```dart
+          import 'package:custom_text/custom_text.dart';
+          ``` 
+          instead of
+          ```dart
+          import 'package:custom_text/custom_text_editing_controller.dart';
+          ``` 
+- New:
+    - Add `onGesture`. (#27)
+        - This handler supports secondary and tertiary buttons and mouse enter and exit events.
+- Expose the base definition class.
+- Expose the typedefs of builders of `SelectiveDefinition` and `SpanDefinition`. 
+- Internal refactorings.
+
 ## 0.7.0
 
 - Raise minimum Flutter SDK version to 3.3.0.
