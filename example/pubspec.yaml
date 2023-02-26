@@ -14,9 +14,9 @@ dependencies:
     path: ../
 
   collection: 1.17.0
-  go_router: ^6.0.6
+  go_router: ^6.2.0
   google_fonts: ^4.0.3
-  url_launcher: ^6.1.9
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_lints: ^2.0.1

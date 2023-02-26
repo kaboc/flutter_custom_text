@@ -9,7 +9,7 @@ const kDartDefinitions = [
   ),
   TextDefinition(
     matcher: _DartKeywordMatcher(),
-    matchStyle: TextStyle(color: Color(0xFFFFA726)),
+    matchStyle: TextStyle(color: Color(0xFFED9716)),
   ),
   TextDefinition(
     matcher: _DartTypeMatcher(),
@@ -33,11 +33,11 @@ const kDartDefinitions = [
   ),
   TextDefinition(
     matcher: _ParameterNameMatcher(),
-    matchStyle: TextStyle(color: Color(0xFFA1887F)),
+    matchStyle: TextStyle(color: Color(0xFFB1887F)),
   ),
   TextDefinition(
     matcher: _CustomTextKeywordsMatcher(),
-    matchStyle: TextStyle(color: Color(0xFF7CB342)),
+    matchStyle: TextStyle(color: Color(0xFF6CA332)),
   ),
 ];
 

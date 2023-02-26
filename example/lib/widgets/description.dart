@@ -20,7 +20,7 @@ class Description extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyLarge!,
       child: Container(
         width: double.infinity,
-        color: Colors.blueGrey.shade400,
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.85),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

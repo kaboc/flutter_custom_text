@@ -16,11 +16,10 @@ class Example6 extends StatelessWidget {
           matcher: const PatternMatcher(r'\[@\]'),
           builder: (text, groups) => const WidgetSpan(
             child: Icon(
-              Icons.email,
+              Icons.email_outlined,
               color: Colors.blueGrey,
-              size: 18.0,
+              size: 20.0,
             ),
-            alignment: PlaceholderAlignment.middle,
           ),
         ),
         TextDefinition(

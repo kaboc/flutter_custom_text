@@ -1,9 +1,28 @@
 import 'dart:ui';
 
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:text_parser/text_parser.dart' show TextElement;
 
-enum GestureKind { tap, longPress, secondaryTap, tertiaryTap, enter, exit }
+enum GestureKind {
+  /// A tap/short press of the primary button.
+  tap,
+
+  /// A long press of the primary button.
+  longPress,
+
+  /// A tap/press of the secondary button.
+  secondaryTap,
+
+  /// A tap/press of the tertiary button.
+  tertiaryTap,
+
+  /// An enter of the mouse pointer to a region.
+  enter,
+
+  /// An exit of the mouse pointer from a region.
+  exit,
+}
 
 /// A class with details on a gesture and the element where
 /// the gesture was detected.

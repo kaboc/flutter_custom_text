@@ -1,4 +1,4 @@
-import 'package:text_parser/text_parser.dart';
+import 'package:text_parser/text_parser.dart' show TextMatcher;
 
 import 'definitions.dart';
 

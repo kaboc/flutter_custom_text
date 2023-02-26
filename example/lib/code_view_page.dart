@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:custom_text_example/common/dart_definitions.dart';
+import 'package:custom_text_example/utils/dart_definitions.dart';
 
 class CodeViewPage extends StatefulWidget {
   const CodeViewPage({required this.filename});
@@ -45,8 +45,11 @@ class _CodeViewPageState extends State<CodeViewPage> {
         title: Text(widget.filename),
       ),
       body: SafeArea(
-        child: SizedBox.expand(
-          child: SelectionArea(
+        // Placing SelectionArea as the child of SizedBox causes a layout issue.
+        // https://github.com/flutter/flutter/issues/121053
+        child: SelectionArea(
+          child: SizedBox(
+            width: double.infinity,
             child: Scrollbar(
               thickness: 8.0,
               child: SingleChildScrollView(
@@ -57,7 +60,6 @@ class _CodeViewPageState extends State<CodeViewPage> {
                     controller: _horizontalScrollController,
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.all(16.0),
-                    // ignore: deprecated_member_use
                     child: CustomText(
                       _code,
                       definitions: kDartDefinitions,

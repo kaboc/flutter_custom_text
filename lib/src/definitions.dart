@@ -19,9 +19,10 @@ class TextDefinition extends Definition {
   /// {@endtemplate}
   ///
   /// [onTap] and [onLongPress] are handler functions called when a
-  /// TextSpan is tapped and long-pressed respectively. A [GestureDetails]
-  /// object that has details on the element and press (kind, text, tap
-  /// position, etc) is passed in to the functions.
+  /// TextSpan is tapped and long-pressed respectively. [onGesture]
+  /// is a handler function called when other gesture events happen.
+  /// A [GestureDetails] object containing details on the element and the
+  /// event (kind, text, tap position, etc) is passed in to the functions.
   ///
   /// {@template customText.definition.mouseCursor}
   /// [mouseCursor] is a mouse cursor type used while the mouse hovers
@@ -55,7 +56,8 @@ class SelectiveDefinition extends Definition {
   /// {@macro customText.definition.matcherAndStyle}
   ///
   /// [onTap] and [onLongPress] are handler functions called when a
-  /// TextSpan is tapped and long-pressed respectively.
+  /// TextSpan is tapped and long-pressed respectively. [onGesture]
+  /// is a handler function called when other gesture events happen.
   ///
   /// [shownText] and [actionText] are functions for selecting
   /// a string. It receives a list of strings that have matched the

@@ -160,10 +160,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
     return TextSpan(
       text: spanData.shownText,
-      // hoverStyle must be cancelled when text spans are built.
-      // Otherwise, if a span with hoverStyle is being hovered on
-      // during a build and then gets a different index in new spans, the
-      // style is mistakenly applied to a new span at the original index.
+      // hoverStyle must be removed when text spans are built.
+      // Otherwise, if a span with hoverStyle is being hovered on during
+      // a build and then gets a different index in new spans, the style
+      // is mistakenly applied to the new span at the original index.
       style: _hoverIndex == spanData.index && !_isBuilding
           ? hoverStyle
           : matchStyle,

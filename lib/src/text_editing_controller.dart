@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 import 'package:meta/meta.dart';
-import 'package:text_parser/text_parser.dart';
+import 'package:text_parser/text_parser.dart' show TextElement, TextParser;
 
 import 'definitions.dart';
 import 'gesture_details.dart';

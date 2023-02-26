@@ -24,7 +24,7 @@ by this package.
 
 ![Code highlighting](https://user-images.githubusercontent.com/20254485/203714827-af1bdd43-666b-417a-9f29-96a7c7f18b35.png)
 
-### 🌺 <b>Simplest example</b>
+### ⭐ <b>Simplest example</b>
 
 example1.dart ([Code][example1] / [Demo][example1_demo])
 
@@ -58,7 +58,7 @@ If a stricter pattern is necessary, overwrite the preset pattern or create a cus
 - [LinkMatcher][LinkMatcher] for Markdown-style links or for other strings to be handled
   by [SelectiveDefinition][SelectiveDefinition]
 
-### 🌺 <b>Unique styles and actions per definition</b>
+### ⭐ <b>Unique styles and actions per definition</b>
 
 example2.dart ([Code][example2] / [Demo][example2_demo])
 
@@ -106,7 +106,7 @@ CustomText(
 )
 ```
 
-### 🌺 <b>Overwriting pattern</b>
+### ⭐ <b>Overwriting pattern</b>
 
 example3.dart ([Code][example3] / [Demo][example3_demo])
 
@@ -128,7 +128,7 @@ CustomText(
 )
 ```
 
-### 🌺 <b>Custom pattern</b>
+### ⭐ <b>Custom pattern</b>
 
 example4.dart ([Code][example4] / [Demo][example4_demo])
 
@@ -171,7 +171,7 @@ CustomText(
 )
 ```
 
-### 🌺 <b>SelectiveDefinition</b>
+### ⭐ <b>SelectiveDefinition</b>
 
 example5.dart ([Code][example5] / [Demo][example5_demo])
 
@@ -225,7 +225,7 @@ CustomText(
 )
 ```
 
-### 🌺 <b>SpanDefinition</b>
+### ⭐ <b>SpanDefinition</b>
 
 example6.dart ([Code][example6] / [Demo][example6_demo])
 
@@ -248,9 +248,8 @@ CustomText(
         child: Icon(
           Icons.email,
           color: Colors.blueGrey,
-          size: 18.0,
+          size: 20.0,
         ),
-        alignment: PlaceholderAlignment.middle,
       ),
     ),
     const TextDefinition(
@@ -262,7 +261,7 @@ CustomText(
 )
 ```
 
-#### Notes
+**Notes:**
 
 - `SpanDefinition` does not have arguments for styles and tap handlers, so it depends
   entirely on how the `InlineSpan` is configured.
@@ -270,7 +269,7 @@ CustomText(
   a WidgetSpan tappable, be careful not to create it inside the function, or make sure to
   dispose of existing recognizers before creating a new one.
 
-### 🌺 <b>Changing mouse cursor and text style on hover</b>
+### ⭐ <b>Changing mouse cursor and text style on hover</b>
 
 example7.dart ([Code][example7] / [Demo][example7_demo])
 
@@ -323,7 +322,7 @@ CustomText(
 )
 ```
 
-### 🌺 <b>CustomTextEditingController</b>
+### ⭐ <b>CustomTextEditingController</b>
 
 example8.dart ([Code][example8] / [Demo][example8_demo])
 
@@ -356,7 +355,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-#### Notes
+**Notes:**
 
 - `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
   It only accepts `TextDefinition`.

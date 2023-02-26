@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:text_parser/text_parser.dart';
+import 'package:text_parser/text_parser.dart' show TextParser;
 
 import 'definition_base.dart';
 import 'gesture_details.dart';
@@ -288,7 +288,7 @@ class _CustomTextState extends State<CustomText> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<TextSpan>(
+    return ValueListenableBuilder(
       valueListenable: _textSpanNotifier,
       builder: (context, span, _) => Text.rich(
         span,
