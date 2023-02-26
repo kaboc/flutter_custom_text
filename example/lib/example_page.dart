@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:custom_text/custom_text.dart';
 import 'package:go_router/go_router.dart';
+import 'package:positioned_popup/positioned_popup.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:custom_text_example/widgets/description.dart';
 import 'package:custom_text_example/widgets/layouts.dart';
@@ -70,36 +73,38 @@ class _ExamplePageState extends State<ExamplePage> {
           ),
         ],
       ),
-      body: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
-        child: SafeArea(
-          child: widget.hasOutput
-              ? LayoutBuilder(
-                  builder: (context, constraints) {
-                    return isLandscape
-                        ? HorizontalLayout(
-                            maxWidth: constraints.maxWidth,
-                            description: description,
-                            example: example,
-                            output: output,
-                          )
-                        : VerticalLayout(
-                            maxHeight: constraints.maxHeight,
-                            description: description,
-                            example: example,
-                            output: output,
-                          );
-                  },
-                )
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      description,
-                      example,
-                    ],
+      body: PopupArea(
+        child: GestureDetector(
+          onTap: FocusScope.of(context).unfocus,
+          child: SafeArea(
+            child: widget.hasOutput
+                ? LayoutBuilder(
+                    builder: (context, constraints) {
+                      return isLandscape
+                          ? HorizontalLayout(
+                              maxWidth: constraints.maxWidth,
+                              description: description,
+                              example: example,
+                              output: output,
+                            )
+                          : VerticalLayout(
+                              maxHeight: constraints.maxHeight,
+                              description: description,
+                              example: example,
+                              output: output,
+                            );
+                    },
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        description,
+                        example,
+                      ],
+                    ),
                   ),
-                ),
+          ),
         ),
       ),
     );
@@ -130,8 +135,17 @@ class _Example extends StatelessWidget {
           }),
           if (additionalInfo != null) ...[
             const SizedBox(height: 32.0),
-            Text(
+            CustomText(
               additionalInfo!,
+              definitions: [
+                TextDefinition(
+                  matcher: const UrlMatcher(),
+                  matchStyle: const TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                  onTap: (details) => launchUrlString(details.actionText),
+                ),
+              ],
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!

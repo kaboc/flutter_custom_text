@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
+import 'package:custom_text_example/utils/popup.dart';
+
 class Example8 extends StatefulWidget {
   const Example8(this.output);
 
@@ -11,33 +13,7 @@ class Example8 extends StatefulWidget {
 }
 
 class _Example8State extends State<Example8> {
-  late final _controller = CustomTextEditingController(
-    text: 'abcde foo@example.com\nhttps://example.com/ #hashtag',
-    definitions: [
-      TextDefinition(
-        matcher: const UrlMatcher(),
-        matchStyle: const TextStyle(
-          color: Colors.blue,
-          decoration: TextDecoration.underline,
-        ),
-        tapStyle: const TextStyle(color: Colors.indigo),
-        onTap: (details) => widget.output(details.actionText),
-        onLongPress: (details) => widget.output('long: ${details.actionText}'),
-      ),
-      TextDefinition(
-        matcher: const EmailMatcher(),
-        matchStyle: TextStyle(
-          color: Colors.green,
-          backgroundColor: Colors.lightGreen.withOpacity(0.2),
-        ),
-      ),
-      const TextDefinition(
-        matcher: PatternMatcher(r'#[a-zA-Z][a-zA-Z0-9]{1,}(?=\s|$)'),
-        matchStyle: TextStyle(color: Colors.orange),
-        hoverStyle: TextStyle(color: Colors.red),
-      ),
-    ],
-  );
+  late final _controller = PopupController();
 
   @override
   void dispose() {
@@ -47,38 +23,47 @@ class _Example8State extends State<Example8> {
 
   @override
   Widget build(BuildContext context) {
-    const debounceDuration = Duration(seconds: 1);
-
-    return Column(
-      children: [
-        TextField(
-          controller: _controller,
-          maxLines: null,
-          style: const TextStyle(height: 1.4),
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
+    return CustomText(
+      'Flutter is an [open-source]() [UI]() [software development kit]() '
+      'created by [Google](). It is used to develop [cross-platform '
+      'applications]() for [Android](), [iOS](), [Linux](), [macOS](), '
+      '[Windows](), [Google Fuchsia](), and the [web]() from a single '
+      '[codebase]().',
+      definitions: [
+        const TextDefinition(
+          matcher: PatternMatcher('Flutter'),
+          matchStyle: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const Text(
-              'Debounce\n(experimental)',
-              style: TextStyle(fontSize: 11.0, height: 1.1),
-              textAlign: TextAlign.center,
-            ),
-            Switch(
-              value: _controller.debounceDuration != null,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onChanged: (on) {
-                setState(() {
-                  _controller.debounceDuration = on ? debounceDuration : null;
-                });
-              },
-            ),
-          ],
+        SelectiveDefinition(
+          matcher: const LinkMatcher(),
+          shownText: (groups) => groups.first!,
+          matchStyle: const TextStyle(color: Color(0xFF3366CC)),
+          hoverStyle: const TextStyle(
+            color: Color(0xFF3366CC),
+            decoration: TextDecoration.underline,
+          ),
+          onTap: (details) {
+            _output(details);
+            _controller.toggle(context, details);
+          },
+          onGesture: (details) {
+            _output(details);
+            if (details.gestureKind == GestureKind.enter) {
+              _controller.show(context, details);
+            } else if (details.gestureKind == GestureKind.exit) {
+              _controller.startCloseTimer(const Duration(milliseconds: 200));
+            }
+          },
         ),
       ],
+    );
+  }
+
+  void _output(GestureDetails details) {
+    final x = details.globalPosition.dx.roundToDouble();
+    final y = details.globalPosition.dy.roundToDouble();
+    widget.output(
+      '${details.shownText}\n    ${details.gestureKind.name} ($x, $y)',
     );
   }
 }

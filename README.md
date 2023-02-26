@@ -322,11 +322,32 @@ CustomText(
 )
 ```
 
-### ⭐ <b>CustomTextEditingController</b>
+### ⭐ <b>Event position and onGesture</b>
 
 example8.dart ([Code][example8] / [Demo][example8_demo])
 
-![example8](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
+![example8](https://user-images.githubusercontent.com/20254485/221400940-c686ab71-8d15-46ad-99fd-9058f7ca30dc.gif)
+
+The `onGesture` handler supports events of the secondary and tertiary buttons and mouse enter and
+exit events.
+
+You can check the event type with `gestureKind` contained in the [GestureDetails][GestureDetails]
+object which is passed to the handler function. The object also has the global and local positions
+where an event happened. It is useful for showing a popup or a menu at the position.
+
+**Notes:**
+
+- `onGesture` does not handle events of the primary button. Use `onTap` and/or `onLongPress` instead.
+- Unlike `onTap` and `onLongPress`, whether `onGesture` is specified does not affect text styling.
+- The handler function is called one microsecond or more after the actual occurrence of an event.
+    - This is due to a workaround for preventing the function from being called more times than
+      expected by updates of the text span.
+
+### ⭐ <b>CustomTextEditingController</b>
+
+example9.dart ([Code][example9] / [Demo][example9_demo])
+
+![example9](https://user-images.githubusercontent.com/20254485/146570812-563abbaf-f3d0-466b-bfec-504c69f60236.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in
 an editable text field via [CustomTextEditingController][CustomTextEditingController].
@@ -389,6 +410,7 @@ Widget build(BuildContext context) {
 [example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
 [example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
 [example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
+[example9]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example9.dart
 [example1_demo]: https://kaboc.github.io/flutter_custom_text/#/simple
 [example2_demo]: https://kaboc.github.io/flutter_custom_text/#/styles-and-actions
 [example3_demo]: https://kaboc.github.io/flutter_custom_text/#/overwriting-pattern
@@ -396,7 +418,8 @@ Widget build(BuildContext context) {
 [example5_demo]: https://kaboc.github.io/flutter_custom_text/#/selective-definition
 [example6_demo]: https://kaboc.github.io/flutter_custom_text/#/span-definition
 [example7_demo]: https://kaboc.github.io/flutter_custom_text/#/hover
-[example8_demo]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
+[example8_demo]: https://kaboc.github.io/flutter_custom_text/#/event-position
+[example9_demo]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
 [EmailMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/EmailMatcher-class.html
@@ -405,6 +428,7 @@ Widget build(BuildContext context) {
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
+[GestureDetails]: https://pub.dev/documentation/custom_text/latest/custom_text/GestureDetails-class.html
 [CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser

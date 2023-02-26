@@ -11,6 +11,7 @@ import 'package:custom_text_example/examples/example5.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
+import 'package:custom_text_example/examples/example9.dart';
 import 'package:custom_text_example/home_page.dart';
 
 final router = GoRouter(
@@ -125,8 +126,25 @@ final pages = [
         'looks and behaves on hover over some strings.',
   ),
   const ExamplePage(
-    pathString: 'text-editing-controller',
+    pathString: 'event-position',
     filename: 'example8.dart',
+    title: 'Event position and onGesture',
+    description: 'An example to show a popup at the position of a primary '
+        'button press or a mouse enter event.\n'
+        'The secondary and tertiary buttons also call the `onGesture` '
+        'callback.\n\n'
+        'Notice:\n'
+        '* On the web, the context menu of your browser will interfere '
+        'with secondary button events unless the menu is suppressed.\n'
+        '* The popup feature does not come with the package.',
+    builder: Example8.new,
+    additionalInfo: 'The above text is an extract from the following '
+        'Wikipedia entry:\n'
+        'https://en.wikipedia.org/wiki/Flutter_(software)',
+  ),
+  const ExamplePage(
+    pathString: 'text-editing-controller',
+    filename: 'example9.dart',
     title: 'CustomTextEditingController',
     description: 'An example to use most `CustomText` features in '
         '`TextField` too using `CustomTextEditingController`.\n\n'
@@ -134,7 +152,7 @@ final pages = [
         '* SelectiveDefinition and SpanDefinition are not available '
         'for CustomTextEditingController.\n'
         '* Not suitable for long text, even with debouncing enabled.',
-    builder: Example8.new,
+    builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
         'URLs become tappable, and a hover effect is enabled on hashtags.',
