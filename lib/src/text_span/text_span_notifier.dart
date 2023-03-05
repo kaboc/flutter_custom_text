@@ -15,12 +15,11 @@ part 'gestures.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
-    required this.text,
+    required String text,
     required NotifierSettings settings,
   })  : _settings = settings,
         super(TextSpan(text: text));
 
-  final String text;
   NotifierSettings _settings;
 
   List<TextElement> elements = [];
@@ -63,50 +62,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _settings = settings;
   }
 
-  InlineSpan _span(int index, TextElement element) {
-    final def = _settings.definitions[element.matcherType];
-    if (def == null) {
-      return TextSpan(text: element.text, style: _style);
-    }
-    if (def is SpanDefinition) {
-      return def.builder!(element.text, element.groups);
-    }
-
-    final isTappable = _settings.onTap != null ||
-        _settings.onLongPress != null ||
-        _settings.onGesture != null ||
-        def.onTap != null ||
-        def.onLongPress != null ||
-        def.onGesture != null;
-
-    final spanData = SpanData(
-      index: index,
-      element: element,
-      text: element.text,
-      shownText:
-          def.shownText == null ? element.text : def.shownText!(element.groups),
-      actionText: def.actionText == null
-          ? element.text
-          : def.actionText!(element.groups),
-      definition: def,
-      tappable: isTappable,
-    );
-
-    return isTappable
-        ? _tappableTextSpan(spanData: spanData)
-        : _nonTappableTextSpan(spanData: spanData);
-  }
-
   void buildSpan({required TextStyle? style, required int oldElementsLength}) {
     _isBuilding = true;
     _style = style;
 
     value = TextSpan(
-      children: elements.asMap().entries.map((entry) {
-        final index = entry.key;
-        final element = entry.value;
-        return _span(index, element);
-      }).toList(),
+      children: [
+        for (var i = 0; i < elements.length; i++) _span(i, elements[i]),
+      ],
     );
 
     // If the number of new elements is smaller than that of
@@ -139,6 +102,40 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     );
 
     _isBuilding = false;
+  }
+
+  InlineSpan _span(int index, TextElement element) {
+    final def = _settings.definitions[element.matcherType];
+    if (def == null) {
+      return TextSpan(text: element.text, style: _style);
+    }
+    if (def is SpanDefinition) {
+      return def.builder!(element.text, element.groups);
+    }
+
+    final isTappable = _settings.onTap != null ||
+        _settings.onLongPress != null ||
+        _settings.onGesture != null ||
+        def.onTap != null ||
+        def.onLongPress != null ||
+        def.onGesture != null;
+
+    final spanData = SpanData(
+      index: index,
+      element: element,
+      text: element.text,
+      shownText:
+          def.shownText == null ? element.text : def.shownText!(element.groups),
+      actionText: def.actionText == null
+          ? element.text
+          : def.actionText!(element.groups),
+      definition: def,
+      tappable: isTappable,
+    );
+
+    return isTappable
+        ? _tappableTextSpan(spanData: spanData)
+        : _nonTappableTextSpan(spanData: spanData);
   }
 
   TextSpan _nonTappableTextSpan({required SpanData spanData}) {

@@ -122,8 +122,8 @@ class TransientTextElementsBuilder {
   }
 
   BuildResult build({required Range changeRange}) {
-    final oldElmS = _TextElement.from(oldElements[changeRange.start]);
-    final oldElmE = _TextElement.from(oldElements[changeRange.end]);
+    final oldElmS = oldElements[changeRange.start];
+    final oldElmE = oldElements[changeRange.end];
 
     // Searches the first element in the change range to find the start
     // offset of the string not matching the one previously located at the
