@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:text_parser/text_parser.dart' show TextElement, TextParser;
 
+import 'definition_base.dart';
 import 'definitions.dart';
-import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'text_span/data.dart';
 import 'text_span/text_span_notifier.dart';
@@ -92,13 +92,13 @@ class CustomTextEditingController extends TextEditingController {
   final TextStyle? hoverStyle;
 
   /// {@macro customText.onTap}
-  final void Function(GestureDetails)? onTap;
+  final GestureCallback? onTap;
 
   /// {@macro customText.onLongPress}
-  final void Function(GestureDetails)? onLongPress;
+  final GestureCallback? onLongPress;
 
   /// {@macro customText.onGesture}
-  final void Function(GestureDetails)? onGesture;
+  final GestureCallback? onGesture;
 
   /// {@macro customText.longPressDuration}
   final Duration? longPressDuration;

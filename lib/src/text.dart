@@ -107,7 +107,7 @@ class CustomText extends StatefulWidget {
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
   /// {@endtemplate}
-  final void Function(GestureDetails)? onTap;
+  final GestureCallback? onTap;
 
   /// {@template customText.onLongPress}
   /// The callback function called when a tappable element is long-pressed.
@@ -115,7 +115,7 @@ class CustomText extends StatefulWidget {
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
   /// {@endtemplate}
-  final void Function(GestureDetails)? onLongPress;
+  final GestureCallback? onLongPress;
 
   /// {@template customText.onGesture}
   /// The callback function called when a gesture happens on a text element.
@@ -139,7 +139,7 @@ class CustomText extends StatefulWidget {
   ///
   /// For a press event of the primary button, use [onTap] and [onLongPress].
   /// {@endtemplate}
-  final void Function(GestureDetails)? onGesture;
+  final GestureCallback? onGesture;
 
   /// {@template customText.longPressDuration}
   /// The duration before a tap is regarded as a long-press and the

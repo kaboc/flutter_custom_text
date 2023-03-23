@@ -19,6 +19,9 @@ typedef ActionTextSelector = String Function(List<String?>);
 /// be used as part of the text to display.
 typedef SpanBuilder = InlineSpan Function(String, List<String?>);
 
+/// The signature for a callback to return a [GestureDetails].
+typedef GestureCallback = void Function(GestureDetails);
+
 /// The base class for definitions of rules for parsing, appearance
 /// and actions for [CustomText] and [CustomTextEditingController].
 @immutable
@@ -45,9 +48,9 @@ abstract class Definition {
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
-  final void Function(GestureDetails)? onTap;
-  final void Function(GestureDetails)? onLongPress;
-  final void Function(GestureDetails)? onGesture;
+  final GestureCallback? onTap;
+  final GestureCallback? onLongPress;
+  final GestureCallback? onGesture;
   final MouseCursor? mouseCursor;
 
   @override

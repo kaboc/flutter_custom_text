@@ -3,7 +3,6 @@ import 'package:flutter/painting.dart';
 import 'package:text_parser/text_parser.dart' show TextElement;
 
 import '../definition_base.dart';
-import '../gesture_details.dart';
 
 const kLongPressDuration = Duration(milliseconds: 600);
 
@@ -46,8 +45,8 @@ class NotifierSettings {
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
-  final void Function(GestureDetails)? onTap;
-  final void Function(GestureDetails)? onLongPress;
-  final void Function(GestureDetails)? onGesture;
+  final GestureCallback? onTap;
+  final GestureCallback? onLongPress;
+  final GestureCallback? onGesture;
   final Duration longPressDuration;
 }

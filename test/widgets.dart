@@ -35,12 +35,12 @@ class CustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final TextStyle? hoverStyleInDef;
-  final void Function(GestureDetails)? onTap;
-  final void Function(GestureDetails)? onLongPress;
-  final void Function(GestureDetails)? onGesture;
-  final void Function(GestureDetails)? onTapInDef;
-  final void Function(GestureDetails)? onLongPressInDef;
-  final void Function(GestureDetails)? onGestureInDef;
+  final GestureCallback? onTap;
+  final GestureCallback? onLongPress;
+  final GestureCallback? onGesture;
+  final GestureCallback? onTapInDef;
+  final GestureCallback? onLongPressInDef;
+  final GestureCallback? onGestureInDef;
   final Duration? longPressDuration;
   final MouseCursor? mouseCursor;
   final VoidCallback? onButtonPressed;
@@ -115,12 +115,12 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   final TextStyle? matchStyleInDef;
   final TextStyle? tapStyleInDef;
   final TextStyle? hoverStyleInDef;
-  final void Function(GestureDetails)? onTap;
-  final void Function(GestureDetails)? onLongPress;
-  final void Function(GestureDetails)? onGesture;
-  final void Function(GestureDetails)? onTapInDef;
-  final void Function(GestureDetails)? onLongPressInDef;
-  final void Function(GestureDetails)? onGestureInDef;
+  final GestureCallback? onTap;
+  final GestureCallback? onLongPress;
+  final GestureCallback? onGesture;
+  final GestureCallback? onTapInDef;
+  final GestureCallback? onLongPressInDef;
+  final GestureCallback? onGestureInDef;
   final MouseCursor? mouseCursor;
 
   @override
