@@ -454,7 +454,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'tap1',
                 actionText: 'tap1',
               ),
@@ -463,7 +463,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'tap2',
                 actionText: 'tap2',
               ),
@@ -494,7 +494,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'long1',
                 actionText: 'long1',
               ),
@@ -503,7 +503,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'long2',
                 actionText: 'long2',
               ),
@@ -596,7 +596,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'gesture1',
                 actionText: 'gesture1',
               ),
@@ -605,7 +605,7 @@ void main() {
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
-                element: const TestTextElement(),
+                element: const TextElement(''),
                 shownText: 'gesture2',
                 actionText: 'gesture2',
               ),

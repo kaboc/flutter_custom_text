@@ -107,12 +107,3 @@ Future<void> tapButton(WidgetTester tester) async {
   final finder = find.byType(ElevatedButton);
   await tester.tap(finder);
 }
-
-class TestTextElement extends TextElement {
-  const TestTextElement({
-    String text = '',
-    List<String> groups = const [],
-    Type matcherType = TextMatcher,
-    int offset = 0,
-  }) : super(text, groups, matcherType, offset);
-}

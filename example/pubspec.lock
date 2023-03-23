@@ -268,10 +268,10 @@ packages:
     dependency: transitive
     description:
       name: text_parser
-      sha256: "9d497412519764fc60715e6ed2ad0e39aed2b11de7e8f4be742c4c2be52e6be1"
+      sha256: b63b72d0861f040c5e75ffb98028f4293cbf2d57fbfbf5a8577e94ec51efbb59
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "1.2.0-dev.1"
   typed_data:
     dependency: transitive
     description:

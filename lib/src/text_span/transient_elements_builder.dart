@@ -9,43 +9,6 @@ extension on String {
   }
 }
 
-extension on List<TextElement> {
-  void updateOffsets() {
-    var offset = 0;
-    asMap().forEach((i, v) {
-      this[i] = _TextElement.from(v).copyWith(offset: offset);
-      offset += v.text.length;
-    });
-  }
-}
-
-class _TextElement extends TextElement {
-  const _TextElement._(
-    super.text,
-    super.groups,
-    super.matcherType,
-    super.offset,
-  );
-
-  factory _TextElement.from(TextElement element) {
-    return _TextElement._(
-      element.text,
-      element.groups,
-      element.matcherType,
-      element.offset,
-    );
-  }
-
-  _TextElement copyWith({String? text, int? offset}) {
-    return _TextElement._(
-      text ?? this.text,
-      groups,
-      matcherType,
-      offset ?? this.offset,
-    );
-  }
-}
-
 class Range {
   const Range([this.start = -1, this.end = -1]);
 
@@ -215,7 +178,7 @@ class TransientTextElementsBuilder {
         for (var i = 0; i < elmsB.length; i++) {
           replRangeTo++;
 
-          final elm = _TextElement.from(elmsB[i]);
+          final elm = elmsB[i];
           final len = elm.text.length < diffLen ? elm.text.length : diffLen;
           diffLen -= len;
           elmsB[i] = elm.copyWith(text: elm.text.substring(len));
@@ -244,7 +207,7 @@ class TransientTextElementsBuilder {
         if (stringA.isNotEmpty) oldElmS.copyWith(text: stringA),
         if (stringB.isNotEmpty) oldElmE.copyWith(text: stringB),
         ...elmsB,
-      ]..updateOffsets(),
+      ].reassignOffsets().toList(),
       replaceRange: Range(changeRange.start, replRangeTo),
       spanRange: Range(changeRange.start, spanRangeTo),
     );
