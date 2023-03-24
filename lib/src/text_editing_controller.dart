@@ -122,7 +122,7 @@ class CustomTextEditingController extends TextEditingController {
   @experimental
   Duration? debounceDuration;
 
-  late TextParser _parser;
+  late Future<List<TextElement>> Function(String) _parser;
   late CustomTextSpanNotifier _textSpanNotifier;
   String _oldText = '';
   TextStyle? _style;
@@ -164,13 +164,14 @@ class CustomTextEditingController extends TextEditingController {
   void _init() {
     addListener(_onTextChanged);
 
-    _parser = TextParser(
-      matchers: definitions.map((def) => def.matcher).toList(),
-      multiLine: parserOptions.multiLine,
-      caseSensitive: parserOptions.caseSensitive,
-      unicode: parserOptions.unicode,
-      dotAll: parserOptions.dotAll,
-    );
+    _parser = parserOptions.parser ??
+        (text) => TextParser(
+              matchers: definitions.map((def) => def.matcher).toList(),
+              multiLine: parserOptions.multiLine,
+              caseSensitive: parserOptions.caseSensitive,
+              unicode: parserOptions.unicode,
+              dotAll: parserOptions.dotAll,
+            ).parse(text, useIsolate: false);
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: text,
@@ -205,7 +206,7 @@ class CustomTextEditingController extends TextEditingController {
 
       if (debounceDuration == null || oldElementsLength == 0) {
         _textSpanNotifier
-          ..elements = await _parser.parse(newText, useIsolate: false)
+          ..elements = await _parser(newText)
           ..buildSpan(
             style: style ?? _style,
             oldElementsLength: 0,
@@ -234,7 +235,7 @@ class CustomTextEditingController extends TextEditingController {
 
         _delayedParse = () async {
           _textSpanNotifier
-            ..elements = await _parser.parse(newText, useIsolate: false)
+            ..elements = await _parser(newText)
             ..buildSpan(
               style: style ?? _style,
               oldElementsLength: oldElementsLength,

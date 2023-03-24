@@ -1,34 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-class _EditorApp extends StatefulWidget {
-  const _EditorApp({required this.controller, required this.onDispose});
-
-  final CustomTextEditingController controller;
-  final VoidCallback onDispose;
-
-  @override
-  State<_EditorApp> createState() => _EditorAppState();
-}
-
-class _EditorAppState extends State<_EditorApp> {
-  @override
-  void dispose() {
-    widget.onDispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: TextField(controller: widget.controller),
-      ),
-    );
-  }
-}
+import 'widgets.dart';
 
 void main() {
   const definitions = [
@@ -43,7 +17,7 @@ void main() {
         definitions: definitions,
       );
       await tester.pumpWidget(
-        _EditorApp(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
       );
       await tester.pump();
 
@@ -60,7 +34,7 @@ void main() {
         definitions: definitions,
       );
       await tester.pumpWidget(
-        _EditorApp(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
       );
       await tester.pump();
 
@@ -83,7 +57,7 @@ void main() {
         debounceDuration: const Duration(milliseconds: 100),
       );
       await tester.pumpWidget(
-        _EditorApp(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
       );
       await tester.pump();
 
@@ -99,7 +73,7 @@ void main() {
         debounceDuration: const Duration(milliseconds: 100),
       );
       await tester.pumpWidget(
-        _EditorApp(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
       );
       await tester.pump();
 
@@ -128,7 +102,7 @@ void main() {
         debounceDuration: const Duration(milliseconds: 100),
       );
       await tester.pumpWidget(
-        _EditorApp(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
       );
       await tester.pump();
 

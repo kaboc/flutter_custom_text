@@ -55,9 +55,6 @@ class _Example9State extends State<Example9> {
           controller: _controller,
           maxLines: null,
           style: const TextStyle(height: 1.4),
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

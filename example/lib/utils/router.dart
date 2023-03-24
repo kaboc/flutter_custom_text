@@ -12,6 +12,7 @@ import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
 import 'package:custom_text_example/examples/example9.dart';
+import 'package:custom_text_example/examples/example10.dart';
 import 'package:custom_text_example/home_page.dart';
 
 final router = GoRouter(
@@ -156,5 +157,20 @@ final pages = [
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
         'URLs become tappable, and a hover effect is enabled on hashtags.',
+  ),
+  const ExamplePage(
+    pathString: 'external-parser',
+    filename: 'example10.dart',
+    title: 'Using an external parser',
+    description: 'An example of using an external parser.\n'
+        'This example uses a custom parser powered by package:highlight '
+        'to achieve keyword highlighting of several different formats '
+        'of text, which is not easy with the default parser.',
+    builder: Example10.new,
+    // If hasOutput is set to true, this example overflows
+    // vertically due to a bug of Flutter SDK where IntrinsicHeight
+    // (used in layouts.dart) does not work well with TextField.
+    // https://github.com/flutter/flutter/issues/59719
+    hasOutput: false,
   ),
 ];

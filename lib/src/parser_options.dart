@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart' show immutable;
 
-/// A class that configures how a regular expressions are treated.
+import 'package:text_parser/text_parser.dart' show TextElement;
+
+/// The signature for an external parser function.
+typedef ExternalParser = Future<List<TextElement>> Function(String);
+
+/// A class that configures how regular expressions are treated
+/// in the default parser or specifies a different parser to use.
 @immutable
 class ParserOptions {
   /// Creates a [ParserOptions] that configures how regular expressions
@@ -10,7 +16,15 @@ class ParserOptions {
     this.caseSensitive = true,
     this.unicode = false,
     this.dotAll = false,
-  });
+  }) : parser = null;
+
+  /// Creates a [ParserOptions] for specifying an external parser that
+  /// parses text into a list of [TextElement]s.
+  const ParserOptions.external(ExternalParser this.parser)
+      : multiLine = false,
+        caseSensitive = false,
+        unicode = false,
+        dotAll = false;
 
   /// If this is enabled, then `^` and `$` will match the beginning and
   /// end of a _line_, in addition to matching beginning and end of input,
@@ -27,6 +41,9 @@ class ParserOptions {
   /// If this is enabled, then the `.` pattern will match _all_ characters,
   /// including line terminators.
   final bool dotAll;
+
+  /// An external parser function.
+  final ExternalParser? parser;
 
   @override
   bool operator ==(Object other) =>

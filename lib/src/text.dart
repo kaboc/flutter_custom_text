@@ -267,16 +267,20 @@ class _CustomTextState extends State<CustomText> {
   }
 
   Future<void> _parse() async {
-    final elements = await TextParser(
-      matchers: widget.definitions.map((def) => def.matcher).toList(),
-      multiLine: widget.parserOptions.multiLine,
-      caseSensitive: widget.parserOptions.caseSensitive,
-      unicode: widget.parserOptions.unicode,
-      dotAll: widget.parserOptions.dotAll,
-    ).parse(
-      widget.text,
-      useIsolate: widget.preventBlocking,
-    );
+    final externalParser = widget.parserOptions.parser;
+
+    final elements = externalParser == null
+        ? await TextParser(
+            matchers: widget.definitions.map((def) => def.matcher).toList(),
+            multiLine: widget.parserOptions.multiLine,
+            caseSensitive: widget.parserOptions.caseSensitive,
+            unicode: widget.parserOptions.unicode,
+            dotAll: widget.parserOptions.dotAll,
+          ).parse(
+            widget.text,
+            useIsolate: widget.preventBlocking,
+          )
+        : await externalParser(widget.text);
 
     _textSpanNotifier
       ..elements = elements
