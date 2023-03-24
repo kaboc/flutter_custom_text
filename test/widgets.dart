@@ -8,6 +8,7 @@ class CustomTextWidget extends StatelessWidget {
   const CustomTextWidget(
     this.text, {
     this.definitions,
+    this.parserOptions = const ParserOptions(),
     this.style,
     this.matchStyle,
     this.tapStyle,
@@ -28,6 +29,7 @@ class CustomTextWidget extends StatelessWidget {
 
   final String text;
   final List<TextDefinition>? definitions;
+  final ParserOptions parserOptions;
   final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
@@ -53,6 +55,7 @@ class CustomTextWidget extends StatelessWidget {
         children: [
           CustomText(
             text,
+            parserOptions: parserOptions,
             definitions: definitions ??
                 [
                   const TextDefinition(
@@ -215,6 +218,33 @@ class SpanCustomTextWidget2 extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TextFieldWidget extends StatefulWidget {
+  const TextFieldWidget({required this.controller, required this.onDispose});
+
+  final CustomTextEditingController controller;
+  final VoidCallback onDispose;
+
+  @override
+  State<TextFieldWidget> createState() => _TextFieldWidgetState();
+}
+
+class _TextFieldWidgetState extends State<TextFieldWidget> {
+  @override
+  void dispose() {
+    widget.onDispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: TextField(controller: widget.controller),
+      ),
     );
   }
 }
