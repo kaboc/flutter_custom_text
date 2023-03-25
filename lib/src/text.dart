@@ -18,6 +18,22 @@ import 'text_span/text_span_notifier.dart';
 /// email addresses or phone numbers clickable, or for only highlighting
 /// some parts of text with colors and different font settings depending
 /// on the types of text elements.
+///
+/// ```dart
+/// CustomText(
+///   'URL: https://example.com/\n'
+///   'Email: foo@example.com\n'
+///   'Tel: +1-012-3456-7890',
+///   definitions: const [
+///     TextDefinition(matcher: UrlMatcher()),
+///     TextDefinition(matcher: EmailMatcher()),
+///     TextDefinition(matcher: TelMatcher()),
+///   ],
+///   matchStyle: const TextStyle(color: Colors.indigo),
+///   hoverStyle: const TextStyle(color: Colors.lightBlue),
+///   onTap: (details) => launchUrlString(details.actionText),
+/// )
+/// ```
 /// {@endtemplate}
 class CustomText extends StatefulWidget {
   /// Creates a text widget that decorates strings and enables tap,

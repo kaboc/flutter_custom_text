@@ -21,6 +21,26 @@ import 'text_span/transient_elements_builder.dart';
 /// as URLs, email addresses or phone numbers clickable, or for only
 /// highlighting some parts of text with colors and different font
 /// settings depending on the types of text elements.
+///
+/// ```dart
+/// final _controller = CustomTextEditingController(
+///   definitions: const [
+///     TextDefinition(matcher: UrlMatcher()),
+///     TextDefinition(matcher: EmailMatcher()),
+///     TextDefinition(matcher: TelMatcher()),
+///   ],
+///   matchStyle: const TextStyle(color: Colors.indigo),
+///   hoverStyle: const TextStyle(color: Colors.lightBlue),
+///   onTap: (details) => launchUrlString(details.actionText),
+/// );
+///
+/// ...
+///
+/// TextField(
+///   controller: _controller,
+///   maxLines: null,
+/// ),
+/// ```
 /// {@endtemplate}
 class CustomTextEditingController extends TextEditingController {
   /// Creates a controller for an editable text field.
