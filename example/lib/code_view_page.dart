@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:custom_text_example/utils/dart_definitions.dart';
+import 'package:custom_text_example/utils/highlight/highlight.dart';
 
 class CodeViewPage extends StatefulWidget {
   const CodeViewPage({required this.filename});
@@ -62,7 +62,10 @@ class _CodeViewPageState extends State<CodeViewPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: CustomText(
                       _code,
-                      definitions: kDartDefinitions,
+                      parserOptions: ParserOptions.external(
+                        (text) => parseLanguage(text, language: 'dart'),
+                      ),
+                      definitions: dartDefinitions(),
                       style: GoogleFonts.inconsolata(
                         fontSize: 15.0,
                         height: 1.2,
