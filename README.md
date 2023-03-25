@@ -19,8 +19,9 @@ Just click on the link below to open its web version and see what this package c
 
 **[Web Demo][demo]**
 
-The app also shows the source code with keywords highlighted, which itself is made possible
-by this package.
+The app shows the source code with keywords highlighted, which itself is made possible
+by this package (plus [package:highlight](https://pub.dev/packages/highlight) used
+as an external parser).
 
 <a href="https://kaboc.github.io/flutter_custom_text/">
 <img src="https://user-images.githubusercontent.com/20254485/221410741-ff135ab1-2c18-4f14-89d0-99991355ac42.png" alt="Code highlighting" height="360">
@@ -54,11 +55,11 @@ CustomText(
 The matchers listed below are for general use.
 If a stricter pattern is necessary, overwrite the preset pattern or create a custom matcher.
 
-- [UrlMatcher][UrlMatcher] for URLs
-- [EmailMatcher][EmailMatcher] for email addresses
-- [TelMatcher][TelMatcher] for phone numbers
-- [LinkMatcher][LinkMatcher] for Markdown-style links or for other strings to be handled
-  by [SelectiveDefinition][SelectiveDefinition]
+- [UrlMatcher] for URLs
+- [EmailMatcher] for email addresses
+- [TelMatcher] for phone numbers
+- [LinkMatcher] for Markdown-style links or for other strings to be handled
+  by [SelectiveDefinition]
 
 ### ⭐ <b>Unique styles and actions per definition</b>
 
@@ -114,7 +115,7 @@ example3.dart ([Code][example3] / [Demo][example3_demo])
 
 ![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
-An example to replace the default pattern of [TelMatcher][TelMatcher].
+An example to replace the default pattern of [TelMatcher].
 
 The new pattern here regards only the `{3 digits}-{4 digits}-{4 digits}` format
 as a phone number.
@@ -148,7 +149,7 @@ TextDefinition(
 ),
 ```
 
-Alternatively, you can define a matcher by extending [TextMatcher][TextMatcher].
+Alternatively, you can define a matcher by extending [TextMatcher].
 This allows you to distinguish the custom matcher from others by its unique type.
 
 ```dart
@@ -180,13 +181,13 @@ example5.dart ([Code][example5] / [Demo][example5_demo])
 ![example5](https://user-images.githubusercontent.com/20254485/100355868-d0d5bb00-3035-11eb-836f-863f1af599ac.png)
 
 An example to parse markdown-style links, like `[shown text](url)` using
-[SelectiveDefinition][SelectiveDefinition], and make them tappable.
+[SelectiveDefinition], and make them tappable.
 
 Each of the string shown in the widget and the string passed to the tap handlers
 is selected individually from the groups of matched strings.
 
-For details of `groups`, see the document of the [text_parser][text_parser] package
-used internally in this package.
+For details of `groups`, see the document of the [text_parser] package used internally
+in this package.
 
 ```dart
 CustomText(
@@ -233,9 +234,9 @@ example6.dart ([Code][example6] / [Demo][example6_demo])
 
 ![example6](https://user-images.githubusercontent.com/20254485/221410494-c9d87a75-4a47-4dd1-af8a-0b566a393d59.png)
 
-An example to display both strings and icons using [SpanDefinition][SpanDefinition].
+An example to display both strings and icons using [SpanDefinition].
 
-The `builder` parameter takes a function returning an [InlineSpan][InlineSpan].
+The `builder` parameter takes a function returning an [InlineSpan].
 The function can use the matching string and groups passed to it to compose
 an `InlineSpan` flexibly with them.
 
@@ -333,8 +334,8 @@ example8.dart ([Code][example8] / [Demo][example8_demo])
 The `onGesture` handler supports events of the secondary and tertiary buttons and mouse enter and
 exit events.
 
-You can check the event type with `gestureKind` contained in the [GestureDetails][GestureDetails]
-object which is passed to the handler function. The object also has the global and local positions
+You can check the event type with `gestureKind` contained in the [GestureDetails] object
+which is passed to the handler function. The object also has the global and local positions
 where an event happened. It is useful for showing a popup or a menu at the position.
 
 **Notes:**
@@ -352,7 +353,7 @@ example9.dart ([Code][example9] / [Demo][example9_demo])
 ![example9](https://user-images.githubusercontent.com/20254485/221410504-f8af0c02-1ccb-4094-bdf1-bb6a1a454874.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in
-an editable text field via [CustomTextEditingController][CustomTextEditingController].
+an editable text field via [CustomTextEditingController].
 
 ```dart
 final controller = CustomTextEditingController(
@@ -394,9 +395,11 @@ Widget build(BuildContext context) {
 
 example10.dart ([Code][example10] / [Demo][example10_demo])
 
-It is possible to use an external parser. It is useful when it is difficult to parse
-something with the default parser, or when there is already a better parser for a
-specific purpose.
+![example10](https://user-images.githubusercontent.com/20254485/227700405-8ec4bd20-dd30-4ee3-a921-b1a3a019aba6.gif)
+
+It is possible to use an external parser instead of the internal one. It helps you
+when a different parser you already have does a better job or can do what is difficult
+with the default parser.
 
 ```dart
 // These empty matchers are used to distinguish the matcher types of
@@ -449,7 +452,7 @@ CustomText(
 
 ## Links
 
-- [text_parser][text_parser]
+- [text_parser]
     - CustomText is dependent on the `text_parser` package made by the same author.
       See its documents for details if you're interested or seek troubleshooting on parsing.
 

@@ -1,3 +1,12 @@
+## 1.0.0-dev.1
+
+- Add support for using an external parser.
+- Add the signature for gesture callbacks.
+- Bump text_parser to 1.2.0-dev.1.
+    - No workaround is necessary any more to use lookbehind assertions.
+- Add and improve tests.
+- Improve documentation.
+
 ## 0.8.0
 
 - **Breaking**:
@@ -69,6 +78,7 @@
 - Many bug fixes, improvements and major refactors. (eb0e6f7, 760cb45, #12, #15, etc)
     - Please see the history of dev versions for details. 
 - Require Flutter >=3.0.0.
+- Bump text_parser to 0.4.1.
 - Depend on meta.
 - Update dependencies.
 
@@ -125,6 +135,7 @@
 
 ## 0.5.1
 
+- Bump text_parser to 0.3.2.
 - Minor improvements.
 
 ## 0.5.0
@@ -141,7 +152,7 @@
     - Add `ParserOptions` for tweaking RegExp settings.
     - Add `parserOptions` parameter to `CustomText`.
     - Add `LinkMatcher`.
-- Depend on `text_parser` >=0.2.0.
+- Depend on text_parser >=0.2.0.
 
 ## 0.3.1
 
@@ -182,12 +193,14 @@
 
 ## 0.1.0
 
+- Bump text_parser to 0.1.2.
 - Migrate to null safety.
 
 ## 0.0.3
 
 - Add tests.
-- Change minimum SDK version to match text_parser.
+- Bump text_parser to 0.0.5.
+- Change minimum Dart SDK version to 2.8.1 to match text_parser.
 - Workaround for Flutter issue.
 - Improve documentation and examples.
 

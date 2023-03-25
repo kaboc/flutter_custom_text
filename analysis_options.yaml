@@ -13,6 +13,7 @@ analyzer:
 linter:
   rules:
     # For Flutter
+#    diagnostic_describe_all_properties: true
     sized_box_shrink_expand: true
     use_colored_box: true
     use_decorated_box: true
@@ -21,6 +22,8 @@ linter:
     always_declare_return_types: true
     always_put_control_body_on_new_line: true
 #    always_put_required_named_parameters_first: true
+#    always_specify_types: true
+#    always_use_package_imports: true
     avoid_annotating_with_dynamic: true
     avoid_bool_literals_in_conditional_expressions: true
     avoid_catches_without_on_clauses: true
@@ -38,10 +41,10 @@ linter:
     avoid_positional_boolean_parameters: true
     avoid_private_typedef_functions: true
     avoid_redundant_argument_values: true
-    avoid_returning_null: true
     avoid_returning_this: true
     avoid_setters_without_getters: true
     avoid_slow_async_io: true
+    avoid_types_on_closure_parameters: true
     avoid_type_to_string: true
     avoid_unused_constructor_parameters: true
     avoid_void_async: true
@@ -78,6 +81,7 @@ linter:
     prefer_asserts_in_initializer_lists: true
     prefer_asserts_with_message: true
     prefer_constructors_over_static_methods: true
+#    prefer_expression_function_bodies: true
     prefer_final_in_for_each: true
     prefer_final_locals: true
     prefer_foreach: true
@@ -98,6 +102,7 @@ linter:
     type_annotate_public_apis: true
     unawaited_futures: true
     unnecessary_await_in_return: true
+#    unnecessary_breaks: true
     unnecessary_lambdas: true
     unnecessary_library_directive: true
     unnecessary_null_aware_operator_on_extension_on_nullable: true

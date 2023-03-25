@@ -21,7 +21,7 @@ extension ShowPopup on PopupController {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(12.0),
             child: CustomText(
-              _popupMessages[details.shownText] ?? '',
+              _kPopupMessages[details.shownText] ?? '',
               definitions: [
                 SelectiveDefinition(
                   matcher: const PatternMatcher(r'\*\*(.+?)\*\*'),
@@ -48,7 +48,7 @@ extension ShowPopup on PopupController {
   }
 }
 
-Map<String, String> _popupMessages = {
+const _kPopupMessages = {
   'open-source': '**Open-source software (OSS)** is computer software that '
       'is released under a license in which the copyright holder grants users '
       'the rights to use, study, change, and distribute the software and its '
