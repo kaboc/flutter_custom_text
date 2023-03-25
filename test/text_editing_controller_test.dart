@@ -47,6 +47,23 @@ void main() {
       expect(controller.elements.last.text, equals('mple.com'));
       expect(controller.elements.last.matcherType, equals(UrlMatcher));
     });
+
+    testWidgets('`fromValue` constructor works too', (tester) async {
+      final controller = CustomTextEditingController.fromValue(
+        const TextEditingValue(text: 'aaa bbb@example.com'),
+        definitions: definitions,
+      );
+      await tester.pumpWidget(
+        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+      );
+      await tester.pump();
+
+      expect(controller.elements, hasLength(2));
+      expect(controller.elements.first.text, equals('aaa '));
+      expect(controller.elements.first.matcherType, equals(TextMatcher));
+      expect(controller.elements.last.text, equals('bbb@example.com'));
+      expect(controller.elements.last.matcherType, equals(EmailMatcher));
+    });
   });
 
   group('CustomTextEditingController with debounceDuration', () {
