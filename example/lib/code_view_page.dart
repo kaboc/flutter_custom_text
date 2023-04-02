@@ -65,7 +65,7 @@ class _CodeViewPageState extends State<CodeViewPage> {
                       parserOptions: ParserOptions.external(
                         (text) => parseLanguage(text, language: 'dart'),
                       ),
-                      definitions: dartDefinitions(),
+                      definitions: dartDefinitions,
                       style: GoogleFonts.inconsolata(
                         fontSize: 15.0,
                         height: 1.2,

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:custom_text_example/utils/device_info.dart';
 import 'package:custom_text_example/utils/router.dart';
 
-void main() => runApp(const App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DeviceInfo.checkIosSimulator();
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App();

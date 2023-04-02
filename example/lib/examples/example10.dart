@@ -7,9 +7,7 @@ import 'package:custom_text_example/utils/example10/segmented_buttons.dart';
 import 'package:custom_text_example/utils/example10/settings.dart';
 
 class Example10 extends StatefulWidget {
-  const Example10(this.output);
-
-  final void Function(String) output;
+  const Example10();
 
   @override
   State<Example10> createState() => _Example10State();
@@ -64,16 +62,12 @@ class _Example10State extends State<Example10> {
         parserOptions: ParserOptions.external(
           (text) => parseLanguage(text, language: type.name),
         ),
-        definitions: type.definitions(onUrlTap: _output),
+        definitions: type.definitions,
         style: GoogleFonts.inconsolata(
           height: 1.4,
           color: DefaultTextStyle.of(context).style.color,
         ),
       );
     });
-  }
-
-  void _output(GestureDetails details) {
-    widget.output(details.actionText);
   }
 }

@@ -12,7 +12,7 @@ enum LanguageType {
 
   final String label;
   final String sourceText;
-  final List<TextDefinition> Function({GestureCallback? onUrlTap}) definitions;
+  final List<TextDefinition> definitions;
 }
 
 const _dart = r'''

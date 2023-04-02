@@ -382,7 +382,10 @@ Widget build(BuildContext context) {
 **Notes:**
 
 - `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
-  It only accepts `TextDefinition`.
+    - Only `TextDefinition` is available.
+- An error is raised on iOS simulators (not on real devices) if the initial text and
+  `onTap`, `onLongPress` or `onGesture` are specified.
+    - See https://github.com/flutter/flutter/issues/97433.
 - Debouncing of text parsing is available as an experimental feature for getting slightly
   better performance in handling long text.
     - Pass some duration to `debounceDuration` to enable the feature.
@@ -449,6 +452,9 @@ CustomText(
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
   [Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using
   `TelMatcher` as is if your app targets Safari.
+- `CustomTextEditingController` raises an error on iOS simulators (not on real devices)
+  if the initial text and `onTap`, `onLongPress` or `onGesture` are specified.
+  See https://github.com/flutter/flutter/issues/97433.
 
 ## Links
 

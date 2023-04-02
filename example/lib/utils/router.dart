@@ -14,6 +14,7 @@ import 'package:custom_text_example/examples/example8.dart';
 import 'package:custom_text_example/examples/example9.dart';
 import 'package:custom_text_example/examples/example10.dart';
 import 'package:custom_text_example/home_page.dart';
+import 'package:custom_text_example/utils/device_info.dart';
 
 final router = GoRouter(
   routes: [
@@ -143,7 +144,7 @@ final pages = [
         'Wikipedia entry:\n'
         'https://en.wikipedia.org/wiki/Flutter_(software)',
   ),
-  const ExamplePage(
+  ExamplePage(
     pathString: 'text-editing-controller',
     filename: 'example9.dart',
     title: 'CustomTextEditingController',
@@ -156,9 +157,11 @@ final pages = [
     builder: Example9.new,
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
-        'URLs become tappable, and a hover effect is enabled on hashtags.',
+        '${DeviceInfo.isIosSimulator ? '' : 'URLs become tappable, '}'
+        'and a hover effect is enabled on hashtags.',
+    hasOutput: !DeviceInfo.isIosSimulator,
   ),
-  const ExamplePage(
+  ExamplePage(
     pathString: 'external-parser',
     filename: 'example10.dart',
     title: 'Using an external parser',
@@ -166,7 +169,7 @@ final pages = [
         'This example uses a custom parser powered by package:highlight '
         'to achieve keyword highlighting of several different formats '
         'of text, which is not easy with the default parser.',
-    builder: Example10.new,
+    builder: (_) => const Example10(),
     // If hasOutput is set to true, this example overflows
     // vertically due to a bug of Flutter SDK where IntrinsicHeight
     // (used in layouts.dart) does not work well with TextField.

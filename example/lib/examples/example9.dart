@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
+import 'package:custom_text_example/utils/device_info.dart';
+
 class Example9 extends StatefulWidget {
   const Example9(this.output);
 
@@ -21,8 +23,12 @@ class _Example9State extends State<Example9> {
           decoration: TextDecoration.underline,
         ),
         tapStyle: const TextStyle(color: Colors.indigo),
-        onTap: (details) => widget.output(details.actionText),
-        onLongPress: (details) => widget.output('long: ${details.actionText}'),
+        onTap: DeviceInfo.isIosSimulator
+            ? null
+            : (details) => widget.output(details.actionText),
+        onLongPress: DeviceInfo.isIosSimulator
+            ? null
+            : (details) => widget.output('long: ${details.actionText}'),
       ),
       TextDefinition(
         matcher: const EmailMatcher(),
