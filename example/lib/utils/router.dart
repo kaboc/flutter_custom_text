@@ -16,6 +16,11 @@ import 'package:custom_text_example/examples/example10.dart';
 import 'package:custom_text_example/home_page.dart';
 import 'package:custom_text_example/utils/device_info.dart';
 
+extension on GoRouterState {
+  ExamplePage? get pageWidget => pages
+      .firstWhereOrNull((p) => p.pathString == pathParameters['path_string']);
+}
+
 final router = GoRouter(
   routes: [
     GoRoute(
@@ -42,12 +47,6 @@ final router = GoRouter(
     ),
   ],
 );
-
-extension on GoRouterState {
-  ExamplePage? get pageWidget {
-    return pages.firstWhereOrNull((p) => p.pathString == params['path_string']);
-  }
-}
 
 final pages = [
   ExamplePage(
