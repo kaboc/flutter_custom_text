@@ -1,6 +1,6 @@
 name: custom_text
 description: Highly customisable text widget and controller to enable styling and gesture actions.
-version: 1.0.0-dev.1
+version: 1.0.0-dev.2
 repository: https://github.com/kaboc/flutter_custom_text
 
 environment:

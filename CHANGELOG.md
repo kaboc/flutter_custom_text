@@ -1,3 +1,12 @@
+## 1.0.0-dev.2
+
+- Bump text_parser to 1.2.0-dev.2.
+    - Contains a **breaking change** in `UrlMatcher`.
+        - `UrlMatcher` no longer matches URLs not starting with http(s).
+        - Use the new `UrlLikeMatcher` instead if necessary.
+- Update the example app.
+- Update the note about using lookbehind assertions on Safari.
+
 ## 1.0.0-dev.1
 
 - Add support for using an external parser.
