@@ -450,8 +450,8 @@ CustomText(
 ## Limitations
 
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
-  [Safari does not support it](https://caniuse.com/?search=lookbehind). Avoid using
-  `TelMatcher` as is if your app targets Safari.
+  [Safari versions before 16.4 have no support for it](https://caniuse.com/?search=lookbehind).
+  Avoid using `TelMatcher` as is if your app targets older Safari versions.
 - `CustomTextEditingController` raises an error on iOS simulators (not on real devices)
   if the initial text and `onTap`, `onLongPress` or `onGesture` are specified.
   See https://github.com/flutter/flutter/issues/97433.
