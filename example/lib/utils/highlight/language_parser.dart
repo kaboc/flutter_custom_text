@@ -47,10 +47,7 @@ Future<List<TextElement>> _buildValueElements(
   int offset,
   String? className,
 ) async {
-  const matcher = UrlMatcher(
-    'https?://(?:.+?\\.)+[a-zA-Z]+(?:/[^\\s\'"\\)]*)*',
-  );
-  final parser = TextParser(matchers: [matcher]);
+  final parser = TextParser(matchers: const [UrlMatcher()]);
   var elements = await parser.parse(text, useIsolate: false);
 
   final matcherType = _mappings[className] ?? TextMatcher;

@@ -38,13 +38,13 @@ void main() {
       );
       await tester.pump();
 
-      controller.text = 'aaa bbb@exa mple.com';
+      controller.text = 'aaa bbb https://example.com';
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa bbb@exa '));
+      expect(controller.elements.first.text, equals('aaa bbb '));
       expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('mple.com'));
+      expect(controller.elements.last.text, equals('https://example.com'));
       expect(controller.elements.last.matcherType, equals(UrlMatcher));
     });
 
@@ -94,21 +94,21 @@ void main() {
       );
       await tester.pump();
 
-      controller.text = 'aaa bbb@exa mple.com';
+      controller.text = 'aaa bbb https://example.com';
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
       expect(controller.elements.first.text, equals('aaa '));
       expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('bbb@exa mple.com'));
+      expect(controller.elements.last.text, equals('bbb https://example.com'));
       expect(controller.elements.last.matcherType, equals(EmailMatcher));
 
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa bbb@exa '));
+      expect(controller.elements.first.text, equals('aaa bbb '));
       expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('mple.com'));
+      expect(controller.elements.last.text, equals('https://example.com'));
       expect(controller.elements.last.matcherType, equals(UrlMatcher));
     });
 
@@ -123,23 +123,26 @@ void main() {
       );
       await tester.pump();
 
-      controller.text = 'aaa bbb@exa mple.com';
+      controller.text = 'aaa bbb https://example.com';
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
+      expect(controller.elements[0].text, equals('aaa '));
       expect(controller.elements[0].matcherType, equals(TextMatcher));
-      expect(controller.elements[1].text, equals('bbb@exa mple.com'));
+      expect(controller.elements[1].text, equals('bbb https://example.com'));
       expect(controller.elements[1].matcherType, equals(EmailMatcher));
 
       await tester.pump(const Duration(milliseconds: 300));
 
       controller
         ..debounceDuration = null
-        ..text = 'aaa bbb@exa mple.com https://ccc.dd/';
+        ..text = 'aaa bbb https://example.com https://ccc.dd/';
       await tester.pump();
 
       expect(controller.elements, hasLength(4));
-      expect(controller.elements[1].text, equals('mple.com'));
+      expect(controller.elements[0].text, equals('aaa bbb '));
+      expect(controller.elements[0].matcherType, equals(TextMatcher));
+      expect(controller.elements[1].text, equals('https://example.com'));
       expect(controller.elements[1].matcherType, equals(UrlMatcher));
       expect(controller.elements[2].text, equals(' '));
       expect(controller.elements[2].matcherType, equals(TextMatcher));
