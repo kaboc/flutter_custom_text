@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=2.19.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -14,14 +14,14 @@ dependencies:
     path: ../
 
   collection: ^1.17.0
-  device_info_plus: ^9.0.0
-  go_router: ^7.0.1
+  device_info_plus: ^9.0.1
+  go_router: ^7.1.1
   google_fonts: ^4.0.4
   highlight: ^0.7.0
   positioned_popup:
     git:
       url: https://github.com/kaboc/positioned-popup.git
-      ref: 408bc3228baf7a3be29edf12629bbf31cf5f4b95
+      ref: 28af814a9dcb1623fce3a7301d10e76006afbf94
   url_launcher: ^6.1.11
 
 dev_dependencies:

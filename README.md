@@ -56,6 +56,7 @@ The matchers listed below are for general use.
 If a stricter pattern is necessary, overwrite the preset pattern or create a custom matcher.
 
 - [UrlMatcher] for URLs
+- [UrlLikeMatcher] for URL-like strings
 - [EmailMatcher] for email addresses
 - [TelMatcher] for phone numbers
 - [LinkMatcher] for Markdown-style links or for other strings to be handled
@@ -486,6 +487,7 @@ CustomText(
 [example10_demo]: https://kaboc.github.io/flutter_custom_text/#/external-parser
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
+[UrlLikeMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlLikeMatcher-class.html
 [EmailMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/EmailMatcher-class.html
 [TelMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TelMatcher-class.html
 [LinkMatcher]: https://pub.dev/documentation/custom_text/latest/custom_text/LinkMatcher-class.html

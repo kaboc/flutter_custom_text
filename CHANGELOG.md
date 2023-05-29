@@ -1,3 +1,14 @@
+## 1.0.0
+
+- Bump text_parser to 2.0.0.
+    - Contains a **breaking change** in `UrlMatcher`.
+        - `UrlMatcher` no longer matches URLs not starting with http(s).
+        - Use the new `UrlLikeMatcher` instead if necessary.
+- Add support for using an external parser.
+- Add typedef for gesture callbacks.
+- Improve tests, documentation and example app.
+- Update the note about using lookbehind assertions on Safari.
+
 ## 1.0.0-dev.2
 
 - Bump text_parser to 1.2.0-dev.2.
@@ -10,7 +21,7 @@
 ## 1.0.0-dev.1
 
 - Add support for using an external parser.
-- Add the signature for gesture callbacks.
+- Add typedef for gesture callbacks.
 - Bump text_parser to 1.2.0-dev.1.
     - No workaround is necessary any more to use lookbehind assertions.
 - Add and improve tests.
