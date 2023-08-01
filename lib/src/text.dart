@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:text_parser/text_parser.dart' show TextParser;
 
@@ -200,16 +200,18 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
 
-  NotifierSettings get _notifierSettings => NotifierSettings(
-        definitions: widget.definitions,
-        matchStyle: widget.matchStyle,
-        tapStyle: widget.tapStyle,
-        hoverStyle: widget.hoverStyle,
-        onTap: widget.onTap,
-        onLongPress: widget.onLongPress,
-        onGesture: widget.onGesture,
-        longPressDuration: widget.longPressDuration,
-      );
+  NotifierSettings _createNotifierSettings() {
+    return NotifierSettings(
+      definitions: widget.definitions,
+      matchStyle: widget.matchStyle,
+      tapStyle: widget.tapStyle,
+      hoverStyle: widget.hoverStyle,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      onGesture: widget.onGesture,
+      longPressDuration: widget.longPressDuration,
+    );
+  }
 
   @override
   void initState() {
@@ -217,7 +219,7 @@ class _CustomTextState extends State<CustomText> {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: widget.text,
-      settings: _notifierSettings,
+      settings: _createNotifierSettings(),
     );
     _parse();
   }
@@ -242,7 +244,8 @@ class _CustomTextState extends State<CustomText> {
         widget.longPressDuration != oldWidget.longPressDuration;
 
     if (needsSpanUpdate) {
-      _textSpanNotifier.updateSettings(_notifierSettings);
+      final newSettings = _createNotifierSettings();
+      _textSpanNotifier.updateSettings(newSettings);
     }
 
     if (needsParse) {
@@ -289,6 +292,7 @@ class _CustomTextState extends State<CustomText> {
 
   Future<void> _parse() async {
     final externalParser = widget.parserOptions.parser;
+    final oldElementsLength = _textSpanNotifier.elements.length;
 
     final elements = externalParser == null
         ? await TextParser(
@@ -307,7 +311,7 @@ class _CustomTextState extends State<CustomText> {
       ..elements = elements
       ..buildSpan(
         style: widget.style,
-        oldElementsLength: _textSpanNotifier.elements.length,
+        oldElementsLength: oldElementsLength,
       );
   }
 

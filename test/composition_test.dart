@@ -17,7 +17,7 @@ void main() {
         await tester.pump();
 
         final spans = getSpans();
-        expect(spans.length, equals(4));
+        expect(spans, hasLength(4));
         expect((spans[0] as TextSpan).text, equals('aaa '));
         expect((spans[1] as TextSpan).text, equals('bbb@example.com'));
         expect((spans[2] as TextSpan).text, equals(' '));
@@ -33,7 +33,7 @@ void main() {
         await tester.pump();
 
         final spans = getSpans();
-        expect(spans.length, equals(3));
+        expect(spans, hasLength(3));
         expect((spans[0] as TextSpan).text, equals('aaa'));
         expect((spans[1] as TextSpan).text, equals('bbb'));
         expect((spans[2] as TextSpan).text, equals('ddd'));
@@ -51,7 +51,7 @@ void main() {
         await tester.pump();
 
         final spans = getSpans();
-        expect(spans.length, equals(5));
+        expect(spans, hasLength(5));
         expect((spans[0] as TextSpan).text, equals('Email: '));
         expect(spans[1], equals(isA<WidgetSpan>()));
         expect((spans[2] as TextSpan).text, equals('foo@example.com'));
