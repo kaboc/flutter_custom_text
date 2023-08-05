@@ -36,12 +36,23 @@ class NotifierSettings {
     this.onLongPress,
     this.onGesture,
     Duration? longPressDuration,
-  })  : definitions = {
-          for (final def in definitions) def.matcher.runtimeType: def,
-        },
-        longPressDuration = longPressDuration ?? kLongPressDuration;
+  })  : definitions = {},
+        longPressDuration = longPressDuration ?? kLongPressDuration {
+    // `i` is the index of a matcher (which is also the index of
+    // a definition) that is necessary to identify which matcher
+    // was used for a certain element when there are more than one
+    // matchers of the same type.
+    for (var i = 0; i < definitions.length; i++) {
+      final def = definitions[i];
+      this.definitions.update(
+            def.matcher.runtimeType,
+            (list) => list..[i] = def,
+            ifAbsent: () => {i: def},
+          );
+    }
+  }
 
-  final Map<Type, Definition> definitions;
+  final Map<Type, Map<int, Definition>> definitions;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;

@@ -105,10 +105,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   InlineSpan _span(int index, TextElement element) {
-    final def = _settings.definitions[element.matcherType];
-    if (def == null) {
+    final defs = _settings.definitions[element.matcherType];
+    if (defs == null || defs.isEmpty) {
       return TextSpan(text: element.text, style: _style);
     }
+
+    final def = defs[element.matcherIndex] ?? defs[defs.keys.first]!;
     if (def is SpanDefinition) {
       return def.builder!(element.text, element.groups);
     }
