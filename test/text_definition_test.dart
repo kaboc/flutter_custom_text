@@ -348,13 +348,13 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
         await tester.tapAt(center);
 
-        expect(gestureKind, equals(GestureKind.tap));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(element?.matcherType, equals(EmailMatcher));
-        expect(shownText, equals('bbb@example.com'));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(center));
-        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+        expect(gestureKind, GestureKind.tap);
+        expect(pointerDeviceKind, PointerDeviceKind.touch);
+        expect(element?.matcherType, EmailMatcher);
+        expect(shownText, 'bbb@example.com');
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, center);
+        expect(localPosition, center - const Offset(10.0, 10.0));
       },
     );
 
@@ -378,13 +378,13 @@ void main() {
         await tester.pump(kTestLongPressDuration);
         await gesture.up();
 
-        expect(gestureKind, equals(GestureKind.longPress));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(element?.matcherType, equals(EmailMatcher));
-        expect(shownText, equals('bbb@example.com'));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(center));
-        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+        expect(gestureKind, GestureKind.longPress);
+        expect(pointerDeviceKind, PointerDeviceKind.touch);
+        expect(element?.matcherType, EmailMatcher);
+        expect(shownText, 'bbb@example.com');
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, center);
+        expect(localPosition, center - const Offset(10.0, 10.0));
       },
     );
 
@@ -545,21 +545,21 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
 
         await tester.tapAt(center, buttons: kSecondaryButton);
-        expect(gestureKind, equals(GestureKind.secondaryTap));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(element?.matcherType, equals(EmailMatcher));
-        expect(shownText, equals('bbb@example.com'));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(center));
-        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+        expect(gestureKind, GestureKind.secondaryTap);
+        expect(pointerDeviceKind, PointerDeviceKind.touch);
+        expect(element?.matcherType, EmailMatcher);
+        expect(shownText, 'bbb@example.com');
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, center);
+        expect(localPosition, center - const Offset(10.0, 10.0));
 
         actionText = globalPosition = localPosition = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
-        expect(gestureKind, equals(GestureKind.tertiaryTap));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.touch));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(center));
-        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+        expect(gestureKind, GestureKind.tertiaryTap);
+        expect(pointerDeviceKind, PointerDeviceKind.touch);
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, center);
+        expect(localPosition, center - const Offset(10.0, 10.0));
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
@@ -569,20 +569,20 @@ void main() {
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
-        expect(gestureKind, equals(GestureKind.enter));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(center));
-        expect(localPosition, equals(center - const Offset(10.0, 10.0)));
+        expect(gestureKind, GestureKind.enter);
+        expect(pointerDeviceKind, PointerDeviceKind.mouse);
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, center);
+        expect(localPosition, center - const Offset(10.0, 10.0));
 
         actionText = globalPosition = localPosition = null;
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
-        expect(gestureKind, equals(GestureKind.exit));
-        expect(pointerDeviceKind, equals(PointerDeviceKind.mouse));
-        expect(actionText, equals('bbb@example.com'));
-        expect(globalPosition, equals(Offset(center.dx, 9.0)));
-        expect(localPosition, equals(Offset(center.dx - 10.0, -1.0)));
+        expect(gestureKind, GestureKind.exit);
+        expect(pointerDeviceKind, PointerDeviceKind.mouse);
+        expect(actionText, 'bbb@example.com');
+        expect(globalPosition, Offset(center.dx, 9.0));
+        expect(localPosition, Offset(center.dx - 10.0, -1.0));
       },
     );
 
@@ -617,14 +617,14 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
 
         await tester.tapAt(center, buttons: kSecondaryButton);
-        expect(gestureKind, equals(GestureKind.secondaryTap));
-        expect(shownText, equals('gesture2'));
-        expect(actionText, equals('gesture2'));
+        expect(gestureKind, GestureKind.secondaryTap);
+        expect(shownText, 'gesture2');
+        expect(actionText, 'gesture2');
 
         actionText = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
-        expect(gestureKind, equals(GestureKind.tertiaryTap));
-        expect(actionText, equals('gesture2'));
+        expect(gestureKind, GestureKind.tertiaryTap);
+        expect(actionText, 'gesture2');
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
@@ -634,14 +634,14 @@ void main() {
         await gesture.addPointer(location: Offset(center.dx, 0.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
-        expect(gestureKind, equals(GestureKind.enter));
-        expect(actionText, equals('gesture2'));
+        expect(gestureKind, GestureKind.enter);
+        expect(actionText, 'gesture2');
 
         actionText = null;
         await gesture.moveTo(Offset(center.dx, -1.0));
         await tester.pumpAndSettle();
-        expect(gestureKind, equals(GestureKind.exit));
-        expect(actionText, equals('gesture2'));
+        expect(gestureKind, GestureKind.exit);
+        expect(actionText, 'gesture2');
       },
     );
   });

@@ -72,7 +72,7 @@ void main() {
 
     test('Successfully parsed', () {
       expect(elements, hasLength(8));
-      expect(elements.text, equals(initialText));
+      expect(elements.text, initialText);
     });
 
     group('Transient elements and spans have correct text after changes', () {
@@ -96,7 +96,7 @@ void main() {
               initialElements: elements,
               elementsBuilderResult: result,
             );
-            expect(spans.text, equals(newText));
+            expect(spans.text, newText);
           }
         }
       });
@@ -122,7 +122,7 @@ void main() {
               initialElements: elements,
               elementsBuilderResult: result,
             );
-            expect(spans.text, equals(newText));
+            expect(spans.text, newText);
           }
         }
       });
@@ -149,7 +149,7 @@ void main() {
                 initialElements: elements,
                 elementsBuilderResult: result,
               );
-              expect(spans.text, equals(newText));
+              expect(spans.text, newText);
             }
           }
         }
@@ -175,16 +175,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(1));
-        expect(result.elements[0].text, equals('a'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
+        expect(result.elements[0].text, 'a');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(1));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -199,19 +199,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('||abcde '));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(8));
+        expect(result.elements[0].text, '||abcde ');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 8);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -225,19 +225,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('||de '));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(5));
+        expect(result.elements[0].text, '||de ');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 5);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -252,19 +252,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('ab||de '));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(7));
+        expect(result.elements[0].text, 'ab||de ');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 7);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -279,19 +279,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('abcde ||'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(8));
+        expect(result.elements[0].text, 'abcde ||');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 8);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -305,19 +305,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('ab||'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(4));
+        expect(result.elements[0].text, 'ab||');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 4);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -331,19 +331,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[0].text, equals('foo@example.com'));
-        expect(result.elements[0].matcherType, equals(EmailMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('\n'));
-        expect(result.elements[1].matcherType, equals(TextMatcher));
-        expect(result.elements[1].offset, equals(15));
+        expect(result.elements[0].text, 'foo@example.com');
+        expect(result.elements[0].matcherType, EmailMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, '\n');
+        expect(result.elements[1].matcherType, TextMatcher);
+        expect(result.elements[1].offset, 15);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -357,19 +357,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[0].text, equals('example.com'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('\n'));
-        expect(result.elements[1].matcherType, equals(TextMatcher));
-        expect(result.elements[1].offset, equals(11));
+        expect(result.elements[0].text, 'example.com');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, '\n');
+        expect(result.elements[1].matcherType, TextMatcher);
+        expect(result.elements[1].offset, 11);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -383,22 +383,22 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[0].text, equals('abc||'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(5));
-        expect(result.elements[2].text, equals('\n'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(16));
+        expect(result.elements[0].text, 'abc||');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 5);
+        expect(result.elements[2].text, '\n');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 16);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -413,19 +413,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[1].text, equals('foo@example.com||'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('\n'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(23));
+        expect(result.elements[1].text, 'foo@example.com||');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, '\n');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 23);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -440,19 +440,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('\n||'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(21));
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, '\n||');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 21);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -466,19 +466,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('||'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(21));
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, '||');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 21);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -492,19 +492,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[2].text, equals('||'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(21));
-        expect(result.elements[3].text, equals('example.com/'));
-        expect(result.elements[3].matcherType, equals(UrlMatcher));
-        expect(result.elements[3].offset, equals(23));
+        expect(result.elements[2].text, '||');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 21);
+        expect(result.elements[3].text, 'example.com/');
+        expect(result.elements[3].matcherType, UrlMatcher);
+        expect(result.elements[3].offset, 23);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -518,19 +518,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('example.com/'));
-        expect(result.elements[2].matcherType, equals(UrlMatcher));
-        expect(result.elements[2].offset, equals(21));
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, 'example.com/');
+        expect(result.elements[2].matcherType, UrlMatcher);
+        expect(result.elements[2].offset, 21);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -544,19 +544,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[1].text, equals('foo@example.com'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('/'));
-        expect(result.elements[2].matcherType, equals(UrlMatcher));
-        expect(result.elements[2].offset, equals(21));
+        expect(result.elements[1].text, 'foo@example.com');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, '/');
+        expect(result.elements[2].matcherType, UrlMatcher);
+        expect(result.elements[2].offset, 21);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -571,19 +571,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[3].text, equals('https://example.com/||'));
-        expect(result.elements[3].matcherType, equals(UrlMatcher));
-        expect(result.elements[3].offset, equals(22));
-        expect(result.elements[4].text, equals(' abc '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(44));
+        expect(result.elements[3].text, 'https://example.com/||');
+        expect(result.elements[3].matcherType, UrlMatcher);
+        expect(result.elements[3].offset, 22);
+        expect(result.elements[4].text, ' abc ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 44);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -598,19 +598,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[3].text, equals('https://example.com/'));
-        expect(result.elements[3].matcherType, equals(UrlMatcher));
-        expect(result.elements[3].offset, equals(22));
-        expect(result.elements[4].text, equals('||abc '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
+        expect(result.elements[3].text, 'https://example.com/');
+        expect(result.elements[3].matcherType, UrlMatcher);
+        expect(result.elements[3].offset, 22);
+        expect(result.elements[4].text, '||abc ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -625,19 +625,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[4].text, equals(' abc ||'));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
-        expect(result.elements[5].text, equals('#hashtag'));
-        expect(result.elements[5].matcherType, equals(PatternMatcher));
-        expect(result.elements[5].offset, equals(49));
+        expect(result.elements[4].text, ' abc ||');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
+        expect(result.elements[5].text, '#hashtag');
+        expect(result.elements[5].matcherType, PatternMatcher);
+        expect(result.elements[5].offset, 49);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -652,19 +652,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[4].text, equals(' abc||'));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
-        expect(result.elements[5].text, equals('#hashtag'));
-        expect(result.elements[5].matcherType, equals(PatternMatcher));
-        expect(result.elements[5].offset, equals(48));
+        expect(result.elements[4].text, ' abc||');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
+        expect(result.elements[5].text, '#hashtag');
+        expect(result.elements[5].matcherType, PatternMatcher);
+        expect(result.elements[5].offset, 48);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -678,19 +678,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[3].text, equals('https://example.com/'));
-        expect(result.elements[3].matcherType, equals(UrlMatcher));
-        expect(result.elements[3].offset, equals(22));
-        expect(result.elements[4].text, equals(' '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
+        expect(result.elements[3].text, 'https://example.com/');
+        expect(result.elements[3].matcherType, UrlMatcher);
+        expect(result.elements[3].offset, 22);
+        expect(result.elements[4].text, ' ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -704,19 +704,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[3].text, equals('https://example||'));
-        expect(result.elements[3].matcherType, equals(UrlMatcher));
-        expect(result.elements[3].offset, equals(22));
-        expect(result.elements[4].text, equals(' '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(39));
+        expect(result.elements[3].text, 'https://example||');
+        expect(result.elements[3].matcherType, UrlMatcher);
+        expect(result.elements[3].offset, 22);
+        expect(result.elements[4].text, ' ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 39);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -730,16 +730,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[5].text, equals('#||tag'));
-        expect(result.elements[5].matcherType, equals(PatternMatcher));
-        expect(result.elements[5].offset, equals(47));
+        expect(result.elements[5].text, '#||tag');
+        expect(result.elements[5].matcherType, PatternMatcher);
+        expect(result.elements[5].offset, 47);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -754,19 +754,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[4].text, equals(' abc '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
-        expect(result.elements[5].text, equals('#hashtag||'));
-        expect(result.elements[5].matcherType, equals(PatternMatcher));
-        expect(result.elements[5].offset, equals(47));
+        expect(result.elements[4].text, ' abc ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
+        expect(result.elements[5].text, '#hashtag||');
+        expect(result.elements[5].matcherType, PatternMatcher);
+        expect(result.elements[5].offset, 47);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -780,16 +780,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(6));
-        expect(result.elements[5].text, equals('#hash||'));
-        expect(result.elements[5].matcherType, equals(PatternMatcher));
-        expect(result.elements[5].offset, equals(47));
+        expect(result.elements[5].text, '#hash||');
+        expect(result.elements[5].matcherType, PatternMatcher);
+        expect(result.elements[5].offset, 47);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(6));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -803,16 +803,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[4].text, equals(' abc '));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
+        expect(result.elements[4].text, ' abc ');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -826,16 +826,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(5));
-        expect(result.elements[4].text, equals(' abc'));
-        expect(result.elements[4].matcherType, equals(TextMatcher));
-        expect(result.elements[4].offset, equals(42));
+        expect(result.elements[4].text, ' abc');
+        expect(result.elements[4].matcherType, TextMatcher);
+        expect(result.elements[4].offset, 42);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(5));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -849,22 +849,22 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(3));
-        expect(result.elements[0].text, equals('abcde '));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('foo||'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(6));
-        expect(result.elements[2].text, equals('tag'));
-        expect(result.elements[2].matcherType, equals(PatternMatcher));
-        expect(result.elements[2].offset, equals(11));
+        expect(result.elements[0].text, 'abcde ');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'foo||');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 6);
+        expect(result.elements[2].text, 'tag');
+        expect(result.elements[2].matcherType, PatternMatcher);
+        expect(result.elements[2].offset, 11);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(3));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -878,19 +878,19 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(2));
-        expect(result.elements[0].text, equals('ab'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
-        expect(result.elements[1].text, equals('ag'));
-        expect(result.elements[1].matcherType, equals(PatternMatcher));
-        expect(result.elements[1].offset, equals(2));
+        expect(result.elements[0].text, 'ab');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
+        expect(result.elements[1].text, 'ag');
+        expect(result.elements[1].matcherType, PatternMatcher);
+        expect(result.elements[1].offset, 2);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(2));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () {
@@ -904,16 +904,16 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(1));
-        expect(result.elements[0].text, equals('g'));
-        expect(result.elements[0].matcherType, equals(TextMatcher));
-        expect(result.elements[0].offset, equals(0));
+        expect(result.elements[0].text, 'g');
+        expect(result.elements[0].matcherType, TextMatcher);
+        expect(result.elements[0].offset, 0);
 
         final spans = buildTransientSpan(
           initialElements: elements,
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(1));
-        expect(spans.text, equals(text));
+        expect(spans.text, text);
       });
 
       test('', () async {
@@ -935,12 +935,12 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(4));
-        expect(result.elements[1].text, equals('bbb@ccc.ddd aaa bbb@ccc.ddd'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(4));
-        expect(result.elements[2].text, equals(' \n'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(31));
+        expect(result.elements[1].text, 'bbb@ccc.ddd aaa bbb@ccc.ddd');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 4);
+        expect(result.elements[2].text, ' \n');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 31);
 
         final elements = await TextParser(matchers: matchers).parse(oldText);
         final spans = buildTransientSpan(
@@ -948,7 +948,7 @@ void main() {
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(4));
-        expect(spans.text, equals(newText));
+        expect(spans.text, newText);
       });
 
       test('', () async {
@@ -970,12 +970,12 @@ void main() {
           changeRange: builder.findUpdatedElementsRange(),
         );
         expect(result.elements, hasLength(4));
-        expect(result.elements[1].text, equals('bbb@ccc.ddd'));
-        expect(result.elements[1].matcherType, equals(EmailMatcher));
-        expect(result.elements[1].offset, equals(4));
-        expect(result.elements[2].text, equals(' \n'));
-        expect(result.elements[2].matcherType, equals(TextMatcher));
-        expect(result.elements[2].offset, equals(15));
+        expect(result.elements[1].text, 'bbb@ccc.ddd');
+        expect(result.elements[1].matcherType, EmailMatcher);
+        expect(result.elements[1].offset, 4);
+        expect(result.elements[2].text, ' \n');
+        expect(result.elements[2].matcherType, TextMatcher);
+        expect(result.elements[2].offset, 15);
 
         final elements = await TextParser(matchers: matchers).parse(oldText);
         final spans = buildTransientSpan(
@@ -983,7 +983,7 @@ void main() {
           elementsBuilderResult: result,
         );
         expect(spans, hasLength(4));
-        expect(spans.text, equals(newText));
+        expect(spans.text, newText);
       });
     });
   });

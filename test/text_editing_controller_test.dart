@@ -22,10 +22,10 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa '));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('bbb@example.com'));
-      expect(controller.elements.last.matcherType, equals(EmailMatcher));
+      expect(controller.elements.first.text, 'aaa ');
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.text, 'bbb@example.com');
+      expect(controller.elements.last.matcherType, EmailMatcher);
     });
 
     testWidgets('Text is parsed on change', (tester) async {
@@ -42,10 +42,10 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa bbb '));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('https://example.com'));
-      expect(controller.elements.last.matcherType, equals(UrlMatcher));
+      expect(controller.elements.first.text, 'aaa bbb ');
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.text, 'https://example.com');
+      expect(controller.elements.last.matcherType, UrlMatcher);
     });
 
     testWidgets('`fromValue` constructor works too', (tester) async {
@@ -59,10 +59,10 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa '));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('bbb@example.com'));
-      expect(controller.elements.last.matcherType, equals(EmailMatcher));
+      expect(controller.elements.first.text, 'aaa ');
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.text, 'bbb@example.com');
+      expect(controller.elements.last.matcherType, EmailMatcher);
     });
   });
 
@@ -79,8 +79,8 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.matcherType, equals(EmailMatcher));
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.matcherType, EmailMatcher);
     });
 
     testWidgets('Parsing is debounced', (tester) async {
@@ -98,18 +98,18 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa '));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('bbb https://example.com'));
-      expect(controller.elements.last.matcherType, equals(EmailMatcher));
+      expect(controller.elements.first.text, 'aaa ');
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.text, 'bbb https://example.com');
+      expect(controller.elements.last.matcherType, EmailMatcher);
 
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements.first.text, equals('aaa bbb '));
-      expect(controller.elements.first.matcherType, equals(TextMatcher));
-      expect(controller.elements.last.text, equals('https://example.com'));
-      expect(controller.elements.last.matcherType, equals(UrlMatcher));
+      expect(controller.elements.first.text, 'aaa bbb ');
+      expect(controller.elements.first.matcherType, TextMatcher);
+      expect(controller.elements.last.text, 'https://example.com');
+      expect(controller.elements.last.matcherType, UrlMatcher);
     });
 
     testWidgets('debounceDuration can be updated', (tester) async {
@@ -127,10 +127,10 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements[0].text, equals('aaa '));
-      expect(controller.elements[0].matcherType, equals(TextMatcher));
-      expect(controller.elements[1].text, equals('bbb https://example.com'));
-      expect(controller.elements[1].matcherType, equals(EmailMatcher));
+      expect(controller.elements[0].text, 'aaa ');
+      expect(controller.elements[0].matcherType, TextMatcher);
+      expect(controller.elements[1].text, 'bbb https://example.com');
+      expect(controller.elements[1].matcherType, EmailMatcher);
 
       await tester.pump(const Duration(milliseconds: 300));
 
@@ -140,14 +140,14 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(4));
-      expect(controller.elements[0].text, equals('aaa bbb '));
-      expect(controller.elements[0].matcherType, equals(TextMatcher));
-      expect(controller.elements[1].text, equals('https://example.com'));
-      expect(controller.elements[1].matcherType, equals(UrlMatcher));
-      expect(controller.elements[2].text, equals(' '));
-      expect(controller.elements[2].matcherType, equals(TextMatcher));
-      expect(controller.elements[3].text, equals('https://ccc.dd/'));
-      expect(controller.elements[3].matcherType, equals(UrlMatcher));
+      expect(controller.elements[0].text, 'aaa bbb ');
+      expect(controller.elements[0].matcherType, TextMatcher);
+      expect(controller.elements[1].text, 'https://example.com');
+      expect(controller.elements[1].matcherType, UrlMatcher);
+      expect(controller.elements[2].text, ' ');
+      expect(controller.elements[2].matcherType, TextMatcher);
+      expect(controller.elements[3].text, 'https://ccc.dd/');
+      expect(controller.elements[3].matcherType, UrlMatcher);
     });
   });
 }

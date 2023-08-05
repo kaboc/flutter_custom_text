@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'utils.dart';
@@ -17,9 +16,9 @@ void main() {
         await tester.pump();
 
         final spans = getSpans();
-        expect((spans[0] as TextSpan).text, equals('[bbb](ccc)'));
-        expect((spans[1] as TextSpan).text, equals('0: bbb'));
-        expect((spans[2] as TextSpan).text, equals('1: ccc'));
+        expect(spans[0].toPlainText(), '[bbb](ccc)');
+        expect(spans[1].toPlainText(), '0: bbb');
+        expect(spans[2].toPlainText(), '1: ccc');
       },
     );
   });

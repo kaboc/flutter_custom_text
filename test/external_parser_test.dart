@@ -81,14 +81,14 @@ void main() {
       );
       await tester.pump();
 
-      expect(controller.elements[0].text, equals('abc'));
-      expect(controller.elements[0].matcherType, equals(TextMatcher));
-      expect(controller.elements[1].text, equals('1234'));
-      expect(controller.elements[1].matcherType, equals(NumberMatcher));
-      expect(controller.elements[2].text, equals('def'));
-      expect(controller.elements[2].matcherType, equals(TextMatcher));
-      expect(controller.elements[3].text, equals('5678'));
-      expect(controller.elements[3].matcherType, equals(NumberMatcher));
+      expect(controller.elements[0].text, 'abc');
+      expect(controller.elements[0].matcherType, TextMatcher);
+      expect(controller.elements[1].text, '1234');
+      expect(controller.elements[1].matcherType, NumberMatcher);
+      expect(controller.elements[2].text, 'def');
+      expect(controller.elements[2].matcherType, TextMatcher);
+      expect(controller.elements[3].text, '5678');
+      expect(controller.elements[3].matcherType, NumberMatcher);
     });
 
     testWidgets('External parser reruns when text is updated', (tester) async {
@@ -107,15 +107,15 @@ void main() {
       await tester.pump();
 
       expect(controller.elements, hasLength(4));
-      expect(controller.elements[0].text, equals('abc'));
-      expect(controller.elements[1].text, equals('1234'));
+      expect(controller.elements[0].text, 'abc');
+      expect(controller.elements[1].text, '1234');
 
       controller.text = '123456def';
       await tester.pump();
 
       expect(controller.elements, hasLength(2));
-      expect(controller.elements[0].text, equals('123456'));
-      expect(controller.elements[1].text, equals('def'));
+      expect(controller.elements[0].text, '123456');
+      expect(controller.elements[1].text, 'def');
     });
   });
 }

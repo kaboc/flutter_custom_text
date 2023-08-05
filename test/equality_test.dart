@@ -24,8 +24,8 @@ void main() {
         mouseCursor: SystemMouseCursors.click,
       );
 
-      expect(definition1, equals(definition2));
-      expect(definition1.hashCode, equals(definition2.hashCode));
+      expect(definition1, definition2);
+      expect(definition1.hashCode, definition2.hashCode);
     });
 
     test(
@@ -34,8 +34,8 @@ void main() {
         const definition1 = _Definition1(matcher: UrlMatcher());
         const definition2 = _Definition2(matcher: UrlMatcher());
 
-        expect(definition1, isNot(equals(definition2)));
-        expect(definition1.hashCode, isNot(equals(definition2.hashCode)));
+        expect(definition1, isNot(definition2));
+        expect(definition1.hashCode, isNot(definition2.hashCode));
       },
     );
   });
@@ -47,8 +47,8 @@ void main() {
       // ignore: prefer_const_constructors
       final options2 = ParserOptions();
 
-      expect(options1, equals(options2));
-      expect(options1.hashCode, equals(options2.hashCode));
+      expect(options1, options2);
+      expect(options1.hashCode, options2.hashCode);
     });
 
     test(
@@ -57,8 +57,8 @@ void main() {
         const options1 = _ParserOptions1();
         const options2 = _ParserOptions2();
 
-        expect(options1, isNot(equals(options2)));
-        expect(options1.hashCode, isNot(equals(options2.hashCode)));
+        expect(options1, isNot(options2));
+        expect(options1.hashCode, isNot(options2.hashCode));
       },
     );
   });

@@ -20,10 +20,10 @@ void main() {
 
         final spans = getSpans();
         expect(spans, hasLength(4));
-        expect((spans[0] as TextSpan).text, equals('aaa '));
-        expect((spans[1] as TextSpan).text, equals('bbb@example.com'));
-        expect((spans[2] as TextSpan).text, equals(' '));
-        expect((spans[3] as TextSpan).text, equals('https://example.com/'));
+        expect(spans[0].toPlainText(), 'aaa ');
+        expect(spans[1].toPlainText(), 'bbb@example.com');
+        expect(spans[2].toPlainText(), ' ');
+        expect(spans[3].toPlainText(), 'https://example.com/');
       },
     );
 
@@ -36,9 +36,9 @@ void main() {
 
         final spans = getSpans();
         expect(spans, hasLength(3));
-        expect((spans[0] as TextSpan).text, equals('aaa'));
-        expect((spans[1] as TextSpan).text, equals('bbb'));
-        expect((spans[2] as TextSpan).text, equals('ddd'));
+        expect(spans[0].toPlainText(), 'aaa');
+        expect(spans[1].toPlainText(), 'bbb');
+        expect(spans[2].toPlainText(), 'ddd');
       },
     );
 
@@ -54,11 +54,11 @@ void main() {
 
         final spans = getSpans();
         expect(spans, hasLength(5));
-        expect((spans[0] as TextSpan).text, equals('Email: '));
-        expect(spans[1], equals(isA<WidgetSpan>()));
-        expect((spans[2] as TextSpan).text, equals('foo@example.com'));
-        expect((spans[3] as TextSpan).text, equals(', Tel: '));
-        expect((spans[4] as TextSpan).text, equals('012-3456-7890'));
+        expect(spans[0].toPlainText(), 'Email: ');
+        expect(spans[1], isA<WidgetSpan>());
+        expect(spans[2].toPlainText(), 'foo@example.com');
+        expect(spans[3].toPlainText(), ', Tel: ');
+        expect(spans[4].toPlainText(), '012-3456-7890');
       },
     );
 
