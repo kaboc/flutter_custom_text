@@ -2,9 +2,9 @@
 [![Flutter CI](https://github.com/kaboc/flutter_custom_text/workflows/Flutter%20CI/badge.svg)](https://github.com/kaboc/flutter_custom_text/actions)
 [![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/main/graph/badge.svg?token=H7ILK6CS0V)](https://codecov.io/gh/kaboc/flutter_custom_text)
 
-A highly customisable text widget that enables decorations and gestures on strings, and
-a special TextEditingController that makes most of the functionality of CustomText available
-in an editable text field too.
+A highly customisable text widget that enables decorations and gesture actions, and
+a special TextEditingController that makes most of the same functionality available also
+in a text field.
 
 This package is useful for making partial strings in text (e.g. URLs, email addresses
 or phone numbers) react to tap, long-press and hover gestures, or for only highlighting
@@ -24,7 +24,7 @@ by this package (plus [package:highlight](https://pub.dev/packages/highlight) us
 as an external parser).
 
 <a href="https://kaboc.github.io/flutter_custom_text/">
-<img src="https://user-images.githubusercontent.com/20254485/221410741-ff135ab1-2c18-4f14-89d0-99991355ac42.png" alt="Code highlighting" height="360">
+<img src="https://github.com/kaboc/flutter_custom_text/assets/20254485/b92d95d2-e0eb-45dd-8fb3-38cc22fb76ff" alt="Code highlighting" height="360">
 </a>
 
 ### ⭐ <b>Simplest example</b>

@@ -5,7 +5,10 @@ import 'definitions.dart';
 /// A variant of [TextMatcher] for parsing Markdown link format.
 ///
 /// {@template customText.LinkMatcher}
-/// This matcher is basically used with [SelectiveDefinition].
+/// This is useful if used together with [SelectiveDefinition].
+///
+/// Note that this matcher does not treat nested brackets or braces
+/// in the same way as real Markdown parsers do.
 ///
 /// The preset pattern is overwritten if a custom pattern is provided.
 /// {@endtemplate}

@@ -1,3 +1,8 @@
+## 1.1.0
+
+- Bump text_parser to 2.1.0.
+- Support definitions with a matcher of the same type. ([#31])
+
 ## 1.0.0
 
 - Bump text_parser to 2.0.0.
@@ -31,8 +36,8 @@
 
 - **Breaking**:
     - Raise minimum Flutter SDK version to 3.7.0.
-    - Remove `CustomText.selectable` that had been deprecated since 0.6.0. (#24)
-    - Handler functions now get `GestureDetails` object instead of matcher type and text. (#25)
+    - Remove `CustomText.selectable` that had been deprecated since 0.6.0. ([#24])
+    - Handler functions now get `GestureDetails` object instead of matcher type and text. ([#25])
         - This is for supporting wider use cases.
           ```dart
           onTap: (details) {
@@ -63,7 +68,7 @@
           import 'package:custom_text/custom_text_editing_controller.dart';
           ``` 
 - New:
-    - Add `onGesture`. (#27)
+    - Add `onGesture`. ([#27])
         - This handler supports secondary and tertiary buttons and mouse enter and exit events.
 - Expose the base definition class.
 - Expose the typedefs of builders of `SelectiveDefinition` and `SpanDefinition`. 
@@ -89,13 +94,13 @@
 ## 0.6.0
 
 - New:
-    - Add `CustomText.selectable`. (#16)
-        - Deprecated. (#19)
+    - Add `CustomText.selectable`. ([#16])
+        - Deprecated. ([#19])
         - Will be removed in the future in favour of `SelectionArea`.
-    - Add `CustomTextEditingController`. (#17, #20)
+    - Add `CustomTextEditingController`. ([#17], [#20])
 - Maybe breaking:
     - Use `hoverStyle` while being pressed if `tapStyle` is not provided.
-- Many bug fixes, improvements and major refactors. (eb0e6f7, 760cb45, #12, #15, etc)
+- Many bug fixes, improvements and major refactors. ([eb0e6f7], [760cb45], [#12], [#15], etc)
     - Please see the history of dev versions for details. 
 - Require Flutter >=3.0.0.
 - Bump text_parser to 0.4.1.
@@ -105,7 +110,7 @@
 ## 0.6.0-dev.6
 
 - Bump text_parser to 0.4.0.
-- Fix issue where changes of some properties were not reflected. (#21)
+- Fix issue where changes of some properties were not reflected. ([#22])
 
 ## 0.6.0-dev.5
 
@@ -119,11 +124,11 @@
 
 - Require Flutter >=3.0.0.
 - Deprecate:
-    - `CustomText.selectable` constructor is now deprecated. (#19)
+    - `CustomText.selectable` constructor is now deprecated. ([#19])
         - Use SelectionArea on Flutter 3.3 and above.
         - If SelectionArea is insufficient, use CustomTextEditingController and TextField with `readOnly: true`.
 - New (experimental):
-    - Add `debounceDuration` to `CustomTextEditingController` for somewhat better performance with long text. (#20)
+    - Add `debounceDuration` to `CustomTextEditingController` for somewhat better performance with long text. ([#20])
 - Fix behaviour of `CustomTextEditingController` when text spans are rebuilt while one of them is hovered/pressed on.
 - Discard gesture recognizers more thoroughly.
 - Add tests for `CustomTextEditingController`.
@@ -146,10 +151,10 @@
 
 ## 0.6.0-dev.1
 
-- Bug fixes and major refactors. (eb0e6f7, 760cb45, #12, #15)
+- Bug fixes and major refactors. ([eb0e6f7], [760cb45], [#12], [#15])
 - New (experimental):
-    - Add `CustomText.selectable`. (#16)
-    - Add `CustomTextEditingController`. (#17)
+    - Add `CustomText.selectable`. ([#16])
+    - Add `CustomTextEditingController`. ([#17])
 - Depend on meta.
 - Require Flutter >=2.8.0.
 
@@ -160,8 +165,8 @@
 
 ## 0.5.0
 
-- Fix an issue of tap and hover inactive in a rare condition. (#7)
-- Fix issues of `setState()` called after `dispose()`. (#8, #10)
+- Fix an issue of tap and hover inactive in a rare condition. ([#7])
+- Fix issues of `setState()` called after `dispose()`. ([#8], [#10])
 - Remove deprecated `onLongTap`.
 - Minor refactoring.
 - Improve documentation of definition classes.
@@ -181,7 +186,7 @@
 ## 0.3.0
 
 - **Breaking change**:
-    - Use the `mouseCursor` property of `TextSpan` for changing the mouse cursor. (#4)
+    - Use the `mouseCursor` property of `TextSpan` for changing the mouse cursor. ([#4])
         - `cursorOnHover`, which was experimental, was removed from `CustomText`.
         - `mouseCursor` was added to `TextDefinition` and `SelectiveDefinition`.
 - Deprecate:
@@ -195,7 +200,7 @@
 
 ## 0.2.0
 
-- Fix the error of undefined `SystemMouseCursor` on Flutter 2.2. (#2)
+- Fix the error of undefined `SystemMouseCursor` on Flutter 2.2. ([#2])
     - Requires Flutter >=2.2.0.
 - Several minor changes.
 
@@ -231,3 +236,22 @@
 ## 0.0.1
 
 - Initial version.
+
+[#2]: https://github.com/kaboc/flutter_custom_text/pull/2
+[#4]: https://github.com/kaboc/flutter_custom_text/pull/4
+[#7]: https://github.com/kaboc/flutter_custom_text/pull/7
+[#8]: https://github.com/kaboc/flutter_custom_text/pull/8
+[#10]: https://github.com/kaboc/flutter_custom_text/pull/10
+[eb0e6f7]: https://github.com/kaboc/flutter_custom_text/commit/eb0e6f7013941141ba196fc1144e81bc36dfe5fe
+[760cb45]: https://github.com/kaboc/flutter_custom_text/commit/760cb4501f6126de2b25f5086e202e427dc33b4d
+[#12]: https://github.com/kaboc/flutter_custom_text/pull/12
+[#15]: https://github.com/kaboc/flutter_custom_text/pull/15
+[#16]: https://github.com/kaboc/flutter_custom_text/pull/16
+[#17]: https://github.com/kaboc/flutter_custom_text/pull/17
+[#19]: https://github.com/kaboc/flutter_custom_text/pull/19
+[#20]: https://github.com/kaboc/flutter_custom_text/pull/20
+[#22]: https://github.com/kaboc/flutter_custom_text/pull/22
+[#24]: https://github.com/kaboc/flutter_custom_text/pull/24
+[#25]: https://github.com/kaboc/flutter_custom_text/pull/25
+[#27]: https://github.com/kaboc/flutter_custom_text/pull/27
+[#31]: https://github.com/kaboc/flutter_custom_text/pull/31
