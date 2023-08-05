@@ -153,7 +153,7 @@ final pages = [
         '* SelectiveDefinition and SpanDefinition are not available '
         'for CustomTextEditingController.\n'
         '* Not suitable for long text, even with debouncing enabled.',
-    builder: Example9.new,
+    builder: (text) => Example9(DeviceInfo.isIosSimulator ? null : text),
     additionalInfo: 'Try editing the text in the box above.\n'
         'As you type, email addresses, URLs and hashtags are decorated, '
         '${DeviceInfo.isIosSimulator ? '' : 'URLs become tappable, '}'
