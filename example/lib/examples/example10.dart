@@ -52,11 +52,10 @@ class _Example10State extends State<Example10> {
   }
 
   void _changeLanguage(LanguageType type) {
-    _controller?.dispose();
-
     setState(() {
       _languageType = type;
 
+      _controller?.dispose();
       _controller = CustomTextEditingController(
         text: type.sourceText,
         parserOptions: ParserOptions.external(

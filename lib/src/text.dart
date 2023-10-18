@@ -219,42 +219,40 @@ class _CustomTextState extends State<CustomText> {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: widget.text,
+      style: widget.style,
       settings: _createNotifierSettings(),
     );
-    _parse();
+    _parse(widget.text);
   }
 
   @override
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final isMatcherUpdated = _hasNewMatchers(oldWidget);
-    final isDefinitionUpdated = _hasNewDefinitions(oldWidget);
-
-    final needsParse = isMatcherUpdated ||
+    final needsParse = _hasNewMatchers(oldWidget) ||
         widget.text != oldWidget.text ||
         widget.parserOptions != oldWidget.parserOptions;
 
-    final needsSpanUpdate = isMatcherUpdated ||
-        isDefinitionUpdated ||
-        widget.style != oldWidget.style ||
+    if (needsParse) {
+      _textSpanNotifier.settings = _createNotifierSettings();
+      _parse(widget.text);
+      return;
+    }
+
+    final needsSpanUpdate = widget.style != oldWidget.style ||
         widget.matchStyle != oldWidget.matchStyle ||
         widget.tapStyle != oldWidget.tapStyle ||
         widget.hoverStyle != oldWidget.hoverStyle ||
-        widget.longPressDuration != oldWidget.longPressDuration;
+        widget.longPressDuration != oldWidget.longPressDuration ||
+        _hasNewDefinitions(oldWidget);
 
     if (needsSpanUpdate) {
-      final newSettings = _createNotifierSettings();
-      _textSpanNotifier.updateSettings(newSettings);
-    }
-
-    if (needsParse) {
-      _parse();
-    } else if (needsSpanUpdate) {
-      _textSpanNotifier.buildSpan(
-        style: widget.style,
-        oldElementsLength: _textSpanNotifier.elements.length,
-      );
+      _textSpanNotifier
+        ..settings = _createNotifierSettings()
+        ..buildSpan(
+          style: widget.style,
+          oldElementsLength: _textSpanNotifier.elements.length,
+        );
     }
   }
 
@@ -290,7 +288,7 @@ class _CustomTextState extends State<CustomText> {
     return false;
   }
 
-  Future<void> _parse() async {
+  Future<void> _parse(String text) async {
     final externalParser = widget.parserOptions.parser;
     final oldElementsLength = _textSpanNotifier.elements.length;
 
@@ -302,10 +300,10 @@ class _CustomTextState extends State<CustomText> {
             unicode: widget.parserOptions.unicode,
             dotAll: widget.parserOptions.dotAll,
           ).parse(
-            widget.text,
+            text,
             useIsolate: widget.preventBlocking,
           )
-        : await externalParser(widget.text);
+        : await externalParser(text);
 
     _textSpanNotifier
       ..elements = elements

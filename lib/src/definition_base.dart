@@ -65,12 +65,12 @@ abstract class Definition {
           mouseCursor == other.mouseCursor;
 
   @override
-  int get hashCode => Object.hashAll([
+  int get hashCode => Object.hash(
         runtimeType,
         matcher,
         matchStyle,
         tapStyle,
         hoverStyle,
         mouseCursor,
-      ]);
+      );
 }

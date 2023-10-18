@@ -195,6 +195,7 @@ class CustomTextEditingController extends TextEditingController {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: text,
+      style: style,
       settings: NotifierSettings(
         definitions: definitions,
         matchStyle: matchStyle,
@@ -225,8 +226,9 @@ class CustomTextEditingController extends TextEditingController {
       final oldElementsLength = _textSpanNotifier.elements.length;
 
       if (debounceDuration == null || oldElementsLength == 0) {
+        final elements = await _parser(newText);
         _textSpanNotifier
-          ..elements = await _parser(newText)
+          ..elements = elements
           ..buildSpan(
             style: style ?? _style,
             oldElementsLength: 0,
@@ -254,8 +256,9 @@ class CustomTextEditingController extends TextEditingController {
           );
 
         _delayedParse = () async {
+          final elements = await _parser(newText);
           _textSpanNotifier
-            ..elements = await _parser(newText)
+            ..elements = elements
             ..buildSpan(
               style: style ?? _style,
               oldElementsLength: oldElementsLength,

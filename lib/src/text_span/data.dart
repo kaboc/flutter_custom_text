@@ -20,8 +20,8 @@ class SpanData {
   final int index;
   final TextElement element;
   final String text;
-  final String shownText;
-  final String actionText;
+  final String? shownText;
+  final String? actionText;
   final Definition definition;
   final bool tappable;
 }

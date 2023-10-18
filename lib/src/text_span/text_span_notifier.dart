@@ -15,14 +15,14 @@ part 'gestures.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
-    required String text,
-    required NotifierSettings settings,
-  })  : _settings = settings,
-        super(TextSpan(text: text));
+    required String? text,
+    required TextStyle? style,
+    required this.settings,
+  })  : super(TextSpan(text: text, style: style));
 
-  NotifierSettings _settings;
-
+  NotifierSettings settings;
   List<TextElement> elements = [];
+
   final Map<int, TapGestureRecognizer> _tapRecognizers = {};
   bool _disposed = false;
   bool _isBuilding = false;
@@ -55,11 +55,6 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _disposed = true;
 
     super.dispose();
-  }
-
-  // ignore: use_setters_to_change_properties
-  void updateSettings(NotifierSettings settings) {
-    _settings = settings;
   }
 
   void buildSpan({required TextStyle? style, required int oldElementsLength}) {
@@ -105,7 +100,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   InlineSpan _span(int index, TextElement element) {
-    final defs = _settings.definitions[element.matcherType];
+    final defs = settings.definitions[element.matcherType];
     if (defs == null || defs.isEmpty) {
       return TextSpan(text: element.text, style: _style);
     }
@@ -115,9 +110,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       return def.builder!(element.text, element.groups);
     }
 
-    final isTappable = _settings.onTap != null ||
-        _settings.onLongPress != null ||
-        _settings.onGesture != null ||
+    final isTappable = settings.onTap != null ||
+        settings.onLongPress != null ||
+        settings.onGesture != null ||
         def.onTap != null ||
         def.onLongPress != null ||
         def.onGesture != null;
@@ -126,11 +121,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       index: index,
       element: element,
       text: element.text,
-      shownText:
-          def.shownText == null ? element.text : def.shownText!(element.groups),
-      actionText: def.actionText == null
-          ? element.text
-          : def.actionText!(element.groups),
+      shownText: def.shownText?.call(element.groups),
+      actionText: def.actionText?.call(element.groups),
       definition: def,
       tappable: isTappable,
     );
@@ -141,8 +133,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   TextSpan _nonTappableTextSpan({required SpanData spanData}) {
-    var matchStyle = spanData.definition.matchStyle ?? _settings.matchStyle;
-    var hoverStyle = spanData.definition.hoverStyle ?? _settings.hoverStyle;
+    var matchStyle = spanData.definition.matchStyle ?? settings.matchStyle;
+    var hoverStyle = spanData.definition.hoverStyle ?? settings.hoverStyle;
 
     final style = _style;
     if (style != null) {
@@ -154,11 +146,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _tapRecognizers.remove(spanData.index);
 
     final hoverEnabled = hoverStyle != null ||
-        _settings.onGesture != null ||
+        settings.onGesture != null ||
         spanData.definition.onGesture != null;
 
     return TextSpan(
-      text: spanData.shownText,
+      text: spanData.shownText ?? spanData.text,
       // hoverStyle must be removed when text spans are built.
       // Otherwise, if a span with hoverStyle is being hovered on during
       // a build and then gets a different index in new spans, the style
@@ -191,9 +183,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   TextSpan _tappableTextSpan({required SpanData spanData}) {
-    var matchStyle = spanData.definition.matchStyle ?? _settings.matchStyle;
-    var hoverStyle = spanData.definition.hoverStyle ?? _settings.hoverStyle;
-    var tapStyle = spanData.definition.tapStyle ?? _settings.tapStyle;
+    var matchStyle = spanData.definition.matchStyle ?? settings.matchStyle;
+    var hoverStyle = spanData.definition.hoverStyle ?? settings.hoverStyle;
+    var tapStyle = spanData.definition.tapStyle ?? settings.tapStyle;
     tapStyle ??= hoverStyle ?? matchStyle;
 
     final style = _style;
@@ -209,11 +201,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     );
 
     final hoverEnabled = hoverStyle != null ||
-        _settings.onGesture != null ||
+        settings.onGesture != null ||
         spanData.definition.onGesture != null;
 
     return TextSpan(
-      text: spanData.shownText,
+      text: spanData.shownText ?? spanData.text,
       // tapStyle and hoverStyle must be cancelled when text spans are built.
       // Otherwise, if a span with such a style is being pressed or hovered
       // on during a build and then gets a different index in new spans,

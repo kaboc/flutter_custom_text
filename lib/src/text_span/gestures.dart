@@ -9,9 +9,9 @@ extension on CustomTextSpanNotifier {
     // the previous one and creating a new one.
     _tapRecognizers[spanData.index] ??= TapGestureRecognizer();
 
-    if (_settings.onTap != null ||
+    if (settings.onTap != null ||
         spanData.definition.onTap != null ||
-        _settings.onLongPress != null ||
+        settings.onLongPress != null ||
         spanData.definition.onLongPress != null) {
       _tapRecognizers[spanData.index]
         ?..onTapDown = (details) {
@@ -41,7 +41,7 @@ extension on CustomTextSpanNotifier {
         };
     }
 
-    if (_settings.onGesture != null || spanData.definition.onGesture != null) {
+    if (settings.onGesture != null || spanData.definition.onGesture != null) {
       _tapRecognizers[spanData.index]
         ?..onSecondaryTapUp = (details) {
           _onGesture(
@@ -74,21 +74,21 @@ extension on CustomTextSpanNotifier {
       gestureKind: GestureKind.longPress,
       pointerDeviceKind: pointerDeviceKind,
       element: spanData.element,
-      shownText: spanData.shownText,
-      actionText: spanData.actionText,
+      shownText: spanData.shownText ?? spanData.text,
+      actionText: spanData.actionText ?? spanData.text,
       globalPosition: globalPosition,
       localPosition: localPosition,
     );
 
     if (spanData.definition.onLongPress != null) {
       _longPressTimer = Timer(
-        _settings.longPressDuration,
+        settings.longPressDuration,
         () => spanData.definition.onLongPress!(details),
       );
-    } else if (_settings.onLongPress != null) {
+    } else if (settings.onLongPress != null) {
       _longPressTimer = Timer(
-        _settings.longPressDuration,
-        () => _settings.onLongPress?.call(details),
+        settings.longPressDuration,
+        () => settings.onLongPress?.call(details),
       );
     }
 
@@ -111,16 +111,16 @@ extension on CustomTextSpanNotifier {
         gestureKind: GestureKind.tap,
         pointerDeviceKind: pointerDeviceKind,
         element: spanData.element,
-        shownText: spanData.shownText,
-        actionText: spanData.actionText,
+        shownText: spanData.shownText ?? spanData.text,
+        actionText: spanData.actionText ?? spanData.text,
         globalPosition: globalPosition,
         localPosition: localPosition,
       );
 
       if (spanData.definition.onTap != null) {
         spanData.definition.onTap!(details);
-      } else if (_settings.onTap != null) {
-        _settings.onTap?.call(details);
+      } else if (settings.onTap != null) {
+        settings.onTap?.call(details);
       }
     }
 
@@ -138,16 +138,16 @@ extension on CustomTextSpanNotifier {
       gestureKind: gestureKind,
       pointerDeviceKind: pointerDeviceKind,
       element: spanData.element,
-      shownText: spanData.shownText,
-      actionText: spanData.actionText,
+      shownText: spanData.shownText ?? spanData.text,
+      actionText: spanData.actionText ?? spanData.text,
       globalPosition: globalPosition,
       localPosition: localPosition,
     );
 
     if (spanData.definition.onGesture != null) {
       spanData.definition.onGesture?.call(details);
-    } else if (_settings.onGesture != null) {
-      _settings.onGesture?.call(details);
+    } else if (settings.onGesture != null) {
+      settings.onGesture?.call(details);
     }
   }
 

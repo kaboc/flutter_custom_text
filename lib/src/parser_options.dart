@@ -56,11 +56,11 @@ class ParserOptions {
           dotAll == other.dotAll;
 
   @override
-  int get hashCode => Object.hashAll([
+  int get hashCode => Object.hash(
         runtimeType,
         multiLine,
         caseSensitive,
         unicode,
         dotAll,
-      ]);
+      );
 }
