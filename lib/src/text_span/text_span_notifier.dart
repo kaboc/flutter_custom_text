@@ -1,42 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/painting.dart';
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
 import '../definitions.dart';
-import '../gesture_details.dart';
 import 'data.dart';
+import 'gesture_handler.dart';
 import 'transient_elements_builder.dart';
-
-part 'gestures.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
     required String? text,
     required TextStyle? style,
     required this.settings,
-  })  : super(TextSpan(text: text, style: style));
+  }) : super(TextSpan(text: text, style: style));
 
   NotifierSettings settings;
   List<TextElement> elements = [];
 
-  final Map<int, TapGestureRecognizer> _tapRecognizers = {};
+  final Map<int, GestureHandler> _gestureHandlers = {};
   bool _disposed = false;
   bool _isBuilding = false;
 
   TextStyle? _style;
-  Timer? _longPressTimer;
   int? _tapIndex;
   int? _hoverIndex;
   Offset? _hoverPosition;
-
-  // For workaround to skip unwanted events in _onHover()
-  Timer? _hoverHandlerDebounceTimer;
-  int? _enterOrExitIndex;
-  GestureKind? _lastHoverGestureKind;
 
   @override
   set value(TextSpan span) {
@@ -47,10 +36,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
 
   @override
   void dispose() {
-    _longPressTimer?.cancel();
-    _hoverHandlerDebounceTimer?.cancel();
-    _tapRecognizers
-      ..forEach((_, recognizer) => recognizer.dispose())
+    _gestureHandlers
+      ..forEach((_, handler) => handler.dispose())
       ..clear();
     _disposed = true;
 
@@ -71,8 +58,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     // the previous ones, the elements after the current max index
     // are no longer necessary.
     for (var i = elements.length; i < oldElementsLength; i++) {
-      _tapRecognizers[i]?.dispose();
-      _tapRecognizers.remove(i);
+      _gestureHandlers[i]?.dispose();
+      _gestureHandlers.remove(i);
     }
 
     _isBuilding = false;
@@ -142,12 +129,26 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       hoverStyle = hoverStyle == null ? null : style.merge(hoverStyle);
     }
 
-    _tapRecognizers[spanData.index]?.dispose();
-    _tapRecognizers.remove(spanData.index);
+    // This method is called frequently, so the existing handler
+    // should be reused instead of created every time.
+    _gestureHandlers[spanData.index] ??= GestureHandler();
 
-    final hoverEnabled = hoverStyle != null ||
-        settings.onGesture != null ||
-        spanData.definition.onGesture != null;
+    final gestureHandler = _gestureHandlers[spanData.index]
+      ?..updateSettings(
+        settings: settings,
+        spanData: spanData,
+        hoverStyle: hoverStyle,
+        onMouseEnter: (event) => _updateHoverIndex(
+          spanData: spanData,
+          hovered: true,
+          globalPosition: event.position,
+        ),
+        onMouseExit: (event) => _updateHoverIndex(
+          spanData: spanData,
+          hovered: false,
+          globalPosition: event.position,
+        ),
+      );
 
     return TextSpan(
       text: spanData.shownText ?? spanData.text,
@@ -159,26 +160,8 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           ? hoverStyle
           : matchStyle,
       mouseCursor: spanData.definition.mouseCursor,
-      onEnter: hoverEnabled
-          ? (event) => _onHover(
-                spanData: spanData,
-                gestureKind: GestureKind.enter,
-                pointerDeviceKind: event.kind,
-                globalPosition: event.position,
-                localPosition: event.localPosition,
-                styling: hoverStyle != null,
-              )
-          : null,
-      onExit: hoverEnabled
-          ? (event) => _onHover(
-                spanData: spanData,
-                gestureKind: GestureKind.exit,
-                pointerDeviceKind: event.kind,
-                globalPosition: event.position,
-                localPosition: event.localPosition,
-                styling: hoverStyle != null,
-              )
-          : null,
+      onEnter: gestureHandler?.onEnter,
+      onExit: gestureHandler?.onExit,
     );
   }
 
@@ -195,14 +178,36 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       tapStyle = style.merge(tapStyle);
     }
 
-    _configureRecognizer(
-      spanData: spanData,
-      style: style,
-    );
+    // This method is called frequently, so the existing handler
+    // should be reused instead of created every time.
+    _gestureHandlers[spanData.index] ??= GestureHandler();
 
-    final hoverEnabled = hoverStyle != null ||
-        settings.onGesture != null ||
-        spanData.definition.onGesture != null;
+    final gestureHandler = _gestureHandlers[spanData.index]
+      ?..updateSettings(
+        settings: settings,
+        spanData: spanData,
+        hoverStyle: hoverStyle,
+        onTapDown: () {
+          _updateTapIndex(
+            spanData: spanData,
+            tapped: true,
+          );
+        },
+        onTapCancel: () => _updateTapIndex(
+          spanData: spanData,
+          tapped: false,
+        ),
+        onMouseEnter: (event) => _updateHoverIndex(
+          spanData: spanData,
+          hovered: true,
+          globalPosition: event.position,
+        ),
+        onMouseExit: (event) => _updateHoverIndex(
+          spanData: spanData,
+          hovered: false,
+          globalPosition: event.position,
+        ),
+      );
 
     return TextSpan(
       text: spanData.shownText ?? spanData.text,
@@ -215,28 +220,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
           : _tapIndex == spanData.index
               ? tapStyle
               : (_hoverIndex == spanData.index ? hoverStyle : matchStyle),
-      recognizer: _tapRecognizers[spanData.index],
+      recognizer: gestureHandler?.recognizer,
       mouseCursor: spanData.definition.mouseCursor,
-      onEnter: hoverEnabled
-          ? (event) => _onHover(
-                spanData: spanData,
-                gestureKind: GestureKind.enter,
-                pointerDeviceKind: event.kind,
-                globalPosition: event.position,
-                localPosition: event.localPosition,
-                styling: hoverStyle != null,
-              )
-          : null,
-      onExit: hoverEnabled
-          ? (event) => _onHover(
-                spanData: spanData,
-                gestureKind: GestureKind.exit,
-                pointerDeviceKind: event.kind,
-                globalPosition: event.position,
-                localPosition: event.localPosition,
-                styling: hoverStyle != null,
-              )
-          : null,
+      onEnter: gestureHandler?.onEnter,
+      onExit: gestureHandler?.onExit,
     );
   }
 
