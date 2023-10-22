@@ -195,9 +195,9 @@ class CustomTextEditingController extends TextEditingController {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: text,
-      style: style,
       settings: NotifierSettings(
         definitions: definitions,
+        style: style,
         matchStyle: matchStyle,
         tapStyle: tapStyle,
         hoverStyle: hoverStyle,

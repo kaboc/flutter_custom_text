@@ -203,6 +203,7 @@ class _CustomTextState extends State<CustomText> {
   NotifierSettings _createNotifierSettings() {
     return NotifierSettings(
       definitions: widget.definitions,
+      style: widget.style,
       matchStyle: widget.matchStyle,
       tapStyle: widget.tapStyle,
       hoverStyle: widget.hoverStyle,
@@ -219,7 +220,6 @@ class _CustomTextState extends State<CustomText> {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       text: widget.text,
-      style: widget.style,
       settings: _createNotifierSettings(),
     );
     _parse(widget.text);

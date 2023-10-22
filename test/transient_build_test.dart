@@ -35,7 +35,6 @@ void main() {
   final matchers = definitions.map((def) => def.matcher).toList();
   final notifier = CustomTextSpanNotifier(
     text: '',
-    style: null,
     settings: NotifierSettings(definitions: definitions),
   );
 

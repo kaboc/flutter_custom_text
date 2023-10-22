@@ -1,74 +1,87 @@
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 
 import '../gesture_details.dart';
 import 'data.dart';
 
+class GestureHandlers {
+  final Map<int, GestureHandler> _handlers = {};
+  final HoverState _hoverState = HoverState();
+
+  void dispose() {
+    _handlers
+      ..forEach((_, handler) => handler.dispose())
+      ..clear();
+    _hoverState.reset();
+  }
+
+  void removeHandler({required int index}) {
+    _handlers
+      ..[index]?.dispose()
+      ..remove(index);
+  }
+
+  // ignore: library_private_types_in_public_api
+  GestureHandler prepareHandler({
+    required NotifierSettings settings,
+    required SpanData spanData,
+  }) {
+    // This method is called frequently, so the existing handler
+    // should be reused instead of created every time.
+    return (_handlers[spanData.index] ??= GestureHandler())
+      ..updateSettings(
+        settings: settings,
+        spanData: spanData,
+        hoverState: _hoverState,
+      );
+  }
+}
+
 class GestureHandler {
   late NotifierSettings _settings;
   late SpanData _spanData;
-  TextStyle? _hoverStyle;
-  VoidCallback? _onTapDown;
-  VoidCallback? _onTapCancel;
-  ValueChanged<PointerEvent>? _onMouseEnter;
-  ValueChanged<PointerEvent>? _onMouseExit;
+  late HoverState _hoverState;
 
   bool _disposed = false;
-  bool _pressEnabled = false;
-  bool _gestureEnabled = false;
-  bool _hoverEnabled = false;
+  bool _isPressEnabled = false;
+  bool _isGestureEnabled = false;
+  bool _isHoverEnabled = false;
 
   TapGestureRecognizer? _recognizer;
   Timer? _longPressTimer;
-
-  // For workaround to skip unwanted events in _onHover()
-  Timer? _hoverHandlerDebounceTimer;
-  int? _enterOrExitIndex;
-  GestureKind? _lastHoverGestureKind;
 
   TapGestureRecognizer? get recognizer => _recognizer;
 
   void dispose() {
     _disposed = true;
-
     _disposeRecognizer();
     _longPressTimer?.cancel();
-    _hoverHandlerDebounceTimer?.cancel();
   }
 
   void updateSettings({
     required NotifierSettings settings,
     required SpanData spanData,
-    required TextStyle? hoverStyle,
-    VoidCallback? onTapDown,
-    VoidCallback? onTapCancel,
-    ValueChanged<PointerEvent>? onMouseEnter,
-    ValueChanged<PointerEvent>? onMouseExit,
+    required HoverState hoverState,
   }) {
     _settings = settings;
     _spanData = spanData;
-    _hoverStyle = hoverStyle;
-    _onTapDown = onTapDown;
-    _onTapCancel = onTapCancel;
-    _onMouseEnter = onMouseEnter;
-    _onMouseExit = onMouseExit;
+    _hoverState = hoverState;
 
-    _pressEnabled = settings.onTap != null ||
+    _isPressEnabled = settings.onTap != null ||
         spanData.definition.onTap != null ||
         settings.onLongPress != null ||
         spanData.definition.onLongPress != null;
 
-    _gestureEnabled =
+    _isGestureEnabled =
         settings.onGesture != null || spanData.definition.onGesture != null;
 
-    _hoverEnabled = hoverStyle != null ||
-        settings.onGesture != null ||
-        spanData.definition.onGesture != null;
+    _isHoverEnabled = _isGestureEnabled ||
+        spanData.definition.hoverStyle != null ||
+        settings.hoverStyle != null;
 
-    if (_pressEnabled || _gestureEnabled) {
+    if (_isPressEnabled || _isGestureEnabled) {
       _configureRecognizer();
     } else {
       _disposeRecognizer();
@@ -82,55 +95,52 @@ class GestureHandler {
 
   void _configureRecognizer() {
     // This method is called frequently, so the existing recognizer
-    // should be reused instead of created every time.
+    // should be reused instead of created each time.
     _recognizer ??= TapGestureRecognizer();
 
     _recognizer
-      ?..onTapDown = onTapDown
-      ..onTapUp = onTapUp
-      ..onTapCancel = onTapCancel
-      ..onSecondaryTapUp = onSecondaryTapUp
-      ..onTertiaryTapUp = onTertiaryTapUp;
+      ?..onTapDown = _onTapDown
+      ..onTapUp = _onTapUp
+      ..onTapCancel = _onTapCancel
+      ..onSecondaryTapUp = _onSecondaryTapUp
+      ..onTertiaryTapUp = _onTertiaryTapUp;
   }
 
-  GestureTapDownCallback? get onTapDown {
-    return _pressEnabled
-        ? (tapDownDetails) {
-            final details = GestureDetails(
-              gestureKind: GestureKind.longPress,
-              pointerDeviceKind:
-                  tapDownDetails.kind ?? PointerDeviceKind.unknown,
-              element: _spanData.element,
-              shownText: _spanData.shownText ?? _spanData.text,
-              actionText: _spanData.actionText ?? _spanData.text,
-              globalPosition: tapDownDetails.globalPosition,
-              localPosition: tapDownDetails.localPosition,
+  GestureTapDownCallback? get _onTapDown => _isPressEnabled
+      ? (tapDownDetails) {
+          final details = GestureDetails(
+            gestureKind: GestureKind.longPress,
+            pointerDeviceKind: tapDownDetails.kind ?? PointerDeviceKind.unknown,
+            element: _spanData.element,
+            shownText: _spanData.shownText ?? _spanData.text,
+            actionText: _spanData.actionText ?? _spanData.text,
+            globalPosition: tapDownDetails.globalPosition,
+            localPosition: tapDownDetails.localPosition,
+          );
+
+          if (_spanData.definition.onLongPress != null) {
+            _longPressTimer = Timer(
+              _settings.longPressDuration,
+              () => _spanData.definition.onLongPress!(details),
             );
-
-            if (_spanData.definition.onLongPress != null) {
-              _longPressTimer = Timer(
-                _settings.longPressDuration,
-                () => _spanData.definition.onLongPress!(details),
-              );
-            } else if (_settings.onLongPress != null) {
-              _longPressTimer = Timer(
-                _settings.longPressDuration,
-                () => _settings.onLongPress?.call(details),
-              );
-            }
-
-            _onTapDown?.call();
+          } else if (_settings.onLongPress != null) {
+            _longPressTimer = Timer(
+              _settings.longPressDuration,
+              () => _settings.onLongPress?.call(details),
+            );
           }
-        : null;
-  }
 
-  GestureTapUpCallback? get onTapUp => _pressEnabled
+          _spanData.onTapDown?.call(_spanData);
+        }
+      : null;
+
+  GestureTapUpCallback? get _onTapUp => _isPressEnabled
       ? (tapUpDetails) {
           final timer = _longPressTimer;
 
-          // A tap is valid if long presses are not enabled
-          // or if the press was shorter than a long press and
-          // therefore the timer is still active.
+          // A tap is valid if long presses are not enabled or
+          // if the press was shorter than longPressDuration
+          // and thus the timer is still active.
           if (timer == null || timer.isActive) {
             final details = GestureDetails(
               gestureKind: GestureKind.tap,
@@ -144,7 +154,7 @@ class GestureHandler {
 
             if (_spanData.definition.onTap != null) {
               _spanData.definition.onTap!(details);
-            } else if (_settings.onTap != null) {
+            } else {
               _settings.onTap?.call(details);
             }
           }
@@ -153,16 +163,16 @@ class GestureHandler {
         }
       : null;
 
-  GestureTapCancelCallback? get onTapCancel => _pressEnabled
+  GestureTapCancelCallback? get _onTapCancel => _isPressEnabled
       ? () {
           _longPressTimer?.cancel();
           _longPressTimer = null;
 
-          _onTapCancel?.call();
+          _spanData.onTapCancel?.call(_spanData);
         }
       : null;
 
-  GestureTapUpCallback? get onSecondaryTapUp => _gestureEnabled
+  GestureTapUpCallback? get _onSecondaryTapUp => _isGestureEnabled
       ? (details) => _onGesture(
             gestureKind: GestureKind.secondaryTap,
             pointerDeviceKind: details.kind,
@@ -171,7 +181,7 @@ class GestureHandler {
           )
       : null;
 
-  GestureTapUpCallback? get onTertiaryTapUp => _gestureEnabled
+  GestureTapUpCallback? get _onTertiaryTapUp => _isGestureEnabled
       ? (details) => _onGesture(
             gestureKind: GestureKind.tertiaryTap,
             pointerDeviceKind: details.kind,
@@ -180,14 +190,14 @@ class GestureHandler {
           )
       : null;
 
-  PointerEnterEventListener? get onEnter => _hoverEnabled
+  PointerEnterEventListener? get onEnter => _isHoverEnabled
       ? (event) => _onHover(
             event: event,
             gestureKind: GestureKind.enter,
           )
       : null;
 
-  PointerExitEventListener? get onExit => _hoverEnabled
+  PointerExitEventListener? get onExit => _isHoverEnabled
       ? (event) => _onHover(
             event: event,
             gestureKind: GestureKind.exit,
@@ -212,7 +222,7 @@ class GestureHandler {
 
     if (_spanData.definition.onGesture != null) {
       _spanData.definition.onGesture?.call(details);
-    } else if (_settings.onGesture != null) {
+    } else {
       _settings.onGesture?.call(details);
     }
   }
@@ -225,51 +235,50 @@ class GestureHandler {
       return;
     }
 
-    void handleHover({required bool force}) {
-      if (_hoverStyle != null) {
-        gestureKind == GestureKind.enter
-            ? _onMouseEnter?.call(event)
-            : _onMouseExit?.call(event);
-      }
+    final index = _spanData.index;
 
-      if (!force && gestureKind == _lastHoverGestureKind) {
-        return;
-      }
-      _lastHoverGestureKind = gestureKind;
-      _enterOrExitIndex = null;
+    // This method is called for various reasons. A sequence of
+    // exit and enter events or even of the same events happens
+    // once or more within a very short period of time. Therefore
+    // handling of events needs to be debounced.
+    _hoverState.debounceTimers
+      ..[index]?.cancel()
+      ..remove(index);
 
-      _onGesture(
-        gestureKind: gestureKind,
-        pointerDeviceKind: event.kind,
-        globalPosition: event.position,
-        localPosition: event.localPosition,
-      );
+    if (index == _hoverState.index &&
+        gestureKind == _hoverState.lastGestureKind) {
+      // A new timer must not be started after the cancel above
+      // if the gesture kind has not changed because the handler
+      // for the same gesture kind was already executed and thus
+      // duplicate executions need be prevented.
+      // (`lastGestureKind` is updated in the timer callback,
+      // so having the same gesture kind indicates that a timer
+      // for that kind has already been completed.)
+      return;
     }
 
-    // This method is called not only when the mouse pointer entered
-    // and exited but also when the text span was rebuilt to update
-    // the text style by a tap while the pointer was still on it.
-    // In the latter case, a sequence of exit and enter happens once
-    // or more within a very short period of time, causing unnecessary
-    // calls to _updateHoverIndex() and _onGesture(). To avoid it,
-    // those calls are debounced (i.e. the existing timer is cancelled
-    // and a new timer is started), and also a call to _onGesture()
-    // is skipped if the gesture kind is same as the last.
-    //
-    // As an exception, however, if an enter or exit event happens at
-    // a different index, it is necessary to keep the existing timer
-    // running to complete the scheduled operation for the previous
-    // index (e.g. removing hoverStyle), and force a call to _onGesture()
-    // as it is an event at the new index.
-    final force = _spanData.index != _enterOrExitIndex;
-    _enterOrExitIndex = _spanData.index;
+    _hoverState.debounceTimers[index] = Timer(
+      // Duration of zero time does not mean no duration.
+      Duration.zero,
+      () {
+        _hoverState
+          ..debounceTimers.remove(index)
+          ..index = gestureKind == GestureKind.exit ? null : index
+          ..lastGestureKind = gestureKind;
 
-    if (!force) {
-      _hoverHandlerDebounceTimer?.cancel();
-    }
+        if (_isHoverEnabled) {
+          gestureKind == GestureKind.enter
+              ? _spanData.onMouseEnter?.call(event, _spanData)
+              : _spanData.onMouseExit?.call(event, _spanData);
+        }
 
-    _hoverHandlerDebounceTimer = Timer(const Duration(microseconds: 1), () {
-      handleHover(force: force);
-    });
+        _onGesture(
+          gestureKind: gestureKind,
+          pointerDeviceKind: event.kind,
+          globalPosition: event.position,
+          localPosition: event.localPosition,
+        );
+      },
+    );
   }
 }

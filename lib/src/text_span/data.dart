@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/painting.dart';
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
 import '../definition_base.dart';
+import '../gesture_details.dart';
 
 const kLongPressDuration = Duration(milliseconds: 600);
 
@@ -14,7 +18,10 @@ class SpanData {
     required this.shownText,
     required this.actionText,
     required this.definition,
-    required this.tappable,
+    required this.onTapDown,
+    required this.onTapCancel,
+    required this.onMouseEnter,
+    required this.onMouseExit,
   });
 
   final int index;
@@ -23,12 +30,16 @@ class SpanData {
   final String? shownText;
   final String? actionText;
   final Definition definition;
-  final bool tappable;
+  final void Function(SpanData)? onTapDown;
+  final void Function(SpanData)? onTapCancel;
+  final void Function(PointerEvent, SpanData)? onMouseEnter;
+  final void Function(PointerEvent, SpanData)? onMouseExit;
 }
 
 class NotifierSettings {
   NotifierSettings({
     required List<Definition> definitions,
+    this.style,
     this.matchStyle,
     this.tapStyle,
     this.hoverStyle,
@@ -53,6 +64,7 @@ class NotifierSettings {
   }
 
   final Map<Type, Map<int, Definition>> definitions;
+  final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
   final TextStyle? hoverStyle;
@@ -60,4 +72,20 @@ class NotifierSettings {
   final GestureCallback? onLongPress;
   final GestureCallback? onGesture;
   final Duration longPressDuration;
+}
+
+/// A class to hold some values used for a workaround to skip
+/// unwanted hover events in GestureHandler.
+class HoverState {
+  int? index;
+  GestureKind? lastGestureKind;
+  Map<int, Timer> debounceTimers = {};
+
+  void reset() {
+    index = null;
+    lastGestureKind = null;
+    debounceTimers
+      ..forEach((_, t) => t.cancel())
+      ..clear();
+  }
 }

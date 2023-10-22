@@ -96,4 +96,7 @@ class SpanDefinition extends Definition {
     required super.matcher,
     required SpanBuilder super.builder,
   });
+
+  @override
+  SpanBuilder get builder => super.builder!;
 }
