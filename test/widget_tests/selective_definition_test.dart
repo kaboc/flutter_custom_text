@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'utils.dart';
+import 'widget_utils.dart';
 import 'widgets.dart';
 
 void main() {
