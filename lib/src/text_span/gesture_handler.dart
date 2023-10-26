@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
@@ -8,7 +9,16 @@ import 'data.dart';
 
 class GestureHandlers {
   final Map<int, GestureHandler> _handlers = {};
-  final HoverState _hoverState = HoverState();
+  HoverState _hoverState = HoverState();
+
+  @visibleForTesting
+  Map<int, GestureHandler> get map => Map.unmodifiable(_handlers);
+
+  @visibleForTesting
+  HoverState get hoverState => _hoverState;
+
+  @visibleForTesting
+  set hoverState(HoverState state) => _hoverState = state;
 
   void dispose() {
     _handlers
