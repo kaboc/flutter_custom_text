@@ -18,7 +18,7 @@ void main() {
         await tester.pumpWidget(const CustomTextWidget(text));
         await tester.pump();
 
-        final spans = getSpans();
+        final spans = getInlineSpans();
         expect(spans, hasLength(4));
         expect(spans[0].toPlainText(), 'aaa ');
         expect(spans[1].toPlainText(), 'bbb@example.com');
@@ -34,7 +34,7 @@ void main() {
             .pumpWidget(const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd'));
         await tester.pump();
 
-        final spans = getSpans();
+        final spans = getInlineSpans();
         expect(spans, hasLength(3));
         expect(spans[0].toPlainText(), 'aaa');
         expect(spans[1].toPlainText(), 'bbb');
@@ -46,13 +46,30 @@ void main() {
       'CustomText with SpanDefinition composes correct spans',
       (tester) async {
         await tester.pumpWidget(
-          const SpanCustomTextWidget1(
+          SpanCustomTextWidget(
             'Email: foo@example.com, Tel: 012-3456-7890',
+            definitions: [
+              const TextDefinition(
+                matcher: TelMatcher(),
+              ),
+              SpanDefinition(
+                matcher: const EmailMatcher(),
+                builder: (text, groups) => TextSpan(
+                  children: [
+                    const WidgetSpan(
+                      child: SizedBox.square(dimension: 18.0),
+                      alignment: PlaceholderAlignment.middle,
+                    ),
+                    TextSpan(text: text),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
         await tester.pump();
 
-        final spans = getSpans();
+        final spans = getInlineSpans();
         expect(spans, hasLength(5));
         expect(spans[0].toPlainText(), 'Email: ');
         expect(spans[1], isA<WidgetSpan>());
@@ -65,35 +82,39 @@ void main() {
     testWidgets(
       "Multiple definitions with matcher of same type don't get mixed up",
       (tester) async {
+        const matchStyle1 = TextStyle(color: Color(0xFF111111));
+        const matchStyle2 = TextStyle(color: Color(0xFF222222));
+        const matchStyle3 = TextStyle(color: Color(0xFF333333));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'Pattern 2 Pattern 3 foo@example.com Pattern 1',
             definitions: [
               TextDefinition(
                 matcher: EmailMatcher(),
-                matchStyle: TextStyle(color: Color(0xFF111111)),
+                matchStyle: matchStyle1,
               ),
               TextDefinition(
                 matcher: PatternMatcher('Pattern 1'),
-                matchStyle: TextStyle(color: Color(0xFF222222)),
+                matchStyle: matchStyle2,
               ),
               TextDefinition(
                 matcher: PatternMatcher('Pattern 2'),
-                matchStyle: TextStyle(color: Color(0xFF333333)),
+                matchStyle: matchStyle3,
               ),
             ],
           ),
         );
         await tester.pump();
 
-        final spans = getSpans();
+        final spans = getInlineSpans();
         expect(spans, hasLength(5));
         expect(spans[0].toPlainText(), 'Pattern 2');
-        expect(spans[0].style?.color, const Color(0xFF333333));
+        expect(spans[0].style, matchStyle3);
         expect(spans[2].toPlainText(), 'foo@example.com');
-        expect(spans[2].style?.color, const Color(0xFF111111));
+        expect(spans[2].style, matchStyle1);
         expect(spans[4].toPlainText(), 'Pattern 1');
-        expect(spans[4].style?.color, const Color(0xFF222222));
+        expect(spans[4].style, matchStyle2);
       },
     );
   });

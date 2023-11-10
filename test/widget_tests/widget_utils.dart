@@ -61,12 +61,7 @@ Text findText() {
   return finder.evaluate().first.widget as Text;
 }
 
-RichText findRichText() {
-  final finder = find.byType(RichText);
-  return finder.evaluate().first.widget as RichText;
-}
-
-List<InlineSpan> getSpans() {
+List<InlineSpan> getInlineSpans() {
   final spans = <InlineSpan>[];
   findText().textSpan?.visitChildren((span) {
     spans.add(span);
@@ -75,8 +70,8 @@ List<InlineSpan> getSpans() {
   return spans;
 }
 
-InlineSpan? findSpan(String text) {
-  InlineSpan? span;
+TextSpan? findTextSpan(String text) {
+  TextSpan? span;
   findText().textSpan?.visitChildren(
     (visitor) {
       if (visitor is TextSpan && visitor.text == text) {
@@ -89,21 +84,25 @@ InlineSpan? findSpan(String text) {
   return span;
 }
 
-void tapDownSpan(InlineSpan? span) {
-  if (span is TextSpan) {
-    final onTapDown = (span.recognizer as TapGestureRecognizer?)?.onTapDown;
+extension SpanRecognizer on GestureRecognizer {
+  void tapDown() {
+    final onTapDown = (this as TapGestureRecognizer).onTapDown;
     onTapDown?.call(TapDownDetails());
   }
-}
 
-void tapUpSpan(InlineSpan? span) {
-  if (span is TextSpan) {
-    final onTapUp = (span.recognizer as TapGestureRecognizer?)?.onTapUp;
+  void tapUp() {
+    final onTapUp = (this as TapGestureRecognizer).onTapUp;
     onTapUp?.call(TapUpDetails(kind: PointerDeviceKind.touch));
   }
 }
 
-Future<void> tapButton(WidgetTester tester) async {
-  final finder = find.byType(ElevatedButton);
-  await tester.tap(finder);
+extension WidgetTesterExtension on WidgetTester {
+  Future<void> tapButton() async {
+    final finder = find.byType(ElevatedButton);
+    await tap(finder);
+  }
+
+  Iterable<T> findWidgetsByType<T>() {
+    return widgetList(find.byType(T)).map((v) => v as T);
+  }
 }

@@ -159,65 +159,18 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   }
 }
 
-class SpanCustomTextWidget1 extends StatelessWidget {
-  const SpanCustomTextWidget1(this.text);
+class SpanCustomTextWidget extends StatelessWidget {
+  const SpanCustomTextWidget(this.text, {required this.definitions});
 
   final String text;
+  final List<Definition> definitions;
 
   @override
   Widget build(BuildContext context) {
     return CustomText(
       text,
       textDirection: TextDirection.ltr,
-      definitions: [
-        const TextDefinition(
-          matcher: TelMatcher(),
-        ),
-        SpanDefinition(
-          matcher: const EmailMatcher(),
-          builder: (text, groups) => TextSpan(
-            children: [
-              const WidgetSpan(
-                child: SizedBox(
-                  width: 18.0,
-                  height: 18.0,
-                ),
-                alignment: PlaceholderAlignment.middle,
-              ),
-              TextSpan(text: text),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class SpanCustomTextWidget2 extends StatelessWidget {
-  const SpanCustomTextWidget2(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomText(
-      text,
-      textDirection: TextDirection.ltr,
-      definitions: [
-        const TextDefinition(
-          matcher: TelMatcher(),
-        ),
-        SpanDefinition(
-          matcher: const LinkMatcher(),
-          builder: (text, groups) => TextSpan(
-            children: [
-              TextSpan(text: text),
-              for (var i = 0; i < groups.length; i++)
-                TextSpan(text: '$i: ${groups[i]}'),
-            ],
-          ),
-        ),
-      ],
+      definitions: definitions,
     );
   }
 }

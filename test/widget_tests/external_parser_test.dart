@@ -9,6 +9,9 @@ import 'widgets.dart';
 void main() {
   group('External parser (CustomText)', () {
     testWidgets('Styled acc to result of external parser', (tester) async {
+      const style = TextStyle(color: Color(0xFF111111));
+      const matchStyle = TextStyle(color: Color(0xFF222222));
+
       await tester.pumpWidget(
         const CustomTextWidget(
           'abc1234def5678',
@@ -16,21 +19,24 @@ void main() {
           definitions: [
             TextDefinition(
               matcher: NumberMatcher(),
-              matchStyle: TextStyle(color: Color(0xFF222222)),
+              matchStyle: matchStyle,
             ),
           ],
-          style: TextStyle(color: Color(0xFF111111)),
+          style: style,
         ),
       );
       await tester.pump();
 
-      expect(findSpan('abc')?.style?.color, const Color(0xFF111111));
-      expect(findSpan('1234')?.style?.color, const Color(0xFF222222));
-      expect(findSpan('def')?.style?.color, const Color(0xFF111111));
-      expect(findSpan('5678')?.style?.color, const Color(0xFF222222));
+      expect(findTextSpan('abc')?.style, style);
+      expect(findTextSpan('1234')?.style, matchStyle);
+      expect(findTextSpan('def')?.style, style);
+      expect(findTextSpan('5678')?.style, matchStyle);
     });
 
     testWidgets('External parser reruns when text is updated', (tester) async {
+      const style = TextStyle(color: Color(0xFF111111));
+      const matchStyle = TextStyle(color: Color(0xFF222222));
+
       var text = 'abc1234def';
 
       await tester.pumpWidget(
@@ -42,26 +48,27 @@ void main() {
               definitions: [
                 TextDefinition(
                   matcher: const NumberMatcher(),
-                  matchStyle: const TextStyle(color: Color(0xFF222222)),
+                  matchStyle: matchStyle,
                   onTap: (details) => setState(() => text = '123456def'),
                 ),
               ],
-              style: const TextStyle(color: Color(0xFF111111)),
+              style: style,
             );
           },
         ),
       );
       await tester.pump();
 
-      expect(findSpan('abc')?.style?.color, const Color(0xFF111111));
-      expect(findSpan('1234')?.style?.color, const Color(0xFF222222));
+      expect(findTextSpan('abc')?.style, style);
+      expect(findTextSpan('1234')?.style, matchStyle);
 
-      tapDownSpan(findSpan('1234'));
-      tapUpSpan(findSpan('1234'));
+      findTextSpan('1234')!.recognizer!
+        ..tapDown()
+        ..tapUp();
       await tester.pumpAndSettle();
 
-      expect(findSpan('abc'), isNull);
-      expect(findSpan('123456')?.style?.color, const Color(0xFF222222));
+      expect(findTextSpan('abc'), isNull);
+      expect(findTextSpan('123456')?.style, matchStyle);
     });
   });
 

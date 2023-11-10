@@ -14,55 +14,59 @@ void main() {
     testWidgets(
       'matchStyle specified in definition is used even if without onTap',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            matchStyleInDef: matchStyle,
           ),
         );
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2 = findSpan('bbb@example.com');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
       },
     );
 
     testWidgets(
       'matchStyle specified in definition is only applied to relevant element',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            matchStyleInDef: matchStyle,
           ),
         );
         await tester.pump();
 
-        final span1 = findSpan('bbb@example.com');
-        final span2 = findSpan('https://example.com/');
-        expect(span1?.style?.color, const Color(0xFF222222));
-        expect(span2?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpan('https://example.com/')?.style, style);
       },
     );
 
     testWidgets(
       'matchStyle specified in definition takes precedence',
       (tester) async {
+        const matchStyle = TextStyle(color: Color(0xFF111111));
+        const matchStyleInDef = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            matchStyle: TextStyle(color: Color(0xFF111111)),
-            matchStyleInDef: TextStyle(color: Color(0xFF222222)),
+            matchStyle: matchStyle,
+            matchStyleInDef: matchStyleInDef,
           ),
         );
         await tester.pump();
 
-        final span = findSpan('bbb@example.com');
-        expect(span?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, matchStyleInDef);
       },
     );
 
@@ -70,69 +74,70 @@ void main() {
       'tapStyle specified in definition is not applied '
       'if tap callbacks are not specified',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
           ),
         );
         await tester.pump();
 
-        final spanA = findSpan('bbb@example.com');
-        tapDownSpan(spanA);
+        findTextSpan('bbb@example.com')?.recognizer?.tapDown();
         await tester.pump();
 
-        final spanB = findSpan('bbb@example.com');
-        expect(spanB?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, style);
       },
     );
 
     testWidgets(
       'tapStyle specified in definition is only applied to relevant element',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
             onTap: onTap,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        final span3 = findSpan('https://example.com/');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
-        expect(span3?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpan('https://example.com/')?.style, style);
       },
     );
 
     testWidgets(
       'tapStyle specified in definition takes precedence',
       (tester) async {
+        const tapStyle = TextStyle(color: Color(0xFF111111));
+        const tapStyleInDef = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            tapStyle: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            tapStyle: tapStyle,
+            tapStyleInDef: tapStyleInDef,
             onTap: onTap,
           ),
         );
         await tester.pump();
 
-        final spanA = findSpan('bbb@example.com');
-        tapDownSpan(spanA);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final spanB = findSpan('bbb@example.com');
-        expect(spanB?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, tapStyleInDef);
       },
     );
 
@@ -140,33 +145,32 @@ void main() {
       'tapStyle specified in CustomText is applied '
       'if onTap is specified in definition',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+        const tapStyle = TextStyle(color: Color(0xFF333333));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyle: TextStyle(color: Color(0xFF222222)),
-            tapStyle: TextStyle(color: Color(0xFF333333)),
+            style: style,
+            matchStyle: matchStyle,
+            tapStyle: tapStyle,
             onTapInDef: onTap,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        final span3 = findSpan('https://example.com/');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF333333));
-        expect(span3?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpan('https://example.com/')?.style, matchStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -174,33 +178,32 @@ void main() {
       'tapStyle specified in CustomText is applied '
       'if onLongPress is specified in definition',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+        const tapStyle = TextStyle(color: Color(0xFF333333));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyle: TextStyle(color: Color(0xFF222222)),
-            tapStyle: TextStyle(color: Color(0xFF333333)),
+            style: style,
+            matchStyle: matchStyle,
+            tapStyle: tapStyle,
             onLongPressInDef: onLongPress,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        final span3 = findSpan('https://example.com/');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF333333));
-        expect(span3?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpan('https://example.com/')?.style, matchStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -208,30 +211,29 @@ void main() {
       'tapStyle specified in definition is applied '
       'if onTap is specified in CustomText',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
             onTap: onTap,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, style);
       },
     );
 
@@ -239,30 +241,29 @@ void main() {
       'tapStyle specified in definition is applied '
       'if onLongPress is specified in CustomText',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
             onLongPress: onLongPress,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, style);
       },
     );
 
@@ -270,30 +271,29 @@ void main() {
       'tapStyle specified in definition is applied '
       'if onTap is specified in definition',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
             onTapInDef: onTap,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, style);
       },
     );
 
@@ -301,30 +301,29 @@ void main() {
       'tapStyle specified in definition is applied '
       'if onLongPress is specified in definition',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const tapStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            tapStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            tapStyleInDef: tapStyle,
             onLongPressInDef: onLongPress,
           ),
         );
         await tester.pump();
 
-        final span2A = findSpan('bbb@example.com');
-        tapDownSpan(span2A);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pump();
 
-        final span1 = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        expect(span1?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
 
-        tapUpSpan(span2B);
+        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
         await tester.pump();
 
-        final span2C = findSpan('bbb@example.com');
-        expect(span2C?.style?.color, const Color(0xFF111111));
+        expect(findTextSpan('bbb@example.com')?.style, style);
       },
     );
   });
@@ -403,12 +402,9 @@ void main() {
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
-        await tester.pump();
-        tapUpSpan(span);
+        findTextSpan('bbb@example.com')!.recognizer!
+          ..tapDown()
+          ..tapUp();
         await tester.pump();
 
         expect(tap, isTrue);
@@ -431,12 +427,10 @@ void main() {
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
+        final span = findTextSpan('bbb@example.com');
+        span?.recognizer!.tapDown();
         await tester.pump(kTestLongPressDuration);
-        tapUpSpan(span);
+        span?.recognizer!.tapUp();
         await tester.pump();
 
         expect(tap, isFalse);
@@ -472,12 +466,9 @@ void main() {
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
-        await tester.pump();
-        tapUpSpan(span);
+        findTextSpan('bbb@example.com')!.recognizer!
+          ..tapDown()
+          ..tapUp();
         await tester.pump();
 
         expect(actionText, 'tap2');
@@ -512,13 +503,10 @@ void main() {
         );
         await tester.pump();
 
-        const email = 'bbb@example.com';
-        final span = findSpan(email);
-
-        tapDownSpan(span);
-        await tester.pump();
+        final span = findTextSpan('bbb@example.com');
+        span?.recognizer!.tapDown();
         await tester.pump(kTestLongPressDuration);
-        tapUpSpan(span);
+        span?.recognizer!.tapUp();
         await tester.pump();
 
         expect(actionText, 'long2');
@@ -545,6 +533,7 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
 
         await tester.tapAt(center, buttons: kSecondaryButton);
+
         expect(gestureKind, GestureKind.secondaryTap);
         expect(pointerDeviceKind, PointerDeviceKind.touch);
         expect(element?.matcherType, EmailMatcher);
@@ -555,6 +544,7 @@ void main() {
 
         actionText = globalPosition = localPosition = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
+
         expect(gestureKind, GestureKind.tertiaryTap);
         expect(pointerDeviceKind, PointerDeviceKind.touch);
         expect(actionText, 'bbb@example.com');
@@ -569,6 +559,7 @@ void main() {
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
+
         expect(gestureKind, GestureKind.enter);
         expect(pointerDeviceKind, PointerDeviceKind.mouse);
         expect(actionText, 'bbb@example.com');
@@ -578,6 +569,7 @@ void main() {
         actionText = globalPosition = localPosition = null;
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
+
         expect(gestureKind, GestureKind.exit);
         expect(pointerDeviceKind, PointerDeviceKind.mouse);
         expect(actionText, 'bbb@example.com');
@@ -617,12 +609,14 @@ void main() {
         final center = tester.getCenter(find.byType(RichText).first);
 
         await tester.tapAt(center, buttons: kSecondaryButton);
+
         expect(gestureKind, GestureKind.secondaryTap);
         expect(shownText, 'gesture2');
         expect(actionText, 'gesture2');
 
         actionText = null;
         await tester.tapAt(center, buttons: kTertiaryButton);
+
         expect(gestureKind, GestureKind.tertiaryTap);
         expect(actionText, 'gesture2');
 
@@ -634,12 +628,14 @@ void main() {
         await gesture.addPointer(location: Offset(center.dx, 0.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
+
         expect(gestureKind, GestureKind.enter);
         expect(actionText, 'gesture2');
 
         actionText = null;
         await gesture.moveTo(Offset(center.dx, -1.0));
         await tester.pumpAndSettle();
+
         expect(gestureKind, GestureKind.exit);
         expect(actionText, 'gesture2');
       },
@@ -650,13 +646,18 @@ void main() {
     testWidgets(
       'hoverStyle specified in definition takes precedence',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+        const hoverStyle = TextStyle(color: Color(0xFF333333));
+        const hoverStyleInDef = TextStyle(color: Color(0xFF444444));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com https://example.com/',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyle: TextStyle(color: Color(0xFF222222)),
-            hoverStyle: TextStyle(color: Color(0xFF333333)),
-            hoverStyleInDef: TextStyle(color: Color(0xFF444444)),
+            style: style,
+            matchStyle: matchStyle,
+            hoverStyle: hoverStyle,
+            hoverStyleInDef: hoverStyleInDef,
           ),
         );
         await tester.pump();
@@ -671,33 +672,30 @@ void main() {
         await gesture.moveTo(Offset(center.dx / 2, center.dy));
         await tester.pumpAndSettle();
 
-        final span1A = findSpan('aaa ');
-        final span2A = findSpan('bbb@example.com');
-        final span3A = findSpan('https://example.com/');
-        expect(span1A?.style?.color, const Color(0xFF111111));
-        expect(span2A?.style?.color, const Color(0xFF444444));
-        expect(span3A?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, hoverStyleInDef);
+        expect(findTextSpan('https://example.com/')?.style, matchStyle);
 
         await gesture.moveTo(Offset(center.dx / 2 * 3, center.dy));
         await tester.pumpAndSettle();
 
-        final span1B = findSpan('aaa ');
-        final span2B = findSpan('bbb@example.com');
-        final span3B = findSpan('https://example.com/');
-        expect(span1B?.style?.color, const Color(0xFF111111));
-        expect(span2B?.style?.color, const Color(0xFF222222));
-        expect(span3B?.style?.color, const Color(0xFF333333));
+        expect(findTextSpan('aaa ')?.style, style);
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpan('https://example.com/')?.style, hoverStyle);
       },
     );
 
     testWidgets(
       'matchStyle in definition is used if hoverStyle is not specified.',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const matchStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           const CustomTextWidget(
             'aaa bbb@example.com',
-            style: TextStyle(color: Color(0xFF111111)),
-            matchStyleInDef: TextStyle(color: Color(0xFF222222)),
+            style: style,
+            matchStyleInDef: matchStyle,
           ),
         );
         await tester.pump();
@@ -710,8 +708,7 @@ void main() {
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pumpAndSettle();
 
-        final spanA = findSpan('bbb@example.com');
-        expect(spanA?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -719,11 +716,14 @@ void main() {
       'hoverStyle in definition is used while being pressed '
       'if tapStyle is not specified',
       (tester) async {
+        const style = TextStyle(color: Color(0xFF111111));
+        const hoverStyle = TextStyle(color: Color(0xFF222222));
+
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            style: const TextStyle(color: Color(0xFF111111)),
-            hoverStyleInDef: const TextStyle(color: Color(0xFF222222)),
+            style: style,
+            hoverStyleInDef: hoverStyle,
             onTap: (_) {},
           ),
         );
@@ -737,14 +737,12 @@ void main() {
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pumpAndSettle();
 
-        final spanA = findSpan('bbb@example.com');
-        expect(spanA?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
 
-        tapDownSpan(spanA);
+        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
         await tester.pumpAndSettle();
 
-        final spanB = findSpan('bbb@example.com');
-        expect(spanB?.style?.color, const Color(0xFF222222));
+        expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
       },
     );
   });
