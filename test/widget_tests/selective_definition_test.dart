@@ -155,7 +155,7 @@ void main() {
         expect(globalPosition, center);
         expect(localPosition, center - const Offset(10.0, 10.0));
 
-        shownText = actionText = null;
+        reset();
         await tester.tapAt(center, buttons: kTertiaryButton);
         expect(gestureKind, GestureKind.tertiaryTap);
         expect(pointerDeviceKind, PointerDeviceKind.touch);
@@ -166,7 +166,7 @@ void main() {
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        shownText = actionText = null;
+        reset();
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
@@ -175,7 +175,7 @@ void main() {
         expect(shownText, 'bbb');
         expect(actionText, 'ccc');
 
-        shownText = actionText = null;
+        reset();
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
         expect(gestureKind, GestureKind.exit);
@@ -211,7 +211,7 @@ void main() {
         expect(globalPosition, center);
         expect(localPosition, center - const Offset(10.0, 10.0));
 
-        shownText = actionText = null;
+        reset();
         await tester.tapAt(center, buttons: kTertiaryButton);
         expect(gestureKind, GestureKind.tertiaryTap);
         expect(pointerDeviceKind, PointerDeviceKind.touch);
@@ -222,7 +222,7 @@ void main() {
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        shownText = actionText = null;
+        reset();
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
@@ -231,7 +231,7 @@ void main() {
         expect(shownText, 'bbb');
         expect(actionText, 'ccc');
 
-        shownText = actionText = null;
+        reset();
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
         expect(gestureKind, GestureKind.exit);

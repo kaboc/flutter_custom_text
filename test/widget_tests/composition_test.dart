@@ -18,7 +18,7 @@ void main() {
         await tester.pumpWidget(const CustomTextWidget(text));
         await tester.pump();
 
-        final spans = getInlineSpans();
+        final spans = findInlineSpans();
         expect(spans, hasLength(4));
         expect(spans[0].toPlainText(), 'aaa ');
         expect(spans[1].toPlainText(), 'bbb@example.com');
@@ -34,7 +34,7 @@ void main() {
             .pumpWidget(const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd'));
         await tester.pump();
 
-        final spans = getInlineSpans();
+        final spans = findInlineSpans();
         expect(spans, hasLength(3));
         expect(spans[0].toPlainText(), 'aaa');
         expect(spans[1].toPlainText(), 'bbb');
@@ -46,8 +46,9 @@ void main() {
       'CustomText with SpanDefinition composes correct spans',
       (tester) async {
         await tester.pumpWidget(
-          SpanCustomTextWidget(
+          CustomText(
             'Email: foo@example.com, Tel: 012-3456-7890',
+            textDirection: TextDirection.ltr,
             definitions: [
               const TextDefinition(
                 matcher: TelMatcher(),
@@ -69,7 +70,7 @@ void main() {
         );
         await tester.pump();
 
-        final spans = getInlineSpans();
+        final spans = findInlineSpans();
         expect(spans, hasLength(5));
         expect(spans[0].toPlainText(), 'Email: ');
         expect(spans[1], isA<WidgetSpan>());
@@ -107,7 +108,7 @@ void main() {
         );
         await tester.pump();
 
-        final spans = getInlineSpans();
+        final spans = findInlineSpans();
         expect(spans, hasLength(5));
         expect(spans[0].toPlainText(), 'Pattern 2');
         expect(spans[0].style, matchStyle3);

@@ -542,7 +542,7 @@ void main() {
         expect(globalPosition, center);
         expect(localPosition, center - const Offset(10.0, 10.0));
 
-        actionText = globalPosition = localPosition = null;
+        reset();
         await tester.tapAt(center, buttons: kTertiaryButton);
 
         expect(gestureKind, GestureKind.tertiaryTap);
@@ -555,7 +555,7 @@ void main() {
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        actionText = globalPosition = localPosition = null;
+        reset();
         await gesture.addPointer(location: Offset(center.dx, 9.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
@@ -566,7 +566,7 @@ void main() {
         expect(globalPosition, center);
         expect(localPosition, center - const Offset(10.0, 10.0));
 
-        actionText = globalPosition = localPosition = null;
+        reset();
         await gesture.moveTo(Offset(center.dx, 9.0));
         await tester.pumpAndSettle();
 
@@ -614,7 +614,7 @@ void main() {
         expect(shownText, 'gesture2');
         expect(actionText, 'gesture2');
 
-        actionText = null;
+        reset();
         await tester.tapAt(center, buttons: kTertiaryButton);
 
         expect(gestureKind, GestureKind.tertiaryTap);
@@ -624,7 +624,7 @@ void main() {
             await tester.createGesture(kind: PointerDeviceKind.mouse);
         addTearDown(gesture.removePointer);
 
-        actionText = null;
+        reset();
         await gesture.addPointer(location: Offset(center.dx, 0.0));
         await gesture.moveTo(center);
         await tester.pumpAndSettle();
@@ -632,7 +632,7 @@ void main() {
         expect(gestureKind, GestureKind.enter);
         expect(actionText, 'gesture2');
 
-        actionText = null;
+        reset();
         await gesture.moveTo(Offset(center.dx, -1.0));
         await tester.pumpAndSettle();
 

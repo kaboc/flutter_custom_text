@@ -61,7 +61,7 @@ Text findText() {
   return finder.evaluate().first.widget as Text;
 }
 
-List<InlineSpan> getInlineSpans() {
+List<InlineSpan> findInlineSpans() {
   final spans = <InlineSpan>[];
   findText().textSpan?.visitChildren((span) {
     spans.add(span);

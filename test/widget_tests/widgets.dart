@@ -159,22 +159,6 @@ class SelectiveCustomTextWidget extends StatelessWidget {
   }
 }
 
-class SpanCustomTextWidget extends StatelessWidget {
-  const SpanCustomTextWidget(this.text, {required this.definitions});
-
-  final String text;
-  final List<Definition> definitions;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomText(
-      text,
-      textDirection: TextDirection.ltr,
-      definitions: definitions,
-    );
-  }
-}
-
 class TextFieldWidget extends StatefulWidget {
   const TextFieldWidget({required this.controller, required this.onDispose});
 
