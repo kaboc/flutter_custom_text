@@ -117,6 +117,7 @@ class WidgetSpanChild extends StatelessWidget {
 
     if (recognizer != null) {
       child = GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTapDown: recognizer.onTapDown,
         onTapUp: recognizer.onTapUp,
         onTapCancel: recognizer.onTapCancel,
