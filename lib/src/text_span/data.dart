@@ -78,12 +78,12 @@ class NotifierSettings {
 /// unwanted hover events in GestureHandler.
 class HoverState {
   int? index;
-  GestureKind? lastGestureKind;
+  GestureKind? gestureKind;
   Map<int, Timer> debounceTimers = {};
 
   void reset() {
     index = null;
-    lastGestureKind = null;
+    gestureKind = null;
     debounceTimers
       ..forEach((_, t) => t.cancel())
       ..clear();

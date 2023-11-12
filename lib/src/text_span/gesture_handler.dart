@@ -255,8 +255,7 @@ class GestureHandler {
       ..[index]?.cancel()
       ..remove(index);
 
-    if (index == _hoverState.index &&
-        gestureKind == _hoverState.lastGestureKind) {
+    if (index == _hoverState.index && gestureKind == _hoverState.gestureKind) {
       // A new timer must not be started after the cancel above
       // if the gesture kind has not changed because the handler
       // for the same gesture kind was already executed and thus
@@ -268,13 +267,13 @@ class GestureHandler {
     }
 
     _hoverState.debounceTimers[index] = Timer(
-      // Duration of zero time does not mean no duration.
+      // Duration of zero time does not mean this timer is meaningless.
       Duration.zero,
       () {
         _hoverState
           ..debounceTimers.remove(index)
           ..index = gestureKind == GestureKind.exit ? null : index
-          ..lastGestureKind = gestureKind;
+          ..gestureKind = gestureKind;
 
         if (_isHoverEnabled) {
           gestureKind == GestureKind.enter
