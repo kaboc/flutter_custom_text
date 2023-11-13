@@ -179,7 +179,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onExit: gestureHandler.onExit,
           );
 
-    return applyPropsToChildren(newSpan);
+    return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
   }
 
   TextSpan _tappableTextSpan({required SpanData spanData}) {
@@ -234,7 +234,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onExit: gestureHandler.onExit,
           );
 
-    return applyPropsToChildren(newSpan);
+    return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
   }
 
   void _updateNonTappableSpan({required SpanData spanData}) {
