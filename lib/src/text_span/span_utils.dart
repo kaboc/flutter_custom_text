@@ -50,26 +50,24 @@ TextSpan applyPropsToChildren(
                   style: newMergedStyle == null
                       ? null
                       : const TextStyle(
-                          // Colours except for the foreground color are
-                          // inherited to the child of WidgetSpan, while other
-                          // styles don't seem to be inherited in the same way.
-                          // Therefore DefaultTextStyle is necessary to apply
-                          // all the styles from ancestors to the child.
+                          // Colours except for the foreground colour are
+                          // inherited to WidgetSpan, but other attributes
+                          // don't seem to be inherited. Therefore it is
+                          // necessary to use DefaultTextStyle to apply
+                          // the ancestors' styles to the child.
                           // However, if the background colour is translucent,
                           // the inherited colour and the same colour by
-                          // DefaultTextStyle are mixed, causing children to
-                          // be darker.
+                          // DefaultTextStyle are mixed and become darker.
                           // https://github.com/flutter/flutter/issues/137030
                           //
                           // The transparent colour here is a workaround to
                           // avoid it by negating the inherited colour.
                           backgroundColor: Color(0x00000000),
-                          // It appears that the same workaround as above
-                          // does not work for the decoration colour. Either
-                          // the alpha value or any one of the RGB values
-                          // needs to be slightly above zero to be almost but
-                          // not completely transparent.
-                          decorationColor: Color(0x01000000),
+                          // Text decoration is applied to both TextSpan
+                          // and WidgetSpan. In order to prevent WidgetSpan
+                          // from getting duplicate decorations, it is
+                          // necessary to remove one from WidgetSpan.
+                          decoration: TextDecoration.none,
                         ),
                   child: WidgetSpanChild(
                     rootSpan: rootSpan,

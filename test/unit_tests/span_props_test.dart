@@ -258,7 +258,7 @@ void main() {
 
         const specialStyle = TextStyle(
           backgroundColor: Color(0x00000000),
-          decorationColor: Color(0x01000000),
+          decoration: TextDecoration.none,
         );
 
         expect(
