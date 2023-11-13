@@ -8,26 +8,25 @@ class Example6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const matchStyle = TextStyle(color: Colors.blue);
+
     return CustomText(
-      'Email 1: [@] foo@example.com\n'
-      'Email 2: [@] bar@example.com',
+      'Hover and click  >>  [logo]Flutter',
       definitions: [
         SpanDefinition(
-          matcher: const PatternMatcher(r'\[@\]'),
-          builder: (text, groups) => const WidgetSpan(
-            child: Icon(
-              Icons.email_outlined,
-              color: Colors.blueGrey,
-              size: 20.0,
-            ),
+          matcher: const PatternMatcher(r'\[logo\](\w+)'),
+          builder: (text, groups) => TextSpan(
+            children: [
+              const WidgetSpan(child: FlutterLogo()),
+              const WidgetSpan(child: SizedBox(width: 2.0)),
+              TextSpan(text: groups.first),
+            ],
           ),
         ),
-        TextDefinition(
-          matcher: const EmailMatcher(),
-          matchStyle: const TextStyle(color: Colors.lightBlue),
-          onTap: (details) => output(details.actionText),
-        ),
       ],
+      matchStyle: matchStyle,
+      hoverStyle: matchStyle.copyWith(decoration: TextDecoration.underline),
+      onTap: (details) => output(details.element.groups.first!),
     );
   }
 }
