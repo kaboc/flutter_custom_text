@@ -235,11 +235,11 @@ example6.dart ([Code][example6] / [Demo][example6_demo])
 
 ![example6](https://user-images.githubusercontent.com/20254485/221410494-c9d87a75-4a47-4dd1-af8a-0b566a393d59.png)
 
-An example to display both strings and icons using [SpanDefinition].
+An example to display both text and icons.
 
-The `builder` parameter takes a function returning an [InlineSpan].
-The function can use the matching string and groups passed to it to compose
-an `InlineSpan` flexibly with them.
+[SpanDefinition] enables a certain portion of text to be replaced with an arbitrary
+[InlineSpan]. The `builder` function can use the parse result (the matched string and groups)
+to flexibly build an `InlineSpan`.
 
 ```dart
 CustomText(
@@ -264,14 +264,6 @@ CustomText(
   ],
 )
 ```
-
-**Notes:**
-
-- `SpanDefinition` does not have arguments for styles and tap handlers, so it depends
-  entirely on how the `InlineSpan` is configured.
-- The `builder` function is called on every rebuild. If you use `GestureRecognizer` to make
-  a WidgetSpan tappable, be careful not to create it inside the function, or make sure to
-  dispose of existing recognizers before creating a new one.
 
 ### ⭐ <b>Changing mouse cursor and text style on hover</b>
 
