@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'widget_utils.dart';
+import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
@@ -61,7 +61,7 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com')?.recognizer?.tapDown();
+        findTextSpan('bbb@example.com').maybeTapDown();
         await tester.pump();
 
         expect(findTextSpan('bbb@example.com')?.style, style);
@@ -84,14 +84,14 @@ void main() {
       );
       await tester.pump();
 
-      findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+      findTextSpan('bbb@example.com').tapDown();
       await tester.pump();
 
       expect(findTextSpan('aaa ')?.style, style);
       expect(findTextSpan('bbb@example.com')?.style, tapStyle);
       expect(findTextSpan('https://example.com/')?.style, matchStyle);
 
-      findTextSpan('bbb@example.com')?.recognizer!.tapUp();
+      findTextSpan('bbb@example.com').tapUp();
       await tester.pump();
 
       expect(findTextSpan('bbb@example.com')?.style, matchStyle);
@@ -115,14 +115,14 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').tapDown();
         await tester.pump();
 
         expect(findTextSpan('aaa ')?.style, style);
         expect(findTextSpan('bbb@example.com')?.style, tapStyle);
         expect(findTextSpan('https://example.com/')?.style, matchStyle);
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapUp();
+        findTextSpan('bbb@example.com').tapUp();
         await tester.pump();
 
         expect(findTextSpan('bbb@example.com')?.style, matchStyle);
@@ -146,7 +146,7 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').maybeTapDown();
         await tester.pump();
 
         expect(findTextSpan('bbb@example.com')?.style, matchStyle);
@@ -221,7 +221,7 @@ void main() {
       );
       await tester.pump();
 
-      findTextSpan('bbb@example.com')!.recognizer!
+      findTextSpan('bbb@example.com')
         ..tapDown()
         ..tapUp();
       await tester.pump();
@@ -243,10 +243,9 @@ void main() {
       );
       await tester.pump();
 
-      final span = findTextSpan('bbb@example.com');
-      span?.recognizer!.tapDown();
+      final span = findTextSpan('bbb@example.com')..tapDown();
       await tester.pump(kTestLongPressDuration);
-      span?.recognizer!.tapUp();
+      span.tapUp();
       await tester.pump();
 
       expect(tap, isFalse);
@@ -265,10 +264,9 @@ void main() {
         );
         await tester.pump();
 
-        final span = findTextSpan('bbb@example.com');
-        span?.recognizer!.tapDown();
+        final span = findTextSpan('bbb@example.com')..tapDown();
         await tester.pump(const Duration(milliseconds: 310));
-        span?.recognizer!.tapUp();
+        span.tapUp();
         await tester.pump();
 
         expect(gestureKind, GestureKind.longPress);
@@ -579,7 +577,7 @@ void main() {
 
         expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').tapDown();
         await tester.pumpAndSettle();
 
         expect(findTextSpan('bbb@example.com')?.style, tapStyle);
@@ -611,7 +609,7 @@ void main() {
 
         expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').tapDown();
         await tester.pumpAndSettle();
 
         expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
@@ -644,7 +642,7 @@ void main() {
       );
       await tester.pump();
 
-      findTextSpan('aaa')!.recognizer!
+      findTextSpan('aaa')
         ..tapDown()
         ..tapUp();
       await tester.pump();
@@ -654,7 +652,7 @@ void main() {
       await tester.tapButton();
       await tester.pumpAndSettle();
 
-      findTextSpan('bbb')!.recognizer!
+      findTextSpan('bbb')
         ..tapDown()
         ..tapUp();
       await tester.pump();
@@ -689,7 +687,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').tapDown();
         await tester.pump();
 
         expect(findTextSpan('bbb@example.com')?.style, tapStyle2);
@@ -723,7 +721,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('bbb@example.com')?.recognizer!.tapDown();
+        findTextSpan('bbb@example.com').tapDown();
         await tester.pump();
 
         expect(findTextSpan('bbb@example.com')?.style, tapStyle2);
@@ -756,7 +754,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('bbb@example.com')!.recognizer!
+        findTextSpan('bbb@example.com')
           ..tapDown()
           ..tapUp();
         await tester.pump();
@@ -791,7 +789,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('bbb@example.com')!.recognizer!
+        findTextSpan('bbb@example.com')
           ..tapDown()
           ..tapUp();
         await tester.pump();
@@ -823,7 +821,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('BBB@EXAMPLE.COM')!.recognizer!
+        findTextSpan('BBB@EXAMPLE.COM')
           ..tapDown()
           ..tapUp();
         await tester.pump();
@@ -855,7 +853,7 @@ void main() {
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        findTextSpan('BBB@EXAMPLE.COM')!.recognizer!
+        findTextSpan('BBB@EXAMPLE.COM')
           ..tapDown()
           ..tapUp();
         await tester.pump();

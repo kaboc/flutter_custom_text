@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'widget_utils.dart';
+import 'utils.dart';
 
 void main() {
   setUp(reset);
@@ -88,7 +88,7 @@ void main() {
       expect(spans1[1].style, style.merge(matchStyle));
 
       final targetSpan = findInlineSpans()[1];
-      (targetSpan as TextSpan).recognizer!.tapDown();
+      (targetSpan as TextSpan).tapDown();
       await tester.pump();
 
       final spans2 = findInlineSpans(onlyDirectChildren: true);

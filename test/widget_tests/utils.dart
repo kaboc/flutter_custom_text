@@ -88,15 +88,25 @@ TextSpan? findTextSpan(String text) {
   return span;
 }
 
-extension SpanRecognizer on GestureRecognizer {
+extension SpanRecognizer on TextSpan? {
   void tapDown() {
-    final onTapDown = (this as TapGestureRecognizer).onTapDown;
-    onTapDown?.call(TapDownDetails());
+    final recognizer = this?.recognizer as TapGestureRecognizer?;
+    recognizer!.onTapDown!(TapDownDetails());
+  }
+
+  void maybeTapDown() {
+    final recognizer = this?.recognizer as TapGestureRecognizer?;
+    recognizer?.onTapDown?.call(TapDownDetails());
   }
 
   void tapUp() {
-    final onTapUp = (this as TapGestureRecognizer).onTapUp;
-    onTapUp?.call(TapUpDetails(kind: PointerDeviceKind.touch));
+    final recognizer = this?.recognizer as TapGestureRecognizer?;
+    recognizer!.onTapUp!(TapUpDetails(kind: PointerDeviceKind.touch));
+  }
+
+  void maybeTapUp() {
+    final recognizer = this?.recognizer as TapGestureRecognizer?;
+    recognizer?.onTapUp?.call(TapUpDetails(kind: PointerDeviceKind.touch));
   }
 }
 

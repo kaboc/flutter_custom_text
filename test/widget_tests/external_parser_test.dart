@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'widget_utils.dart';
+import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
@@ -62,7 +62,7 @@ void main() {
       expect(findTextSpan('abc')?.style, style);
       expect(findTextSpan('1234')?.style, matchStyle);
 
-      findTextSpan('1234')!.recognizer!
+      findTextSpan('1234')
         ..tapDown()
         ..tapUp();
       await tester.pumpAndSettle();

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'widget_utils.dart';
+import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
@@ -30,8 +30,9 @@ void main() {
     testWidgets(
       'CustomText with SelectiveDefinition composes correct spans',
       (tester) async {
-        await tester
-            .pumpWidget(const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd'));
+        await tester.pumpWidget(
+          const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd'),
+        );
         await tester.pump();
 
         final spans = findInlineSpans();

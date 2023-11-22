@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/src/text_span/span_utils.dart';
 
-import 'widget_utils.dart';
+import 'utils.dart';
 
 void main() {
   group('applyPropsToChildren()', () {
