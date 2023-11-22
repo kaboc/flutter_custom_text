@@ -6,6 +6,7 @@ import 'package:text_parser/text_parser.dart' show TextElement;
 import '../definitions.dart';
 import 'data.dart';
 import 'gesture_handler.dart';
+import 'span_utils.dart';
 import 'transient_elements_builder.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
@@ -92,9 +93,6 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     }
 
     final def = defs[element.matcherIndex] ?? defs[defs.keys.first]!;
-    if (def is SpanDefinition) {
-      return def.builder(element.text, element.groups);
-    }
 
     final isTappable = settings.onTap != null ||
         settings.onLongPress != null ||
@@ -140,10 +138,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   TextSpan _nonTappableTextSpan({required SpanData spanData}) {
-    var matchStyle = spanData.definition.matchStyle ?? settings.matchStyle;
-    var hoverStyle = spanData.definition.hoverStyle ?? settings.hoverStyle;
+    final def = spanData.definition;
+    var matchStyle = def.matchStyle ?? settings.matchStyle;
+    var hoverStyle = def.hoverStyle ?? settings.hoverStyle;
 
-    final style = _style;
+    var style = _style;
     if (style != null) {
       matchStyle = style.merge(matchStyle);
       hoverStyle = hoverStyle == null ? null : style.merge(hoverStyle);
@@ -154,28 +153,43 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       spanData: spanData,
     );
 
-    return TextSpan(
-      text: spanData.shownText ?? spanData.text,
-      // hoverStyle must be removed when text spans are built.
-      // Otherwise, if a span with hoverStyle is being hovered on during
-      // a build and then gets a different index in new spans, the style
-      // is mistakenly applied to the new span at the original index.
-      style: _hovered && _hoverIndex == spanData.index && !_isBuilding
-          ? hoverStyle
-          : matchStyle,
-      mouseCursor: spanData.definition.mouseCursor,
-      onEnter: gestureHandler.onEnter,
-      onExit: gestureHandler.onExit,
-    );
+    // hoverStyle must be removed when text spans are built.
+    // Otherwise, if a span with hoverStyle is being hovered on during
+    // a build and then gets a different index in new spans, the style
+    // is mistakenly applied to the new span at the original index.
+    style = _hovered && _hoverIndex == spanData.index && !_isBuilding
+        ? hoverStyle
+        : matchStyle;
+
+    final newSpan = def is SpanDefinition
+        ? TextSpan(
+            style: style,
+            mouseCursor: spanData.definition.mouseCursor,
+            onEnter: gestureHandler.onEnter,
+            onExit: gestureHandler.onExit,
+            children: [
+              def.builder(spanData.text, spanData.element.groups),
+            ],
+          )
+        : TextSpan(
+            text: spanData.shownText ?? spanData.text,
+            style: style,
+            mouseCursor: spanData.definition.mouseCursor,
+            onEnter: gestureHandler.onEnter,
+            onExit: gestureHandler.onExit,
+          );
+
+    return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
   }
 
   TextSpan _tappableTextSpan({required SpanData spanData}) {
-    var matchStyle = spanData.definition.matchStyle ?? settings.matchStyle;
-    var hoverStyle = spanData.definition.hoverStyle ?? settings.hoverStyle;
-    var tapStyle = spanData.definition.tapStyle ?? settings.tapStyle;
+    final def = spanData.definition;
+    var matchStyle = def.matchStyle ?? settings.matchStyle;
+    var hoverStyle = def.hoverStyle ?? settings.hoverStyle;
+    var tapStyle = def.tapStyle ?? settings.tapStyle;
     tapStyle ??= hoverStyle ?? matchStyle;
 
-    final style = _style;
+    var style = _style;
     if (style != null) {
       matchStyle = style.merge(matchStyle);
       hoverStyle = hoverStyle == null ? null : style.merge(hoverStyle);
@@ -188,24 +202,39 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     );
     final recognizer = gestureHandler.recognizer;
 
-    return TextSpan(
-      text: spanData.shownText ?? spanData.text,
-      // tapStyle and hoverStyle must be cancelled when text spans are built.
-      // Otherwise, if a span with such a style is being pressed or hovered
-      // on during a build and then gets a different index in new spans,
-      // the style is mistakenly applied to a new span at the original index.
-      style: _isBuilding
-          ? matchStyle
-          : _tapped && _tapIndex == spanData.index
-              ? tapStyle
-              : _hovered && _hoverIndex == spanData.index
-                  ? hoverStyle
-                  : matchStyle,
-      recognizer: recognizer,
-      mouseCursor: spanData.definition.mouseCursor,
-      onEnter: gestureHandler.onEnter,
-      onExit: gestureHandler.onExit,
-    );
+    // tapStyle and hoverStyle must be cancelled when text spans are built.
+    // Otherwise, if a span with such a style is being pressed or hovered
+    // on during a build and then gets a different index in new spans,
+    // the style is mistakenly applied to a new span at the original index.
+    style = _isBuilding
+        ? matchStyle
+        : _tapped && _tapIndex == spanData.index
+            ? tapStyle
+            : _hovered && _hoverIndex == spanData.index
+                ? hoverStyle
+                : matchStyle;
+
+    final newSpan = def is SpanDefinition
+        ? TextSpan(
+            style: style,
+            recognizer: recognizer,
+            mouseCursor: spanData.definition.mouseCursor,
+            onEnter: gestureHandler.onEnter,
+            onExit: gestureHandler.onExit,
+            children: [
+              def.builder(spanData.text, spanData.element.groups),
+            ],
+          )
+        : TextSpan(
+            text: spanData.shownText ?? spanData.text,
+            style: style,
+            recognizer: recognizer,
+            mouseCursor: spanData.definition.mouseCursor,
+            onEnter: gestureHandler.onEnter,
+            onExit: gestureHandler.onExit,
+          );
+
+    return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
   }
 
   void _updateNonTappableSpan({required SpanData spanData}) {

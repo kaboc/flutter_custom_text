@@ -15,6 +15,7 @@ class ExamplePage extends StatefulWidget {
     required this.title,
     required this.description,
     required this.builder,
+    this.subtitle,
     this.hasOutput = true,
     this.additionalInfo,
   });
@@ -24,6 +25,7 @@ class ExamplePage extends StatefulWidget {
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
+  final String? subtitle;
   final bool hasOutput;
   final String? additionalInfo;
 
@@ -150,7 +152,7 @@ class _Example extends StatelessWidget {
                   .textTheme
                   .bodyLarge!
                   .copyWith(color: Colors.black38),
-            )
+            ),
           ],
         ],
       ),

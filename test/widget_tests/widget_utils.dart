@@ -61,7 +61,11 @@ Text findText() {
   return finder.evaluate().first.widget as Text;
 }
 
-List<InlineSpan> findInlineSpans() {
+List<InlineSpan> findInlineSpans({bool onlyDirectChildren = false}) {
+  if (onlyDirectChildren) {
+    return (findText().textSpan as TextSpan?)?.children ?? [];
+  }
+
   final spans = <InlineSpan>[];
   findText().textSpan?.visitChildren((span) {
     spans.add(span);
@@ -104,5 +108,13 @@ extension WidgetTesterExtension on WidgetTester {
 
   Iterable<T> findWidgetsByType<T>() {
     return widgetList(find.byType(T)).map((v) => v as T);
+  }
+
+  Iterable<T> findDescendantWidgetsByType<T>({required Type of}) {
+    final finder = find.descendant(
+      of: find.byType(of),
+      matching: find.byType(T),
+    );
+    return widgetList(finder).map((v) => v as T);
   }
 }

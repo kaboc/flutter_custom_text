@@ -95,6 +95,13 @@ class SpanDefinition extends Definition {
   const SpanDefinition({
     required super.matcher,
     required SpanBuilder super.builder,
+    super.matchStyle,
+    super.tapStyle,
+    super.hoverStyle,
+    super.onTap,
+    super.onLongPress,
+    super.onGesture,
+    super.mouseCursor,
   });
 
   @override

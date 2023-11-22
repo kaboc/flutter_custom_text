@@ -32,10 +32,16 @@ class HomePage extends StatelessWidget {
           children: [
             for (var i = 0; i < pages.length; i++)
               ListTile(
-                title: Text('${i + 1}. ${pages[i].title}'),
+                title: Text(pages[i].title),
+                subtitle: pages[i].subtitle == null
+                    ? null
+                    : Text(
+                        pages[i].subtitle!,
+                        style: const TextStyle(fontSize: 12.0),
+                      ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => context.go('/${pages[i].pathString}'),
-              )
+              ),
           ],
         ),
       ),

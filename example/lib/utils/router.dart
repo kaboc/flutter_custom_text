@@ -8,6 +8,7 @@ import 'package:custom_text_example/examples/example2.dart';
 import 'package:custom_text_example/examples/example3.dart';
 import 'package:custom_text_example/examples/example4.dart';
 import 'package:custom_text_example/examples/example5.dart';
+import 'package:custom_text_example/examples/example6_old.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
@@ -104,15 +105,29 @@ final pages = [
     builder: Example5.new,
   ),
   const ExamplePage(
+    pathString: 'span-definition-old',
+    filename: 'example6_old.dart',
+    title: 'SpanDefinition (old)',
+    description: 'An example to show both text and icons. '
+        '`SpanDefinition` enables part of text to be replaced with an '
+        'arbitrary `InlineSpan`.\n'
+        'The `builder` function can use the parse result (the matched '
+        'string and groups) to flexibly build an InlineSpan.',
+    builder: Example6Old.new,
+  ),
+  const ExamplePage(
     pathString: 'span-definition',
     filename: 'example6.dart',
     title: 'SpanDefinition',
-    description: 'An example to show both strings and icons using '
-        '`SpanDefinition`.\n'
-        'The `builder` argument takes a function returning an `InlineSpan`.\n'
-        'The function can use the matched string and groups passed to it '
-        'to build an `InlineSpan` flexibly with them.',
+    description: 'An example to show both text and widgets. '
+        '`SpanDefinition` enables part of text to be replaced with an '
+        'arbitrary `InlineSpan`.\n'
+        'The `builder` function can use the parse result (the matched '
+        'string and groups) to flexibly build an InlineSpan.',
     builder: Example6.new,
+    subtitle: 'Requires v1.2.0 or above',
+    additionalInfo: 'Gestures are detected on both the logo and the text '
+        'of "Flutter".',
   ),
   const ExamplePage(
     pathString: 'hover',
