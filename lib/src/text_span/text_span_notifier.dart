@@ -8,6 +8,7 @@ import '../definitions.dart';
 import 'data.dart';
 import 'gesture_handler.dart';
 import 'span_utils.dart';
+import 'split_spans.dart';
 import 'transient_elements_builder.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
@@ -15,6 +16,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       : super(
           TextSpan(
             text: text,
+            children: settings.spans,
             style: settings.style,
           ),
         );
@@ -50,10 +52,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   void buildSpan({required TextStyle? style, required int oldElementsLength}) {
     _isBuilding = true;
     _style = style;
+    final spans = settings.spans?.splitSpans(elements: elements);
 
     value = TextSpan(
       children: [
-        for (var i = 0; i < elements.length; i++) _span(i, elements[i]),
+        if (spans == null)
+          for (var i = 0; i < elements.length; i++) _span(i, elements[i])
+        else
+          for (final i in spans.keys) _span(i, elements[i], spans: spans[i]),
       ],
     );
 
@@ -87,10 +93,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _isBuilding = false;
   }
 
-  InlineSpan _span(int index, TextElement element) {
+  InlineSpan _span(int index, TextElement element, {List<InlineSpan>? spans}) {
     final defs = settings.definitions[element.matcherType];
     if (defs == null || defs.isEmpty) {
-      return TextSpan(text: element.text, style: _style);
+      return spans == null
+          ? TextSpan(text: element.text, style: _style)
+          : applyPropsToChildren(
+              TextSpan(children: spans, style: _style),
+            );
     }
 
     final def = defs[element.matcherIndex] ?? defs[defs.keys.first]!;
@@ -106,6 +116,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       index: index,
       element: element,
       text: element.text,
+      spans: spans,
       shownText: def.shownText?.call(element.groups),
       actionText: def.actionText?.call(element.groups),
       definition: def,
@@ -169,15 +180,17 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
             children: [
-              def.builder(spanData.text, spanData.element.groups),
+              def.builder(spanData.element.text, spanData.element.groups),
             ],
           )
         : TextSpan(
-            text: spanData.shownText ?? spanData.text,
+            text: spanData.shownText ??
+                (spanData.spans == null ? spanData.text : null),
             style: style,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
+            children: spanData.spans,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
@@ -223,16 +236,18 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
             children: [
-              def.builder(spanData.text, spanData.element.groups),
+              def.builder(spanData.element.text, spanData.element.groups),
             ],
           )
         : TextSpan(
-            text: spanData.shownText ?? spanData.text,
+            text: spanData.shownText ??
+                (spanData.spans == null ? spanData.text : null),
             style: style,
             recognizer: recognizer,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
+            children: spanData.spans,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
