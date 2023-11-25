@@ -14,17 +14,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('CustomText'),
-        actions: [
-          const Center(
+        actions: const [
+          Center(
             child: _PubLink(),
           ),
-          const SizedBox(width: 4.0),
-          Icon(
-            Icons.open_in_new,
-            size: 12.0,
-            color: Colors.lightBlue.shade100,
-          ),
-          const SizedBox(width: 16.0),
+          SizedBox(width: 16.0),
         ],
       ),
       body: SafeArea(
@@ -59,14 +53,28 @@ class _PubLink extends StatelessWidget {
       target: LinkTarget.blank,
       builder: (context, followLink) {
         return CustomText(
-          'pub.dev',
-          definitions: const [
-            TextDefinition(
-              matcher: PatternMatcher('.+'),
-              hoverStyle: TextStyle(decoration: TextDecoration.underline),
+          'pub.dev[i]',
+          definitions: [
+            SpanDefinition(
+              matcher: const PatternMatcher(r'(.+)\[i\]'),
+              builder: (text, groups) => TextSpan(
+                children: [
+                  TextSpan(text: groups.first),
+                  const WidgetSpan(child: SizedBox(width: 4.0)),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Icon(
+                      Icons.open_in_new,
+                      size: 12.0,
+                      color: Colors.lightBlue.shade100,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
           style: TextStyle(color: Colors.lightBlue.shade100),
+          hoverStyle: const TextStyle(decoration: TextDecoration.underline),
           onTap: (_) => followLink!(),
         );
       },

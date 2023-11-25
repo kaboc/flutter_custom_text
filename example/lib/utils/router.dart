@@ -1,4 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:custom_text_example/code_view_page.dart';
@@ -8,7 +12,6 @@ import 'package:custom_text_example/examples/example2.dart';
 import 'package:custom_text_example/examples/example3.dart';
 import 'package:custom_text_example/examples/example4.dart';
 import 'package:custom_text_example/examples/example5.dart';
-import 'package:custom_text_example/examples/example6_old.dart';
 import 'package:custom_text_example/examples/example6.dart';
 import 'package:custom_text_example/examples/example7.dart';
 import 'package:custom_text_example/examples/example8.dart';
@@ -22,6 +25,12 @@ extension on GoRouterState {
       .firstWhereOrNull((p) => p.pathString == pathParameters['path_string']);
 }
 
+Page<T> _page<T>({required Widget child}) {
+  return !kIsWeb && (Platform.isAndroid || Platform.isIOS)
+      ? MaterialPage<T>(child: child)
+      : NoTransitionPage<T>(child: child);
+}
+
 final router = GoRouter(
   routes: [
     GoRoute(
@@ -30,14 +39,15 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: ':path_string',
-          builder: (_, state) => state.pageWidget!,
+          pageBuilder: (_, state) => _page(
+            child: state.pageWidget!,
+          ),
           routes: [
             GoRoute(
               path: 'code',
-              builder: (_, state) {
-                final widget = state.pageWidget!;
-                return CodeViewPage(filename: widget.filename);
-              },
+              pageBuilder: (_, state) => _page(
+                child: CodeViewPage(filename: state.pageWidget!.filename),
+              ),
             ),
           ],
           redirect: (_, state) {
@@ -64,7 +74,7 @@ final pages = [
   const ExamplePage(
     pathString: 'styles-and-actions',
     filename: 'example2.dart',
-    title: 'Unique styles and actions',
+    title: 'Styles and actions per definition',
     description: 'An example to decorate URLs, email addresses and phone '
         'numbers, and also enable them to be tapped and long-pressed.\n'
         'Phone numbers are styled differently with the unique `matchStyle` '
@@ -96,24 +106,12 @@ final pages = [
     pathString: 'selective-definition',
     filename: 'example5.dart',
     title: 'SelectiveDefinition',
-    description:
-        'An example to parse markdown-style links, like `[shown text](url)` '
-        'using `SelectiveDefinition`, and make them tappable.\n'
-        'Each of the string shown in the widget and the string passed to '
-        'the tap callbacks is selected individually from the groups of '
-        'matched strings.',
+    description: 'An example to parse a markdown-style link in the format '
+        'of `[shown text](url)` and make it tappable.\n'
+        '`SelectiveDefinition` allows to select the string to display and '
+        'the string to be passed to gesture callbacks individually from '
+        'the groups of matched strings.',
     builder: Example5.new,
-  ),
-  const ExamplePage(
-    pathString: 'span-definition-old',
-    filename: 'example6_old.dart',
-    title: 'SpanDefinition (old)',
-    description: 'An example to show both text and icons. '
-        '`SpanDefinition` enables part of text to be replaced with an '
-        'arbitrary `InlineSpan`.\n'
-        'The `builder` function can use the parse result (the matched '
-        'string and groups) to flexibly build an InlineSpan.',
-    builder: Example6Old.new,
   ),
   const ExamplePage(
     pathString: 'span-definition',
@@ -125,7 +123,6 @@ final pages = [
         'The `builder` function can use the parse result (the matched '
         'string and groups) to flexibly build an InlineSpan.',
     builder: Example6.new,
-    subtitle: 'Requires v1.2.0 or above',
     additionalInfo: 'Gestures are detected on both the logo and the text '
         'of "Flutter".',
   ),

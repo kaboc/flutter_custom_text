@@ -8,9 +8,10 @@ class Example5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const matchStyle = TextStyle(color: Colors.blue);
+
     return CustomText(
-      'Markdown-style link\n'
-      '[Tap here](Tapped!)',
+      'Tap [here](Tapped!)',
       definitions: [
         SelectiveDefinition(
           matcher: const LinkMatcher(),
@@ -23,8 +24,8 @@ class Example5 extends StatelessWidget {
           actionText: (groups) => groups[1]!,
         ),
       ],
-      matchStyle: const TextStyle(color: Colors.lightBlue),
-      tapStyle: const TextStyle(color: Colors.lightGreen),
+      matchStyle: matchStyle,
+      hoverStyle: matchStyle.copyWith(decoration: TextDecoration.underline),
       onTap: (details) => output(details.actionText),
     );
   }

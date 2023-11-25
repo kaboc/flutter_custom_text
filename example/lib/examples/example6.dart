@@ -14,6 +14,16 @@ class Example6 extends StatelessWidget {
       'Hover and click  >>  [logo]Flutter',
       definitions: [
         SpanDefinition(
+          matcher: const PatternMatcher('>>'),
+          builder: (text, groups) => const WidgetSpan(
+            child: Icon(
+              Icons.keyboard_double_arrow_right,
+              color: Colors.grey,
+              size: 18.0,
+            ),
+          ),
+        ),
+        SpanDefinition(
           matcher: const PatternMatcher(r'\[logo\](\w+)'),
           builder: (text, groups) => TextSpan(
             children: [
@@ -22,11 +32,11 @@ class Example6 extends StatelessWidget {
               TextSpan(text: groups.first),
             ],
           ),
+          matchStyle: matchStyle,
+          hoverStyle: matchStyle.copyWith(decoration: TextDecoration.underline),
+          onTap: (details) => output(details.element.groups.first!),
         ),
       ],
-      matchStyle: matchStyle,
-      hoverStyle: matchStyle.copyWith(decoration: TextDecoration.underline),
-      onTap: (details) => output(details.element.groups.first!),
     );
   }
 }

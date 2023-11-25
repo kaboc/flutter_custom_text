@@ -62,7 +62,7 @@ If a stricter pattern is necessary, overwrite the preset pattern or create a cus
 - [LinkMatcher] for Markdown-style links or for other strings to be handled
   by [SelectiveDefinition]
 
-### ⭐ <b>Unique styles and actions per definition</b>
+### ⭐ <b>Styles and actions per definition</b>
 
 example2.dart ([Code][example2] / [Demo][example2_demo])
 
@@ -179,21 +179,20 @@ CustomText(
 
 example5.dart ([Code][example5] / [Demo][example5_demo])
 
-![example5](https://user-images.githubusercontent.com/20254485/100355868-d0d5bb00-3035-11eb-836f-863f1af599ac.png)
+![example5](https://github.com/kaboc/flutter_custom_text/assets/20254485/d47566f4-a92e-4d74-99d4-866387cd4ad8)
 
-An example to parse markdown-style links, like `[shown text](url)` using
-[SelectiveDefinition], and make them tappable.
+An example to parse a markdown-style link in the format of `[shown text](url)`
+and make it tappable.
 
-Each of the string shown in the widget and the string passed to the tap handlers
-is selected individually from the groups of matched strings.
+[SelectiveDefinition] allows to select the string to display and the string to
+be passed to gesture callbacks individually from the groups of matched strings.
 
-For details of `groups`, see the document of the [text_parser] package used internally
-in this package.
+For details of `groups`, see the document of the [text_parser] package used
+internally in this package.
 
 ```dart
 CustomText(
-  'Markdown-style link\n'
-  '[Tap here](Tapped!)',
+  'Tap [here](Tapped!)',
   definitions: [
     SelectiveDefinition(
       matcher: const LinkMatcher(),
@@ -206,14 +205,16 @@ CustomText(
       actionText: (groups) => groups[1]!,
     ),
   ],
-  matchStyle: const TextStyle(color: Colors.lightBlue),
-  tapStyle: const TextStyle(color: Colors.green),
+  matchStyle: TextStyle(color: Colors.blue),
+  hoverStyle: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
   onTap: (details) => print(details.actionText),
 )
 ```
 
-`LinkMatcher` used together with `SelectiveDefinition` is handy not only for making a text link
-but also for just decorating the bracketed strings (without showing the bracket symbols).
+`LinkMatcher` is handy if used together with `SelectiveDefinition`, not only for
+making a text link but also for just decorating the bracketed strings (without
+showing the bracket symbols), in which case `[strings]()` is used as a marker to
+indicate which strings to be decorated.
 
 ```dart
 // "def" and "jkl" are displayed in red.
@@ -233,9 +234,9 @@ CustomText(
 
 example6.dart ([Code][example6] / [Demo][example6_demo])
 
-![example6](https://user-images.githubusercontent.com/20254485/221410494-c9d87a75-4a47-4dd1-af8a-0b566a393d59.png)
+![example6](https://github.com/kaboc/flutter_custom_text/assets/20254485/7e566862-d986-478b-85ff-9e26d4c47821)
 
-An example to display both text and icons.
+An example to display both text and widgets.
 
 [SpanDefinition] enables a certain portion of text to be replaced with an arbitrary
 [InlineSpan]. The `builder` function can use the parse result (the matched string and groups)
@@ -243,23 +244,26 @@ to flexibly build an `InlineSpan`.
 
 ```dart
 CustomText(
-  'Email 1: [@] foo@example.com\n'
-  'Email 2: [@] bar@example.com',
+  'Hover and click  >>  [logo]Flutter',
   definitions: [
     SpanDefinition(
-      matcher: const PatternMatcher(r'\[@\]'),
+      matcher: const PatternMatcher('>>'),
       builder: (text, groups) => const WidgetSpan(
-        child: Icon(
-          Icons.email,
-          color: Colors.blueGrey,
-          size: 20.0,
-        ),
+        child: Icon(Icons.keyboard_double_arrow_right, ...),
       ),
     ),
-    const TextDefinition(
-      matcher: EmailMatcher(),
-      matchStyle: TextStyle(color: Colors.lightBlue),
-      onTap: (details) => print(details.actionText),
+    SpanDefinition(
+      matcher: const PatternMatcher(r'\[logo\](\w+)'),
+      builder: (text, groups) => TextSpan(
+        children: [
+          const WidgetSpan(child: FlutterLogo()),
+          const WidgetSpan(child: SizedBox(width: 2.0)),
+          TextSpan(text: groups.first),
+        ],
+      ),
+      matchStyle: TextStyle(color: Colors.blue),
+      hoverStyle: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+      onTap: (details) => print(details.element.groups.first!),
     ),
   ],
 )

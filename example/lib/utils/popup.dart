@@ -93,7 +93,7 @@ const _kPopupMessages = {
       'open standards by the World Wide Web Consortium and other '
       'standardization bodies such as the Web Hypertext Application '
       'Technology Working Group, the Unicode Consortium,',
-  'codebase': 'In software development, a codebase is a collection of source '
-      'code used to build a particular software system, application, or '
-      'software component.',
+  'codebase': 'In software development, a **codebase** (or **code base**) '
+      'is a collection of source code used to build a particular software '
+      'system, application, or software component.',
 };
