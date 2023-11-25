@@ -1,8 +1,9 @@
-import 'dart:async';
+import 'dart:async' show Timer;
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart'
+    show PointerEnterEventListener, PointerEvent, PointerExitEventListener;
 
 import '../gesture_details.dart';
 import 'data.dart';

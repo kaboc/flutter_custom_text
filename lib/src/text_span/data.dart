@@ -1,7 +1,7 @@
-import 'dart:async';
+import 'dart:async' show Timer;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/gestures.dart' show PointerEvent;
+import 'package:flutter/painting.dart' show TextStyle;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 

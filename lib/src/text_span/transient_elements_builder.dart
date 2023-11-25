@@ -1,4 +1,5 @@
-import 'package:text_parser/text_parser.dart';
+import 'package:text_parser/text_parser.dart'
+    show TextElement, TextElementsExtension;
 
 extension on String {
   String safeSubstring(int start, [int? end]) {

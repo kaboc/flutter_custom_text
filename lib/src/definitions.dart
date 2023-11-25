@@ -1,4 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart'
+    show InlineSpan, SystemMouseCursors, WidgetSpan;
 
 import 'definition_base.dart';
 import 'gesture_details.dart';

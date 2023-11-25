@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:flutter/painting.dart'
+    show InlineSpan, Offset, TextSpan, TextStyle;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 

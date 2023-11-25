@@ -1,6 +1,5 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter/gestures.dart' show Offset, PointerDeviceKind;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 

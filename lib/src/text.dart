@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 
 import 'package:text_parser/text_parser.dart' show TextParser;

@@ -1,7 +1,7 @@
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/painting.dart' show InlineSpan, TextStyle;
+import 'package:flutter/services.dart' show MouseCursor;
 
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show immutable, sealed;
 import 'package:text_parser/text_parser.dart' show TextMatcher;
 
 import 'gesture_details.dart';
