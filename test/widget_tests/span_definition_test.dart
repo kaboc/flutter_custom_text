@@ -164,9 +164,12 @@ void main() {
         );
         await tester.pump();
 
-        final richTexts =
-            tester.findDescendantWidgetsByType<RichText>(of: RichText);
-        expect(richTexts.elementAt(0).text.style, style);
+        final text = tester
+            .findDescendantWidgetsByType<RichText>(of: RichText)
+            .elementAt(0)
+            .text;
+        expect(text.toPlainText(), 'bbb');
+        expect(text.style, style);
       },
     );
   });

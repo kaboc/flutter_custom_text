@@ -31,7 +31,17 @@ void main() {
       'CustomText with SelectiveDefinition composes correct spans',
       (tester) async {
         await tester.pumpWidget(
-          const SelectiveCustomTextWidget('aaa[bbb](ccc)ddd'),
+          CustomText(
+            'aaa[bbb](ccc)ddd',
+            textDirection: TextDirection.ltr,
+            definitions: [
+              SelectiveDefinition(
+                matcher: const LinkMatcher(),
+                shownText: (groups) => groups[0]!,
+                actionText: (groups) => groups[1]!,
+              ),
+            ],
+          ),
         );
         await tester.pump();
 

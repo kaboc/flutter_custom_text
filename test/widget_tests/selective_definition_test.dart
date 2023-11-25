@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:custom_text/custom_text.dart';
 
 import 'utils.dart';
-import 'widgets.dart';
 
 void main() {
   setUp(reset);
@@ -18,8 +17,16 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                ),
+              ],
               onTap: onTap,
             ),
           ),
@@ -46,8 +53,16 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                ),
+              ],
               onLongPress: onLongPress,
             ),
           ),
@@ -76,9 +91,17 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
-              onTapInDef: onTap,
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                  onTap: onTap,
+                ),
+              ],
             ),
           ),
         );
@@ -104,9 +127,17 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
-              onLongPressInDef: onLongPress,
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                  onLongPress: onLongPress,
+                ),
+              ],
             ),
           ),
         );
@@ -136,8 +167,16 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                ),
+              ],
               onGesture: onGesture,
             ),
           ),
@@ -192,9 +231,17 @@ void main() {
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
-            child: const SelectiveCustomTextWidget(
+            child: CustomText(
               'aaa[bbb](ccc)ddd',
-              onGestureInDef: onGesture,
+              textDirection: TextDirection.ltr,
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const LinkMatcher(),
+                  shownText: (groups) => groups[0]!,
+                  actionText: (groups) => groups[1]!,
+                  onGesture: onGesture,
+                ),
+              ],
             ),
           ),
         );
