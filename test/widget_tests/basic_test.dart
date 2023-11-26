@@ -1,3 +1,5 @@
+import 'dart:async' show Completer;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -153,6 +155,193 @@ void main() {
         expect(findTextSpan('https://example.com/')?.style, matchStyle);
       },
     );
+  });
+
+  group('Initial visibility', () {
+    testWidgets(
+      'Text is transparent until parsing completes when style is not specified',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const matchStyle = TextStyle(color: Color(0x11111111));
+
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            parserOptions: ParserOptions.external((text) => completer.future),
+            matchStyle: matchStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findInlineSpans(),
+          const [
+            TextSpan(
+              text: 'aaa bbb@example.com',
+              style: TextStyle(color: Color(0x00000000)),
+            ),
+          ],
+        );
+
+        completer.complete(const [
+          TextElement('aaa '),
+          TextElement('bbb@example.com', matcherType: EmailMatcher),
+        ]);
+        await tester.pumpAndSettle();
+
+        expect(
+          findInlineSpans(),
+          const [
+            TextSpan(text: 'aaa '),
+            TextSpan(text: 'bbb@example.com', style: matchStyle),
+          ],
+        );
+      },
+    );
+
+    testWidgets(
+      'Text is transparent until parsing completes when style is specified',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111), fontSize: 30.0);
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            parserOptions: ParserOptions.external((text) => completer.future),
+            style: style,
+            matchStyle: matchStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findInlineSpans(),
+          [
+            TextSpan(
+              text: 'aaa bbb@example.com',
+              style: style.copyWith(color: const Color(0x00000000)),
+            ),
+          ],
+        );
+
+        completer.complete(const [
+          TextElement('aaa '),
+          TextElement('bbb@example.com', matcherType: EmailMatcher),
+        ]);
+        await tester.pumpAndSettle();
+
+        expect(
+          findInlineSpans(),
+          [
+            const TextSpan(text: 'aaa ', style: style),
+            TextSpan(text: 'bbb@example.com', style: style.merge(matchStyle)),
+          ],
+        );
+      },
+    );
+
+    testWidgets(
+      'Text is visible before parsing completes when preventBlocking is on',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111));
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          CustomTextWidget(
+            'aaa bbb@example.com',
+            parserOptions: ParserOptions.external((text) => completer.future),
+            preventBlocking: true,
+            style: style,
+            matchStyle: matchStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findInlineSpans(),
+          const [
+            TextSpan(text: 'aaa bbb@example.com', style: style),
+          ],
+        );
+      },
+    );
+
+    testWidgets('Text is transparent only initially', (tester) async {
+      Completer<List<TextElement>>? completer;
+      var text = 'aaa bbb@example.com';
+      const matchStyle = TextStyle(color: Color(0x11111111));
+
+      await tester.pumpWidget(
+        StatefulBuilder(
+          builder: (context, setState) {
+            return CustomTextWidget(
+              text,
+              parserOptions: ParserOptions.external((text) {
+                completer = Completer<List<TextElement>>();
+                return completer!.future;
+              }),
+              matchStyle: matchStyle,
+              onButtonPressed: () {
+                setState(() => text = 'ccc ddd@example.com');
+              },
+            );
+          },
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        findInlineSpans(),
+        const [
+          TextSpan(
+            text: 'aaa bbb@example.com',
+            style: TextStyle(color: Color(0x00000000)),
+          ),
+        ],
+      );
+
+      completer?.complete(const [
+        TextElement('aaa '),
+        TextElement('bbb@example.com', matcherType: EmailMatcher),
+      ]);
+      await tester.pumpAndSettle();
+
+      expect(
+        findInlineSpans(),
+        const [
+          TextSpan(text: 'aaa '),
+          TextSpan(text: 'bbb@example.com', style: matchStyle),
+        ],
+      );
+
+      await tester.tapButton();
+      await tester.pumpAndSettle();
+
+      expect(
+        findInlineSpans(),
+        const [
+          TextSpan(text: 'aaa '),
+          TextSpan(text: 'bbb@example.com', style: matchStyle),
+        ],
+      );
+
+      completer?.complete(const [
+        TextElement('ccc '),
+        TextElement('ddd@example.com', matcherType: EmailMatcher),
+      ]);
+      await tester.pumpAndSettle();
+
+      expect(
+        findInlineSpans(),
+        const [
+          TextSpan(text: 'ccc '),
+          TextSpan(text: 'ddd@example.com', style: matchStyle),
+        ],
+      );
+    });
   });
 
   group('onTap and onLongPress', () {

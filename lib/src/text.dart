@@ -201,7 +201,16 @@ class _CustomTextState extends State<CustomText> {
   NotifierSettings _createNotifierSettings() {
     return NotifierSettings(
       definitions: widget.definitions,
-      style: widget.style,
+      // Keeps text transparent until parsing completes to prevent
+      // the strings that should not be shown (e.g. symbols for
+      // LinkMatcher `[]()`) from being visible for an instant.
+      // Exceptionally, text is not made invisible if `preventBlocking`
+      // is enabled because it means the user has opted in to quickly
+      // show the raw text without waiting.
+      style: widget.preventBlocking
+          ? widget.style
+          : widget.style?.copyWith(color: const Color(0x00000000)) ??
+              const TextStyle(color: Color(0x00000000)),
       matchStyle: widget.matchStyle,
       tapStyle: widget.tapStyle,
       hoverStyle: widget.hoverStyle,

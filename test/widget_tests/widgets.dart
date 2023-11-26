@@ -23,6 +23,7 @@ class CustomTextWidget extends StatelessWidget {
     this.onGestureInDef,
     this.longPressDuration,
     this.mouseCursor,
+    this.preventBlocking = false,
     this.onButtonPressed,
   });
 
@@ -44,6 +45,7 @@ class CustomTextWidget extends StatelessWidget {
   final GestureCallback? onGestureInDef;
   final Duration? longPressDuration;
   final MouseCursor? mouseCursor;
+  final bool preventBlocking;
   final VoidCallback? onButtonPressed;
 
   @override
@@ -79,6 +81,7 @@ class CustomTextWidget extends StatelessWidget {
             onLongPress: onLongPress,
             onGesture: onGesture,
             longPressDuration: longPressDuration,
+            preventBlocking: preventBlocking,
           ),
           ElevatedButton(
             onPressed: onButtonPressed,
