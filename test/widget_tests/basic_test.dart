@@ -1,7 +1,7 @@
 import 'dart:async' show Completer;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
@@ -165,9 +165,16 @@ void main() {
         const matchStyle = TextStyle(color: Color(0x11111111));
 
         await tester.pumpWidget(
-          CustomTextWidget(
-            'aaa bbb@example.com',
+          CustomText(
+            'aaa[bbb](ccc)',
+            textDirection: TextDirection.ltr,
             parserOptions: ParserOptions.external((text) => completer.future),
+            definitions: [
+              SelectiveDefinition(
+                matcher: const LinkMatcher(),
+                shownText: (groups) => groups.first!,
+              ),
+            ],
             matchStyle: matchStyle,
           ),
         );
@@ -177,23 +184,27 @@ void main() {
           findInlineSpans(),
           const [
             TextSpan(
-              text: 'aaa bbb@example.com',
+              text: 'aaa[bbb](ccc)',
               style: TextStyle(color: Color(0x00000000)),
             ),
           ],
         );
 
         completer.complete(const [
-          TextElement('aaa '),
-          TextElement('bbb@example.com', matcherType: EmailMatcher),
+          TextElement('aaa'),
+          TextElement(
+            '[bbb](ccc)',
+            matcherType: LinkMatcher,
+            groups: ['bbb', 'ccc'],
+          ),
         ]);
         await tester.pumpAndSettle();
 
         expect(
           findInlineSpans(),
           const [
-            TextSpan(text: 'aaa '),
-            TextSpan(text: 'bbb@example.com', style: matchStyle),
+            TextSpan(text: 'aaa'),
+            TextSpan(text: 'bbb', style: matchStyle),
           ],
         );
       },
@@ -204,6 +215,60 @@ void main() {
       (tester) async {
         final completer = Completer<List<TextElement>>();
         const style = TextStyle(color: Color(0x11111111), fontSize: 30.0);
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          CustomText(
+            'aaa[bbb](ccc)',
+            textDirection: TextDirection.ltr,
+            parserOptions: ParserOptions.external((text) => completer.future),
+            definitions: [
+              SelectiveDefinition(
+                matcher: const LinkMatcher(),
+                shownText: (groups) => groups.first!,
+              ),
+            ],
+            style: style,
+            matchStyle: matchStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findInlineSpans(),
+          [
+            TextSpan(
+              text: 'aaa[bbb](ccc)',
+              style: style.copyWith(color: const Color(0x00000000)),
+            ),
+          ],
+        );
+
+        completer.complete(const [
+          TextElement('aaa'),
+          TextElement(
+            '[bbb](ccc)',
+            matcherType: LinkMatcher,
+            groups: ['bbb', 'ccc'],
+          ),
+        ]);
+        await tester.pumpAndSettle();
+
+        expect(
+          findInlineSpans(),
+          [
+            const TextSpan(text: 'aaa', style: style),
+            TextSpan(text: 'bbb', style: style.merge(matchStyle)),
+          ],
+        );
+      },
+    );
+
+    testWidgets(
+      'Text is visible during parsing if there are only TextDefinitions',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111));
         const matchStyle = TextStyle(color: Color(0x22222222));
 
         await tester.pumpWidget(
@@ -218,32 +283,15 @@ void main() {
 
         expect(
           findInlineSpans(),
-          [
-            TextSpan(
-              text: 'aaa bbb@example.com',
-              style: style.copyWith(color: const Color(0x00000000)),
-            ),
-          ],
-        );
-
-        completer.complete(const [
-          TextElement('aaa '),
-          TextElement('bbb@example.com', matcherType: EmailMatcher),
-        ]);
-        await tester.pumpAndSettle();
-
-        expect(
-          findInlineSpans(),
-          [
-            const TextSpan(text: 'aaa ', style: style),
-            TextSpan(text: 'bbb@example.com', style: style.merge(matchStyle)),
+          const [
+            TextSpan(text: 'aaa bbb@example.com', style: style),
           ],
         );
       },
     );
 
     testWidgets(
-      'Text is visible before parsing completes when preventBlocking is on',
+      'Text is visible during parsing if preventBlocking is enabled',
       (tester) async {
         final completer = Completer<List<TextElement>>();
         const style = TextStyle(color: Color(0x11111111));
@@ -271,22 +319,38 @@ void main() {
 
     testWidgets('Text is transparent only initially', (tester) async {
       Completer<List<TextElement>>? completer;
-      var text = 'aaa bbb@example.com';
+      var text = 'aaa[bbb](ccc)';
       const matchStyle = TextStyle(color: Color(0x11111111));
 
       await tester.pumpWidget(
         StatefulBuilder(
           builder: (context, setState) {
-            return CustomTextWidget(
-              text,
-              parserOptions: ParserOptions.external((text) {
-                completer = Completer<List<TextElement>>();
-                return completer!.future;
-              }),
-              matchStyle: matchStyle,
-              onButtonPressed: () {
-                setState(() => text = 'ccc ddd@example.com');
-              },
+            return Directionality(
+              textDirection: TextDirection.ltr,
+              child: Column(
+                children: [
+                  CustomText(
+                    text,
+                    parserOptions: ParserOptions.external((text) {
+                      completer = Completer<List<TextElement>>();
+                      return completer!.future;
+                    }),
+                    definitions: [
+                      SelectiveDefinition(
+                        matcher: const LinkMatcher(),
+                        shownText: (groups) => groups.first!,
+                      ),
+                    ],
+                    matchStyle: matchStyle,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() => text = 'ddd[eee](fff)');
+                    },
+                    child: const Text('Button'),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -297,23 +361,27 @@ void main() {
         findInlineSpans(),
         const [
           TextSpan(
-            text: 'aaa bbb@example.com',
+            text: 'aaa[bbb](ccc)',
             style: TextStyle(color: Color(0x00000000)),
           ),
         ],
       );
 
       completer?.complete(const [
-        TextElement('aaa '),
-        TextElement('bbb@example.com', matcherType: EmailMatcher),
+        TextElement('aaa'),
+        TextElement(
+          '[bbb](ccc)',
+          matcherType: LinkMatcher,
+          groups: ['bbb', 'ccc'],
+        ),
       ]);
       await tester.pumpAndSettle();
 
       expect(
         findInlineSpans(),
         const [
-          TextSpan(text: 'aaa '),
-          TextSpan(text: 'bbb@example.com', style: matchStyle),
+          TextSpan(text: 'aaa'),
+          TextSpan(text: 'bbb', style: matchStyle),
         ],
       );
 
@@ -323,22 +391,26 @@ void main() {
       expect(
         findInlineSpans(),
         const [
-          TextSpan(text: 'aaa '),
-          TextSpan(text: 'bbb@example.com', style: matchStyle),
+          TextSpan(text: 'aaa'),
+          TextSpan(text: 'bbb', style: matchStyle),
         ],
       );
 
       completer?.complete(const [
-        TextElement('ccc '),
-        TextElement('ddd@example.com', matcherType: EmailMatcher),
+        TextElement('ddd'),
+        TextElement(
+          '[eee](fff)',
+          matcherType: LinkMatcher,
+          groups: ['eee', 'fff'],
+        ),
       ]);
       await tester.pumpAndSettle();
 
       expect(
         findInlineSpans(),
         const [
-          TextSpan(text: 'ccc '),
-          TextSpan(text: 'ddd@example.com', style: matchStyle),
+          TextSpan(text: 'ddd'),
+          TextSpan(text: 'eee', style: matchStyle),
         ],
       );
     });
