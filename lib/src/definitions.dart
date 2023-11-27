@@ -68,6 +68,13 @@ class SelectiveDefinition extends Definition {
   /// object passed to [onTap], [onLongPress] and [onGesture].
   ///
   /// {@macro customText.definition.mouseCursor}
+  ///
+  /// When this definition type is used, the text selected by
+  /// [shownText] is not shown until parsing completes and reveals
+  /// which parts in the original text need to be replaced with
+  /// the selected text, so that the raw text is not shown as is
+  /// while waiting. Exceptionally, this behaviour is not applied
+  /// if [CustomText.preventBlocking] is enabled.
   const SelectiveDefinition({
     required super.matcher,
     required ShownTextSelector super.shownText,
@@ -93,6 +100,13 @@ class SpanDefinition extends Definition {
   /// parentheses within the match pattern. Use the function to return
   /// an object of [InlineSpan] or its subtype (e.g. [WidgetSpan]) to
   /// display it instead of the matched string.
+  ///
+  /// When this definition type is used, the [InlineSpan] created by
+  /// the [builder] callback is not shown until parsing completes and
+  /// reveals which parts in the original text need to be replaced
+  /// with the span, so that the raw text is not shown as is while
+  /// waiting. Exceptionally, this behaviour is not applied if
+  /// [CustomText.preventBlocking] is enabled.
   const SpanDefinition({
     required super.matcher,
     required SpanBuilder super.builder,

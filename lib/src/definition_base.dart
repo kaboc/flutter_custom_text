@@ -73,4 +73,7 @@ abstract class Definition {
         hoverStyle,
         mouseCursor,
       );
+
+  /// Whether the definition is TextDefinition.
+  bool get isTextDefinition => shownText == null && builder == null;
 }
