@@ -161,22 +161,24 @@ class CustomText extends StatefulWidget {
   /// {@endtemplate}
   final Duration? longPressDuration;
 
-  /// Parsing is executed in an isolate to prevent blocking of the main
-  /// thread and the UI if set to `true`, except on the web where isolates
-  /// are not supported.
+  /// Whether to use an isolate for parsing to avoid blocking of the UI.
   ///
-  /// If this is enabled, the raw text is shown without decorations while
-  /// parsing is being executed asynchronously because CustomText is
-  /// yet to know which text element corresponds to which matcher type.
+  /// If set to true, parsing with the default parser is executed in
+  /// an isolate to prevent blocking of the main thread and the UI.
   ///
-  /// Note that using an isolate adds an overhead, resulting in a slightly
-  /// longer execution time, but it can be better than blocking of the
-  /// main thread.
+  /// This option does not work for the web where isolates are not
+  /// supported. Also, this does not affect an external parser.
+  ///
+  /// Note that using an isolate adds an overhead, resulting in a
+  /// slightly longer execution time. As a result, the raw text is
+  /// shown without decorations while parsing takes a little longer,
+  /// during which CustomText is yet to know which definition should
+  /// be used for which portion of text.
   ///
   /// How long parsing takes depends on the text length, the number
   /// and complexity of match patterns, the device performance, etc.
-  /// Try both `true` and `false` to see which is suitable if you are
-  /// unsure.
+  /// Try both `true` and `false` to see which is suitable if you
+  /// are unsure.
   final bool preventBlocking;
 
   final StrutStyle? strutStyle;

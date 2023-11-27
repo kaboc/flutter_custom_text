@@ -1,3 +1,19 @@
+## 1.2.0
+
+- Refactor and improve gesture handling.
+    - Behaviours triggered by gestures is now more stable and natural.
+        - e.g. Text style is no longer lost for an instant on tap when hoverStyle
+          is specified and tapStyle is not.
+- Add parameters to `SpanDefinition` to be equivalent to other definitions. ([#34])
+    - Text style, mouse cursor type and gesture handlers are applied to the
+      `InlineSpan` created by the `builder` function and its children.
+    - Text style is also provided to `WidgetSpan`s via `DefaultTextStyle`.
+- Make text invisible during initial parsing. ([#37])
+    - It should be only a tiny moment, so won't have an impact.
+    - This does not affect the cases where `preventBlocking` is enabled or only
+      `TextDefinition`s are used.
+- Improve documentation.
+
 ## 1.1.0
 
 - Bump text_parser to 2.1.0.
@@ -255,3 +271,5 @@
 [#25]: https://github.com/kaboc/flutter_custom_text/pull/25
 [#27]: https://github.com/kaboc/flutter_custom_text/pull/27
 [#31]: https://github.com/kaboc/flutter_custom_text/pull/31
+[#34]: https://github.com/kaboc/flutter_custom_text/pull/34
+[#37]: https://github.com/kaboc/flutter_custom_text/pull/37
