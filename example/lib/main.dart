@@ -17,6 +17,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'CustomText Demo',
       theme: ThemeData(
+        useMaterial3: false,
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.blueGrey,
         ).copyWith(primary: Colors.grey.shade800),
