@@ -252,6 +252,16 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
+    // This has to be here after checking the necessity of parsing.
+    // Don't swap the order.
+    if (_textSpanNotifier.elements.isEmpty) {
+      // No-op when called before initial parsing completes so that
+      // having no element won't cause an empty span to be build.
+      // (But this only happens if this widget is rebuilt with some
+      // values updated while parsing is taking long.)
+      return;
+    }
+
     final needsSpanUpdate = widget.style != oldWidget.style ||
         widget.matchStyle != oldWidget.matchStyle ||
         widget.tapStyle != oldWidget.tapStyle ||

@@ -1,3 +1,5 @@
+import 'dart:async' show Completer;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -127,6 +129,43 @@ void main() {
         expect(spans[2].style, matchStyle1);
         expect(spans[4].toPlainText(), 'Pattern 1');
         expect(spans[4].style, matchStyle2);
+      },
+    );
+
+    testWidgets(
+      'A call to didUpdateWidget() during initial parsing does not '
+      'cause an empty span to be built by having no element yet',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        var matchStyle = const TextStyle(color: Color(0x11111111));
+
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return CustomTextWidget(
+                'abc',
+                parserOptions: ParserOptions.external(
+                  (text) => completer.future,
+                ),
+                definitions: const [
+                  TextDefinition(matcher: PatternMatcher('dummy')),
+                ],
+                matchStyle: matchStyle,
+                onButtonPressed: () => setState(() {
+                  matchStyle = const TextStyle(color: Color(0x22222222));
+                }),
+              );
+            },
+          ),
+        );
+        await tester.pump();
+
+        expect(findInlineSpans(), const [TextSpan(text: 'abc')]);
+
+        await tester.tapButton();
+        await tester.pump();
+
+        expect(findInlineSpans(), const [TextSpan(text: 'abc')]);
       },
     );
   });
