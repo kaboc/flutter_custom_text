@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
@@ -108,5 +109,21 @@ extension WidgetTesterExtension on WidgetTester {
       matching: find.byType(T),
     );
     return widgetList(finder).map((v) => v as T);
+  }
+
+  RenderEditable? findRenderEditable() {
+    final ro = renderObject(find.byType(EditableText).first);
+
+    RenderEditable? renderEditable;
+    void visitor(RenderObject child) {
+      if (child is RenderEditable) {
+        renderEditable = child;
+      } else {
+        child.visitChildren(visitor);
+      }
+    }
+    ro.visitChildren(visitor);
+
+    return renderEditable;
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:async' show Completer;
+
+import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
+import 'utils.dart';
 import 'widgets.dart';
 
 void main() {
@@ -9,6 +13,100 @@ void main() {
     TextDefinition(matcher: UrlMatcher()),
     TextDefinition(matcher: EmailMatcher()),
   ];
+
+  group('Text style', () {
+    testWidgets(
+      '`style` of controller is used until initial parsing completes',
+      (tester) async {
+        const style = TextStyle(color: Color(0x11111111));
+        const matchStyle = TextStyle(color: Color(0x22222222));
+        const fieldStyle = TextStyle(color: Color(0x33333333));
+
+        final completer = Completer<List<TextElement>>();
+
+        final controller = CustomTextEditingController(
+          text: 'aaa bbb@example.com',
+          parserOptions: ParserOptions.external((text) => completer.future),
+          definitions: const [
+            TextDefinition(
+              matcher: EmailMatcher(),
+              matchStyle: matchStyle,
+            ),
+          ],
+          style: style,
+        );
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          TextFieldWidget(
+            controller: controller,
+            style: fieldStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          tester.findRenderEditable()?.text,
+          const TextSpan(
+            text: 'aaa bbb@example.com',
+            style: style,
+          ),
+        );
+
+        completer.complete(const [
+          TextElement('aaa '),
+          TextElement('bbb@example.com', matcherType: EmailMatcher),
+        ]);
+        await tester.pumpAndSettle();
+
+        expect(
+          tester.findRenderEditable()?.text,
+          const TextSpan(
+            children: [
+              TextSpan(text: 'aaa ', style: style),
+              TextSpan(text: 'bbb@example.com', style: matchStyle),
+            ],
+          ),
+        );
+      },
+    );
+
+    testWidgets(
+      '`style` of TextField is used until initial parsing completes '
+      'if `style` is not specified in controller',
+      (tester) async {
+        const matchStyle = TextStyle(color: Color(0x11111111));
+        const fieldStyle = TextStyle(color: Color(0x22222222));
+
+        final controller = CustomTextEditingController(
+          text: 'aaa bbb@example.com',
+          parserOptions: ParserOptions.external(
+            (text) => Completer<List<TextElement>>().future,
+          ),
+          definitions: const [
+            TextDefinition(
+              matcher: EmailMatcher(),
+              matchStyle: matchStyle,
+            ),
+          ],
+        );
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          TextFieldWidget(
+            controller: controller,
+            style: fieldStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          tester.findRenderEditable()?.text?.style?.color,
+          fieldStyle.color,
+        );
+      },
+    );
+  });
 
   group('CustomTextEditingController with debounceDuration', () {
     testWidgets('Initial text is parsed right away', (tester) async {

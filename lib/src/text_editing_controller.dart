@@ -178,7 +178,12 @@ class CustomTextEditingController extends TextEditingController {
     required bool withComposing,
   }) {
     _style = style;
-    return _textSpanNotifier.value;
+    return _textSpanNotifier.elements.isEmpty
+        ? TextSpan(
+            text: _textSpanNotifier.value.text,
+            style: this.style ?? style,
+          )
+        : _textSpanNotifier.value;
   }
 
   void _init() {
