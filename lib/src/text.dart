@@ -303,20 +303,7 @@ class _CustomTextState extends State<CustomText> {
     return NotifierSettings(
       definitions: widget.definitions,
       spans: widget.spans,
-      // Keeps text transparent during initial parsing to prevent the
-      // strings that should not be shown (e.g. symbols for LinkMatcher
-      // `[]()`) from being visible for an instant.
-      // Exceptionally, text is not made invisible in the following cases:
-      //
-      // * When `preventBlocking` is enabled, which means the user has
-      //   chosen to show the raw text without it blocked by parsing.
-      // * When `definitions` contains only TextDefinition, in which case
-      //   the shown text remains unchanged before and after parsing.
-      style: widget.preventBlocking ||
-              widget.definitions.every((def) => def.isTextDefinition)
-          ? widget.style
-          : widget.style?.copyWith(color: const Color(0x00000000)) ??
-              const TextStyle(color: Color(0x00000000)),
+      style: widget.style,
       matchStyle: widget.matchStyle,
       tapStyle: widget.tapStyle,
       hoverStyle: widget.hoverStyle,
@@ -331,14 +318,46 @@ class _CustomTextState extends State<CustomText> {
   void initState() {
     super.initState();
 
-    _textSpanNotifier = CustomTextSpanNotifier(
-      text: widget.text,
-      settings: _createNotifierSettings(),
-    );
+    final spanText = widget.spans.toPlainText();
 
-    _parse(
-      widget.text ?? widget.spans.toPlainText(),
-    );
+    // Keeps content transparent during initial parsing to prevent the
+    // strings and widgets that should not be shown (e.g. symbols for
+    // LinkMatcher `[]()`) from being visible for an instant.
+    // However, the following cases are excluded:
+    //
+    // * When `preventBlocking` is enabled, which means the user has
+    //   chosen to show the raw content without it blocked by parsing.
+    // * When the default constructor is used and `definitions`
+    //   contains only TextDefinition, in which case the shown text
+    //   remains unchanged before and after parsing.
+    //   As an exception, this does not apply to the case where
+    //   `CustomText.spans` is used because the given spans can contain
+    //   widgets that cannot be hidden by just making the text colour
+    //   transparent.
+    final shouldHide = !widget.preventBlocking &&
+        (widget.spans != null ||
+            widget.definitions.any((def) => !def.isTextDefinition));
+
+    _textSpanNotifier = shouldHide
+        ? CustomTextSpanNotifier(
+            // Shows plain text even in the case of `CustomText.spans`.
+            // Otherwise, widgets contained in spans become visible
+            // because the transparent colour only works for text.
+            initialText: widget.text ?? spanText,
+            initialSpans: null,
+            initialStyle:
+                widget.style?.copyWith(color: const Color(0x00000000)) ??
+                    const TextStyle(color: Color(0x00000000)),
+            settings: _createNotifierSettings(),
+          )
+        : CustomTextSpanNotifier(
+            initialText: widget.text,
+            initialSpans: widget.spans,
+            initialStyle: widget.style,
+            settings: _createNotifierSettings(),
+          );
+
+    _parse(widget.text ?? spanText);
   }
 
   @override

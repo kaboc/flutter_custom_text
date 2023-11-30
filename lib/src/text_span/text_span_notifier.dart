@@ -12,12 +12,16 @@ import 'split_spans.dart';
 import 'transient_elements_builder.dart';
 
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
-  CustomTextSpanNotifier({required String? text, required this.settings})
-      : super(
+  CustomTextSpanNotifier({
+    required String? initialText,
+    required List<InlineSpan>? initialSpans,
+    required TextStyle? initialStyle,
+    required this.settings,
+  }) : super(
           TextSpan(
-            text: text,
-            children: settings.spans,
-            style: settings.style,
+            text: initialText,
+            children: initialSpans,
+            style: initialStyle,
           ),
         );
 
@@ -190,7 +194,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
-            children: spanData.spans,
+            children: spanData.shownText == null ? spanData.spans : null,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
@@ -247,7 +251,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
-            children: spanData.spans,
+            children: spanData.shownText == null ? spanData.spans : null,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);

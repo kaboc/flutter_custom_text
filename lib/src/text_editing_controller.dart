@@ -200,7 +200,9 @@ class CustomTextEditingController extends TextEditingController {
             ).parse(text, useIsolate: false);
 
     _textSpanNotifier = CustomTextSpanNotifier(
-      text: text,
+      initialText: text,
+      initialSpans: null,
+      initialStyle: style,
       settings: NotifierSettings(
         definitions: definitions,
         style: style,
