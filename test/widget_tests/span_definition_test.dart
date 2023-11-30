@@ -30,9 +30,21 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans(onlyDirectChildren: true);
-      expect(spans[0].style, style);
-      expect(spans[1].style, matchStyle);
+      expect(
+        findFirstTextSpan(),
+        const TextSpan(
+          children: [
+            TextSpan(text: 'aaa', style: style),
+            TextSpan(
+              style: matchStyle,
+              children: [
+                TextSpan(text: 'bbb'),
+              ],
+            ),
+            TextSpan(text: 'ccc', style: style),
+          ],
+        ),
+      );
     });
 
     testWidgets('matchStyle is merged with style', (tester) async {
@@ -55,9 +67,21 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans(onlyDirectChildren: true);
-      expect(spans[0].style, style);
-      expect(spans[1].style, style.merge(matchStyle));
+      expect(
+        findFirstTextSpan(),
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa', style: style),
+            TextSpan(
+              style: style.merge(matchStyle),
+              children: const [
+                TextSpan(text: 'bbb'),
+              ],
+            ),
+            const TextSpan(text: 'ccc', style: style),
+          ],
+        ),
+      );
     });
 
     testWidgets('tapStyle is applied while being pressed', (tester) async {
@@ -83,17 +107,40 @@ void main() {
       );
       await tester.pump();
 
-      final spans1 = findInlineSpans(onlyDirectChildren: true);
-      expect(spans1[0].style, style);
-      expect(spans1[1].style, style.merge(matchStyle));
+      expect(
+        findFirstTextSpan(),
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa', style: style),
+            TextSpan(
+              style: style.merge(matchStyle),
+              children: [
+                findTextSpanByText('bbb')!,
+              ],
+            ),
+            const TextSpan(text: 'ccc', style: style),
+          ],
+        ),
+      );
 
-      final targetSpan = findInlineSpans()[1];
-      (targetSpan as TextSpan).tapDown();
+      findTextSpanByText('bbb')!.tapDown();
       await tester.pump();
 
-      final spans2 = findInlineSpans(onlyDirectChildren: true);
-      expect(spans2[0].style, style);
-      expect(spans2[1].style, style.merge(tapStyle));
+      expect(
+        findFirstTextSpan(),
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa', style: style),
+            TextSpan(
+              style: style.merge(tapStyle),
+              children: [
+                findTextSpanByText('bbb')!,
+              ],
+            ),
+            const TextSpan(text: 'ccc', style: style),
+          ],
+        ),
+      );
     });
 
     testWidgets(
@@ -124,9 +171,21 @@ void main() {
         );
         await tester.pump();
 
-        final spans1 = findInlineSpans(onlyDirectChildren: true);
-        expect(spans1[0].style, style);
-        expect(spans1[1].style, style.merge(matchStyle));
+        expect(
+          findFirstTextSpan(),
+          TextSpan(
+            children: [
+              const TextSpan(text: 'aaa', style: style),
+              TextSpan(
+                style: style.merge(matchStyle),
+                children: [
+                  findTextSpanByText('bbb')!,
+                ],
+              ),
+              const TextSpan(text: 'ccc', style: style),
+            ],
+          ),
+        );
 
         final gesture =
             await tester.createGesture(kind: PointerDeviceKind.mouse);
@@ -136,9 +195,21 @@ void main() {
         await gesture.addPointer(location: center);
         await tester.pumpAndSettle();
 
-        final spans2 = findInlineSpans(onlyDirectChildren: true);
-        expect(spans2[0].style, style);
-        expect(spans2[1].style, style.merge(hoverStyle));
+        expect(
+          findFirstTextSpan(),
+          TextSpan(
+            children: [
+              const TextSpan(text: 'aaa', style: style),
+              TextSpan(
+                style: style.merge(hoverStyle),
+                children: [
+                  findTextSpanByText('bbb')!,
+                ],
+              ),
+              const TextSpan(text: 'ccc', style: style),
+            ],
+          ),
+        );
       },
     );
 
@@ -187,8 +258,8 @@ void main() {
               SpanDefinition(
                 matcher: const LinkMatcher(),
                 builder: (text, groups) => TextSpan(text: groups[0]),
-                onTap: onTap,
-                onLongPress: onLongPress,
+                onTap: onAction,
+                onLongPress: onAction,
               ),
             ],
           ),
@@ -196,11 +267,20 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans();
-      expect(spans, hasLength(3));
-      expect(spans[0].toPlainText(), 'aaa');
-      expect(spans[1].toPlainText(), 'bbb');
-      expect(spans[2].toPlainText(), 'ddd');
+      expect(
+        findFirstTextSpan(),
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa'),
+            TextSpan(
+              children: [
+                findTextSpanByText('bbb')!,
+              ],
+            ),
+            const TextSpan(text: 'ddd'),
+          ],
+        ),
+      );
 
       final center = tester.getCenter(find.byType(RichText).first);
       await tester.tapAt(center);
@@ -244,7 +324,7 @@ void main() {
                     ),
                   );
                 },
-                onTap: onTap,
+                onTap: onAction,
               ),
             ],
           ),
@@ -252,11 +332,22 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans();
-      expect(spans, hasLength(3));
-      expect(spans[0].toPlainText(), 'aaa');
-      expect(spans[1], isA<WidgetSpan>());
-      expect(spans[2].toPlainText(), 'ccc');
+      final builtSpan = findFirstTextSpan();
+
+      expect(
+        builtSpan,
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa'),
+            TextSpan(
+              children: [
+                builtSpan.findWidgetSpans().first,
+              ],
+            ),
+            const TextSpan(text: 'ccc'),
+          ],
+        ),
+      );
 
       final center = tester.getCenter(find.byType(RichText).first);
       await tester.tapAt(center);
@@ -285,7 +376,7 @@ void main() {
                       child: SizedBox.square(dimension: 30),
                     );
                   },
-                  onTap: onTap,
+                  onTap: onAction,
                 ),
               ],
             ),
@@ -316,7 +407,7 @@ void main() {
               SpanDefinition(
                 matcher: const LinkMatcher(),
                 builder: (text, groups) => TextSpan(text: groups[0]),
-                onGesture: onGesture,
+                onGesture: onAction,
               ),
             ],
           ),
@@ -324,11 +415,20 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans();
-      expect(spans, hasLength(3));
-      expect(spans[0].toPlainText(), 'aaa');
-      expect(spans[1].toPlainText(), 'bbb');
-      expect(spans[2].toPlainText(), 'ddd');
+      expect(
+        findFirstTextSpan(),
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa'),
+            TextSpan(
+              children: [
+                findTextSpanByText('bbb')!,
+              ],
+            ),
+            const TextSpan(text: 'ddd'),
+          ],
+        ),
+      );
 
       final center = tester.getCenter(find.byType(RichText).first);
       await tester.tapAt(center, buttons: kSecondaryButton);
@@ -386,7 +486,7 @@ void main() {
                     ),
                   );
                 },
-                onGesture: onGesture,
+                onGesture: onAction,
               ),
             ],
           ),
@@ -394,11 +494,22 @@ void main() {
       );
       await tester.pump();
 
-      final spans = findInlineSpans();
-      expect(spans, hasLength(3));
-      expect(spans[0].toPlainText(), 'aaa');
-      expect(spans[1], isA<WidgetSpan>());
-      expect(spans[2].toPlainText(), 'ccc');
+      final builtSpan = findFirstTextSpan();
+
+      expect(
+        builtSpan,
+        TextSpan(
+          children: [
+            const TextSpan(text: 'aaa'),
+            TextSpan(
+              children: [
+                builtSpan.findWidgetSpans().first,
+              ],
+            ),
+            const TextSpan(text: 'ccc'),
+          ],
+        ),
+      );
 
       final center = tester.getCenter(find.byType(RichText).first);
       await tester.tapAt(center, buttons: kTertiaryButton);
@@ -438,7 +549,7 @@ void main() {
                       child: SizedBox.square(dimension: 30),
                     );
                   },
-                  onGesture: onGesture,
+                  onGesture: onAction,
                 ),
               ],
             ),
@@ -483,8 +594,8 @@ void main() {
       );
       await tester.pump();
 
-      expect(findTextSpan('aaa')?.mouseCursor, MouseCursor.defer);
-      expect(findTextSpan('bbb')?.mouseCursor, SystemMouseCursors.grab);
+      expect(findTextSpanByText('aaa')?.mouseCursor, MouseCursor.defer);
+      expect(findTextSpanByText('bbb')?.mouseCursor, SystemMouseCursors.grab);
     });
   });
 
@@ -555,8 +666,11 @@ void main() {
         // spans1[0]: TextSpan with text '123'
         // spans1[1]: TextSpan containing TextSpan returned by builder callback
         // spans1[2]: TextSpan with text '456'
-        final spans1 = findInlineSpans(onlyDirectChildren: true);
-        expect(spans1[1].style, style.merge(hoverStyle));
+
+        expect(
+          findFirstTextSpan()?.children?[1].style,
+          style.merge(hoverStyle),
+        );
 
         final text1 = tester
             .findDescendantWidgetsByType<RichText>(of: RichText)
@@ -569,8 +683,10 @@ void main() {
         await gesture.down(center);
         await tester.pump();
 
-        final spans2 = findInlineSpans(onlyDirectChildren: true);
-        expect(spans2[1].style, style.merge(tapStyle));
+        expect(
+          findFirstTextSpan()?.children?[1].style,
+          style.merge(tapStyle),
+        );
 
         final text2 = tester
             .findDescendantWidgetsByType<RichText>(of: RichText)
@@ -584,8 +700,10 @@ void main() {
         await gesture.moveTo(center + center / 2);
         await tester.pump();
 
-        final spans3 = findInlineSpans(onlyDirectChildren: true);
-        expect(spans3[1].style, style.merge(hoverStyle));
+        expect(
+          findFirstTextSpan()?.children?[1].style,
+          style.merge(hoverStyle),
+        );
 
         final text3 = tester
             .findDescendantWidgetsByType<RichText>(of: RichText)

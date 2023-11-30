@@ -26,27 +26,7 @@ void reset() {
   localPosition = null;
 }
 
-void onTap(GestureDetails details) {
-  gestureKind = details.gestureKind;
-  pointerDeviceKind = details.pointerDeviceKind;
-  element = details.element;
-  shownText = details.shownText;
-  actionText = details.actionText;
-  globalPosition = details.globalPosition;
-  localPosition = details.localPosition;
-}
-
-void onLongPress(GestureDetails details) {
-  gestureKind = details.gestureKind;
-  pointerDeviceKind = details.pointerDeviceKind;
-  element = details.element;
-  shownText = details.shownText;
-  actionText = details.actionText;
-  globalPosition = details.globalPosition;
-  localPosition = details.localPosition;
-}
-
-void onGesture(GestureDetails details) {
+void onAction(GestureDetails details) {
   gestureKind = details.gestureKind;
   pointerDeviceKind = details.pointerDeviceKind;
   element = details.element;
@@ -61,20 +41,11 @@ Text findText() {
   return finder.evaluate().first.widget as Text;
 }
 
-List<InlineSpan> findInlineSpans({bool onlyDirectChildren = false}) {
-  if (onlyDirectChildren) {
-    return (findText().textSpan as TextSpan?)?.children ?? [];
-  }
-
-  final spans = <InlineSpan>[];
-  findText().textSpan?.visitChildren((span) {
-    spans.add(span);
-    return true;
-  });
-  return spans;
+TextSpan? findFirstTextSpan() {
+  return findText().textSpan as TextSpan?;
 }
 
-TextSpan? findTextSpan(String text) {
+TextSpan? findTextSpanByText(String text) {
   TextSpan? span;
   findText().textSpan?.visitChildren(
     (visitor) {
@@ -89,6 +60,17 @@ TextSpan? findTextSpan(String text) {
 }
 
 extension SpanRecognizer on TextSpan? {
+  List<WidgetSpan> findWidgetSpans() {
+    final spans = <WidgetSpan>[];
+    this?.visitChildren((span) {
+      if (span is WidgetSpan) {
+        spans.add(span);
+      }
+      return true;
+    });
+    return spans;
+  }
+
   void tapDown() {
     final recognizer = this?.recognizer as TapGestureRecognizer?;
     recognizer!.onTapDown!(TapDownDetails());

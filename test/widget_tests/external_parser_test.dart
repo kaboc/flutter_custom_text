@@ -27,10 +27,10 @@ void main() {
       );
       await tester.pump();
 
-      expect(findTextSpan('abc')?.style, style);
-      expect(findTextSpan('1234')?.style, matchStyle);
-      expect(findTextSpan('def')?.style, style);
-      expect(findTextSpan('5678')?.style, matchStyle);
+      expect(findTextSpanByText('abc')?.style, style);
+      expect(findTextSpanByText('1234')?.style, matchStyle);
+      expect(findTextSpanByText('def')?.style, style);
+      expect(findTextSpanByText('5678')?.style, matchStyle);
     });
 
     testWidgets('External parser reruns when text is updated', (tester) async {
@@ -59,16 +59,16 @@ void main() {
       );
       await tester.pump();
 
-      expect(findTextSpan('abc')?.style, style);
-      expect(findTextSpan('1234')?.style, matchStyle);
+      expect(findTextSpanByText('abc')?.style, style);
+      expect(findTextSpanByText('1234')?.style, matchStyle);
 
-      findTextSpan('1234')
+      findTextSpanByText('1234')
         ..tapDown()
         ..tapUp();
       await tester.pumpAndSettle();
 
-      expect(findTextSpan('abc'), isNull);
-      expect(findTextSpan('123456')?.style, matchStyle);
+      expect(findTextSpanByText('abc'), isNull);
+      expect(findTextSpanByText('123456')?.style, matchStyle);
     });
   });
 
@@ -79,12 +79,10 @@ void main() {
         parserOptions: const ParserOptions.external(_parseNumbers),
         definitions: const [TextDefinition(matcher: NumberMatcher())],
       );
+      addTearDown(controller.dispose);
 
       await tester.pumpWidget(
-        TextFieldWidget(
-          controller: controller,
-          onDispose: controller.dispose,
-        ),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -104,12 +102,10 @@ void main() {
         parserOptions: const ParserOptions.external(_parseNumbers),
         definitions: const [TextDefinition(matcher: NumberMatcher())],
       );
+      addTearDown(controller.dispose);
 
       await tester.pumpWidget(
-        TextFieldWidget(
-          controller: controller,
-          onDispose: controller.dispose,
-        ),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 

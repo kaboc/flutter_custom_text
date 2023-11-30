@@ -93,32 +93,24 @@ class CustomTextWidget extends StatelessWidget {
   }
 }
 
-class TextFieldWidget extends StatefulWidget {
+class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
     super.key,
     required this.controller,
-    required this.onDispose,
+    this.style,
   });
 
   final CustomTextEditingController controller;
-  final VoidCallback onDispose;
-
-  @override
-  State<TextFieldWidget> createState() => _TextFieldWidgetState();
-}
-
-class _TextFieldWidgetState extends State<TextFieldWidget> {
-  @override
-  void dispose() {
-    widget.onDispose();
-    super.dispose();
-  }
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: TextField(controller: widget.controller),
+        body: TextField(
+          controller: controller,
+          style: style,
+        ),
       ),
     );
   }

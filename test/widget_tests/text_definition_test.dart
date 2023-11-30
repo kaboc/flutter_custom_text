@@ -26,8 +26,8 @@ void main() {
         );
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -46,8 +46,8 @@ void main() {
         );
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
-        expect(findTextSpan('https://example.com/')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('https://example.com/')?.style, style);
       },
     );
 
@@ -66,7 +66,7 @@ void main() {
         );
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, matchStyleInDef);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyleInDef);
       },
     );
 
@@ -86,10 +86,10 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').maybeTapDown();
+        findTextSpanByText('bbb@example.com').maybeTapDown();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, style);
       },
     );
 
@@ -104,17 +104,17 @@ void main() {
             'aaa bbb@example.com https://example.com/',
             style: style,
             tapStyleInDef: tapStyle,
-            onTap: onTap,
+            onTap: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
-        expect(findTextSpan('https://example.com/')?.style, style);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('https://example.com/')?.style, style);
       },
     );
 
@@ -129,15 +129,15 @@ void main() {
             'aaa bbb@example.com',
             tapStyle: tapStyle,
             tapStyleInDef: tapStyleInDef,
-            onTap: onTap,
+            onTap: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, tapStyleInDef);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyleInDef);
       },
     );
 
@@ -155,22 +155,22 @@ void main() {
             style: style,
             matchStyle: matchStyle,
             tapStyle: tapStyle,
-            onTapInDef: onTap,
+            onTapInDef: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
-        expect(findTextSpan('https://example.com/')?.style, matchStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('https://example.com/')?.style, matchStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -188,22 +188,22 @@ void main() {
             style: style,
             matchStyle: matchStyle,
             tapStyle: tapStyle,
-            onLongPressInDef: onLongPress,
+            onLongPressInDef: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
-        expect(findTextSpan('https://example.com/')?.style, matchStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('https://example.com/')?.style, matchStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -219,21 +219,21 @@ void main() {
             'aaa bbb@example.com',
             style: style,
             tapStyleInDef: tapStyle,
-            onTap: onTap,
+            onTap: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, style);
       },
     );
 
@@ -249,21 +249,21 @@ void main() {
             'aaa bbb@example.com',
             style: style,
             tapStyleInDef: tapStyle,
-            onLongPress: onLongPress,
+            onLongPress: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, style);
       },
     );
 
@@ -279,21 +279,21 @@ void main() {
             'aaa bbb@example.com',
             style: style,
             tapStyleInDef: tapStyle,
-            onTapInDef: onTap,
+            onTapInDef: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, style);
       },
     );
 
@@ -309,21 +309,21 @@ void main() {
             'aaa bbb@example.com',
             style: style,
             tapStyleInDef: tapStyle,
-            onLongPressInDef: onLongPress,
+            onLongPressInDef: onAction,
           ),
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pump();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, tapStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, tapStyle);
 
-        findTextSpan('bbb@example.com').tapUp();
+        findTextSpanByText('bbb@example.com').tapUp();
         await tester.pump();
 
-        expect(findTextSpan('bbb@example.com')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, style);
       },
     );
   });
@@ -338,7 +338,7 @@ void main() {
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
             child: const CustomTextWidget(
               'aaa bbb@example.com',
-              onTapInDef: onTap,
+              onTapInDef: onAction,
             ),
           ),
         );
@@ -366,7 +366,7 @@ void main() {
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
             child: const CustomTextWidget(
               'aaa bbb@example.com',
-              onLongPressInDef: onLongPress,
+              onLongPressInDef: onAction,
             ),
           ),
         );
@@ -402,7 +402,7 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com')
+        findTextSpanByText('bbb@example.com')
           ..tapDown()
           ..tapUp();
         await tester.pump();
@@ -427,7 +427,7 @@ void main() {
         );
         await tester.pump();
 
-        final span = findTextSpan('bbb@example.com')..tapDown();
+        final span = findTextSpanByText('bbb@example.com')..tapDown();
         await tester.pump(kTestLongPressDuration);
         span.tapUp();
         await tester.pump();
@@ -443,7 +443,7 @@ void main() {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onTap: (details) => onTap(
+            onTap: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -452,7 +452,7 @@ void main() {
                 actionText: 'tap1',
               ),
             ),
-            onTapInDef: (details) => onTap(
+            onTapInDef: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -465,7 +465,7 @@ void main() {
         );
         await tester.pump();
 
-        findTextSpan('bbb@example.com')
+        findTextSpanByText('bbb@example.com')
           ..tapDown()
           ..tapUp();
         await tester.pump();
@@ -480,7 +480,7 @@ void main() {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onLongPress: (details) => onLongPress(
+            onLongPress: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -489,7 +489,7 @@ void main() {
                 actionText: 'long1',
               ),
             ),
-            onLongPressInDef: (details) => onLongPress(
+            onLongPressInDef: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -502,7 +502,7 @@ void main() {
         );
         await tester.pump();
 
-        final span = findTextSpan('bbb@example.com')..tapDown();
+        final span = findTextSpanByText('bbb@example.com')..tapDown();
         await tester.pump(kTestLongPressDuration);
         span.tapUp();
         await tester.pump();
@@ -522,7 +522,7 @@ void main() {
             padding: const EdgeInsets.only(left: 10.0, top: 10.0),
             child: const CustomTextWidget(
               'aaa bbb@example.com',
-              onGesture: onGesture,
+              onGesture: onAction,
             ),
           ),
         );
@@ -582,7 +582,7 @@ void main() {
         await tester.pumpWidget(
           CustomTextWidget(
             'aaa bbb@example.com',
-            onGesture: (details) => onGesture(
+            onGesture: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -591,7 +591,7 @@ void main() {
                 actionText: 'gesture1',
               ),
             ),
-            onGestureInDef: (details) => onGesture(
+            onGestureInDef: (details) => onAction(
               GestureDetails(
                 gestureKind: details.gestureKind,
                 pointerDeviceKind: PointerDeviceKind.mouse,
@@ -670,16 +670,16 @@ void main() {
         await gesture.moveTo(Offset(center.dx / 2, center.dy));
         await tester.pumpAndSettle();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, hoverStyleInDef);
-        expect(findTextSpan('https://example.com/')?.style, matchStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, hoverStyleInDef);
+        expect(findTextSpanByText('https://example.com/')?.style, matchStyle);
 
         await gesture.moveTo(Offset(center.dx / 2 * 3, center.dy));
         await tester.pumpAndSettle();
 
-        expect(findTextSpan('aaa ')?.style, style);
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
-        expect(findTextSpan('https://example.com/')?.style, hoverStyle);
+        expect(findTextSpanByText('aaa ')?.style, style);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('https://example.com/')?.style, hoverStyle);
       },
     );
 
@@ -706,7 +706,7 @@ void main() {
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pumpAndSettle();
 
-        expect(findTextSpan('bbb@example.com')?.style, matchStyle);
+        expect(findTextSpanByText('bbb@example.com')?.style, matchStyle);
       },
     );
 
@@ -735,12 +735,12 @@ void main() {
         await gesture.moveTo(tester.getCenter(find.byType(RichText).first));
         await tester.pumpAndSettle();
 
-        expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
+        expect(findTextSpanByText('bbb@example.com')?.style, hoverStyle);
 
-        findTextSpan('bbb@example.com').tapDown();
+        findTextSpanByText('bbb@example.com').tapDown();
         await tester.pumpAndSettle();
 
-        expect(findTextSpan('bbb@example.com')?.style, hoverStyle);
+        expect(findTextSpanByText('bbb@example.com')?.style, hoverStyle);
       },
     );
   });

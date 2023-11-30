@@ -20,12 +20,17 @@ void main() {
         await tester.pumpWidget(const CustomTextWidget(text));
         await tester.pump();
 
-        final spans = findInlineSpans();
-        expect(spans, hasLength(4));
-        expect(spans[0].toPlainText(), 'aaa ');
-        expect(spans[1].toPlainText(), 'bbb@example.com');
-        expect(spans[2].toPlainText(), ' ');
-        expect(spans[3].toPlainText(), 'https://example.com/');
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            children: [
+              TextSpan(text: 'aaa '),
+              TextSpan(text: 'bbb@example.com'),
+              TextSpan(text: ' '),
+              TextSpan(text: 'https://example.com/'),
+            ],
+          ),
+        );
       },
     );
 
@@ -47,11 +52,16 @@ void main() {
         );
         await tester.pump();
 
-        final spans = findInlineSpans();
-        expect(spans, hasLength(3));
-        expect(spans[0].toPlainText(), 'aaa');
-        expect(spans[1].toPlainText(), 'bbb');
-        expect(spans[2].toPlainText(), 'ddd');
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            children: [
+              TextSpan(text: 'aaa'),
+              TextSpan(text: 'bbb'),
+              TextSpan(text: 'ddd'),
+            ],
+          ),
+        );
       },
     );
 
@@ -83,13 +93,28 @@ void main() {
         );
         await tester.pump();
 
-        final spans = findInlineSpans();
-        expect(spans, hasLength(5));
-        expect(spans[0].toPlainText(), 'Email: ');
-        expect(spans[1], isA<WidgetSpan>());
-        expect(spans[2].toPlainText(), 'foo@example.com');
-        expect(spans[3].toPlainText(), ', Tel: ');
-        expect(spans[4].toPlainText(), '012-3456-7890');
+        final builtSpan = findFirstTextSpan();
+
+        expect(
+          builtSpan,
+          TextSpan(
+            children: [
+              const TextSpan(text: 'Email: '),
+              TextSpan(
+                children: [
+                  TextSpan(
+                    children: [
+                      builtSpan.findWidgetSpans().first,
+                      const TextSpan(text: 'foo@example.com'),
+                    ],
+                  ),
+                ],
+              ),
+              const TextSpan(text: ', Tel: '),
+              const TextSpan(text: '012-3456-7890'),
+            ],
+          ),
+        );
       },
     );
 
@@ -121,14 +146,18 @@ void main() {
         );
         await tester.pump();
 
-        final spans = findInlineSpans();
-        expect(spans, hasLength(5));
-        expect(spans[0].toPlainText(), 'Pattern 2');
-        expect(spans[0].style, matchStyle3);
-        expect(spans[2].toPlainText(), 'foo@example.com');
-        expect(spans[2].style, matchStyle1);
-        expect(spans[4].toPlainText(), 'Pattern 1');
-        expect(spans[4].style, matchStyle2);
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            children: [
+              TextSpan(text: 'Pattern 2', style: matchStyle3),
+              TextSpan(text: ' Pattern 3 '),
+              TextSpan(text: 'foo@example.com', style: matchStyle1),
+              TextSpan(text: ' '),
+              TextSpan(text: 'Pattern 1', style: matchStyle2),
+            ],
+          ),
+        );
       },
     );
 
@@ -136,7 +165,6 @@ void main() {
       'A call to didUpdateWidget() during initial parsing does not '
       'cause an empty span to be built by having no element yet',
       (tester) async {
-        final completer = Completer<List<TextElement>>();
         var matchStyle = const TextStyle(color: Color(0x11111111));
 
         await tester.pumpWidget(
@@ -145,7 +173,7 @@ void main() {
               return CustomTextWidget(
                 'abc',
                 parserOptions: ParserOptions.external(
-                  (text) => completer.future,
+                  (text) => Completer<List<TextElement>>().future,
                 ),
                 definitions: const [
                   TextDefinition(matcher: PatternMatcher('dummy')),
@@ -160,12 +188,12 @@ void main() {
         );
         await tester.pump();
 
-        expect(findInlineSpans(), const [TextSpan(text: 'abc')]);
+        expect(findFirstTextSpan(), const TextSpan(text: 'abc'));
 
         await tester.tapButton();
         await tester.pump();
 
-        expect(findInlineSpans(), const [TextSpan(text: 'abc')]);
+        expect(findFirstTextSpan(), const TextSpan(text: 'abc'));
       },
     );
   });

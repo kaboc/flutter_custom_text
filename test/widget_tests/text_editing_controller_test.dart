@@ -16,8 +16,10 @@ void main() {
         text: 'aaa bbb@example.com',
         definitions: definitions,
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -33,8 +35,10 @@ void main() {
         text: 'aaa bbb@example.com',
         definitions: definitions,
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -53,8 +57,10 @@ void main() {
         const TextEditingValue(text: 'aaa bbb@example.com'),
         definitions: definitions,
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -73,8 +79,10 @@ void main() {
         definitions: definitions,
         debounceDuration: const Duration(milliseconds: 100),
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -89,8 +97,10 @@ void main() {
         definitions: definitions,
         debounceDuration: const Duration(milliseconds: 100),
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
@@ -118,8 +128,10 @@ void main() {
         definitions: definitions,
         debounceDuration: const Duration(milliseconds: 100),
       );
+      addTearDown(controller.dispose);
+
       await tester.pumpWidget(
-        TextFieldWidget(controller: controller, onDispose: controller.dispose),
+        TextFieldWidget(controller: controller),
       );
       await tester.pump();
 
