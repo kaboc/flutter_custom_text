@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:custom_text_example/utils/highlight/language_parser.dart';
-import 'package:custom_text_example/utils/example10/segmented_buttons.dart';
-import 'package:custom_text_example/utils/example10/settings.dart';
+import 'package:custom_text_example/common/highlight/language_parser.dart';
+import 'package:custom_text_example/examples/utils/external_parser/segmented_buttons.dart';
+import 'package:custom_text_example/examples/utils/external_parser/settings.dart';
 
-class Example10 extends StatefulWidget {
-  const Example10();
+class ExternalParserExample extends StatefulWidget {
+  const ExternalParserExample();
 
   @override
-  State<Example10> createState() => _Example10State();
+  State<ExternalParserExample> createState() => _ExternalParserExampleState();
 }
 
-class _Example10State extends State<Example10> {
+class _ExternalParserExampleState extends State<ExternalParserExample> {
   late LanguageType _languageType;
   CustomTextEditingController? _controller;
 

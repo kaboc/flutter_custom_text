@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:custom_text_example/utils/highlight/highlight.dart';
+import 'package:custom_text_example/common/highlight/highlight.dart';
 
 class CodeViewPage extends StatefulWidget {
   const CodeViewPage({required this.filename});
@@ -33,7 +33,7 @@ class _CodeViewPageState extends State<CodeViewPage> {
   }
 
   Future<void> _loadSourceCode() async {
-    final path = 'lib/examples/${widget.filename}';
+    final path = 'lib/examples/src/${widget.filename}';
     final code = await rootBundle.loadString(path);
     setState(() => _code = code);
   }

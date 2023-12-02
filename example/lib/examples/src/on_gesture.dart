@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text_example/utils/popup.dart';
+import 'package:custom_text_example/common/popup.dart';
 
-class Example8 extends StatefulWidget {
-  const Example8(this.output);
+class OnGestureExample extends StatefulWidget {
+  const OnGestureExample(this.output);
 
   final void Function(String) output;
 
   @override
-  State<Example8> createState() => _Example8State();
+  State<OnGestureExample> createState() => _OnGestureExampleState();
 }
 
-class _Example8State extends State<Example8> {
+class _OnGestureExampleState extends State<OnGestureExample> {
   late final _controller = PopupController();
 
   @override

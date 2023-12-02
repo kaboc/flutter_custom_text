@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-class Example2 extends StatelessWidget {
-  const Example2(this.output);
+class StylesAndActionsExample extends StatelessWidget {
+  const StylesAndActionsExample(this.output);
 
   final void Function(String) output;
 

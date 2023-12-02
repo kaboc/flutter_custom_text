@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-class Example1 extends StatelessWidget {
-  const Example1();
+class SimpleExample extends StatelessWidget {
+  const SimpleExample();
 
   @override
   Widget build(BuildContext context) {

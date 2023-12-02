@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-class Example6 extends StatelessWidget {
-  const Example6(this.output);
+class SpanDefinitionExample extends StatelessWidget {
+  const SpanDefinitionExample(this.output);
 
   final void Function(String) output;
 

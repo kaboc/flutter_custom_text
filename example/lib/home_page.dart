@@ -4,7 +4,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/link.dart';
 
-import 'package:custom_text_example/utils/router.dart';
+import 'package:custom_text_example/common/router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage();

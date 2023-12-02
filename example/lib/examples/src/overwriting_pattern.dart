@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-class Example3 extends StatelessWidget {
-  const Example3(this.output);
+class OverwritingPatternExample extends StatelessWidget {
+  const OverwritingPatternExample(this.output);
 
   final void Function(String) output;
 

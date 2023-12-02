@@ -1,6 +1,6 @@
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text_example/utils/highlight/highlight.dart';
+import 'package:custom_text_example/common/highlight/highlight.dart';
 
 enum LanguageType {
   dart('Dart', _dart, dartDefinitions),

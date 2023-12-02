@@ -12,10 +12,10 @@ particular strings with colors and different font settings. You can configure th
 and the behaviour using multiple definitions consisting of regular expressions, text styles,
 gesture handlers, etc.
 
-## Usage by examples
+## Usage by example
 
-Most of the examples here are contained in the sample app in the [example/][example] folder.
-Just click on the link below to open its web version and see what this package can do.
+Most of the examples here are contained in the sample app in the [example] folder.
+Just click on the link below to open its web version and see it in action.
 
 **[Web Demo][demo]**
 
@@ -29,14 +29,14 @@ as an external parser).
 
 ### ⭐ <b>Simplest example</b>
 
-example1.dart ([Code][example1] / [Demo][example1_demo])
+simple.dart ([Code][example_simple] / [Demo][demo_simple])
 
-![example1](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
+![Image - Simplest example image](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
 A very basic example of how to apply a colour to URLs and email addresses using preset
 matchers.
 
-The coloured strings are not tappable in this example.
+Gestures are not available on the coloured strings in this example.
 
 ```dart
 CustomText(
@@ -64,9 +64,9 @@ If a stricter pattern is necessary, overwrite the preset pattern or create a cus
 
 ### ⭐ <b>Styles and actions per definition</b>
 
-example2.dart ([Code][example2] / [Demo][example2_demo])
+styles_and_actions.dart ([Code][example_styles_and_actions] / [Demo][demo_styles_and_actions])
 
-![example2](https://user-images.githubusercontent.com/20254485/221410479-c1014891-2e4a-40d6-9fcf-db1a2b946dfd.gif)
+![Image - Styles and actions per definition](https://user-images.githubusercontent.com/20254485/221410479-c1014891-2e4a-40d6-9fcf-db1a2b946dfd.gif)
 
 An example to decorate URLs, email addresses and phone numbers, and also enable them
 to be tapped and long-pressed.
@@ -110,11 +110,11 @@ CustomText(
 )
 ```
 
-### ⭐ <b>Overwriting pattern</b>
+### ⭐ <b>Overwriting match pattern</b>
 
-example3.dart ([Code][example3] / [Demo][example3_demo])
+overwriting_pattern.dart ([Code][example_overwriting_pattern] / [Demo][demo_overwriting_pattern])
 
-![example3](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
+![Image - Overwriting match pattern](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
 An example to replace the default pattern of [TelMatcher].
 
@@ -132,11 +132,11 @@ CustomText(
 )
 ```
 
-### ⭐ <b>Custom pattern</b>
+### ⭐ <b>Custom match pattern</b>
 
-example4.dart ([Code][example4] / [Demo][example4_demo])
+custom_pattern.dart ([Code][example_custom_pattern] / [Demo][demo_custom_pattern])
 
-![example4](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
+![Image - Custom match pattern](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
 
 An example to parse hashtags with a custom pattern and apply styles to them.
 
@@ -177,9 +177,9 @@ CustomText(
 
 ### ⭐ <b>SelectiveDefinition</b>
 
-example5.dart ([Code][example5] / [Demo][example5_demo])
+selective_definition.dart ([Code][example_selective_definition] / [Demo][demo_selective_definition])
 
-![example5](https://github.com/kaboc/flutter_custom_text/assets/20254485/d47566f4-a92e-4d74-99d4-866387cd4ad8)
+![Image - SelectiveDefinition](https://github.com/kaboc/flutter_custom_text/assets/20254485/d47566f4-a92e-4d74-99d4-866387cd4ad8)
 
 An example to parse a markdown-style link in the format of `[shown text](url)`
 and make it tappable.
@@ -232,9 +232,9 @@ CustomText(
 
 ### ⭐ <b>SpanDefinition</b>
 
-example6.dart ([Code][example6] / [Demo][example6_demo])
+span_definition.dart ([Code][example_span_definition] / [Demo][demo_span_definition])
 
-![example6](https://github.com/kaboc/flutter_custom_text/assets/20254485/7e566862-d986-478b-85ff-9e26d4c47821)
+![Image - SpanDefinition](https://github.com/kaboc/flutter_custom_text/assets/20254485/7e566862-d986-478b-85ff-9e26d4c47821)
 
 An example to display both text and widgets.
 
@@ -271,9 +271,9 @@ CustomText(
 
 ### ⭐ <b>Changing mouse cursor and text style on hover</b>
 
-example7.dart ([Code][example7] / [Demo][example7_demo])
+hover_style.dart ([Code][example_hover_style] / [Demo][demo_hover_style])
 
-![example7](https://user-images.githubusercontent.com/20254485/221410499-23e5dfd2-dc19-4234-b119-17c46ac80a77.gif)
+![Image - Mouse cursor and text style on hover](https://user-images.githubusercontent.com/20254485/221410499-23e5dfd2-dc19-4234-b119-17c46ac80a77.gif)
 
 `TextDefinition` and `SelectiveDefinition` have the `mouseCursor` property. The mouse cursor
 type passed to it is used for a string that has matched the match pattern while the pointer
@@ -322,11 +322,11 @@ CustomText(
 )
 ```
 
-### ⭐ <b>Event position and onGesture</b>
+### ⭐ <b>Event positions and onGesture</b>
 
-example8.dart ([Code][example8] / [Demo][example8_demo])
+on_gesture.dart ([Code][example_on_gesture] / [Demo][demo_on_gesture])
 
-![example8](https://user-images.githubusercontent.com/20254485/221400940-c686ab71-8d15-46ad-99fd-9058f7ca30dc.gif)
+![Image - Event positions and onGesture](https://user-images.githubusercontent.com/20254485/221400940-c686ab71-8d15-46ad-99fd-9058f7ca30dc.gif)
 
 The `onGesture` handler supports events of the secondary and tertiary buttons and mouse enter and
 exit events.
@@ -345,9 +345,9 @@ where an event happened. It is useful for showing a popup or a menu at the posit
 
 ### ⭐ <b>CustomTextEditingController</b>
 
-example9.dart ([Code][example9] / [Demo][example9_demo])
+text_editing_controller.dart ([Code][example_text_editing_controller] / [Demo][demo_text_editing_controller])
 
-![example9](https://user-images.githubusercontent.com/20254485/221410504-f8af0c02-1ccb-4094-bdf1-bb6a1a454874.gif)
+![Image - CustomTextEditingController](https://user-images.githubusercontent.com/20254485/221410504-f8af0c02-1ccb-4094-bdf1-bb6a1a454874.gif)
 
 Text decoration, tap/long-press actions and hover effects are available also in
 an editable text field via [CustomTextEditingController].
@@ -391,11 +391,11 @@ Widget build(BuildContext context) {
       [Flutter itself has performance issues](https://github.com/flutter/flutter/issues/114158)
       in editable text.
 
-### ⭐ <b>External parser</b>
+### ⭐ <b>Using an external parser</b>
 
-example10.dart ([Code][example10] / [Demo][example10_demo])
+external_parser.dart ([Code][example_external_parser] / [Demo][demo_external_parser])
 
-![example10](https://user-images.githubusercontent.com/20254485/227700405-8ec4bd20-dd30-4ee3-a921-b1a3a019aba6.gif)
+![Image - External parser](https://user-images.githubusercontent.com/20254485/227700405-8ec4bd20-dd30-4ee3-a921-b1a3a019aba6.gif)
 
 It is possible to use an external parser instead of the internal one. It helps you
 when a different parser you already have does a better job or can do what is difficult
@@ -461,26 +461,26 @@ CustomText(
 
 [demo]: https://kaboc.github.io/flutter_custom_text/
 [example]: https://github.com/kaboc/flutter_custom_text/tree/main/example
-[example1]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example1.dart
-[example2]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example2.dart
-[example3]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example3.dart
-[example4]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example4.dart
-[example5]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example5.dart
-[example6]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example6.dart
-[example7]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example7.dart
-[example8]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example8.dart
-[example9]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example9.dart
-[example10]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/example10.dart
-[example1_demo]: https://kaboc.github.io/flutter_custom_text/#/simple
-[example2_demo]: https://kaboc.github.io/flutter_custom_text/#/styles-and-actions
-[example3_demo]: https://kaboc.github.io/flutter_custom_text/#/overwriting-pattern
-[example4_demo]: https://kaboc.github.io/flutter_custom_text/#/custom-pattern
-[example5_demo]: https://kaboc.github.io/flutter_custom_text/#/selective-definition
-[example6_demo]: https://kaboc.github.io/flutter_custom_text/#/span-definition
-[example7_demo]: https://kaboc.github.io/flutter_custom_text/#/hover
-[example8_demo]: https://kaboc.github.io/flutter_custom_text/#/event-position
-[example9_demo]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
-[example10_demo]: https://kaboc.github.io/flutter_custom_text/#/external-parser
+[example_simple]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/simple.dart
+[example_styles_and_actions]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/styles_and_actions.dart
+[example_overwriting_pattern]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/overwriting_pattern.dart
+[example_custom_pattern]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/custom_pattern.dart
+[example_selective_definition]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/selective_definition.dart
+[example_span_definition]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/span_definition.dart
+[example_hover_style]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart
+[example_on_gesture]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart
+[example_text_editing_controller]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart
+[example_external_parser]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/external_parser.dart
+[demo_simple]: https://kaboc.github.io/flutter_custom_text/#/simple
+[demo_styles_and_actions]: https://kaboc.github.io/flutter_custom_text/#/styles-and-actions
+[demo_overwriting_pattern]: https://kaboc.github.io/flutter_custom_text/#/overwriting-pattern
+[demo_custom_pattern]: https://kaboc.github.io/flutter_custom_text/#/custom-pattern
+[demo_selective_definition]: https://kaboc.github.io/flutter_custom_text/#/selective-definition
+[demo_span_definition]: https://kaboc.github.io/flutter_custom_text/#/span-definition
+[demo_hover_style]: https://kaboc.github.io/flutter_custom_text/#/hover-style
+[demo_on_gesture]: https://kaboc.github.io/flutter_custom_text/#/on-gesture
+[demo_text_editing_controller]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
+[demo_external_parser]: https://kaboc.github.io/flutter_custom_text/#/external-parser
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
 [UrlLikeMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlLikeMatcher-class.html

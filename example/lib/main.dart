@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:custom_text_example/utils/device_info.dart';
-import 'package:custom_text_example/utils/router.dart';
+import 'package:custom_text_example/common/device_info.dart';
+import 'package:custom_text_example/common/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

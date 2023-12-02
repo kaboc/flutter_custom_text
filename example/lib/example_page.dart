@@ -11,7 +11,6 @@ import 'package:custom_text_example/widgets/layouts.dart';
 class ExamplePage extends StatefulWidget {
   const ExamplePage({
     required this.pathString,
-    required this.filename,
     required this.title,
     required this.description,
     required this.builder,
@@ -21,13 +20,14 @@ class ExamplePage extends StatefulWidget {
   });
 
   final String pathString;
-  final String filename;
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
   final String? subtitle;
   final bool hasOutput;
   final String? additionalInfo;
+
+  String get filename => '${pathString.replaceAll('-', '_')}.dart';
 
   @override
   State<ExamplePage> createState() => _ExamplePageState();

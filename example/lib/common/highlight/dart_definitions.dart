@@ -2,7 +2,7 @@ import 'package:flutter/painting.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text_example/utils/highlight/language_parser.dart';
+import 'package:custom_text_example/common/highlight/language_parser.dart';
 
 const dartDefinitions = [
   TextDefinition(

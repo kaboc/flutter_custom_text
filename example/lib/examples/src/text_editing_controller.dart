@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:custom_text/custom_text.dart';
 
-class Example9 extends StatefulWidget {
-  const Example9([this.output]);
+class ControllerExample extends StatefulWidget {
+  const ControllerExample([this.output]);
 
   final void Function(String)? output;
 
   @override
-  State<Example9> createState() => _Example9State();
+  State<ControllerExample> createState() => _ControllerExampleState();
 }
 
-class _Example9State extends State<Example9> {
+class _ControllerExampleState extends State<ControllerExample> {
   late final _controller = CustomTextEditingController(
     text: 'abcde foo@example.com\nhttps://example.com/ #hashtag',
     definitions: [

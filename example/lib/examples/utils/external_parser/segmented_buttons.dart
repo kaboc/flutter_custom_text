@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:custom_text_example/utils/example10/settings.dart';
+import 'package:custom_text_example/examples/utils/external_parser/settings.dart';
 
 class Buttons extends StatelessWidget {
   const Buttons({required this.selected, required this.onChanged});
