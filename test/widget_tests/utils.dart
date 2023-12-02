@@ -122,6 +122,7 @@ extension WidgetTesterExtension on WidgetTester {
         child.visitChildren(visitor);
       }
     }
+
     ro.visitChildren(visitor);
 
     return renderEditable;

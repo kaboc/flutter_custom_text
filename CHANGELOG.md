@@ -1,12 +1,20 @@
+## 1.2.1
+
+- Fix a potential bug that could cause an empty span in edge case.
+- Fix bugs of CustomTextEditingController.
+    - Text style specified in controller was not used during initial parsing.
+    - Text style specified in editable text was not used depending on the timing.
+- Add an example of how to make real hyperlinks for the web.
+
 ## 1.2.0
 
-- Refactor and improve gesture handling.
+- Refactor and improve handling of gestures.
     - Behaviours triggered by gestures is now more stable and natural.
         - e.g. Text style is no longer lost for an instant on tap when hoverStyle
           is specified and tapStyle is not.
 - Add parameters to `SpanDefinition` to be equivalent to other definitions. ([#34])
     - Text style, mouse cursor type and gesture handlers are applied to the
-      `InlineSpan` created by the `builder` function and its children.
+      `InlineSpan` and its children created by the `builder` function.
     - Text style is also provided to `WidgetSpan`s via `DefaultTextStyle`.
 - Make text invisible during initial parsing. ([#37])
     - It should be only a tiny moment, so won't have an impact.
