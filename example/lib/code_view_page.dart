@@ -5,6 +5,7 @@ import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:custom_text_example/common/highlight/highlight.dart';
+import 'package:custom_text_example/widgets/hyperlink.dart';
 
 class CodeViewPage extends StatefulWidget {
   const CodeViewPage({required this.filename});
@@ -43,6 +44,16 @@ class _CodeViewPageState extends State<CodeViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.filename),
+        actions: [
+          Center(
+            child: Hyperlink(
+              label: 'View on GitHub',
+              url: 'https://github.com/kaboc/flutter_custom_text/'
+                  'blob/main/example/lib/examples/src/${widget.filename}',
+            ),
+          ),
+          const SizedBox(width: 16.0),
+        ],
       ),
       body: SafeArea(
         // Placing SelectionArea as the child of SizedBox causes a layout issue.
