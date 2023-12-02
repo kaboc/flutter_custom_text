@@ -17,17 +17,13 @@ class RealHyperlinksExample extends StatelessWidget {
           builder: (text, groups) {
             return WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: Builder(
-                builder: (context) {
-                  return Link(
-                    uri: Uri.parse(groups[1]!),
-                    target: LinkTarget.blank,
-                    builder: (context, openLink) {
-                      return GestureDetector(
-                        onTap: openLink,
-                        child: Text(groups[0]!),
-                      );
-                    },
+              child: Link(
+                uri: Uri.parse(groups[1]!),
+                target: LinkTarget.blank,
+                builder: (context, openLink) {
+                  return GestureDetector(
+                    onTap: openLink,
+                    child: Text(groups[0]!),
                   );
                 },
               ),
