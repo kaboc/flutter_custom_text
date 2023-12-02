@@ -389,6 +389,58 @@ where an event happened. It is useful for showing a popup or a menu at the posit
     - This is due to a workaround for preventing the function from being called more times than
       expected by updates of the text span.
 
+### ⭐ <b>CustomText.spans</b>
+
+spans_constructor.dart ([Code][example_spans_constructor] / [Demo][demo_spans_constructor])
+
+![Image - CustomText.spans](https://github.com/kaboc/flutter_custom_text/assets/20254485/3d9f47d3-5ace-4191-9297-b1321f7b39cd)
+
+An example of the [CustomText.spans] constructor that allows to use a list of `InlineSpan`s
+instead of plain text.
+
+This is useful if you already have styled spans and want to decorate them additionally.
+
+```dart
+CustomText.spans(
+  style: const TextStyle(fontSize: 40.0),
+  definitions: [
+    TextDefinition(
+      // WidgetSpan is matched by `\uFFFC` or `.` in a match pattern.
+      matcher: const PatternMatcher('Flutter devs\uFFFC'),
+      matchStyle: const TextStyle(color: Colors.blue),
+      hoverStyle: TextStyle(color: Colors.blue.shade300),
+      mouseCursor: SystemMouseCursors.forbidden,
+      onGesture: (details) => output(details.gestureKind.name),
+    ),
+  ],
+  spans: [
+    const TextSpan(text: 'Hi, '),
+    const TextSpan(
+      text: 'Flutter',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        shadows: [Shadow(blurRadius: 4.0, color: Colors.cyan)],
+      ),
+    ),
+    const TextSpan(text: ' devs'),
+    WidgetSpan(
+      alignment: PlaceholderAlignment.middle,
+      child: Builder(
+        builder: (context) {
+          // Text style is available also in WidgetSpan via DefaultTextStyle.
+          final style = DefaultTextStyle.of(context).style;
+          return Icon(
+            Icons.flutter_dash,
+            size: style.fontSize,
+            color: style.color,
+          );
+        },
+      ),
+    ),
+  ],
+)
+```
+
 ### ⭐ <b>CustomTextEditingController</b>
 
 text_editing_controller.dart ([Code][example_text_editing_controller] / [Demo][demo_text_editing_controller])
@@ -515,6 +567,7 @@ CustomText(
 [example_real_hyperlinks]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/real_hyperlinks.dart
 [example_hover_style]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart
 [example_on_gesture]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart
+[example_spans_constructor]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/spans_constructor.dart
 [example_text_editing_controller]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart
 [example_external_parser]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/external_parser.dart
 [demo_simple]: https://kaboc.github.io/flutter_custom_text/#/simple
@@ -526,8 +579,11 @@ CustomText(
 [demo_real_hyperlinks]: https://kaboc.github.io/flutter_custom_text/#/real-hyperlinks
 [demo_hover_style]: https://kaboc.github.io/flutter_custom_text/#/hover-style
 [demo_on_gesture]: https://kaboc.github.io/flutter_custom_text/#/on-gesture
+[demo_spans_constructor]: https://kaboc.github.io/flutter_custom_text/#/spans-constructor
 [demo_text_editing_controller]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
 [demo_external_parser]: https://kaboc.github.io/flutter_custom_text/#/external-parser
+[CustomText.spans]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomText/CustomText.spans.html
+[CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
 [UrlLikeMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlLikeMatcher-class.html
@@ -538,7 +594,6 @@ CustomText(
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
 [GestureDetails]: https://pub.dev/documentation/custom_text/latest/custom_text/GestureDetails-class.html
-[CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [WidgetSpan]: https://api.flutter.dev/flutter/widgets/WidgetSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser
