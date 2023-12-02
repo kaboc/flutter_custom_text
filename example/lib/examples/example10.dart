@@ -14,17 +14,13 @@ class Example10 extends StatefulWidget {
 }
 
 class _Example10State extends State<Example10> {
+  late LanguageType _languageType;
   CustomTextEditingController? _controller;
-
-  LanguageType _languageType = LanguageType.values.first;
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _changeLanguage(LanguageType.values.first);
-    });
+    _onLanguageChanged(LanguageType.values.first);
   }
 
   @override
@@ -40,33 +36,33 @@ class _Example10State extends State<Example10> {
       children: [
         Buttons(
           selected: _languageType,
-          onChanged: _changeLanguage,
+          onChanged: (type) {
+            setState(() => _onLanguageChanged(type));
+          },
         ),
         const SizedBox(height: 8.0),
         TextField(
           controller: _controller,
           maxLines: null,
+          style: GoogleFonts.inconsolata(
+            height: 1.4,
+            color: DefaultTextStyle.of(context).style.color,
+          ),
         ),
       ],
     );
   }
 
-  void _changeLanguage(LanguageType type) {
-    setState(() {
-      _languageType = type;
+  void _onLanguageChanged(LanguageType type) {
+    _languageType = type;
 
-      _controller?.dispose();
-      _controller = CustomTextEditingController(
-        text: type.sourceText,
-        parserOptions: ParserOptions.external(
-          (text) => parseLanguage(text, language: type.name),
-        ),
-        definitions: type.definitions,
-        style: GoogleFonts.inconsolata(
-          height: 1.4,
-          color: DefaultTextStyle.of(context).style.color,
-        ),
-      );
-    });
+    _controller?.dispose();
+    _controller = CustomTextEditingController(
+      text: type.sourceText,
+      definitions: type.definitions,
+      parserOptions: ParserOptions.external(
+        (text) => parseLanguage(text, language: type.name),
+      ),
+    );
   }
 }

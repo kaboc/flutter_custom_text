@@ -59,9 +59,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
-  }) {
-    _init();
-  }
+  });
 
   /// Creates a controller for an editable text field from an initial
   /// [TextEditingValue].
@@ -80,9 +78,7 @@ class CustomTextEditingController extends TextEditingController {
     this.onGesture,
     this.longPressDuration,
     this.debounceDuration,
-  }) : super.fromValue() {
-    _init();
-  }
+  }) : super.fromValue();
 
   /// [TextDefinition]s that specify rules for parsing, appearance and
   /// actions.
@@ -142,7 +138,7 @@ class CustomTextEditingController extends TextEditingController {
   @experimental
   Duration? debounceDuration;
 
-  late Future<List<TextElement>> Function(String) _parser;
+  Future<List<TextElement>> Function(String)? _parser;
   late CustomTextSpanNotifier _textSpanNotifier;
   String _oldText = '';
   TextStyle? _style;
@@ -178,6 +174,13 @@ class CustomTextEditingController extends TextEditingController {
     required bool withComposing,
   }) {
     _style = style;
+
+    if (_parser == null) {
+      // Initialisation must not occur before the first call to this method.
+      // The text style from the editable text is not available before then.
+      _init();
+    }
+
     return _textSpanNotifier.elements.isEmpty
         ? TextSpan(
             text: _textSpanNotifier.value.text,
@@ -187,8 +190,6 @@ class CustomTextEditingController extends TextEditingController {
   }
 
   void _init() {
-    addListener(_onTextChanged);
-
     _parser = parserOptions.parser ??
         (text) => TextParser(
               matchers: definitions.map((def) => def.matcher).toList(),
@@ -216,6 +217,7 @@ class CustomTextEditingController extends TextEditingController {
     if (text.isNotEmpty) {
       _onTextChanged();
     }
+    addListener(_onTextChanged);
   }
 
   Future<void> _onTextChanged() async {
@@ -231,7 +233,7 @@ class CustomTextEditingController extends TextEditingController {
       final oldElementsLength = _textSpanNotifier.elements.length;
 
       if (debounceDuration == null || oldElementsLength == 0) {
-        final elements = await _parser(newText);
+        final elements = await _parser!(newText);
         _textSpanNotifier
           ..elements = elements
           ..buildSpan(
@@ -261,7 +263,7 @@ class CustomTextEditingController extends TextEditingController {
           );
 
         _delayedParse = () async {
-          final elements = await _parser(newText);
+          final elements = await _parser!(newText);
           _textSpanNotifier
             ..elements = elements
             ..buildSpan(
