@@ -12,6 +12,7 @@ import 'package:custom_text_example/examples/src/external_parser.dart';
 import 'package:custom_text_example/examples/src/hover_style.dart';
 import 'package:custom_text_example/examples/src/on_gesture.dart';
 import 'package:custom_text_example/examples/src/overwriting_pattern.dart';
+import 'package:custom_text_example/examples/src/real_hyperlinks.dart';
 import 'package:custom_text_example/examples/src/selective_definition.dart';
 import 'package:custom_text_example/examples/src/simple.dart';
 import 'package:custom_text_example/examples/src/span_definition.dart';
@@ -119,6 +120,20 @@ final pages = [
     builder: SpanDefinitionExample.new,
     additionalInfo: 'Gestures are detected on both the logo and the text '
         'of "Flutter".',
+  ),
+  ExamplePage(
+    pathString: 'real-hyperlinks',
+    title: 'Real hyperlinks',
+    description: 'An example to embed real hyperlinks for the web '
+        'by making use of `SpanDefinition` together with the `Link` '
+        'widget of package:url_launcher.',
+    builder: (_) => const RealHyperlinksExample(),
+    additionalInfo: 'Run this example in a desktop web browser and '
+        'place the mouse pointer or right-click on a link.\n\n'
+        'Note:\n'
+        'Sadly, WidgetSpans are vertically misaligned with plain text '
+        'on the web due to issues existing on the Flutter SDK side.',
+    hasOutput: false,
   ),
   const ExamplePage(
     pathString: 'hover-style',

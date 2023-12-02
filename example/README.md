@@ -8,6 +8,7 @@ A demo app showing all the following examples.
 - [Custom match pattern](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/custom_pattern.dart)
 - [SelectiveDefinition](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/selective_definition.dart)
 - [SpanDefinition](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/span_definition.dart)
+- [Real hyperlinks](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/real_hyperlinks.dart)
 - [Changing mouse cursor and text style on hover](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart)
 - [Event positions and onGesture](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart)
 - [CustomTextEditingController](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart)

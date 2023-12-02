@@ -75,9 +75,8 @@ All the three are styled, but only phone numbers among them are styled different
 the unique `matchStyle` and `tapStyle`.
 
 **Tip**:\
-To open a browser or another app when a string is tapped or long-pressed,
-use [url_launcher](https://pub.dev/packages/url_launcher) or equivalent in
-the `onTap` and/or `onLongPress` handlers.
+To open a browser or another app when a string is tapped or long-pressed, use the
+[url_launcher] package or equivalent in the `onTap` and/or `onLongPress` handlers.
 
 ```dart
 CustomText(
@@ -264,6 +263,53 @@ CustomText(
       matchStyle: TextStyle(color: Colors.blue),
       hoverStyle: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
       onTap: (details) => print(details.element.groups.first!),
+    ),
+  ],
+)
+```
+
+### ⭐ <b>Real hyperlinks</b>
+
+real_hyperlinks.dart ([Code][example_real_hyperlinks] / [Demo][demo_real_hyperlinks])
+
+![Image - Real hyperlinks](https://github.com/kaboc/flutter_custom_text/assets/20254485/fd93cf5f-36b7-411e-9ba4-37d85e33075e)
+
+An example to embed real hyperlinks for the web by making use of [SpanDefinition]
+together with the `Link` widget of [url_launcher].
+
+**Notes:**
+
+As you can see in the screencast above, [WidgetSpan]s are vertically misaligned
+with plain text on the web. It is due to issues existing on the Flutter SDK side.
+
+```dart
+CustomText(
+  'Please visit [pub.dev](https://pub.dev/packages/custom_text) and ...',
+  definitions: [
+    SpanDefinition(
+      matcher: const LinkMatcher(),
+      builder: (text, groups) {
+        return WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: Builder(
+            builder: (context) {
+              return Link(
+                uri: Uri.parse(groups[1]!),
+                target: LinkTarget.blank,
+                builder: (context, openLink) {
+                  return GestureDetector(
+                    onTap: openLink,
+                    child: Text(groups[0]!),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+      matchStyle: const TextStyle(color: Colors.blue),
+      hoverStyle: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+      mouseCursor: SystemMouseCursors.click,
     ),
   ],
 )
@@ -467,6 +513,7 @@ CustomText(
 [example_custom_pattern]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/custom_pattern.dart
 [example_selective_definition]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/selective_definition.dart
 [example_span_definition]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/span_definition.dart
+[example_real_hyperlinks]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/real_hyperlinks.dart
 [example_hover_style]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart
 [example_on_gesture]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart
 [example_text_editing_controller]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart
@@ -477,6 +524,7 @@ CustomText(
 [demo_custom_pattern]: https://kaboc.github.io/flutter_custom_text/#/custom-pattern
 [demo_selective_definition]: https://kaboc.github.io/flutter_custom_text/#/selective-definition
 [demo_span_definition]: https://kaboc.github.io/flutter_custom_text/#/span-definition
+[demo_real_hyperlinks]: https://kaboc.github.io/flutter_custom_text/#/real-hyperlinks
 [demo_hover_style]: https://kaboc.github.io/flutter_custom_text/#/hover-style
 [demo_on_gesture]: https://kaboc.github.io/flutter_custom_text/#/on-gesture
 [demo_text_editing_controller]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
@@ -493,4 +541,6 @@ CustomText(
 [GestureDetails]: https://pub.dev/documentation/custom_text/latest/custom_text/GestureDetails-class.html
 [CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
+[WidgetSpan]: https://api.flutter.dev/flutter/widgets/WidgetSpan-class.html
 [text_parser]: https://pub.dev/packages/text_parser
+[url_launcher]: https://pub.dev/packages/url_launcher
