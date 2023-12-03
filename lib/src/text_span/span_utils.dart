@@ -1,6 +1,12 @@
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/widgets.dart';
 
+extension SpansToPlainText on List<InlineSpan>? {
+  String toPlainText() {
+    return TextSpan(children: this).toPlainText();
+  }
+}
+
 // Workaround for the bug where properties of TextSpan is not
 // applied to its children.
 // https://github.com/flutter/flutter/issues/10623

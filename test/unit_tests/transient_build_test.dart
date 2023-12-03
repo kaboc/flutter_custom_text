@@ -34,7 +34,9 @@ void main() {
   ];
   final matchers = definitions.map((def) => def.matcher).toList();
   final notifier = CustomTextSpanNotifier(
-    text: '',
+    initialText: '',
+    initialSpans: null,
+    initialStyle: null,
     settings: NotifierSettings(definitions: definitions),
   );
 

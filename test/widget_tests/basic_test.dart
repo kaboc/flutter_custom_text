@@ -265,6 +265,82 @@ void main() {
     );
 
     testWidgets(
+      'Content including widgets is represented as transparent plain '
+      'text until parsing completes in CustomText.spans',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111), fontSize: 30.0);
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: CustomText.spans(
+              parserOptions: ParserOptions.external((text) => completer.future),
+              definitions: const [
+                TextDefinition(matcher: PatternMatcher('bbb\uFFFC')),
+              ],
+              spans: const [
+                TextSpan(text: 'aaa'),
+                TextSpan(text: 'bbb'),
+                WidgetSpan(child: Icon(Icons.star)),
+                WidgetSpan(child: Icon(Icons.star)),
+              ],
+              style: style,
+              matchStyle: matchStyle,
+            ),
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findFirstTextSpan(),
+          TextSpan(
+            text: 'aaabbb\uFFFC\uFFFC',
+            style: style.copyWith(color: const Color(0x00000000)),
+          ),
+        );
+
+        completer.complete(const [
+          TextElement('aaa'),
+          TextElement('bbb\uFFFC', matcherType: PatternMatcher),
+          TextElement('\uFFFC'),
+        ]);
+        await tester.pumpAndSettle();
+
+        final builtSpan = findFirstTextSpan();
+        final widgetSpans = builtSpan.findWidgetSpans();
+
+        expect(
+          builtSpan,
+          TextSpan(
+            children: [
+              const TextSpan(
+                style: style,
+                children: [
+                  TextSpan(text: 'aaa'),
+                ],
+              ),
+              TextSpan(
+                style: style.merge(matchStyle),
+                children: [
+                  const TextSpan(text: 'bbb'),
+                  widgetSpans[0],
+                ],
+              ),
+              TextSpan(
+                style: style,
+                children: [
+                  widgetSpans[1],
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    testWidgets(
       'Text is visible during parsing if there are only TextDefinitions',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
@@ -285,6 +361,67 @@ void main() {
         expect(
           findFirstTextSpan(),
           const TextSpan(text: 'aaa bbb@example.com', style: style),
+        );
+      },
+    );
+
+    testWidgets(
+      'Content is not visible during parsing in CustomText.spans '
+      'even if there are only TextDefinitions',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111));
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          CustomText.spans(
+            textDirection: TextDirection.ltr,
+            parserOptions: ParserOptions.external((text) => completer.future),
+            definitions: const [
+              TextDefinition(matcher: PatternMatcher('bbb')),
+            ],
+            spans: const [
+              TextSpan(text: 'aaa'),
+              TextSpan(text: 'bbb'),
+            ],
+            style: style,
+            matchStyle: matchStyle,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            text: 'aaabbb',
+            style: TextStyle(color: Color(0x00000000)),
+          ),
+        );
+
+        completer.complete(const [
+          TextElement('aaa'),
+          TextElement('bbb', matcherType: PatternMatcher),
+        ]);
+        await tester.pumpAndSettle();
+
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            children: [
+              TextSpan(
+                style: style,
+                children: [
+                  TextSpan(text: 'aaa'),
+                ],
+              ),
+              TextSpan(
+                style: matchStyle,
+                children: [
+                  TextSpan(text: 'bbb'),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

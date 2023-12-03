@@ -16,6 +16,7 @@ import 'package:custom_text_example/examples/src/real_hyperlinks.dart';
 import 'package:custom_text_example/examples/src/selective_definition.dart';
 import 'package:custom_text_example/examples/src/simple.dart';
 import 'package:custom_text_example/examples/src/span_definition.dart';
+import 'package:custom_text_example/examples/src/spans_constructor.dart';
 import 'package:custom_text_example/examples/src/styles_and_actions.dart';
 import 'package:custom_text_example/examples/src/text_editing_controller.dart';
 import 'package:custom_text_example/home_page.dart';
@@ -161,6 +162,15 @@ final pages = [
     additionalInfo: 'The above text is an extract from the following '
         'Wikipedia entry:\n'
         'https://en.wikipedia.org/wiki/Flutter_(software)',
+  ),
+  const ExamplePage(
+    pathString: 'spans-constructor',
+    title: 'CustomText.spans',
+    description: 'The `CustomText.spans` constructor allows to use a '
+        'list of `InlineSpan`s instead of plain text.\n'
+        'This is useful if you already have styled spans and want to '
+        'decorate them additionally.',
+    builder: CustomTextSpansExample.new,
   ),
   ExamplePage(
     pathString: 'text-editing-controller',

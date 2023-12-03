@@ -1,18 +1,21 @@
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/widgets.dart';
 
 import 'package:text_parser/text_parser.dart' show TextParser;
 
+import 'definitions.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'text_span/data.dart';
+import 'text_span/span_utils.dart';
 import 'text_span/text_span_notifier.dart';
 
-/// A text widget that decorates strings in it and enables tap,
+/// A text widget that decorates partial strings in it, and enables tap,
 /// long-press and/or hover gestures based on flexible definitions.
 ///
 /// {@template customText.CustomText}
-/// This widget is useful for making partial strings in text such as URLs,
+/// This widget is useful for making certain portions of text such as URLs,
 /// email addresses or phone numbers clickable, or for only highlighting
 /// some parts of text with colors and different font settings depending
 /// on the types of text elements.
@@ -33,13 +36,17 @@ import 'text_span/text_span_notifier.dart';
 /// )
 /// ```
 /// {@endtemplate}
+///
+/// This widget also has the `CustomText.spans` constructor,
+/// which targets a list of [InlineSpan]s instead of text.
 class CustomText extends StatefulWidget {
-  /// Creates a text widget that decorates strings and enables tap,
-  /// long-press and/or hover gestures based on flexible definitions.
+  /// Creates a text widget that decorates partial strings in it,
+  /// and enables tap, long-press and/or hover gestures based on
+  /// flexible definitions.
   ///
   /// {@macro customText.CustomText}
   const CustomText(
-    this.text, {
+    String this.text, {
     super.key,
     required this.definitions,
     this.parserOptions = const ParserOptions(),
@@ -63,10 +70,102 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
-  });
+  }) : spans = null;
 
-  /// The text to parse and display.
-  final String text;
+  /// Creates a text widget that decorates certain portions of
+  /// [InlineSpan]s, and enables tap, long-press and/or hover
+  /// gestures based on flexible definitions.
+  ///
+  /// This constructor is useful if you already have styled spans
+  /// and want to decorate them additionally.
+  ///
+  /// ```dart
+  /// CustomText.spans(
+  ///   style: const TextStyle(fontSize: 50.0),
+  ///   definitions: const [
+  ///     TextDefinition(
+  ///       // WidgetSpan is matched by `\uFFFC` or `.` in a match pattern.
+  ///       matcher: PatternMatcher('Flutter devs\uFFFC'),
+  ///       matchStyle: const TextStyle(color: Colors.blue),
+  ///       hoverStyle: TextStyle(color: Colors.blue.shade300),
+  ///       mouseCursor: SystemMouseCursors.forbidden,
+  ///     ),
+  ///   ],
+  ///   spans: [
+  ///     const TextSpan(text: 'Hi, '),
+  ///     const TextSpan(
+  ///       text: 'Flutter',
+  ///       style: TextStyle(fontWeight: FontWeight.bold),
+  ///     ),
+  ///     const TextSpan(text: ' devs'),
+  ///     WidgetSpan(
+  ///       alignment: PlaceholderAlignment.middle,
+  ///       child: Builder(
+  ///         builder: (context) {
+  ///           // Text style is available also in WidgetSpan
+  ///           // via DefaultTextStyle.
+  ///           final style = DefaultTextStyle.of(context).style;
+  ///           return Icon(
+  ///             Icons.emoji_emotions,
+  ///             size: style.fontSize,
+  ///             color: style.color,
+  ///           );
+  ///         },
+  ///       ),
+  ///     ),
+  ///   ],
+  /// )
+  /// ```
+  ///
+  /// This example shows "Hi, Flutter devs" with an emoji at the end.
+  /// The text consists of a list of [InlineSpan]s, where "Flutter"
+  /// is styled as bold and the emoji is defined by a [WidgetSpan].
+  /// CustomText used via the `spans` constructor cleverly handles
+  /// `InlineSpan`s like the above instead of plain text. This results
+  /// in displaying "Flutter devs" and the emoji in blue, without
+  /// losing the bold style of "Flutter" defined in the original span.
+  ///
+  /// However, note that the style is lost in the string corresponding
+  /// to definitions other than [TextDefinition]; the string returned
+  /// by the `shownText` callback of [SelectiveDefinition] and the
+  /// `InlineSpan` created by the `builder` function of [SpanDefinition]
+  /// do not inherit the original style.
+  ///
+  /// Also note that attributes except for `style` in the original
+  /// `TextSpan`s are removed.
+  const CustomText.spans({
+    super.key,
+    required List<InlineSpan> this.spans,
+    required this.definitions,
+    this.parserOptions = const ParserOptions(),
+    this.style,
+    this.matchStyle,
+    this.tapStyle,
+    this.hoverStyle,
+    this.onTap,
+    this.onLongPress,
+    this.onGesture,
+    this.longPressDuration,
+    this.preventBlocking = false,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+  }) : text = null;
+
+  /// The text to which styles and gesture actions are applied.
+  final String? text;
+
+  /// The list of InlineSpans to which styles and gesture actions
+  /// are applied.
+  final List<InlineSpan>? spans;
 
   /// Definitions that specify rules for parsing, appearance and actions.
   final List<Definition> definitions;
@@ -203,20 +302,8 @@ class _CustomTextState extends State<CustomText> {
   NotifierSettings _createNotifierSettings() {
     return NotifierSettings(
       definitions: widget.definitions,
-      // Keeps text transparent during initial parsing to prevent the
-      // strings that should not be shown (e.g. symbols for LinkMatcher
-      // `[]()`) from being visible for an instant.
-      // Exceptionally, text is not made invisible in the following cases:
-      //
-      // * When `preventBlocking` is enabled, which means the user has
-      //   chosen to show the raw text without it blocked by parsing.
-      // * When `definitions` contains only TextDefinition, in which case
-      //   the shown text remains unchanged before and after parsing.
-      style: widget.preventBlocking ||
-              widget.definitions.every((def) => def.isTextDefinition)
-          ? widget.style
-          : widget.style?.copyWith(color: const Color(0x00000000)) ??
-              const TextStyle(color: Color(0x00000000)),
+      spans: widget.spans,
+      style: widget.style,
       matchStyle: widget.matchStyle,
       tapStyle: widget.tapStyle,
       hoverStyle: widget.hoverStyle,
@@ -231,24 +318,62 @@ class _CustomTextState extends State<CustomText> {
   void initState() {
     super.initState();
 
-    _textSpanNotifier = CustomTextSpanNotifier(
-      text: widget.text,
-      settings: _createNotifierSettings(),
-    );
-    _parse(widget.text);
+    final spanText = widget.spans.toPlainText();
+
+    // Keeps content transparent during initial parsing to prevent the
+    // strings and widgets that should not be shown (e.g. symbols for
+    // LinkMatcher `[]()`) from being visible for an instant.
+    // However, the following cases are excluded:
+    //
+    // * When `preventBlocking` is enabled, which means the user has
+    //   chosen to show the raw content without it blocked by parsing.
+    // * When the default constructor is used and `definitions`
+    //   contains only TextDefinition, in which case the shown text
+    //   remains unchanged before and after parsing.
+    //   As an exception, this does not apply to the case where
+    //   `CustomText.spans` is used because the given spans can contain
+    //   widgets that cannot be hidden by just making the text colour
+    //   transparent.
+    final shouldHide = !widget.preventBlocking &&
+        (widget.spans != null ||
+            widget.definitions.any((def) => !def.isTextDefinition));
+
+    _textSpanNotifier = shouldHide
+        ? CustomTextSpanNotifier(
+            // Shows plain text even in the case of `CustomText.spans`.
+            // Otherwise, widgets contained in spans become visible
+            // because the transparent colour only works for text.
+            initialText: widget.text ?? spanText,
+            initialSpans: null,
+            initialStyle:
+                widget.style?.copyWith(color: const Color(0x00000000)) ??
+                    const TextStyle(color: Color(0x00000000)),
+            settings: _createNotifierSettings(),
+          )
+        : CustomTextSpanNotifier(
+            initialText: widget.text,
+            initialSpans: widget.spans,
+            initialStyle: widget.style,
+            settings: _createNotifierSettings(),
+          );
+
+    _parse(widget.text ?? spanText);
   }
 
   @override
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    final spanText = widget.spans.toPlainText();
+
     final needsParse = _hasNewMatchers(oldWidget) ||
+        widget.parserOptions != oldWidget.parserOptions ||
         widget.text != oldWidget.text ||
-        widget.parserOptions != oldWidget.parserOptions;
+        spanText != oldWidget.spans.toPlainText();
 
     if (needsParse) {
       _textSpanNotifier.settings = _createNotifierSettings();
-      _parse(widget.text);
+      _parse(widget.text ?? spanText);
       return;
     }
 
@@ -267,7 +392,8 @@ class _CustomTextState extends State<CustomText> {
         widget.tapStyle != oldWidget.tapStyle ||
         widget.hoverStyle != oldWidget.hoverStyle ||
         widget.longPressDuration != oldWidget.longPressDuration ||
-        _hasNewDefinitions(oldWidget);
+        _hasNewDefinitions(oldWidget) ||
+        !listEquals(widget.spans, oldWidget.spans);
 
     if (needsSpanUpdate) {
       _textSpanNotifier

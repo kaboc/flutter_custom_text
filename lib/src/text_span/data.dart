@@ -1,7 +1,7 @@
 import 'dart:async' show Timer;
 
 import 'package:flutter/gestures.dart' show PointerEvent;
-import 'package:flutter/painting.dart' show TextStyle;
+import 'package:flutter/painting.dart' show InlineSpan, TextStyle;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
@@ -15,6 +15,7 @@ class SpanData {
     required this.index,
     required this.element,
     required this.text,
+    required this.spans,
     required this.shownText,
     required this.actionText,
     required this.definition,
@@ -27,6 +28,7 @@ class SpanData {
   final int index;
   final TextElement element;
   final String text;
+  final List<InlineSpan>? spans;
   final String? shownText;
   final String? actionText;
   final Definition definition;
@@ -39,6 +41,7 @@ class SpanData {
 class NotifierSettings {
   NotifierSettings({
     required List<Definition> definitions,
+    this.spans,
     this.style,
     this.matchStyle,
     this.tapStyle,
@@ -64,6 +67,7 @@ class NotifierSettings {
   }
 
   final Map<Type, Map<int, Definition>> definitions;
+  final List<InlineSpan>? spans;
   final TextStyle? style;
   final TextStyle? matchStyle;
   final TextStyle? tapStyle;
