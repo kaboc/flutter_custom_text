@@ -326,35 +326,42 @@ class _CustomTextState extends State<CustomText> {
     );
   }
 
+  /// Whether to keep the content transparent during initial parsing
+  /// to prevent the strings and widgets that should not be shown
+  /// (e.g. symbols for LinkMatcher `[]()`) from being visible for
+  /// an instant.
+  ///
+  /// However, the following cases are excluded:
+  ///
+  /// * When `preventBlocking` is enabled, which means the user has
+  ///   chosen to show the raw content without it blocked by parsing.
+  /// * When the default constructor is used and `definitions`
+  ///   contains only TextDefinition, in which case the shown text
+  ///   remains unchanged before and after parsing.
+  ///   As an exception, this does not apply to the case where
+  ///   `CustomText.spans` is used because the given spans can contain
+  ///   widgets that cannot be hidden by just making the text colour
+  ///   transparent.
+  bool _shouldBeInvisibleDuringParsing() {
+    return !widget.preventBlocking &&
+        (widget.spans != null ||
+            widget.definitions.any((def) => !def.isTextDefinition));
+  }
+
   @override
   void initState() {
     super.initState();
 
     final spanText = widget.spans.toPlainText();
 
-    // Keeps content transparent during initial parsing to prevent the
-    // strings and widgets that should not be shown (e.g. symbols for
-    // LinkMatcher `[]()`) from being visible for an instant.
-    // However, the following cases are excluded:
-    //
-    // * When `preventBlocking` is enabled, which means the user has
-    //   chosen to show the raw content without it blocked by parsing.
-    // * When the default constructor is used and `definitions`
-    //   contains only TextDefinition, in which case the shown text
-    //   remains unchanged before and after parsing.
-    //   As an exception, this does not apply to the case where
-    //   `CustomText.spans` is used because the given spans can contain
-    //   widgets that cannot be hidden by just making the text colour
-    //   transparent.
-    final shouldHide = !widget.preventBlocking &&
-        (widget.spans != null ||
-            widget.definitions.any((def) => !def.isTextDefinition));
-
-    _textSpanNotifier = shouldHide
+    _textSpanNotifier = _shouldBeInvisibleDuringParsing()
         ? CustomTextSpanNotifier(
             // Shows plain text even in the case of `CustomText.spans`.
             // Otherwise, widgets contained in spans become visible
             // because the transparent colour only works for text.
+            // (Using empty string instead of making text transparent
+            // is wrong here because the widget should have the space
+            // for the content at this point to avoid it changing later.)
             initialText: widget.text ?? spanText,
             initialStyle:
                 widget.style?.copyWith(color: const Color(0x00000000)) ??
