@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:custom_text/custom_text.dart';
@@ -68,6 +69,17 @@ class _ExamplePageState extends State<ExamplePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          if (!kIsWeb) ...[
+            IconButton(
+              tooltip: 'View in browser',
+              icon: const Icon(Icons.open_in_browser),
+              onPressed: () => launchUrlString(
+                'https://kaboc.github.io/'
+                'flutter_custom_text/#/${widget.pathString}',
+              ),
+            ),
+            const SizedBox(width: 4.0),
+          ],
           IconButton(
             tooltip: 'View code',
             icon: const Icon(Icons.article),
