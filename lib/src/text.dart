@@ -356,7 +356,6 @@ class _CustomTextState extends State<CustomText> {
             // Otherwise, widgets contained in spans become visible
             // because the transparent colour only works for text.
             initialText: widget.text ?? spanText,
-            initialSpans: null,
             initialStyle:
                 widget.style?.copyWith(color: const Color(0x00000000)) ??
                     const TextStyle(color: Color(0x00000000)),
@@ -364,7 +363,6 @@ class _CustomTextState extends State<CustomText> {
           )
         : CustomTextSpanNotifier(
             initialText: widget.text,
-            initialSpans: widget.spans,
             initialStyle: widget.style,
             settings: _createNotifierSettings(),
           );

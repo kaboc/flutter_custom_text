@@ -14,13 +14,11 @@ import 'transient_elements_builder.dart';
 class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   CustomTextSpanNotifier({
     required String? initialText,
-    required List<InlineSpan>? initialSpans,
     required TextStyle? initialStyle,
     required this.settings,
   }) : super(
           TextSpan(
             text: initialText,
-            children: initialSpans,
             style: initialStyle,
           ),
         );

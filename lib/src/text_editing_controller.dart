@@ -201,7 +201,6 @@ class CustomTextEditingController extends TextEditingController {
 
     _textSpanNotifier = CustomTextSpanNotifier(
       initialText: text,
-      initialSpans: null,
       initialStyle: style,
       settings: NotifierSettings(
         definitions: definitions,
