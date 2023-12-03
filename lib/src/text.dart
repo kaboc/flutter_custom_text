@@ -14,13 +14,13 @@ import 'text_span/text_span_notifier.dart';
 const _kTextScaleFactorDeprecation =
     'Use `MediaQuery` instead or ignore this warning depending on the '
     'Flutter SDK version you are currently using, until `textScaler` '
-    'becomes available at a newer version of custom_text. This was '
-    'deprecated at custom_text 1.3.0.\n'
+    'is added at a future version of custom_text. This was deprecated '
+    'at custom_text 1.3.0.\n'
     '* < Flutter 3.16: Ignore this warning for now.\n'
-    '* >= Flutter 3.16: Wrap `CustomText` or `CustomText.spans` with '
+    '* >= Flutter 3.16: Wrap `CustomText` / `CustomText.spans` with '
     '`MediaQuery`, `MediaQuery.withNoTextScaling` or '
-    '`MediaQuery.withClampedTextScaling` to override the text scaling '
-    'strategy.';
+    '`MediaQuery.withClampedTextScaling` to override the existing '
+    'TextScaler.';
 
 /// A text widget that decorates partial strings in it, and enables tap,
 /// long-press and/or hover gestures based on flexible definitions.

@@ -1,7 +1,15 @@
+## 1.3.0
+
+- Add the [CustomText.spans] constructor. ([#36])
+    - This is useful if you already have styled spans and want to apply additional decoration.
+- Deprecate `textScaleFactor`. ([#38])
+    - `textScaler` will be added at a future major version.
+- Bump text_parser version to 2.1.1.
+
 ## 1.2.1
 
 - Fix a potential bug that could cause an empty span in edge case.
-- Fix bugs of CustomTextEditingController.
+- Fix bugs of `CustomTextEditingController`.
     - Text style specified in controller was not used during initial parsing.
     - Text style specified in editable text was not used depending on the timing.
 - Add an example of how to make real hyperlinks for the web.
@@ -261,6 +269,7 @@
 
 - Initial version.
 
+[CustomText.spans]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomText/CustomText.spans.html
 [#2]: https://github.com/kaboc/flutter_custom_text/pull/2
 [#4]: https://github.com/kaboc/flutter_custom_text/pull/4
 [#7]: https://github.com/kaboc/flutter_custom_text/pull/7
@@ -280,4 +289,6 @@
 [#27]: https://github.com/kaboc/flutter_custom_text/pull/27
 [#31]: https://github.com/kaboc/flutter_custom_text/pull/31
 [#34]: https://github.com/kaboc/flutter_custom_text/pull/34
+[#36]: https://github.com/kaboc/flutter_custom_text/pull/36
 [#37]: https://github.com/kaboc/flutter_custom_text/pull/37
+[#38]: https://github.com/kaboc/flutter_custom_text/pull/38
