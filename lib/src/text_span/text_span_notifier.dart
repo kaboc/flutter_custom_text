@@ -221,7 +221,6 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       settings: settings,
       spanData: spanData,
     );
-    final recognizer = gestureHandler.recognizer;
 
     // tapStyle and hoverStyle must be cancelled when text spans are built.
     // Otherwise, if a span with such a style is being pressed or hovered
@@ -238,7 +237,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     final newSpan = def is SpanDefinition
         ? TextSpan(
             style: style,
-            recognizer: recognizer,
+            recognizer: gestureHandler.recognizer,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
@@ -250,7 +249,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
             text: spanData.shownText ??
                 (spanData.spans == null ? spanData.text : null),
             style: style,
-            recognizer: recognizer,
+            recognizer: gestureHandler.recognizer,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler.onEnter,
             onExit: gestureHandler.onExit,
@@ -260,48 +259,21 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
   }
 
-  void _updateNonTappableSpan({required SpanData spanData}) {
-    // Avoids the range error that occurs when text spans are
-    // reduced while one of them is still hovered on.
+  void _onSpanUpdateNeeded(int index, String text, TextSpan span) {
+    // Span must not be updated in the following cases:
     //
-    // Also suppresses an update of the span if the text at the
-    // index has changed because it indicates this method has been
-    // triggered by the hover handler of the old span.
-    // If it is not suppressed, the new span will get a wrong text.
-    if (spanData.index >= value.children!.length ||
-        elements[spanData.index].text != spanData.text) {
-      return;
-    }
-
-    // Copying the children is necessary to cause a redraw.
-    // It is not enough to only replace an element.
-    value = TextSpan(
-      children: List.of(value.children!)
-        ..[spanData.index] = _nonTappableTextSpan(spanData: spanData),
-    );
-  }
-
-  void _updateTappableSpan({required SpanData spanData}) {
-    // Avoids the range error that occurs if text spans are
-    // reduced while one of them is still hovered on.
-    //
-    // Also suppresses an update of the span if the text at the
-    // index has changed because it indicates this method has been
-    // triggered by the hover handler of the old span.
-    // If it is not suppressed, the new span will get a wrong text.
-    if (spanData.index >= value.children!.length ||
-        elements[spanData.index].text != spanData.text) {
-      return;
-    }
-
-    // Prevents the issue #6 by avoiding updating the value
-    // when the notifier is no longer available.
-    if (!_disposed) {
-      // Copying the children is necessary to cause a redraw.
-      // It is not enough to only replace an element.
+    // * When the notifier is no longer available. (issue #6)
+    // * When the number of spans has been reduced while one of them
+    //   is still hovered on, in which case an update will lead to
+    //   a range error.
+    // * When the text at the index has changed, which indicates that
+    //   this method has been triggered by the hover handler of the
+    //   old span and it will cause the new span to get wrong text.
+    if (!_disposed &&
+        index < value.children!.length &&
+        elements[index].text == text) {
       value = TextSpan(
-        children: List.of(value.children!)
-          ..[spanData.index] = _tappableTextSpan(spanData: spanData),
+        children: List.of(value.children!)..[index] = span,
       );
     }
   }
@@ -314,7 +286,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _tapped = tapped;
     _tapIndex = tapped ? spanData.index : null;
 
-    _updateTappableSpan(spanData: spanData);
+    _onSpanUpdateNeeded(
+      spanData.index,
+      spanData.text,
+      _tappableTextSpan(spanData: spanData),
+    );
   }
 
   void _updateHoverIndex({
@@ -336,9 +312,13 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     if (!_tapped && globalPosition != _hoverPosition) {
       _hoverPosition = hovered ? globalPosition : null;
 
-      spanData.onTapDown == null
-          ? _updateNonTappableSpan(spanData: spanData)
-          : _updateTappableSpan(spanData: spanData);
+      _onSpanUpdateNeeded(
+        spanData.index,
+        spanData.text,
+        spanData.onTapDown == null
+            ? _nonTappableTextSpan(spanData: spanData)
+            : _tappableTextSpan(spanData: spanData),
+      );
     }
   }
 }
