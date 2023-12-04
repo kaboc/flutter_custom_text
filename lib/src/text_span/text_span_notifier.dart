@@ -119,6 +119,9 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
         def.onLongPress != null ||
         def.onGesture != null;
 
+    final hasTapStyle = settings.tapStyle != null || def.tapStyle != null;
+    final hasHoverStyle = settings.hoverStyle != null || def.hoverStyle != null;
+
     final spanData = SpanData(
       index: index,
       element: element,
@@ -127,28 +130,32 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       shownText: def.shownText?.call(element.groups),
       actionText: def.actionText?.call(element.groups),
       definition: def,
-      onTapDown: isTappable
+      onTapDown: hasTapStyle || hasHoverStyle
           ? (spanData) => _updateTapIndex(
                 spanData: spanData,
                 tapped: true,
               )
           : null,
-      onTapCancel: isTappable
+      onTapCancel: hasTapStyle || hasHoverStyle
           ? (spanData) => _updateTapIndex(
                 spanData: spanData,
                 tapped: false,
               )
           : null,
-      onMouseEnter: (event, spanData) => _updateHoverIndex(
-        spanData: spanData,
-        hovered: true,
-        globalPosition: event.position,
-      ),
-      onMouseExit: (event, spanData) => _updateHoverIndex(
-        spanData: spanData,
-        hovered: false,
-        globalPosition: event.position,
-      ),
+      onMouseEnter: hasHoverStyle
+          ? (event, spanData) => _updateHoverIndex(
+                spanData: spanData,
+                hovered: true,
+                globalPosition: event.position,
+              )
+          : null,
+      onMouseExit: hasHoverStyle
+          ? (event, spanData) => _updateHoverIndex(
+                spanData: spanData,
+                hovered: false,
+                globalPosition: event.position,
+              )
+          : null,
     );
 
     return isTappable
