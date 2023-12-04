@@ -17,10 +17,12 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required TextStyle? initialStyle,
     required this.settings,
   }) : super(
-          TextSpan(
-            text: initialText,
-            style: initialStyle,
-          ),
+          initialText == null || initialText.isEmpty
+              ? const TextSpan()
+              : TextSpan(
+                  text: initialText,
+                  style: initialStyle,
+                ),
         );
 
   NotifierSettings settings;
@@ -57,12 +59,15 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     final spans = settings.spans?.splitSpans(elements: elements);
 
     value = TextSpan(
-      children: [
-        if (spans == null)
-          for (var i = 0; i < elements.length; i++) _span(i, elements[i])
-        else
-          for (final i in spans.keys) _span(i, elements[i], spans: spans[i]),
-      ],
+      children: elements.isEmpty
+          ? null
+          : [
+              if (spans == null)
+                for (var i = 0; i < elements.length; i++) _span(i, elements[i])
+              else
+                for (final i in spans.keys)
+                  _span(i, elements[i], spans: spans[i]),
+            ],
     );
 
     // If the number of new elements has become smaller than before,
