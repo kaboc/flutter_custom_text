@@ -388,15 +388,30 @@ class _CustomTextState extends State<CustomText> {
         widget.text != oldWidget.text ||
         spanText != oldWidget.spans.toPlainText();
 
+    final hasElements = _textSpanNotifier.elements.isNotEmpty;
+
     if (needsParse) {
       _textSpanNotifier.settings = _createNotifierSettings();
+
+      final hasText = (widget.text ?? '').isNotEmpty;
+
+      // If the text was empty initially and is provided now,
+      // it is the time to show it, except in the cases where
+      // it should be hidden until parsing completes.
+      if (!hasElements && hasText && !_shouldBeInvisibleDuringParsing()) {
+        _textSpanNotifier.value = TextSpan(
+          text: widget.text,
+          style: widget.style,
+        );
+      }
+
       _parse(widget.text ?? spanText);
       return;
     }
 
-    // This has to be here after checking the necessity of parsing.
-    // Don't swap the order.
-    if (_textSpanNotifier.elements.isEmpty) {
+    // This should be here, not earlier than checking
+    // the necessity of parsing. Don't swap the order.
+    if (!hasElements) {
       // No-op when called before initial parsing completes so that
       // having no element won't cause an empty span to be build.
       // (But this only happens if this widget is rebuilt with some

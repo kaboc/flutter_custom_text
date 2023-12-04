@@ -452,6 +452,61 @@ void main() {
       },
     );
 
+    testWidgets(
+      'Text is quickly shown before parsing completes when text is given '
+      'later than initial build',
+      (tester) async {
+        var text = '';
+        final completer = Completer<List<TextElement>>();
+        const style = TextStyle(color: Color(0x11111111));
+        const matchStyle = TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return CustomTextWidget(
+                text,
+                parserOptions:
+                    ParserOptions.external((text) => completer.future),
+                style: style,
+                matchStyle: matchStyle,
+                onButtonPressed: () {
+                  setState(() => text = 'aaa bbb@example.com');
+                },
+              );
+            },
+          ),
+        );
+        await tester.pump();
+
+        expect(findFirstTextSpan(), const TextSpan());
+
+        await tester.tapButton();
+        await tester.pump();
+
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(text: 'aaa bbb@example.com', style: style),
+        );
+
+        completer.complete(const [
+          TextElement('aaa'),
+          TextElement('bbb@example.com', matcherType: EmailMatcher),
+        ]);
+        await tester.pump();
+
+        expect(
+          findFirstTextSpan(),
+          const TextSpan(
+            children: [
+              TextSpan(text: 'aaa', style: style),
+              TextSpan(text: 'bbb@example.com', style: matchStyle),
+            ],
+          ),
+        );
+      },
+    );
+
     testWidgets('Text is transparent only initially', (tester) async {
       Completer<List<TextElement>>? completer;
       var text = 'aaa[bbb](ccc)';
