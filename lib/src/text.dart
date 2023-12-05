@@ -311,8 +311,8 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
 
-  NotifierSettings _createNotifierSettings() {
-    return NotifierSettings(
+  SpansBuilderSettings _createSettings() {
+    return SpansBuilderSettings(
       definitions: widget.definitions,
       spans: widget.spans,
       style: widget.style,
@@ -366,12 +366,12 @@ class _CustomTextState extends State<CustomText> {
             initialStyle:
                 widget.style?.copyWith(color: const Color(0x00000000)) ??
                     const TextStyle(color: Color(0x00000000)),
-            settings: _createNotifierSettings(),
+            settings: _createSettings(),
           )
         : CustomTextSpanNotifier(
             initialText: widget.text,
             initialStyle: widget.style,
-            settings: _createNotifierSettings(),
+            settings: _createSettings(),
           );
 
     _parse(widget.text ?? spanText);
@@ -391,7 +391,7 @@ class _CustomTextState extends State<CustomText> {
     final hasElements = _textSpanNotifier.elements.isNotEmpty;
 
     if (needsParse) {
-      _textSpanNotifier.settings = _createNotifierSettings();
+      _textSpanNotifier.updateSettings(_createSettings());
 
       final hasText = (widget.text ?? '').isNotEmpty;
 
@@ -429,7 +429,7 @@ class _CustomTextState extends State<CustomText> {
 
     if (needsSpanUpdate) {
       _textSpanNotifier
-        ..settings = _createNotifierSettings()
+        ..updateSettings(_createSettings())
         ..buildSpan(
           style: widget.style,
           oldElementsLength: _textSpanNotifier.elements.length,
@@ -487,7 +487,7 @@ class _CustomTextState extends State<CustomText> {
         : await externalParser(text);
 
     _textSpanNotifier
-      ..elements = elements
+      ..updateElements(elements)
       ..buildSpan(
         style: widget.style,
         oldElementsLength: oldElementsLength,

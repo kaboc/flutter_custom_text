@@ -42,7 +42,7 @@ void main() {
       expect(handlers.map, isEmpty);
 
       handlers.prepareHandler(
-        settings: NotifierSettings(definitions: []),
+        settings: SpansBuilderSettings(definitions: []),
         spanData: createSpanData(index: 10),
       );
 
@@ -57,11 +57,11 @@ void main() {
 
       handlers
         ..prepareHandler(
-          settings: NotifierSettings(definitions: []),
+          settings: SpansBuilderSettings(definitions: []),
           spanData: createSpanData(index: 10),
         )
         ..prepareHandler(
-          settings: NotifierSettings(definitions: []),
+          settings: SpansBuilderSettings(definitions: []),
           spanData: createSpanData(index: 20),
         );
       expect(handlers.map, hasLength(2));
@@ -77,14 +77,14 @@ void main() {
       handlers
         ..hoverState = (hoverState..index = 10)
         ..prepareHandler(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             hoverStyle: const TextStyle(),
           ),
           spanData: createSpanData(index: 10),
         )
         ..prepareHandler(
-          settings: NotifierSettings(definitions: []),
+          settings: SpansBuilderSettings(definitions: []),
           spanData: createSpanData(index: 20),
         );
       expect(handlers.map, hasLength(2));
@@ -100,13 +100,13 @@ void main() {
       addTearDown(handlers.dispose);
 
       final handler1 = handlers.prepareHandler(
-        settings: NotifierSettings(definitions: []),
+        settings: SpansBuilderSettings(definitions: []),
         spanData: createSpanData(index: 10),
       );
       expect(handler1.recognizer, isNull);
 
       final handler2 = handlers.prepareHandler(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           onTap: (_) {},
         ),
@@ -125,7 +125,7 @@ void main() {
       addTearDown(handler2.dispose);
 
       handler1.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           hoverStyle: const TextStyle(),
           onGesture: (_) {},
@@ -139,7 +139,7 @@ void main() {
       expect(handler1.recognizer!.onTapCancel, isNull);
 
       handler2.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           onTap: (_) {},
         ),
@@ -161,7 +161,7 @@ void main() {
         addTearDown(handler2.dispose);
 
         handler1.updateSettings(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             onTap: (_) {},
             onLongPress: (_) {},
@@ -175,7 +175,7 @@ void main() {
         expect(handler1.recognizer!.onTertiaryTapUp, isNull);
 
         handler2.updateSettings(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             onGesture: (_) {},
           ),
@@ -193,7 +193,7 @@ void main() {
       addTearDown(handler.dispose);
 
       handler.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           onTap: (_) {},
         ),
@@ -207,7 +207,7 @@ void main() {
       expect(handler.recognizer!.onSecondaryTapUp, isNull);
 
       handler.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           onGesture: (_) {},
         ),
@@ -227,7 +227,7 @@ void main() {
         addTearDown(handler.dispose);
 
         handler.updateSettings(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             onTap: (_) {},
           ),
@@ -239,7 +239,7 @@ void main() {
         expect(handler.onEnter, isNull);
 
         handler.updateSettings(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             hoverStyle: const TextStyle(),
           ),
@@ -261,7 +261,7 @@ void main() {
         addTearDown(handler.dispose);
 
         handler.updateSettings(
-          settings: NotifierSettings(
+          settings: SpansBuilderSettings(
             definitions: [],
             onTap: (_) {},
             onLongPress: (_) {},
@@ -280,7 +280,7 @@ void main() {
       addTearDown(handler.dispose);
 
       handler.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           onGesture: (_) {},
         ),
@@ -297,7 +297,7 @@ void main() {
       addTearDown(handler.dispose);
 
       handler.updateSettings(
-        settings: NotifierSettings(
+        settings: SpansBuilderSettings(
           definitions: [],
           hoverStyle: const TextStyle(),
         ),
@@ -320,7 +320,7 @@ void main() {
         gestureKinds.clear();
       });
 
-      final settings = NotifierSettings(
+      final settings = SpansBuilderSettings(
         definitions: [],
         hoverStyle: const TextStyle(),
         onGesture: (details) => gestureKinds.add(details.gestureKind),
@@ -515,7 +515,7 @@ void main() {
     });
 
     group('Timers to debounce handling of hover events', () {
-      final settings = NotifierSettings(
+      final settings = SpansBuilderSettings(
         definitions: [],
         hoverStyle: const TextStyle(),
       );

@@ -36,7 +36,7 @@ class GestureHandlers {
 
   // ignore: library_private_types_in_public_api
   GestureHandler prepareHandler({
-    required NotifierSettings settings,
+    required SpansBuilderSettings settings,
     required SpanData spanData,
   }) {
     // This method is called frequently, so the existing handler
@@ -51,7 +51,7 @@ class GestureHandlers {
 }
 
 class GestureHandler {
-  late NotifierSettings _settings;
+  late SpansBuilderSettings _settings;
   late SpanData _spanData;
   late HoverState _hoverState;
 
@@ -72,7 +72,7 @@ class GestureHandler {
   }
 
   void updateSettings({
-    required NotifierSettings settings,
+    required SpansBuilderSettings settings,
     required SpanData spanData,
     required HoverState hoverState,
   }) {

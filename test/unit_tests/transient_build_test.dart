@@ -36,7 +36,7 @@ void main() {
   final notifier = CustomTextSpanNotifier(
     initialText: '',
     initialStyle: null,
-    settings: NotifierSettings(definitions: definitions),
+    settings: SpansBuilderSettings(definitions: definitions),
   );
 
   late List<TextElement> elements;
@@ -48,12 +48,12 @@ void main() {
     required BuildResult elementsBuilderResult,
   }) {
     notifier
-      ..elements = initialElements
+      ..updateElements(initialElements)
       ..buildSpan(
         style: const TextStyle(),
         oldElementsLength: 30,
       )
-      ..elements = elementsBuilderResult.elements
+      ..updateElements(elementsBuilderResult.elements)
       ..buildTransientSpan(
         style: const TextStyle(),
         replaceRange: elementsBuilderResult.replaceRange,

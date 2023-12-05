@@ -38,8 +38,8 @@ class SpanData {
   final void Function(PointerEvent, SpanData)? onMouseExit;
 }
 
-class NotifierSettings {
-  NotifierSettings({
+class SpansBuilderSettings {
+  SpansBuilderSettings({
     required List<Definition> definitions,
     this.spans,
     this.style,
