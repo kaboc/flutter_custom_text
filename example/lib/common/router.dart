@@ -171,6 +171,9 @@ final pages = [
         'This is useful if you already have styled spans and want to '
         'decorate them additionally.',
     builder: CustomTextSpansExample.new,
+    additionalInfo: 'This example applies hoverStyle, tapStyle and onTap '
+        'to the range containing multiple styled InlineSpans including '
+        'a WidgetSpan.',
   ),
   ExamplePage(
     pathString: 'text-editing-controller',

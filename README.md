@@ -398,7 +398,11 @@ spans_constructor.dart ([Code][example_spans_constructor] / [Demo][demo_spans_co
 An example of the [CustomText.spans] constructor that allows to use a list of `InlineSpan`s
 instead of plain text.
 
-This is useful if you already have styled spans and want to decorate them additionally.
+This constructor is useful if you already have styled spans and want to decorate them
+additionally.
+
+In this example, the match pattern matches the range containing multiple `InlineSpan`s
+including a `WidgetSpan`, and the specified styles and gestures are applied to that range.
 
 ```dart
 CustomText.spans(
