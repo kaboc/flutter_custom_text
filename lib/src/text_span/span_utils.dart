@@ -133,8 +133,8 @@ class WidgetSpanChild extends StatelessWidget {
 
     return mergedStyle == null
         ? child
-        : DefaultTextStyle(
-            style: DefaultTextStyle.of(context).style.merge(mergedStyle),
+        : DefaultTextStyle.merge(
+            style: mergedStyle,
             child: child,
           );
   }

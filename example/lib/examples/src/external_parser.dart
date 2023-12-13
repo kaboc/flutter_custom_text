@@ -44,10 +44,7 @@ class _ExternalParserExampleState extends State<ExternalParserExample> {
         TextField(
           controller: _controller,
           maxLines: null,
-          style: GoogleFonts.inconsolata(
-            height: 1.4,
-            color: DefaultTextStyle.of(context).style.color,
-          ),
+          style: GoogleFonts.inconsolata(height: 1.4),
         ),
       ],
     );

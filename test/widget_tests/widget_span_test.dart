@@ -175,14 +175,16 @@ void main() {
 
         final richTexts = tester.findWidgetsByType<RichText>();
         expect(richTexts, hasLength(3));
+        expect(richTexts.elementAt(0).text.toPlainText(), '\uFFFC\uFFFC');
+        expect(richTexts.elementAt(1).text.toPlainText(), 'aaa');
         expect(richTexts.elementAt(1).text.style, style1.merge(style2));
+        expect(richTexts.elementAt(2).text.toPlainText(), 'bbb');
         expect(richTexts.elementAt(2).text.style, style1);
       },
     );
 
     testWidgets(
-      'DefaultTextStyle is used if any ancestor has a style '
-      'regardless of whether it is the root span or not',
+      'DefaultTextStyle is used only if any ancestor has a style',
       (tester) async {
         const style = TextStyle(backgroundColor: Color(0x11111111));
 
@@ -213,7 +215,10 @@ void main() {
 
         final richTexts = tester.findWidgetsByType<RichText>();
         expect(richTexts, hasLength(3));
+        expect(richTexts.elementAt(0).text.toPlainText(), '\uFFFC\uFFFC');
+        expect(richTexts.elementAt(1).text.toPlainText(), 'aaa');
         expect(richTexts.elementAt(1).text.style, style);
+        expect(richTexts.elementAt(2).text.toPlainText(), 'bbb');
         expect(richTexts.elementAt(2).text.style, const TextStyle());
       },
     );
