@@ -1,3 +1,12 @@
+## 1.3.1
+- Fix a potential issue where text was not shown quickly if it was given later than initial build.
+- Extract span builder as a single class for a feature being planned for a future version.
+- Improve span builder to apply gesture callbacks only when necessary.
+- Improve handling of DefaultTextStyle.
+- Other refactorings.
+- Bump text_parser version to 2.2.1.
+    - Matchers with empty RegExp pattern are now allowed. 
+
 ## 1.3.0
 
 - Add the [CustomText.spans] constructor. ([#36])
