@@ -576,7 +576,7 @@ void main() {
       );
 
       await tester.tapButton();
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(
         findFirstTextSpan(),
@@ -596,7 +596,7 @@ void main() {
           groups: ['eee', 'fff'],
         ),
       ]);
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(
         findFirstTextSpan(),

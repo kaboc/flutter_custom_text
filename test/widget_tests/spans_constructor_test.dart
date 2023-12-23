@@ -557,7 +557,7 @@ void main() {
             child: CustomText.spans(
               spans: spans,
               definitions: const [
-                TextDefinition(matcher: PatternMatcher('ccc\uFFFc')),
+                TextDefinition(matcher: PatternMatcher('ccc\uFFFC')),
               ],
               style: style,
               matchStyle: matchStyle,
@@ -600,7 +600,7 @@ void main() {
               child: CustomText.spans(
                 spans: spans,
                 definitions: const [
-                  TextDefinition(matcher: PatternMatcher('\uFFFc')),
+                  TextDefinition(matcher: PatternMatcher('\uFFFC')),
                 ],
                 style: style,
                 matchStyle: matchStyle,
@@ -646,7 +646,7 @@ void main() {
                 spans: spans,
                 definitions: [
                   TextDefinition(
-                    matcher: const PatternMatcher('\uFFFcccc'),
+                    matcher: const PatternMatcher('\uFFFCccc'),
                     onTap: (details) => count++,
                   ),
                 ],
