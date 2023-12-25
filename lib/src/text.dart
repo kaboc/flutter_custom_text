@@ -461,12 +461,11 @@ class _CustomTextState extends State<CustomText> {
 
   List<int> _findUpdatedDefinitions(CustomText oldWidget) {
     final defs = widget.definitions;
-    return defs.length == oldWidget.definitions.length
-        ? [
-            for (var i = 0; i < defs.length; i++)
-              if (defs[i] != oldWidget.definitions[i]) i,
-          ]
-        : [];
+    return [
+      if (defs.length == oldWidget.definitions.length)
+        for (var i = 0; i < defs.length; i++)
+          if (defs[i] != oldWidget.definitions[i]) i,
+    ];
   }
 
   Future<void> _parse(String text) async {
