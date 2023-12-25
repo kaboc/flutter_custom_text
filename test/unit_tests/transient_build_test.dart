@@ -51,7 +51,7 @@ void main() {
       ..updateElements(initialElements)
       ..buildSpan(
         style: const TextStyle(),
-        oldElementsLength: 30,
+        updatedDefinitionIndexes: [],
       )
       ..updateElements(elementsBuilderResult.elements)
       ..buildTransientSpan(

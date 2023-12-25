@@ -419,20 +419,23 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    final needsSpanUpdate = widget.style != oldWidget.style ||
+    final needsBuild = widget.style != oldWidget.style ||
         widget.matchStyle != oldWidget.matchStyle ||
         widget.tapStyle != oldWidget.tapStyle ||
         widget.hoverStyle != oldWidget.hoverStyle ||
         widget.longPressDuration != oldWidget.longPressDuration ||
-        _hasNewDefinitions(oldWidget) ||
         !listEquals(widget.spans, oldWidget.spans);
 
-    if (needsSpanUpdate) {
+    final updatedDefinitionIndexes = _findUpdatedDefinitions(oldWidget);
+
+    if (needsBuild || updatedDefinitionIndexes.isNotEmpty) {
       _textSpanNotifier
         ..updateSettings(_createSettings())
         ..buildSpan(
           style: widget.style,
-          oldElementsLength: _textSpanNotifier.elements.length,
+          // If not empty, only the spans relevant to the definition
+          // at the index in the `matchers` list are rebuilt.
+          updatedDefinitionIndexes: needsBuild ? [] : updatedDefinitionIndexes,
         );
     }
   }
@@ -456,22 +459,18 @@ class _CustomTextState extends State<CustomText> {
     return false;
   }
 
-  bool _hasNewDefinitions(CustomText oldWidget) {
-    if (widget.definitions.length != oldWidget.definitions.length) {
-      return true;
-    }
-
-    for (var i = 0; i < widget.definitions.length; i++) {
-      if (widget.definitions[i] != oldWidget.definitions[i]) {
-        return true;
-      }
-    }
-    return false;
+  List<int> _findUpdatedDefinitions(CustomText oldWidget) {
+    final defs = widget.definitions;
+    return defs.length == oldWidget.definitions.length
+        ? [
+            for (var i = 0; i < defs.length; i++)
+              if (defs[i] != oldWidget.definitions[i]) i,
+          ]
+        : [];
   }
 
   Future<void> _parse(String text) async {
     final externalParser = widget.parserOptions.parser;
-    final oldElementsLength = _textSpanNotifier.elements.length;
 
     final elements = externalParser == null
         ? await TextParser(
@@ -490,7 +489,7 @@ class _CustomTextState extends State<CustomText> {
       ..updateElements(elements)
       ..buildSpan(
         style: widget.style,
-        oldElementsLength: oldElementsLength,
+        updatedDefinitionIndexes: [],
       );
   }
 
