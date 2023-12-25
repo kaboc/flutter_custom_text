@@ -15,7 +15,7 @@ class SpanData {
     required this.index,
     required this.element,
     required this.text,
-    required this.spans,
+    required this.splitSpans,
     required this.shownText,
     required this.actionText,
     required this.definition,
@@ -28,7 +28,7 @@ class SpanData {
   final int index;
   final TextElement element;
   final String text;
-  final List<InlineSpan>? spans;
+  final List<InlineSpan>? splitSpans;
   final String? shownText;
   final String? actionText;
   final Definition definition;

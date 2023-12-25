@@ -23,7 +23,7 @@ void main() {
       index: index,
       element: const TextElement(''),
       text: '',
-      spans: null,
+      splitSpans: null,
       shownText: '',
       actionText: '',
       definition: const TextDefinition(matcher: PatternMatcher('')),
