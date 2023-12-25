@@ -91,7 +91,7 @@ class SpansBuilder {
           i,
           element: elements[i],
           splitSpans: null,
-          currentSpans: null,
+          currentSpans: [],
           updatedDefinitionIndexes: [],
         ),
     ];
@@ -105,10 +105,10 @@ class SpansBuilder {
     int index, {
     required TextElement element,
     required List<InlineSpan>? splitSpans,
-    required List<InlineSpan>? currentSpans,
+    required List<InlineSpan> currentSpans,
     required List<int> updatedDefinitionIndexes,
   }) {
-    if (currentSpans != null &&
+    if (index < currentSpans.length &&
         updatedDefinitionIndexes.isNotEmpty &&
         !updatedDefinitionIndexes.contains(element.matcherIndex)) {
       // Returns the existing span quickly for good performance
