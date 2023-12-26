@@ -32,10 +32,14 @@ class SpansBuilder {
 
   List<InlineSpan>? buildSpans({
     required TextStyle? style,
-    required int oldElementsLength,
+    required List<InlineSpan> currentSpans,
+    required List<int> updatedDefinitionIndexes,
   }) {
     _isBuilding = true;
     _style = style;
+
+    // A map containing a list of InlineSpans as a result of splitting
+    // the spans specified in the `CustomText.spans` constructor.
     final splitSpans = settings.spans?.splitSpans(elements: elements);
 
     final newSpans = elements.isEmpty
@@ -47,6 +51,8 @@ class SpansBuilder {
                   i,
                   element: elements[i],
                   splitSpans: null,
+                  currentSpans: currentSpans,
+                  updatedDefinitionIndexes: updatedDefinitionIndexes,
                 )
             else
               for (final i in splitSpans.keys)
@@ -54,13 +60,15 @@ class SpansBuilder {
                   i,
                   element: elements[i],
                   splitSpans: splitSpans[i],
+                  currentSpans: currentSpans,
+                  updatedDefinitionIndexes: updatedDefinitionIndexes,
                 ),
           ];
 
     if (gestureHandlers != null) {
       // If the number of new elements has become smaller than before,
       // the elements after the current max index are no longer necessary.
-      for (var i = elements.length; i < oldElementsLength; i++) {
+      for (var i = elements.length; i < currentSpans.length; i++) {
         gestureHandlers?.removeHandler(index: i);
       }
     }
@@ -83,6 +91,8 @@ class SpansBuilder {
           i,
           element: elements[i],
           splitSpans: null,
+          currentSpans: [],
+          updatedDefinitionIndexes: [],
         ),
     ];
 
@@ -95,7 +105,18 @@ class SpansBuilder {
     int index, {
     required TextElement element,
     required List<InlineSpan>? splitSpans,
+    required List<InlineSpan> currentSpans,
+    required List<int> updatedDefinitionIndexes,
   }) {
+    if (index < currentSpans.length &&
+        updatedDefinitionIndexes.isNotEmpty &&
+        !updatedDefinitionIndexes.contains(element.matcherIndex)) {
+      // Returns the existing span quickly for good performance
+      // if the ongoing build is due to changes in definitions only
+      // and the target index is irrelevant to the changes.
+      return currentSpans[index];
+    }
+
     final defs = settings.definitions[element.matcherType];
     if (defs == null || defs.isEmpty) {
       return splitSpans == null

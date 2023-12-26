@@ -239,7 +239,7 @@ class CustomTextEditingController extends TextEditingController {
           ..updateElements(elements)
           ..buildSpan(
             style: style ?? _style,
-            oldElementsLength: 0,
+            updatedDefinitionIndexes: [],
           );
       } else {
         final elements = _textSpanNotifier.elements;
@@ -269,7 +269,7 @@ class CustomTextEditingController extends TextEditingController {
             ..updateElements(elements)
             ..buildSpan(
               style: style ?? _style,
-              oldElementsLength: oldElementsLength,
+              updatedDefinitionIndexes: [],
             );
         };
       }

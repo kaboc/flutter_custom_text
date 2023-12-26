@@ -54,11 +54,15 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     _spansBuilder.elements = elements;
   }
 
-  void buildSpan({required TextStyle? style, required int oldElementsLength}) {
+  void buildSpan({
+    required TextStyle? style,
+    required List<int> updatedDefinitionIndexes,
+  }) {
     value = TextSpan(
       children: _spansBuilder.buildSpans(
         style: style,
-        oldElementsLength: oldElementsLength,
+        currentSpans: value.children ?? [],
+        updatedDefinitionIndexes: updatedDefinitionIndexes,
       ),
     );
   }
