@@ -359,26 +359,32 @@ class _CustomTextState extends State<CustomText> {
             settings: _createSettings(),
           );
 
-    _parse(widget.text ?? spanText);
+    _buildSpans(
+      spanText: spanText,
+      oldWidget: null,
+    );
   }
 
   @override
   void didUpdateWidget(CustomText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final spanText = widget.spans.toPlainText();
+    _textSpanNotifier.updateSettings(_createSettings());
 
-    final needsParse =
-        widget.definitions.hasUpdatedMatchers(oldWidget.definitions) ||
-            widget.parserOptions != oldWidget.parserOptions ||
-            widget.text != oldWidget.text ||
-            spanText != oldWidget.spans.toPlainText();
+    _buildSpans(
+      spanText: widget.spans.toPlainText(),
+      oldWidget: oldWidget,
+    );
+  }
 
+  Future<void> _buildSpans({
+    required String? spanText,
+    required CustomText? oldWidget,
+  }) async {
+    final isInitial = oldWidget == null;
     final hasElements = _textSpanNotifier.elements.isNotEmpty;
 
-    if (needsParse) {
-      _textSpanNotifier.updateSettings(_createSettings());
-
+    if (!isInitial) {
       final hasText = (widget.text ?? '').isNotEmpty;
 
       // If the text was empty initially and is provided now,
@@ -390,8 +396,16 @@ class _CustomTextState extends State<CustomText> {
           style: widget.style,
         );
       }
+    }
 
-      _parse(widget.text ?? spanText);
+    final needsParse =
+        widget.definitions.hasUpdatedMatchers(oldWidget?.definitions) ||
+            widget.parserOptions != oldWidget?.parserOptions ||
+            widget.text != oldWidget?.text ||
+            spanText != oldWidget?.spans.toPlainText();
+
+    if (needsParse) {
+      await _parse(widget.text ?? spanText ?? '');
       return;
     }
 
@@ -405,25 +419,22 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    final needsBuild = widget.style != oldWidget.style ||
-        widget.matchStyle != oldWidget.matchStyle ||
-        widget.tapStyle != oldWidget.tapStyle ||
-        widget.hoverStyle != oldWidget.hoverStyle ||
-        widget.longPressDuration != oldWidget.longPressDuration ||
-        !listEquals(widget.spans, oldWidget.spans);
+    final updatedDefIndexes =
+        widget.definitions.findUpdatedDefinitions(oldWidget?.definitions);
 
-    final updatedDefinitionIndexes =
-        widget.definitions.findUpdatedDefinitions(oldWidget.definitions);
+    final needsBuild = updatedDefIndexes.isNotEmpty ||
+        widget.style != oldWidget?.style ||
+        widget.matchStyle != oldWidget?.matchStyle ||
+        widget.tapStyle != oldWidget?.tapStyle ||
+        widget.hoverStyle != oldWidget?.hoverStyle ||
+        widget.longPressDuration != oldWidget?.longPressDuration ||
+        !listEquals(widget.spans, oldWidget?.spans);
 
-    if (needsBuild || updatedDefinitionIndexes.isNotEmpty) {
-      _textSpanNotifier
-        ..updateSettings(_createSettings())
-        ..buildSpan(
-          style: widget.style,
-          // If not empty, only the spans relevant to the definition
-          // at the index in the `matchers` list are rebuilt.
-          updatedDefinitionIndexes: needsBuild ? [] : updatedDefinitionIndexes,
-        );
+    if (needsBuild) {
+      _textSpanNotifier.buildSpan(
+        style: widget.style,
+        updatedDefinitionIndexes: updatedDefIndexes,
+      );
     }
   }
 

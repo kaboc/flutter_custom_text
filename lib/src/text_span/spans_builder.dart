@@ -33,6 +33,9 @@ class SpansBuilder {
   List<InlineSpan>? buildSpans({
     required TextStyle? style,
     required List<InlineSpan> currentSpans,
+    // If this is not empty when rebuilding existing spans,
+    // only the spans relevant to the definitions at the
+    // specified indexes in the `definitions` list are rebuilt.
     required List<int> updatedDefinitionIndexes,
   }) {
     _isBuilding = true;
