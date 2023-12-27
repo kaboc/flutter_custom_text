@@ -14,11 +14,10 @@ class SpanData {
   SpanData({
     required this.index,
     required this.element,
-    required this.text,
-    required this.splitSpans,
+    required this.children,
+    required this.definition,
     required this.shownText,
     required this.actionText,
-    required this.definition,
     required this.onTapDown,
     required this.onTapCancel,
     required this.onMouseEnter,
@@ -27,11 +26,10 @@ class SpanData {
 
   final int index;
   final TextElement element;
-  final String text;
-  final List<InlineSpan>? splitSpans;
+  final List<InlineSpan>? children;
+  final Definition definition;
   final String? shownText;
   final String? actionText;
-  final Definition definition;
   final void Function(SpanData)? onTapDown;
   final void Function(SpanData)? onTapCancel;
   final void Function(PointerEvent, SpanData)? onMouseEnter;

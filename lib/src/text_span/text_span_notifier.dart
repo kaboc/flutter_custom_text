@@ -83,7 +83,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     );
   }
 
-  void _onSpanUpdateNeeded(int index, String text, TextSpan span) {
+  void _onSpanUpdateNeeded(int index, TextElement element, TextSpan span) {
     // Span must not be updated in the following cases:
     //
     // * When the notifier is no longer available. (issue #6)
@@ -95,7 +95,7 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     //   old span and it will cause the new span to get wrong text.
     if (!_disposed &&
         index < value.children!.length &&
-        elements[index].text == text) {
+        elements[index].text == element.text) {
       value = TextSpan(
         children: List.of(value.children!)..[index] = span,
       );

@@ -22,8 +22,7 @@ void main() {
     return SpanData(
       index: index,
       element: const TextElement(''),
-      text: '',
-      splitSpans: null,
+      children: null,
       shownText: '',
       actionText: '',
       definition: const TextDefinition(matcher: PatternMatcher('')),

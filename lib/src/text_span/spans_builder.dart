@@ -19,7 +19,7 @@ class SpansBuilder {
 
   SpansBuilderSettings settings;
   final GestureHandlers? gestureHandlers;
-  final void Function(int, String, TextSpan)? onSpanUpdateNeeded;
+  final void Function(int, TextElement, TextSpan)? onSpanUpdateNeeded;
 
   List<TextElement> elements = [];
   bool _isBuilding = false;
@@ -48,18 +48,18 @@ class SpansBuilder {
             if (splitSpans == null)
               for (var i = 0; i < elements.length; i++)
                 _span(
-                  i,
+                  elementIndex: i,
                   element: elements[i],
-                  splitSpans: null,
+                  children: null,
                   currentSpans: currentSpans,
                   updatedDefinitionIndexes: updatedDefinitionIndexes,
                 )
             else
               for (final i in splitSpans.keys)
                 _span(
-                  i,
+                  elementIndex: i,
                   element: elements[i],
-                  splitSpans: splitSpans[i],
+                  children: splitSpans[i],
                   currentSpans: currentSpans,
                   updatedDefinitionIndexes: updatedDefinitionIndexes,
                 ),
@@ -88,9 +88,9 @@ class SpansBuilder {
     final newSpans = [
       for (var i = spanRange.start; i < spanRange.end; i++)
         _span(
-          i,
+          elementIndex: i,
           element: elements[i],
-          splitSpans: null,
+          children: null,
           currentSpans: [],
           updatedDefinitionIndexes: [],
         ),
@@ -101,28 +101,28 @@ class SpansBuilder {
     return newSpans;
   }
 
-  InlineSpan _span(
-    int index, {
+  InlineSpan _span({
+    required int elementIndex,
     required TextElement element,
-    required List<InlineSpan>? splitSpans,
+    required List<InlineSpan>? children,
     required List<InlineSpan> currentSpans,
     required List<int> updatedDefinitionIndexes,
   }) {
-    if (index < currentSpans.length &&
+    if (elementIndex < currentSpans.length &&
         updatedDefinitionIndexes.isNotEmpty &&
         !updatedDefinitionIndexes.contains(element.matcherIndex)) {
       // Returns the existing span quickly for good performance
       // if the ongoing build is due to changes in definitions only
       // and the target index is irrelevant to the changes.
-      return currentSpans[index];
+      return currentSpans[elementIndex];
     }
 
     final defs = settings.definitions[element.matcherType];
     if (defs == null || defs.isEmpty) {
-      return splitSpans == null
+      return children == null
           ? TextSpan(text: element.text, style: _style)
           : applyPropsToChildren(
-              TextSpan(children: splitSpans, style: _style),
+              TextSpan(children: children, style: _style),
             );
     }
 
@@ -139,13 +139,12 @@ class SpansBuilder {
     final hasHoverStyle = settings.hoverStyle != null || def.hoverStyle != null;
 
     final spanData = SpanData(
-      index: index,
+      index: elementIndex,
       element: element,
-      text: element.text,
+      children: children,
+      definition: def,
       shownText: def.shownText?.call(element.groups),
       actionText: def.actionText?.call(element.groups),
-      splitSpans: splitSpans,
-      definition: def,
       onTapDown: hasTapStyle || hasHoverStyle
           ? (spanData) => _updateTapIndex(
                 spanData: spanData,
@@ -215,12 +214,12 @@ class SpansBuilder {
           )
         : TextSpan(
             text: spanData.shownText ??
-                (spanData.splitSpans == null ? spanData.text : null),
+                (spanData.children == null ? spanData.element.text : null),
             style: style,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler?.onEnter,
             onExit: gestureHandler?.onExit,
-            children: spanData.shownText == null ? spanData.splitSpans : null,
+            children: spanData.shownText == null ? spanData.children : null,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
@@ -270,13 +269,13 @@ class SpansBuilder {
           )
         : TextSpan(
             text: spanData.shownText ??
-                (spanData.splitSpans == null ? spanData.text : null),
+                (spanData.children == null ? spanData.element.text : null),
             style: style,
             recognizer: gestureHandler?.recognizer,
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler?.onEnter,
             onExit: gestureHandler?.onExit,
-            children: spanData.shownText == null ? spanData.splitSpans : null,
+            children: spanData.shownText == null ? spanData.children : null,
           );
 
     return newSpan.children == null ? newSpan : applyPropsToChildren(newSpan);
@@ -292,7 +291,7 @@ class SpansBuilder {
 
     onSpanUpdateNeeded?.call(
       spanData.index,
-      spanData.text,
+      spanData.element,
       _tappableTextSpan(spanData: spanData),
     );
   }
@@ -318,7 +317,7 @@ class SpansBuilder {
 
       onSpanUpdateNeeded?.call(
         spanData.index,
-        spanData.text,
+        spanData.element,
         spanData.onTapDown == null
             ? _nonTappableTextSpan(spanData: spanData)
             : _tappableTextSpan(spanData: spanData),

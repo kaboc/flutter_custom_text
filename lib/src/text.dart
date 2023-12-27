@@ -7,6 +7,7 @@ import 'definitions.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
+import 'utils.dart';
 import 'text_span/data.dart';
 import 'text_span/span_utils.dart';
 import 'text_span/text_span_notifier.dart';
@@ -326,26 +327,10 @@ class _CustomTextState extends State<CustomText> {
     );
   }
 
-  /// Whether to keep the content transparent during initial parsing
-  /// to prevent the strings and widgets that should not be shown
-  /// (e.g. symbols for LinkMatcher `[]()`) from being visible for
-  /// an instant.
-  ///
-  /// However, the following cases are excluded:
-  ///
-  /// * When `preventBlocking` is enabled, which means the user has
-  ///   chosen to show the raw content without it blocked by parsing.
-  /// * When the default constructor is used and `definitions`
-  ///   contains only TextDefinition, in which case the shown text
-  ///   remains unchanged before and after parsing.
-  ///   As an exception, this does not apply to the case where
-  ///   `CustomText.spans` is used because the given spans can contain
-  ///   widgets that cannot be hidden by just making the text colour
-  ///   transparent.
-  bool _shouldBeInvisibleDuringParsing() {
-    return !widget.preventBlocking &&
-        (widget.spans != null ||
-            widget.definitions.any((def) => !def.isTextDefinition));
+  @override
+  void dispose() {
+    _textSpanNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -383,10 +368,11 @@ class _CustomTextState extends State<CustomText> {
 
     final spanText = widget.spans.toPlainText();
 
-    final needsParse = _hasNewMatchers(oldWidget) ||
-        widget.parserOptions != oldWidget.parserOptions ||
-        widget.text != oldWidget.text ||
-        spanText != oldWidget.spans.toPlainText();
+    final needsParse =
+        widget.definitions.hasUpdatedMatchers(oldWidget.definitions) ||
+            widget.parserOptions != oldWidget.parserOptions ||
+            widget.text != oldWidget.text ||
+            spanText != oldWidget.spans.toPlainText();
 
     final hasElements = _textSpanNotifier.elements.isNotEmpty;
 
@@ -409,8 +395,8 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    // This should be here, not earlier than checking
-    // the necessity of parsing. Don't swap the order.
+    // This must not be earlier than checking the necessity of parsing.
+    // Don't swap the order.
     if (!hasElements) {
       // No-op when called before initial parsing completes so that
       // having no element won't cause an empty span to be build.
@@ -426,7 +412,8 @@ class _CustomTextState extends State<CustomText> {
         widget.longPressDuration != oldWidget.longPressDuration ||
         !listEquals(widget.spans, oldWidget.spans);
 
-    final updatedDefinitionIndexes = _findUpdatedDefinitions(oldWidget);
+    final updatedDefinitionIndexes =
+        widget.definitions.findUpdatedDefinitions(oldWidget.definitions);
 
     if (needsBuild || updatedDefinitionIndexes.isNotEmpty) {
       _textSpanNotifier
@@ -440,32 +427,26 @@ class _CustomTextState extends State<CustomText> {
     }
   }
 
-  @override
-  void dispose() {
-    _textSpanNotifier.dispose();
-    super.dispose();
-  }
-
-  bool _hasNewMatchers(CustomText oldWidget) {
-    if (widget.definitions.length != oldWidget.definitions.length) {
-      return true;
-    }
-
-    for (var i = 0; i < widget.definitions.length; i++) {
-      if (widget.definitions[i].matcher != oldWidget.definitions[i].matcher) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  List<int> _findUpdatedDefinitions(CustomText oldWidget) {
-    final defs = widget.definitions;
-    return [
-      if (defs.length == oldWidget.definitions.length)
-        for (var i = 0; i < defs.length; i++)
-          if (defs[i] != oldWidget.definitions[i]) i,
-    ];
+  /// Whether to keep the content transparent during initial parsing
+  /// to prevent the strings and widgets that should not be shown
+  /// (e.g. symbols for LinkMatcher `[]()`) from being visible for
+  /// an instant.
+  ///
+  /// However, the following cases are excluded:
+  ///
+  /// * When `preventBlocking` is enabled, which means the user has
+  ///   chosen to show the raw content without it blocked by parsing.
+  /// * When the default constructor is used and `definitions`
+  ///   contains only TextDefinition, in which case the shown text
+  ///   remains unchanged before and after parsing.
+  ///   As an exception, this does not apply to the case where
+  ///   `CustomText.spans` is used because the given spans can contain
+  ///   widgets that cannot be hidden by just making the text colour
+  ///   transparent.
+  bool _shouldBeInvisibleDuringParsing() {
+    return !widget.preventBlocking &&
+        (widget.spans != null ||
+            widget.definitions.any((def) => !def.isTextDefinition));
   }
 
   Future<void> _parse(String text) async {

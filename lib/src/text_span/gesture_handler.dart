@@ -123,8 +123,8 @@ class GestureHandler {
             gestureKind: GestureKind.longPress,
             pointerDeviceKind: tapDownDetails.kind ?? PointerDeviceKind.unknown,
             element: _spanData.element,
-            shownText: _spanData.shownText ?? _spanData.text,
-            actionText: _spanData.actionText ?? _spanData.text,
+            shownText: _spanData.shownText ?? _spanData.element.text,
+            actionText: _spanData.actionText ?? _spanData.element.text,
             globalPosition: tapDownDetails.globalPosition,
             localPosition: tapDownDetails.localPosition,
           );
@@ -157,8 +157,8 @@ class GestureHandler {
               gestureKind: GestureKind.tap,
               pointerDeviceKind: tapUpDetails.kind,
               element: _spanData.element,
-              shownText: _spanData.shownText ?? _spanData.text,
-              actionText: _spanData.actionText ?? _spanData.text,
+              shownText: _spanData.shownText ?? _spanData.element.text,
+              actionText: _spanData.actionText ?? _spanData.element.text,
               globalPosition: tapUpDetails.globalPosition,
               localPosition: tapUpDetails.localPosition,
             );
@@ -225,8 +225,8 @@ class GestureHandler {
       gestureKind: gestureKind,
       pointerDeviceKind: pointerDeviceKind,
       element: _spanData.element,
-      shownText: _spanData.shownText ?? _spanData.text,
-      actionText: _spanData.actionText ?? _spanData.text,
+      shownText: _spanData.shownText ?? _spanData.element.text,
+      actionText: _spanData.actionText ?? _spanData.element.text,
       globalPosition: globalPosition,
       localPosition: localPosition,
     );
