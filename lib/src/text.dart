@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:text_parser/text_parser.dart' show TextParser;
 
+import 'builder.dart';
 import 'definitions.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
@@ -61,6 +62,7 @@ class CustomText extends StatefulWidget {
     String this.text, {
     super.key,
     required this.definitions,
+    this.preBuilder,
     this.parserOptions = const ParserOptions(),
     this.style,
     this.matchStyle,
@@ -170,7 +172,8 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
-  }) : text = null;
+  })  : text = null,
+        preBuilder = null;
 
   /// The text to which styles and gesture actions are applied.
   final String? text;
@@ -178,6 +181,44 @@ class CustomText extends StatefulWidget {
   /// The list of InlineSpans to which styles and gesture actions
   /// are applied.
   final List<InlineSpan>? spans;
+
+  /// A builder function to build a [TextSpan] to which styles and
+  /// gesture actions are applied.
+  ///
+  /// The example below displays "KISS" and "Keep It Simple, Stupid!"
+  /// in bold, and additionally applies a colour to capital letters
+  /// contained in them.
+  ///
+  /// ```dart
+  /// CustomText(
+  ///   'KISS is an acronym for "Keep It Simple, Stupid!".',
+  ///   definitions: const [
+  ///     TextDefinition(
+  ///       matcher: PatternMatcher('[A-Z]'),
+  ///       matchStyle: TextStyle(color: Colors.red),
+  ///     ),
+  ///   ],
+  ///   preBuilder: CustomSpanBuilder(
+  ///     definitions: [
+  ///       const TextDefinition(
+  ///         matcher: PatternMatcher('KISS|Keep.+Stupid!'),
+  ///         matchStyle: TextStyle(fontWeight: FontWeight.bold),
+  ///       ),
+  ///     ],
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// This is optional. If specified, the function is called to build
+  /// a [TextSpan], and then parsing is performed against the plain
+  /// text converted from the built span. Therefore using this causes
+  /// text parsing and building of spans twice if necessary.
+  /// It is relatively expensive, so make sure to check how much it
+  /// affects the performance of your app.
+  ///
+  /// Note that [CustomSpanBuilder] ignores values passed to most
+  /// parameters of definitions. See its document for details.
+  final CustomSpanBuilder? preBuilder;
 
   /// Definitions that specify rules for parsing, appearance and actions.
   final List<Definition> definitions;
@@ -312,10 +353,10 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
 
-  SpansBuilderSettings _createSettings() {
+  SpansBuilderSettings _createSettings({List<InlineSpan>? spans}) {
     return SpansBuilderSettings(
       definitions: widget.definitions,
-      spans: widget.spans,
+      spans: spans ?? widget.spans,
       style: widget.style,
       matchStyle: widget.matchStyle,
       tapStyle: widget.tapStyle,
@@ -341,7 +382,8 @@ class _CustomTextState extends State<CustomText> {
 
     _textSpanNotifier = _shouldBeInvisibleDuringParsing()
         ? CustomTextSpanNotifier(
-            // Shows plain text even in the case of `CustomText.spans`.
+            // Uses plain text instead of spans at this point even when
+            // `CustomText.spans` or `preBuilder` is used.
             // Otherwise, widgets contained in spans become visible
             // because the transparent colour only works for text.
             // (Using empty string instead of making text transparent
@@ -398,14 +440,36 @@ class _CustomTextState extends State<CustomText> {
       }
     }
 
-    final needsParse =
-        widget.definitions.hasUpdatedMatchers(oldWidget?.definitions) ||
-            widget.parserOptions != oldWidget?.parserOptions ||
-            widget.text != oldWidget?.text ||
-            spanText != oldWidget?.spans.toPlainText();
+    final preBuilder = widget.preBuilder;
+    final oldBuilder = oldWidget?.preBuilder;
+    final builtSpan = await preBuilder?.build(
+      text: widget.text ?? '',
+      oldBuilder: oldBuilder,
+    );
+
+    if (preBuilder != null && builtSpan != null) {
+      _textSpanNotifier.updateSettings(
+        _createSettings(spans: builtSpan.children),
+      );
+    }
+
+    final builtSpanText = builtSpan?.toPlainText();
+
+    final needsParse = isInitial ||
+        widget.definitions.hasUpdatedMatchers(oldWidget.definitions) ||
+        widget.parserOptions != oldWidget.parserOptions ||
+        // Parsing is necessary in the following cases:
+        // * Pre-builder is not used and text has changed.
+        // * Plain text of the span built by pre-builder has changed.
+        // * Plain text of the spans passed to `CustomText.spans` has changed.
+        preBuilder == null && widget.text != oldWidget.text ||
+        builtSpanText != oldBuilder?.spanText() ||
+        spanText != oldWidget.spans.toPlainText();
 
     if (needsParse) {
-      await _parse(widget.text ?? spanText ?? '');
+      await _parse(
+        widget.text ?? spanText ?? builtSpanText ?? '',
+      );
       return;
     }
 
@@ -419,16 +483,19 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    final updatedDefIndexes =
-        widget.definitions.findUpdatedDefinitions(oldWidget?.definitions);
+    final needsEntireBuild = preBuilder != null && preBuilder.built;
+    final updatedDefIndexes = needsEntireBuild
+        ? <int>[]
+        : widget.definitions.findUpdatedDefinitions(oldWidget.definitions);
 
-    final needsBuild = updatedDefIndexes.isNotEmpty ||
-        widget.style != oldWidget?.style ||
-        widget.matchStyle != oldWidget?.matchStyle ||
-        widget.tapStyle != oldWidget?.tapStyle ||
-        widget.hoverStyle != oldWidget?.hoverStyle ||
-        widget.longPressDuration != oldWidget?.longPressDuration ||
-        !listEquals(widget.spans, oldWidget?.spans);
+    final needsBuild = needsEntireBuild ||
+        updatedDefIndexes.isNotEmpty ||
+        widget.style != oldWidget.style ||
+        widget.matchStyle != oldWidget.matchStyle ||
+        widget.tapStyle != oldWidget.tapStyle ||
+        widget.hoverStyle != oldWidget.hoverStyle ||
+        widget.longPressDuration != oldWidget.longPressDuration ||
+        !listEquals(widget.spans, oldWidget.spans);
 
     if (needsBuild) {
       _textSpanNotifier.buildSpan(
@@ -457,6 +524,7 @@ class _CustomTextState extends State<CustomText> {
   bool _shouldBeInvisibleDuringParsing() {
     return !widget.preventBlocking &&
         (widget.spans != null ||
+            widget.preBuilder != null ||
             widget.definitions.any((def) => !def.isTextDefinition));
   }
 
