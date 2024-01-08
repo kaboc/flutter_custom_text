@@ -12,6 +12,7 @@ A demo app showing all the following examples.
 - [Changing mouse cursor and text style on hover](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart)
 - [Event positions and onGesture](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart)
 - [CustomText.spans](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/spans_constructor.dart)
+- [CustomText with preBuilder](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/pre_builder.dart)
 - [CustomTextEditingController](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart)
 - [Using an external parser](https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/external_parser.dart)
 

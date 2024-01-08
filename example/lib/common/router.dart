@@ -12,6 +12,7 @@ import 'package:custom_text_example/examples/src/external_parser.dart';
 import 'package:custom_text_example/examples/src/hover_style.dart';
 import 'package:custom_text_example/examples/src/on_gesture.dart';
 import 'package:custom_text_example/examples/src/overwriting_pattern.dart';
+import 'package:custom_text_example/examples/src/pre_builder.dart';
 import 'package:custom_text_example/examples/src/real_hyperlinks.dart';
 import 'package:custom_text_example/examples/src/selective_definition.dart';
 import 'package:custom_text_example/examples/src/simple.dart';
@@ -174,6 +175,16 @@ final pages = [
     additionalInfo: 'This example applies hoverStyle, tapStyle and onTap '
         'to the range containing multiple styled InlineSpans including '
         'a WidgetSpan.',
+  ),
+  ExamplePage(
+    pathString: 'pre-builder',
+    title: 'CustomText with preBuilder',
+    description: '`preBuilder` allows to apply decorations and then '
+        'additionally apply more decorations and enable gestures.\n'
+        'It has similar use cases to `CustomText.spans`, but is more '
+        'helpful when it is not easy to compose complex spans manually.',
+    builder: (_) => const PreBuilderExample(),
+    hasOutput: false,
   ),
   ExamplePage(
     pathString: 'text-editing-controller',
