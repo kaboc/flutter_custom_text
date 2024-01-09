@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/widgets.dart';
 
 extension SpansToPlainText on List<InlineSpan>? {
-  String toPlainText() {
-    return TextSpan(children: this).toPlainText();
+  String? toPlainText() {
+    return this == null ? null : TextSpan(children: this).toPlainText();
   }
 }
 

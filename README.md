@@ -445,6 +445,41 @@ CustomText.spans(
 )
 ```
 
+### ⭐ <b>CustomText with preBuilder</b>
+
+pre_builder.dart ([Code][example_pre_builder] / [Demo][demo_pre_builder])
+
+![Image - CustomText with preBuilder](https://github.com/kaboc/flutter_custom_text/assets/20254485/3066d802-b444-4ea7-9206-54941e572ac4)
+
+An example of [preBuilder] that allows to apply decorations and then additionally
+apply another decorations and gesture callbacks to them.
+
+It has similar use cases to [CustomText.spans], but is more helpful when it is
+difficult to compose complex spans manually.
+
+The example below makes "KISS" and "Keep It Simple, Stupid!" bold, and then
+applies a colour to capital letters contained in them.
+
+```dart
+CustomText(
+  'KISS is an acronym for "Keep It Simple, Stupid!".',
+  definitions: const [
+    TextDefinition(
+      matcher: PatternMatcher('[A-Z]'),
+      matchStyle: TextStyle(color: Colors.red),
+    ),
+  ],
+  preBuilder: CustomSpanBuilder(
+    definitions: [
+      const TextDefinition(
+        matcher: PatternMatcher('KISS|Keep.+Stupid!'),
+        matchStyle: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ],
+  ),
+)
+```
+
 ### ⭐ <b>CustomTextEditingController</b>
 
 text_editing_controller.dart ([Code][example_text_editing_controller] / [Demo][demo_text_editing_controller])
@@ -572,6 +607,7 @@ CustomText(
 [example_hover_style]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/hover_style.dart
 [example_on_gesture]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/on_gesture.dart
 [example_spans_constructor]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/spans_constructor.dart
+[example_pre_builder]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/pre_builder.dart
 [example_text_editing_controller]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/text_editing_controller.dart
 [example_external_parser]: https://github.com/kaboc/flutter_custom_text/blob/main/example/lib/examples/src/external_parser.dart
 [demo_simple]: https://kaboc.github.io/flutter_custom_text/#/simple
@@ -584,9 +620,11 @@ CustomText(
 [demo_hover_style]: https://kaboc.github.io/flutter_custom_text/#/hover-style
 [demo_on_gesture]: https://kaboc.github.io/flutter_custom_text/#/on-gesture
 [demo_spans_constructor]: https://kaboc.github.io/flutter_custom_text/#/spans-constructor
+[demo_pre_builder]: https://kaboc.github.io/flutter_custom_text/#/pre-builder
 [demo_text_editing_controller]: https://kaboc.github.io/flutter_custom_text/#/text-editing-controller
 [demo_external_parser]: https://kaboc.github.io/flutter_custom_text/#/external-parser
 [CustomText.spans]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomText/CustomText.spans.html
+[preBuilder]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomText/preBuilder.html
 [CustomTextEditingController]: https://pub.dev/documentation/custom_text/latest/custom_text/CustomTextEditingController-class.html
 [TextMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/TextMatcher-class.html
 [UrlMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/UrlMatcher-class.html
