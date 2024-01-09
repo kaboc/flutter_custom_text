@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/painting.dart' show InlineSpan, TextSpan;
 
 import 'package:text_parser/text_parser.dart' show TextElement;

@@ -90,7 +90,7 @@ linter:
     prefer_mixin: true
     prefer_null_aware_method_calls: true
     prefer_single_quotes: true
-#    public_member_api_docs: true
+    public_member_api_docs: true
     require_trailing_commas: true
     secure_pubspec_urls: true
     sort_constructors_first: true

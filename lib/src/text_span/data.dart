@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'dart:async' show Timer;
 
 import 'package:flutter/gestures.dart' show PointerEvent;

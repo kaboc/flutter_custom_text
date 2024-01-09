@@ -85,7 +85,7 @@ final pages = [
   ),
   const ExamplePage(
     pathString: 'overwriting-pattern',
-    title: 'Overwriting match pattern',
+    title: 'Overwriting a match pattern',
     description: 'An example to replace the default pattern of `TelMatcher`.\n'
         'The new pattern regards only the `{3 digits}-{4 digits}-{4 digits}` '
         'format as a phone number.',

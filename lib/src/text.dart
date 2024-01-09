@@ -24,14 +24,13 @@ const _kTextScaleFactorDeprecation =
     '`MediaQuery.withClampedTextScaling` to override the existing '
     'TextScaler.';
 
-/// A text widget that decorates partial strings in it, and enables tap,
-/// long-press and/or hover gestures based on flexible definitions.
+/// A text widget that decorates substrings and enables tap, long-press
+/// and/or hover gestures on them based on flexible definitions.
 ///
 /// {@template customText.CustomText}
-/// This widget is useful for making certain portions of text such as URLs,
+/// This is useful for making certain portions of text such as URLs,
 /// email addresses or phone numbers clickable, or for only highlighting
-/// some parts of text with colors and different font settings depending
-/// on the types of text elements.
+/// substrings with colours and different font settings.
 ///
 /// ```dart
 /// CustomText(
@@ -51,11 +50,10 @@ const _kTextScaleFactorDeprecation =
 /// {@endtemplate}
 ///
 /// This widget also has the `CustomText.spans` constructor,
-/// which targets a list of [InlineSpan]s instead of text.
+/// which targets a list of [InlineSpan]s instead of plain text.
 class CustomText extends StatefulWidget {
-  /// Creates a text widget that decorates partial strings in it,
-  /// and enables tap, long-press and/or hover gestures based on
-  /// flexible definitions.
+  /// Creates a text widget that decorates substrings and enables tap,
+  /// long-press and/or hover gestures on them based on flexible definitions.
   ///
   /// {@macro customText.CustomText}
   const CustomText(
@@ -86,9 +84,9 @@ class CustomText extends StatefulWidget {
     this.textHeightBehavior,
   }) : spans = null;
 
-  /// Creates a text widget that decorates certain portions of
-  /// [InlineSpan]s, and enables tap, long-press and/or hover
-  /// gestures based on flexible definitions.
+  /// Creates a text widget that decorates part of the provided
+  /// [InlineSpan]s and enables tap, long-press and/or hover
+  /// gestures on them based on flexible definitions.
   ///
   /// This constructor is useful if you already have styled spans
   /// and want to decorate them additionally.
@@ -209,12 +207,11 @@ class CustomText extends StatefulWidget {
   /// )
   /// ```
   ///
-  /// This is optional. If specified, the function is called to build
-  /// a [TextSpan], and then parsing is performed against the plain
-  /// text converted from the built span. Therefore using this causes
-  /// text parsing and building of spans twice if necessary.
-  /// It is relatively expensive, so make sure to check how much it
-  /// affects the performance of your app.
+  /// This is optional. If specified, the function is called first to build
+  /// a [TextSpan], and then another parsing is performed in `CustomText`
+  /// itself against the plain text converted from the built span, followed
+  /// by a rebuild. Check how much it affects the performance of your app
+  /// if you choose to use this.
   ///
   /// Note that [CustomSpanBuilder] ignores values passed to most
   /// parameters of definitions. See its document for details.
@@ -232,7 +229,7 @@ class CustomText extends StatefulWidget {
   /// This is also used for matched strings if neither [CustomText.matchStyle]
   /// nor `matchStyle` in the relevant definition is specified.
   ///
-  /// If no style is specified, [DefaultTextStyle] is used instead.
+  /// If no style is specified, [DefaultTextStyle.style] is used instead.
   final TextStyle? style;
 
   /// {@template customText.matchStyle}
@@ -247,11 +244,11 @@ class CustomText extends StatefulWidget {
   /// The default text style used for tappable strings while they are
   /// being pressed.
   ///
-  /// This is used only if a tap or long-press is enabled on the string
-  /// by [onTap] or [onLongPress].
+  /// This is used only if a tap or long-press is enabled with [onTap]
+  /// or [onLongPress].
   ///
   /// If this is not specified, [hoverStyle] or [matchStyle] is used
-  /// instead if specified.
+  /// instead if existing.
   ///
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
@@ -268,7 +265,7 @@ class CustomText extends StatefulWidget {
   final TextStyle? hoverStyle;
 
   /// {@template customText.onTap}
-  /// The callback function called when a tappable element is tapped.
+  /// The callback function called when a matched string is tapped.
   ///
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
@@ -276,7 +273,7 @@ class CustomText extends StatefulWidget {
   final GestureCallback? onTap;
 
   /// {@template customText.onLongPress}
-  /// The callback function called when a tappable element is long-pressed.
+  /// The callback function called when a matched string is long-pressed.
   ///
   /// The argument with the same name in the relevant definition takes
   /// precedence over this.
@@ -284,7 +281,7 @@ class CustomText extends StatefulWidget {
   final GestureCallback? onLongPress;
 
   /// {@template customText.onGesture}
-  /// The callback function called when a gesture happens on a text element.
+  /// The callback function called when a gesture happens on a string.
   ///
   /// The function is called on the following events:
   /// * A press of the secondary button
@@ -322,10 +319,9 @@ class CustomText extends StatefulWidget {
   /// supported. Also, this does not affect an external parser.
   ///
   /// Note that using an isolate adds an overhead, resulting in a
-  /// slightly longer execution time. As a result, the raw text is
-  /// shown without decorations while parsing takes a little longer,
-  /// during which CustomText is yet to know which definition should
-  /// be used for which portion of text.
+  /// slightly longer execution time, during which the raw text is
+  /// shown without decorations since CustomText is yet to know which
+  /// definition should be used for which portion of text.
   ///
   /// How long parsing takes depends on the text length, the number
   /// and complexity of match patterns, the device performance, etc.
@@ -333,17 +329,40 @@ class CustomText extends StatefulWidget {
   /// are unsure.
   final bool preventBlocking;
 
+  /// {@macro flutter.painting.textPainter.strutStyle}
   final StrutStyle? strutStyle;
+
+  /// How the text should be aligned horizontally.
   final TextAlign? textAlign;
+
+  /// The directionality of the text.
   final TextDirection? textDirection;
+
+  /// Used to select a font when the same Unicode character can
+  /// be rendered differently, depending on the locale.
   final Locale? locale;
+
+  /// Whether the text should break at soft line breaks.
   final bool? softWrap;
+
+  /// How visual overflow should be handled.
   final TextOverflow? overflow;
+
+  /// The number of font pixels for each logical pixel.
   @Deprecated(_kTextScaleFactorDeprecation)
   final double? textScaleFactor;
+
+  /// An optional maximum number of lines for the text to span,
+  /// wrapping if necessary.
   final int? maxLines;
+
+  /// {@macro flutter.widgets.Text.semanticsLabel}
   final String? semanticsLabel;
+
+  /// {@macro flutter.painting.textPainter.textWidthBasis}
   final TextWidthBasis? textWidthBasis;
+
+  /// {@macro dart.ui.textHeightBehavior}
   final TextHeightBehavior? textHeightBehavior;
 
   @override
@@ -430,7 +449,7 @@ class _CustomTextState extends State<CustomText> {
       final hasText = (widget.text ?? '').isNotEmpty;
 
       // If the text was empty initially and is provided now,
-      // it is the time to show it, except in the cases where
+      // it is the time to show it, except in some cases where
       // it should be hidden until parsing completes.
       if (!hasElements && hasText && !_shouldBeInvisibleDuringParsing()) {
         _textSpanNotifier.value = TextSpan(
@@ -473,13 +492,13 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    // This must not be earlier than checking the necessity of parsing.
+    // This must not be earlier than the necessity of parsing is checked.
     // Don't swap the order.
     if (!hasElements) {
       // No-op when called before initial parsing completes so that
       // having no element won't cause an empty span to be build.
-      // (But this only happens if this widget is rebuilt with some
-      // values updated while parsing is taking long.)
+      // (But the issue only happens if this widget is rebuilt with
+      // some values updated while parsing is taking long.)
       return;
     }
 

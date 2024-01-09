@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:text_parser/text_parser.dart'
     show TextElement, TextElementsExtension;
 

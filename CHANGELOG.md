@@ -126,7 +126,7 @@
 
 - Fix `Definition` and `ParserOptions` to use also `runtimeType` for `hashCode` calculation.
 - Remove override of `toString()` from `ParserOptions`.
-- Make sure that null is not passed to the following arguments:
+- Make sure that null is not passed to the following parameters:
     - `labelSelector` of SelectiveDefinition
     - `builder` of SpanDefinition
 - Use text_parser 0.4.2.

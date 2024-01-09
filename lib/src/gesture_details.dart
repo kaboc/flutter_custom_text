@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart' show Offset, PointerDeviceKind;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
+/// The kind of a gesture event.
 enum GestureKind {
   /// A tap/short press of the primary button.
   tap,

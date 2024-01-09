@@ -1,34 +1,41 @@
 import 'package:flutter/widgets.dart'
     show InlineSpan, SystemMouseCursors, WidgetSpan;
 
+import 'builder.dart';
 import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'text.dart';
 import 'text_editing_controller.dart';
 
 /// A class that defines parsing rules, appearance and actions for
-/// [CustomText] and [CustomTextEditingController].
+/// [CustomText], [CustomTextEditingController] and [CustomSpanBuilder].
+///
+/// {@template customText.textDefinition}
+/// The strings that have matched the pattern defined in [matcher]
+/// are styled according to [matchStyle], [tapStyle] and [hoverStyle]
+/// while not pressed, being pressed, and being hovered, respectively.
+///
+/// [onTap] and [onLongPress] are handler functions called when a
+/// TextSpan is tapped and long-pressed. [onGesture] is a handler
+/// function called when other gesture events happen.
+/// A [GestureDetails] object containing details on the element
+/// and the event (kind, text, tap position, etc) is passed in to
+/// the functions.
+///
+/// [mouseCursor] is a mouse cursor type used while the mouse hovers
+/// over a matching text element. Note that even if this is omitted,
+/// [SystemMouseCursors.click] is automatically used if [onTap] or
+/// [onLongPress] is specified.
+///
+/// Also note that most properties are ignored in [CustomSpanBuilder].
+/// See its document for details.
+/// {@endtemplate}
 class TextDefinition extends Definition {
-  /// Creates a [TextDefinition] that defines rules for parsing,
-  /// appearance and actions for [CustomText] and [CustomTextEditingController].
+  /// Creates a [TextDefinition] that defines rules for parsing, appearance
+  /// and actions for [CustomText], [CustomTextEditingController] and
+  /// [CustomSpanBuilder].
   ///
-  /// {@template customText.textDefinition}
-  /// The strings that have matched the pattern defined in [matcher]
-  /// are styled according to [matchStyle], [tapStyle] and [hoverStyle]
-  /// while not pressed, being pressed, and being hovered, respectively.
-  ///
-  /// [onTap] and [onLongPress] are handler functions called when a
-  /// TextSpan is tapped and long-pressed. [onGesture] is a handler
-  /// function called when other gesture events happen.
-  /// A [GestureDetails] object containing details on the element
-  /// and the event (kind, text, tap position, etc) is passed in to
-  /// the functions.
-  ///
-  /// [mouseCursor] is a mouse cursor type used while the mouse hovers
-  /// over a matching text element. Note that even if this is omitted,
-  /// [SystemMouseCursors.click] is automatically used if [onTap] or
-  /// [onLongPress] is specified.
-  /// {@endtemplate}
+  /// {@macro customText.textDefinition}
   const TextDefinition({
     required super.matcher,
     super.matchStyle,
@@ -45,8 +52,6 @@ class TextDefinition extends Definition {
 /// and flexibly selects the string to be shown and another string
 /// to be passed to callbacks (e.g. onTap, onGesture).
 ///
-/// {@macro customText.textDefinition}
-///
 /// {@template customText.selectiveDefinition}
 /// [shownText] and [actionText] are functions to select a string.
 /// The functions receive a list of strings that have matched the
@@ -61,14 +66,15 @@ class TextDefinition extends Definition {
 /// the selected text, so that the raw text is not shown as is
 /// while waiting. Exceptionally, this behaviour is not applied
 /// if [CustomText.preventBlocking] is enabled.
+///
+/// See also the document of [TextDefinition], which has most of
+/// other properties in common.
 /// {@endtemplate}
 class SelectiveDefinition extends Definition {
   /// Creates a [SelectiveDefinition] that defines parsing rules,
   /// appearance and actions, and flexibly selects the string to
   /// be shown and another string to be passed to callbacks (e.g.
   /// onTap, onGesture).
-  ///
-  /// {@macro customText.textDefinition}
   ///
   /// {@macro customText.selectiveDefinition}
   const SelectiveDefinition({
@@ -86,9 +92,7 @@ class SelectiveDefinition extends Definition {
 }
 
 /// A class that defines parsing rules, appearance and actions, and
-/// builds the [InlineSpan] to replace certain portions of text with.
-///
-/// {@macro customText.textDefinition}
+/// builds the [InlineSpan] to replace matched strings with.
 ///
 /// {@template customText.spanDefinition}
 /// The [builder] function receives the entire matched string and
@@ -103,13 +107,14 @@ class SelectiveDefinition extends Definition {
 /// with the span, so that the raw text is not shown as is while
 /// waiting. Exceptionally, this behaviour is not applied if
 /// [CustomText.preventBlocking] is enabled.
+///
+/// See also the document of [TextDefinition], which has most of
+/// other properties in common.
 /// {@endtemplate}
 class SpanDefinition extends Definition {
   /// Creates a [SpanDefinition] that defines parsing rules,
   /// appearance and actions, and builds the [InlineSpan] to replace
   /// certain portions of text with.
-  ///
-  /// {@macro customText.textDefinition}
   ///
   /// {@macro customText.spanDefinition}
   const SpanDefinition({

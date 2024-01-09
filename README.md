@@ -108,7 +108,7 @@ CustomText(
 )
 ```
 
-### ⭐ <b>Overwriting match pattern</b>
+### ⭐ <b>Overwriting a match pattern</b>
 
 overwriting_pattern.dart ([Code][example_overwriting_pattern] / [Demo][demo_overwriting_pattern])
 
@@ -323,7 +323,7 @@ hover_style.dart ([Code][example_hover_style] / [Demo][demo_hover_style])
 ![Image - Mouse cursor and text style on hover](https://user-images.githubusercontent.com/20254485/221410499-23e5dfd2-dc19-4234-b119-17c46ac80a77.gif)
 
 It is possible to change the mouse cursor type on a certain parts of text by
-passing a desired type to the `mouseCursor` argument of a definition.
+passing a desired type to the `mouseCursor` parameter of a definition.
 
 If a tap handler (`onTap` or `onLongPress`) is specified and `mouseCursor` is not,
 `SystemMouseCursors.click` is automatically used for the tappable element.
@@ -452,10 +452,10 @@ pre_builder.dart ([Code][example_pre_builder] / [Demo][demo_pre_builder])
 ![Image - CustomText with preBuilder](https://github.com/kaboc/flutter_custom_text/assets/20254485/3066d802-b444-4ea7-9206-54941e572ac4)
 
 An example of [preBuilder] that allows to apply decorations and then additionally
-apply another decorations and gesture callbacks to them.
+apply more decorations and enable gestures.
 
 It has similar use cases to [CustomText.spans], but is more helpful when it is
-difficult to compose complex spans manually.
+not easy to compose complex spans manually.
 
 The example below makes "KISS" and "Keep It Simple, Stupid!" bold, and then
 applies a colour to capital letters contained in them.
@@ -479,6 +479,13 @@ CustomText(
   ),
 )
 ```
+
+**Notes:**
+
+- The builder function is called first to parse the text and build a [TextSpan],
+  and then another parsing is performed in `CustomSpan` itself against the plain
+  text converted from the built span, followed by a rebuild. Check how much it
+  affects the performance of your app if you choose to use this.
 
 ### ⭐ <b>CustomTextEditingController</b>
 
@@ -540,7 +547,8 @@ with the default parser.
 ```dart
 // These empty matchers are used to distinguish the matcher types of
 // text elements parsed by an external parser.
-// The parser needs to specify one of these matchers in each element. 
+// Each of the elements created by the parser needs to have the type
+// of one of these matchers or `TextMatcher`. 
 class KeywordMatcher extends TextMatcher {
   const KeywordMatcher() : super('');
 }
