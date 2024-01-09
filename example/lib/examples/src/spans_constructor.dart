@@ -13,7 +13,7 @@ class CustomTextSpansExample extends StatelessWidget {
       definitions: [
         TextDefinition(
           // WidgetSpan is matched by `\uFFFC` or `.` in a match pattern.
-          matcher: const PatternMatcher('Flutter devs\uFFFC'),
+          matcher: ExactMatcher(const ['Flutter devs\uFFFC']),
           matchStyle: const TextStyle(color: Colors.blue),
           hoverStyle: TextStyle(color: Colors.blue.shade300),
           mouseCursor: SystemMouseCursors.forbidden,

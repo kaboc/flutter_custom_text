@@ -192,7 +192,7 @@ class CustomTextEditingController extends TextEditingController {
   void _init() {
     _parser = parserOptions.parser ??
         (text) => TextParser(
-              matchers: definitions.map((def) => def.matcher).toList(),
+              matchers: definitions.map((def) => def.matcher),
               multiLine: parserOptions.multiLine,
               caseSensitive: parserOptions.caseSensitive,
               unicode: parserOptions.unicode,

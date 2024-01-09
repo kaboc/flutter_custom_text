@@ -96,10 +96,10 @@ class CustomText extends StatefulWidget {
   /// ```dart
   /// CustomText.spans(
   ///   style: const TextStyle(fontSize: 50.0),
-  ///   definitions: const [
+  ///   definitions: [
   ///     TextDefinition(
   ///       // WidgetSpan is matched by `\uFFFC` or `.` in a match pattern.
-  ///       matcher: PatternMatcher('Flutter devs\uFFFC'),
+  ///       matcher: ExactMatcher(const ['Flutter devs\uFFFC']),
   ///       matchStyle: const TextStyle(color: Colors.blue),
   ///       hoverStyle: TextStyle(color: Colors.blue.shade300),
   ///       mouseCursor: SystemMouseCursors.forbidden,
@@ -533,7 +533,7 @@ class _CustomTextState extends State<CustomText> {
 
     final elements = externalParser == null
         ? await TextParser(
-            matchers: widget.definitions.map((def) => def.matcher).toList(),
+            matchers: widget.definitions.map((def) => def.matcher),
             multiLine: widget.parserOptions.multiLine,
             caseSensitive: widget.parserOptions.caseSensitive,
             unicode: widget.parserOptions.unicode,

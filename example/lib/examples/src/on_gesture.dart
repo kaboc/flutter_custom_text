@@ -30,9 +30,9 @@ class _OnGestureExampleState extends State<OnGestureExample> {
       '[Windows](), [Google Fuchsia](), and the [web]() from a single '
       '[codebase]().',
       definitions: [
-        const TextDefinition(
-          matcher: PatternMatcher('Flutter'),
-          matchStyle: TextStyle(fontWeight: FontWeight.bold),
+        TextDefinition(
+          matcher: ExactMatcher(const ['Flutter']),
+          matchStyle: const TextStyle(fontWeight: FontWeight.bold),
         ),
         SelectiveDefinition(
           matcher: const LinkMatcher(),

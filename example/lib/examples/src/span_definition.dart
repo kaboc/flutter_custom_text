@@ -11,10 +11,10 @@ class SpanDefinitionExample extends StatelessWidget {
     const matchStyle = TextStyle(color: Colors.blue);
 
     return CustomText(
-      'Hover and click  >>  [logo]Flutter',
+      'Hover and click  >>  @@Flutter',
       definitions: [
         SpanDefinition(
-          matcher: const PatternMatcher('>>'),
+          matcher: ExactMatcher(const ['>>']),
           builder: (text, groups) => const WidgetSpan(
             child: Icon(
               Icons.keyboard_double_arrow_right,
@@ -24,7 +24,7 @@ class SpanDefinitionExample extends StatelessWidget {
           ),
         ),
         SpanDefinition(
-          matcher: const PatternMatcher(r'\[logo\](\w+)'),
+          matcher: const PatternMatcher(r'@@(\w+)'),
           builder: (text, groups) => TextSpan(
             children: [
               const WidgetSpan(child: FlutterLogo()),
