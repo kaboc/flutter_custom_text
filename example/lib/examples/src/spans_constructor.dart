@@ -17,7 +17,6 @@ class CustomTextSpansExample extends StatelessWidget {
           matchStyle: const TextStyle(color: Colors.blue),
           hoverStyle: TextStyle(color: Colors.blue.shade300),
           mouseCursor: SystemMouseCursors.forbidden,
-          onTap: (details) => output(details.gestureKind.name),
           onGesture: (details) => output(details.gestureKind.name),
         ),
       ],

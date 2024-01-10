@@ -482,7 +482,7 @@ CustomText(
 
 **Notes:**
 
-- The builder function is called first to parse the text and build a [TextSpan],
+- The builder function is called first to parse the text and build a `TextSpan`,
   and then another parsing is performed in `CustomSpan` itself against the plain
   text converted from the built span, followed by a rebuild. Check how much it
   affects the performance of your app if you choose to use this.

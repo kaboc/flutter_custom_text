@@ -1,4 +1,15 @@
+## 1.4.0
+
+- Add `preBuilder` to `CustomText`. (#44)
+- Add `rebuildKey` to definitions. (#45)
+- Add missing `selectionColor` to CustomText.  
+- Avoid rebuilding irrelevant spans when definitions are updated. (#43)
+- Bump text_parser version to 2.3.0.
+- Refactorings.
+- Improve documentation.
+
 ## 1.3.1
+
 - Fix a potential issue where text was not shown quickly if it was given later than initial build.
 - Extract span builder as a single class for a feature being planned for a future version.
 - Improve span builder to apply gesture callbacks only when necessary.
@@ -301,3 +312,6 @@
 [#36]: https://github.com/kaboc/flutter_custom_text/pull/36
 [#37]: https://github.com/kaboc/flutter_custom_text/pull/37
 [#38]: https://github.com/kaboc/flutter_custom_text/pull/38
+[#43]: https://github.com/kaboc/flutter_custom_text/pull/43
+[#44]: https://github.com/kaboc/flutter_custom_text/pull/44
+[#45]: https://github.com/kaboc/flutter_custom_text/pull/45
