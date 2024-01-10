@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:flutter/foundation.dart' show ChangeNotifier, ValueListenable;
 import 'package:flutter/painting.dart' show TextSpan, TextStyle;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
@@ -10,7 +10,33 @@ import 'gesture_handler.dart';
 import 'spans_builder.dart';
 import 'transient_elements_builder.dart';
 
-class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
+/// ValueNotifier with the ability to forcefully reassign a new value
+/// regardless of whether it is equal to the previous.
+class _ValueNotifier extends ChangeNotifier
+    implements ValueListenable<TextSpan> {
+  _ValueNotifier(this._value);
+
+  TextSpan _value;
+  bool _disposed = false;
+
+  @override
+  TextSpan get value => _value;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  void updateValue(TextSpan newValue, {bool force = false}) {
+    if (_value != newValue || force) {
+      _value = newValue;
+      notifyListeners();
+    }
+  }
+}
+
+class CustomTextSpanNotifier extends _ValueNotifier {
   CustomTextSpanNotifier({
     required String? initialText,
     required TextStyle? initialStyle,
@@ -28,20 +54,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
   }
 
   late final SpansBuilder _spansBuilder;
-  bool _disposed = false;
 
   List<TextElement> get elements => _spansBuilder.elements;
 
   @override
-  set value(TextSpan span) {
-    if (!_disposed) {
-      super.value = span;
-    }
-  }
-
-  @override
   void dispose() {
-    _disposed = true;
     _spansBuilder.gestureHandlers?.dispose();
     super.dispose();
   }
@@ -60,11 +77,14 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     required TextStyle? style,
     required List<int> updatedDefinitionIndexes,
   }) {
-    value = TextSpan(
-      children: _spansBuilder.buildSpans(
-        style: style,
-        currentSpans: value.children ?? [],
-        updatedDefinitionIndexes: updatedDefinitionIndexes,
+    updateValue(
+      force: true,
+      TextSpan(
+        children: _spansBuilder.buildSpans(
+          style: style,
+          currentSpans: value.children ?? [],
+          updatedDefinitionIndexes: updatedDefinitionIndexes,
+        ),
       ),
     );
   }
@@ -79,9 +99,11 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
       spanRange: spanRange,
     );
 
-    value = TextSpan(
-      children: List.of(value.children!)
-        ..replaceRange(replaceRange.start, replaceRange.end + 1, spans),
+    updateValue(
+      TextSpan(
+        children: List.of(value.children!)
+          ..replaceRange(replaceRange.start, replaceRange.end + 1, spans),
+      ),
     );
   }
 
@@ -98,8 +120,10 @@ class CustomTextSpanNotifier extends ValueNotifier<TextSpan> {
     if (!_disposed &&
         index < value.children!.length &&
         elements[index].text == element.text) {
-      value = TextSpan(
-        children: List.of(value.children!)..[index] = span,
+      updateValue(
+        TextSpan(
+          children: List.of(value.children!)..[index] = span,
+        ),
       );
     }
   }

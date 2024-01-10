@@ -38,6 +38,7 @@ class TextDefinition extends Definition {
   /// {@macro customText.textDefinition}
   const TextDefinition({
     required super.matcher,
+    super.rebuildKey,
     super.matchStyle,
     super.tapStyle,
     super.hoverStyle,
@@ -80,6 +81,7 @@ class SelectiveDefinition extends Definition {
   const SelectiveDefinition({
     required super.matcher,
     required ShownTextSelector super.shownText,
+    super.rebuildKey,
     super.actionText,
     super.matchStyle,
     super.tapStyle,
@@ -120,6 +122,7 @@ class SpanDefinition extends Definition {
   const SpanDefinition({
     required super.matcher,
     required SpanBuilder super.builder,
+    super.rebuildKey,
     super.matchStyle,
     super.tapStyle,
     super.hoverStyle,

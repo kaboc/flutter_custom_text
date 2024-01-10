@@ -280,7 +280,8 @@ void main() {
 
     testWidgets(
       'Change of text or definition that results in same plain text '
-      'causes parsing and rebuilding only in builder',
+      'causes parsing only in builder, but then also triggers CustomText '
+      'to rebuild entire span',
       (tester) async {
         late CustomSpanBuilder builder;
         Definition definition = const TextDefinition(
@@ -335,7 +336,7 @@ void main() {
         expect(builder.parsed, isTrue);
         expect(isParsedEntirely, isFalse);
         expect(builder.built, isTrue);
-        expect(span2, same(span1));
+        expect(span2, isNot(same(span1)));
       },
     );
 
