@@ -82,6 +82,7 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
+    this.selectionColor,
   }) : spans = null;
 
   /// Creates a text widget that decorates part of the provided
@@ -170,6 +171,7 @@ class CustomText extends StatefulWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
+    this.selectionColor,
   })  : text = null,
         preBuilder = null;
 
@@ -364,6 +366,9 @@ class CustomText extends StatefulWidget {
 
   /// {@macro dart.ui.textHeightBehavior}
   final TextHeightBehavior? textHeightBehavior;
+
+  /// The color to use when painting the selection.
+  final Color? selectionColor;
 
   @override
   State<CustomText> createState() => _CustomTextState();
@@ -589,6 +594,7 @@ class _CustomTextState extends State<CustomText> {
         semanticsLabel: widget.semanticsLabel,
         textWidthBasis: widget.textWidthBasis,
         textHeightBehavior: widget.textHeightBehavior,
+        selectionColor: widget.selectionColor,
       ),
     );
   }
