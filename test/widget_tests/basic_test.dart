@@ -513,11 +513,11 @@ void main() {
       const matchStyle = TextStyle(color: Color(0x11111111));
 
       await tester.pumpWidget(
-        StatefulBuilder(
-          builder: (context, setState) {
-            return Directionality(
-              textDirection: TextDirection.ltr,
-              child: Column(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
                 children: [
                   CustomText(
                     text,
@@ -540,9 +540,9 @@ void main() {
                     child: const Text('Button'),
                   ),
                 ],
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       );
       await tester.pump();
@@ -1355,12 +1355,12 @@ void main() {
       );
       await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans1 = List.of(findFirstTextSpan()!.children!);
 
       await tester.tapButton();
       await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans2 = List.of(findFirstTextSpan()!.children!);
 
       expect(spans1, hasLength(3));
       expect(spans2, hasLength(3));
@@ -1400,12 +1400,12 @@ void main() {
       );
       await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans1 = List.of(findFirstTextSpan()!.children!);
 
       await tester.tapButton();
       await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans2 = List.of(findFirstTextSpan()!.children!);
 
       expect(spans1, hasLength(3));
       expect(spans2, hasLength(3));
@@ -1447,12 +1447,12 @@ void main() {
       );
       await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans1 = List.of(findFirstTextSpan()!.children!);
 
       await tester.tapButton();
       await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children ?? <InlineSpan>[]);
+      final spans2 = List.of(findFirstTextSpan()!.children!);
 
       expect(spans1, hasLength(3));
       expect(spans2, hasLength(3));

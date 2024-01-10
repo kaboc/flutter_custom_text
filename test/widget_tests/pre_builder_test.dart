@@ -19,7 +19,7 @@ void main() {
   tearDown(() => isParsedEntirely = false);
 
   group('Composition', () {
-    testWidgets('Spans are built by builder', (tester) async {
+    testWidgets('Spans are built by preBuilder', (tester) async {
       const style = TextStyle(color: Color(0x11111111));
       const matchStyle = TextStyle(color: Color(0x22222222));
 
@@ -60,7 +60,7 @@ void main() {
     });
 
     testWidgets(
-      'CustomText parses children of TextSpan built by builder',
+      'CustomText parses children of TextSpan built by preBuilder',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
         const matchStyle1 = TextStyle(decoration: TextDecoration.underline);
@@ -119,7 +119,7 @@ void main() {
 
     testWidgets(
       'Arguments other than style and matchStyle in definition are ignored '
-      '(cf. mouseCursor is used when builder is used independently)',
+      '(cf. mouseCursor is used when CustomSpanBuilder is used independently)',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
         const matchStyle = TextStyle(color: Color(0x22222222));
@@ -172,19 +172,19 @@ void main() {
 
   group('Optimisation', () {
     testWidgets(
-      'Rebuilding widget with same builder config does not rebuild spans',
+      'Rebuilding widget with same preBuilder config does not rebuild spans',
       (tester) async {
-        late CustomSpanBuilder builder;
+        late CustomSpanBuilder preBuilder;
         var isWidgetBuilt = false;
 
         await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (context, setState) {
-              isWidgetBuilt = true;
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                isWidgetBuilt = true;
 
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
+                return Column(
                   children: [
                     CustomText(
                       'aaabbb',
@@ -192,7 +192,7 @@ void main() {
                       definitions: const [
                         TextDefinition(matcher: PatternMatcher('')),
                       ],
-                      preBuilder: builder = CustomSpanBuilder(
+                      preBuilder: preBuilder = CustomSpanBuilder(
                         definitions: const [
                           TextDefinition(matcher: PatternMatcher('aaa')),
                         ],
@@ -203,9 +203,9 @@ void main() {
                       child: const Text('Button'),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
@@ -219,26 +219,26 @@ void main() {
 
         final span2 = findFirstTextSpan();
         expect(isWidgetBuilt, isTrue);
-        expect(builder.parsed, isFalse);
+        expect(preBuilder.parsed, isFalse);
         expect(isParsedEntirely, isFalse);
-        expect(builder.built, isFalse);
+        expect(preBuilder.built, isFalse);
         expect(span2, same(span1));
       },
     );
 
     testWidgets(
       'Changing text causes parsing of text and rebuild of spans in both '
-      'builder and CustomText',
+      'preBuilder and CustomText',
       (tester) async {
-        late CustomSpanBuilder builder;
+        late CustomSpanBuilder preBuilder;
         var text = 'aaabbb';
 
         await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (context, setState) {
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
                   children: [
                     CustomText(
                       text,
@@ -246,7 +246,7 @@ void main() {
                       definitions: const [
                         TextDefinition(matcher: PatternMatcher('')),
                       ],
-                      preBuilder: builder = CustomSpanBuilder(
+                      preBuilder: preBuilder = CustomSpanBuilder(
                         definitions: const [
                           TextDefinition(matcher: PatternMatcher('aaa')),
                         ],
@@ -257,9 +257,9 @@ void main() {
                       child: const Text('Button'),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
@@ -271,9 +271,10 @@ void main() {
         await tester.pumpAndSettle();
 
         final span2 = findFirstTextSpan();
-        expect(builder.parsed, isTrue);
+
+        expect(preBuilder.parsed, isTrue);
         expect(isParsedEntirely, isTrue);
-        expect(builder.built, isTrue);
+        expect(preBuilder.built, isTrue);
         expect(span2, isNot(same(span1)));
       },
     );
@@ -283,18 +284,18 @@ void main() {
       'causes parsing only in builder, but then also triggers CustomText '
       'to rebuild entire span',
       (tester) async {
-        late CustomSpanBuilder builder;
+        late CustomSpanBuilder preBuilder;
         Definition definition = const TextDefinition(
           matcher: PatternMatcher('aaa'),
         );
         var text = 'aaabbb';
 
         await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (context, setState) {
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
                   children: [
                     CustomText(
                       text,
@@ -302,7 +303,7 @@ void main() {
                       definitions: const [
                         TextDefinition(matcher: PatternMatcher('')),
                       ],
-                      preBuilder: builder = CustomSpanBuilder(
+                      preBuilder: preBuilder = CustomSpanBuilder(
                         definitions: [definition],
                       ),
                     ),
@@ -319,9 +320,9 @@ void main() {
                       child: const Text('Button'),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
@@ -333,18 +334,19 @@ void main() {
         await tester.pumpAndSettle();
 
         final span2 = findFirstTextSpan();
-        expect(builder.parsed, isTrue);
+
+        expect(preBuilder.parsed, isTrue);
         expect(isParsedEntirely, isFalse);
-        expect(builder.built, isTrue);
+        expect(preBuilder.built, isTrue);
         expect(span2, isNot(same(span1)));
       },
     );
 
     testWidgets(
-      'Change of particular definition causes builder to rebuild only '
-      'relevant spans, but then triggers CustomText to rebuild entire spans',
+      'Change of definition causes preBuilder to rebuild only relevant '
+      'spans, but then also triggers CustomText to rebuild entire span',
       (tester) async {
-        late CustomSpanBuilder builder;
+        late CustomSpanBuilder preBuilder;
         var definitions = const [
           TextDefinition(
             matcher: PatternMatcher('bbb'),
@@ -358,11 +360,11 @@ void main() {
         var parsedEntirely = false;
 
         await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (context, setState) {
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
                   children: [
                     CustomText(
                       'aaabbbccc',
@@ -385,7 +387,7 @@ void main() {
                       definitions: const [
                         TextDefinition(matcher: PatternMatcher('')),
                       ],
-                      preBuilder: builder = CustomSpanBuilder(
+                      preBuilder: preBuilder = CustomSpanBuilder(
                         definitions: definitions,
                       ),
                     ),
@@ -402,50 +404,45 @@ void main() {
                       child: const Text('Button'),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
 
-        final spansByBuilder1 = builder.span.children!;
-        final span1a = findTextSpanByText('aaa');
-        final span1b = findTextSpanByText('bbb');
-        final span1c = findTextSpanByText('ccc');
+        final spansByBuilder1 = preBuilder.span.children!;
+        final spans1 = findFirstTextSpan();
 
         parsedEntirely = false;
         await tester.tapButton();
         await tester.pumpAndSettle();
 
-        final spansByBuilder2 = builder.span.children!;
-        final span2a = findTextSpanByText('aaa');
-        final span2b = findTextSpanByText('bbb');
-        final span2c = findTextSpanByText('ccc');
-        expect(builder.parsed, isFalse);
+        final spansByBuilder2 = preBuilder.span.children!;
+        final spans2 = findFirstTextSpan();
+
+        expect(preBuilder.parsed, isFalse);
         expect(parsedEntirely, isFalse);
-        expect(builder.built, isTrue);
+        expect(preBuilder.built, isTrue);
         expect(spansByBuilder2[0], same(spansByBuilder1[0]));
         expect(spansByBuilder2[1], isNot(same(spansByBuilder1[1])));
         expect(spansByBuilder2[2], same(spansByBuilder1[2]));
-        expect(span2a, isNot(same(span1a)));
-        expect(span2b, isNot(same(span1b)));
-        expect(span2c, isNot(same(span1c)));
+        expect(spans2, isNot(same(spans1)));
       },
     );
 
     testWidgets(
       'Change of callbacks do not cause parsing of text nor rebuild of spans',
       (tester) async {
-        late CustomSpanBuilder builder;
+        late CustomSpanBuilder preBuilder;
         var shownText = (_) => '111';
 
         await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (context, setState) {
-              return Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
                   children: [
                     CustomText(
                       'aaabbb',
@@ -453,7 +450,7 @@ void main() {
                       definitions: const [
                         TextDefinition(matcher: PatternMatcher('')),
                       ],
-                      preBuilder: builder = CustomSpanBuilder(
+                      preBuilder: preBuilder = CustomSpanBuilder(
                         definitions: [
                           SelectiveDefinition(
                             matcher: const PatternMatcher('aaa'),
@@ -469,9 +466,9 @@ void main() {
                       child: const Text('Button'),
                     ),
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
@@ -483,9 +480,10 @@ void main() {
         await tester.pumpAndSettle();
 
         final span2 = findFirstTextSpan();
-        expect(builder.parsed, isFalse);
+
+        expect(preBuilder.parsed, isFalse);
         expect(isParsedEntirely, isFalse);
-        expect(builder.built, isFalse);
+        expect(preBuilder.built, isFalse);
         expect(span2, same(span1));
       },
     );
