@@ -48,7 +48,7 @@ class Description extends StatelessWidget {
               definitions: [
                 SelectiveDefinition(
                   matcher: const _CodeMatcher(),
-                  shownText: (groups) => groups[0] ?? '',
+                  shownText: (element) => element.groups[0] ?? '',
                   matchStyle: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,

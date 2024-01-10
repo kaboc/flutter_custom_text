@@ -15,7 +15,7 @@ class SpanDefinitionExample extends StatelessWidget {
       definitions: [
         SpanDefinition(
           matcher: ExactMatcher(const ['>>']),
-          builder: (text, groups) => const WidgetSpan(
+          builder: (element) => const WidgetSpan(
             child: Icon(
               Icons.keyboard_double_arrow_right,
               color: Colors.grey,
@@ -25,11 +25,11 @@ class SpanDefinitionExample extends StatelessWidget {
         ),
         SpanDefinition(
           matcher: const PatternMatcher(r'@@(\w+)'),
-          builder: (text, groups) => TextSpan(
+          builder: (element) => TextSpan(
             children: [
               const WidgetSpan(child: FlutterLogo()),
               const WidgetSpan(child: SizedBox(width: 2.0)),
-              TextSpan(text: groups.first),
+              TextSpan(text: element.groups.first),
             ],
           ),
           matchStyle: matchStyle,

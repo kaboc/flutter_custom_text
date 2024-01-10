@@ -36,7 +36,7 @@ class _OnGestureExampleState extends State<OnGestureExample> {
         ),
         SelectiveDefinition(
           matcher: const LinkMatcher(),
-          shownText: (groups) => groups.first!,
+          shownText: (element) => element.groups.first!,
           matchStyle: const TextStyle(color: Color(0xFF3366CC)),
           hoverStyle: const TextStyle(
             color: Color(0xFF3366CC),

@@ -16,12 +16,10 @@ class SelectiveDefinitionExample extends StatelessWidget {
         SelectiveDefinition(
           matcher: const LinkMatcher(),
           // `shownText` is used to choose the string to display.
-          // It receives a list of strings that have matched the
-          // fragments enclosed in parentheses within the match pattern.
-          shownText: (groups) => groups[0]!,
+          shownText: (element) => element.groups[0]!,
           // `actionText` is used to choose the string to be passed
           // to the `onTap`, `onLongPress` and `onGesture` handlers.
-          actionText: (groups) => groups[1]!,
+          actionText: (element) => element.groups[1]!,
         ),
       ],
       matchStyle: matchStyle,

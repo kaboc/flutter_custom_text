@@ -172,7 +172,7 @@ void main() {
             definitions: [
               SelectiveDefinition(
                 matcher: const LinkMatcher(),
-                shownText: (groups) => groups.first!,
+                shownText: (element) => element.groups.first!,
               ),
             ],
             matchStyle: matchStyle,
@@ -225,7 +225,7 @@ void main() {
             definitions: [
               SelectiveDefinition(
                 matcher: const LinkMatcher(),
-                shownText: (groups) => groups.first!,
+                shownText: (element) => element.groups.first!,
               ),
             ],
             style: style,
@@ -528,7 +528,7 @@ void main() {
                     definitions: [
                       SelectiveDefinition(
                         matcher: const LinkMatcher(),
-                        shownText: (groups) => groups.first!,
+                        shownText: (element) => element.groups.first!,
                       ),
                     ],
                     matchStyle: matchStyle,

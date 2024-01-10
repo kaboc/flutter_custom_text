@@ -19,9 +19,9 @@ class Hyperlink extends StatelessWidget {
           definitions: [
             SpanDefinition(
               matcher: const PatternMatcher(r'(.+)\[i\]'),
-              builder: (text, groups) => TextSpan(
+              builder: (element) => TextSpan(
                 children: [
-                  TextSpan(text: groups.first),
+                  TextSpan(text: element.groups.first),
                   const WidgetSpan(child: SizedBox(width: 2.0)),
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,

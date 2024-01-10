@@ -14,16 +14,16 @@ class RealHyperlinksExample extends StatelessWidget {
       definitions: [
         SpanDefinition(
           matcher: const LinkMatcher(),
-          builder: (text, groups) {
+          builder: (element) {
             return WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: Link(
-                uri: Uri.parse(groups[1]!),
+                uri: Uri.parse(element.groups[1]!),
                 target: LinkTarget.blank,
                 builder: (context, openLink) {
                   return GestureDetector(
                     onTap: openLink,
-                    child: Text(groups[0]!),
+                    child: Text(element.groups[0]!),
                   );
                 },
               ),

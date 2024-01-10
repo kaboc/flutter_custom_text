@@ -22,7 +22,7 @@ void main() {
           definitions: [
             SpanDefinition(
               matcher: const PatternMatcher('bbb'),
-              builder: (text, groups) => TextSpan(text: text),
+              builder: (element) => TextSpan(text: element.text),
               matchStyle: matchStyle,
             ),
           ],
@@ -59,7 +59,7 @@ void main() {
           definitions: [
             SpanDefinition(
               matcher: const PatternMatcher('bbb'),
-              builder: (text, groups) => TextSpan(text: text),
+              builder: (element) => TextSpan(text: element.text),
               matchStyle: matchStyle,
             ),
           ],
@@ -97,7 +97,7 @@ void main() {
           definitions: [
             SpanDefinition(
               matcher: const PatternMatcher('bbb'),
-              builder: (text, groups) => TextSpan(text: text),
+              builder: (element) => TextSpan(text: element.text),
               matchStyle: matchStyle,
               tapStyle: tapStyle,
               onTap: (_) {},
@@ -160,7 +160,7 @@ void main() {
               definitions: [
                 SpanDefinition(
                   matcher: const PatternMatcher('bbb'),
-                  builder: (text, groups) => TextSpan(text: text),
+                  builder: (element) => TextSpan(text: element.text),
                   matchStyle: matchStyle,
                   hoverStyle: hoverStyle,
                   onTap: (_) {},
@@ -226,7 +226,7 @@ void main() {
               definitions: [
                 SpanDefinition(
                   matcher: const PatternMatcher('bbb'),
-                  builder: (text, groups) => WidgetSpan(child: Text(text)),
+                  builder: (element) => WidgetSpan(child: Text(element.text)),
                   matchStyle: style,
                 ),
               ],
@@ -257,7 +257,7 @@ void main() {
             definitions: [
               SpanDefinition(
                 matcher: const LinkMatcher(),
-                builder: (text, groups) => TextSpan(text: groups[0]),
+                builder: (element) => TextSpan(text: element.groups[0]),
                 onTap: onAction,
                 onLongPress: onAction,
               ),
@@ -316,7 +316,7 @@ void main() {
             definitions: [
               SpanDefinition(
                 matcher: const PatternMatcher('bbb'),
-                builder: (text, groups) {
+                builder: (element) {
                   return const WidgetSpan(
                     child: SizedBox.square(
                       dimension: 30,
@@ -371,7 +371,7 @@ void main() {
               definitions: [
                 SpanDefinition(
                   matcher: const PatternMatcher('bbb'),
-                  builder: (text, groups) {
+                  builder: (element) {
                     return const WidgetSpan(
                       child: SizedBox.square(dimension: 30),
                     );
@@ -406,7 +406,7 @@ void main() {
             definitions: [
               SpanDefinition(
                 matcher: const LinkMatcher(),
-                builder: (text, groups) => TextSpan(text: groups[0]),
+                builder: (element) => TextSpan(text: element.groups[0]),
                 onGesture: onAction,
               ),
             ],
@@ -478,7 +478,7 @@ void main() {
             definitions: [
               SpanDefinition(
                 matcher: const PatternMatcher('bbb'),
-                builder: (text, groups) {
+                builder: (element) {
                   return const WidgetSpan(
                     child: SizedBox.square(
                       dimension: 30,
@@ -544,7 +544,7 @@ void main() {
               definitions: [
                 SpanDefinition(
                   matcher: const PatternMatcher('bbb'),
-                  builder: (text, groups) {
+                  builder: (element) {
                     return const WidgetSpan(
                       child: SizedBox.square(dimension: 30),
                     );
@@ -586,7 +586,7 @@ void main() {
           definitions: [
             SpanDefinition(
               matcher: const PatternMatcher('bbb'),
-              builder: (text, groups) => TextSpan(text: text),
+              builder: (element) => TextSpan(text: element.text),
               mouseCursor: SystemMouseCursors.grab,
             ),
           ],
@@ -624,7 +624,7 @@ void main() {
                 definitions: [
                   SpanDefinition(
                     matcher: const PatternMatcher('#'),
-                    builder: (text, groups) => const TextSpan(
+                    builder: (element) => const TextSpan(
                       children: [
                         TextSpan(
                           text: 'ab',
