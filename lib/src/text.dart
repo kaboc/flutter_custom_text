@@ -457,9 +457,11 @@ class _CustomTextState extends State<CustomText> {
       // it is the time to show it, except in some cases where
       // it should be hidden until parsing completes.
       if (!hasElements && hasText && !_shouldBeInvisibleDuringParsing()) {
-        _textSpanNotifier.value = TextSpan(
-          text: widget.text,
-          style: widget.style,
+        _textSpanNotifier.updateValue(
+          TextSpan(
+            text: widget.text,
+            style: widget.style,
+          ),
         );
       }
     }
