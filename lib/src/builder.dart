@@ -7,8 +7,8 @@ import 'definition_base.dart';
 import 'parser_options.dart';
 import 'text.dart';
 import 'utils.dart';
-import 'text_span/data.dart';
-import 'text_span/spans_builder.dart';
+import 'span/data.dart';
+import 'span/spans_builder.dart';
 
 /// A class that builds a [TextSpan] based on [definitions].
 ///

@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
 
-import 'package:custom_text/src/text_span/data.dart';
-import 'package:custom_text/src/text_span/gesture_handler.dart';
+import 'package:custom_text/src/span/data.dart';
+import 'package:custom_text/src/span/gesture_handler.dart';
 
 void main() {
   late HoverState hoverState;

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
-import 'package:custom_text/src/text_span/split_spans.dart';
+import 'package:custom_text/src/span/split_spans.dart';
 
 void main() {
   group('Basic behaviours', () {

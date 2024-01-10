@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:custom_text/src/text_span/span_utils.dart';
+import 'package:custom_text/src/span/span_utils.dart';
 
 import 'utils.dart';
 

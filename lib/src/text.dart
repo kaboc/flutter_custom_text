@@ -9,9 +9,9 @@ import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'utils.dart';
-import 'text_span/data.dart';
-import 'text_span/span_utils.dart';
-import 'text_span/text_span_notifier.dart';
+import 'span/data.dart';
+import 'span/span_utils.dart';
+import 'span/text_span_notifier.dart';
 
 const _kTextScaleFactorDeprecation =
     'Use `MediaQuery` instead or ignore this warning depending on the '
