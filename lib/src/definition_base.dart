@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show Key;
 import 'package:flutter/painting.dart' show InlineSpan, TextStyle;
 import 'package:flutter/services.dart' show MouseCursor;
 
@@ -30,6 +31,7 @@ abstract class Definition {
   // ignore: public_member_api_docs
   const Definition({
     required this.matcher,
+    this.rebuildKey,
     this.shownText,
     this.actionText,
     this.builder,
@@ -44,6 +46,15 @@ abstract class Definition {
 
   /// The matcher used to parse text for this definition.
   final TextMatcher matcher;
+
+  /// A key that is used to decide whether to rebuild the [InlineSpan]s
+  /// relevant to this definition.
+  ///
+  /// [CustomText] rebuilds [InlineSpan]s when configurations in definitions
+  /// are updated, but changes in callbacks do not trigger rebuilds because
+  /// CustomText cannot evaluate the differences of callbacks.
+  /// In such cases, it is possible to cause a rebuild by changing this key.
+  final Key? rebuildKey;
 
   /// The function to choose a string to be shown.
   final ShownTextSelector? shownText;
@@ -86,6 +97,7 @@ abstract class Definition {
       other is Definition &&
           runtimeType == other.runtimeType &&
           matcher == other.matcher &&
+          rebuildKey == other.rebuildKey &&
           matchStyle == other.matchStyle &&
           tapStyle == other.tapStyle &&
           hoverStyle == other.hoverStyle &&
@@ -95,6 +107,7 @@ abstract class Definition {
   int get hashCode => Object.hash(
         runtimeType,
         matcher,
+        rebuildKey,
         matchStyle,
         tapStyle,
         hoverStyle,
