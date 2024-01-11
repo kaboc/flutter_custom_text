@@ -44,8 +44,8 @@ void main() {
             definitions: [
               SelectiveDefinition(
                 matcher: const LinkMatcher(),
-                shownText: (groups) => groups[0]!,
-                actionText: (groups) => groups[1]!,
+                shownText: (element) => element.groups[0]!,
+                actionText: (element) => element.groups[1]!,
               ),
             ],
           ),
@@ -78,13 +78,13 @@ void main() {
               ),
               SpanDefinition(
                 matcher: const EmailMatcher(),
-                builder: (text, groups) => TextSpan(
+                builder: (element) => TextSpan(
                   children: [
                     const WidgetSpan(
                       child: SizedBox.square(dimension: 18.0),
                       alignment: PlaceholderAlignment.middle,
                     ),
-                    TextSpan(text: text),
+                    TextSpan(text: element.text),
                   ],
                 ),
               ),

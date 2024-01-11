@@ -3,22 +3,22 @@ import 'package:flutter/painting.dart' show InlineSpan, TextStyle;
 import 'package:flutter/services.dart' show MouseCursor;
 
 import 'package:meta/meta.dart' show immutable, sealed;
-import 'package:text_parser/text_parser.dart' show TextMatcher;
+import 'package:text_parser/text_parser.dart' show TextElement, TextMatcher;
 
 import 'gesture_details.dart';
 import 'text.dart';
 import 'text_editing_controller.dart';
 
 /// The signature for a callback to select a string to display.
-typedef ShownTextSelector = String Function(List<String?>);
+typedef ShownTextSelector = String Function(TextElement);
 
 /// The signature for a callback to select a string to be passed
 /// to gesture callbacks.
-typedef ActionTextSelector = String Function(List<String?>);
+typedef ActionTextSelector = String Function(TextElement);
 
 /// The signature for a callback to return an [InlineSpan] to
 /// be used as part of the text to display.
-typedef SpanBuilder = InlineSpan Function(String, List<String?>);
+typedef SpanBuilder = InlineSpan Function(TextElement);
 
 /// The signature for a callback to return a [GestureDetails].
 typedef GestureCallback = void Function(GestureDetails);

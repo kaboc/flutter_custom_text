@@ -148,8 +148,8 @@ class SpansBuilder {
       element: element,
       children: children,
       definition: def,
-      shownText: def.shownText?.call(element.groups),
-      actionText: def.actionText?.call(element.groups),
+      shownText: def.shownText?.call(element),
+      actionText: def.actionText?.call(element),
       onTapDown: hasTapStyle || hasHoverStyle
           ? (spanData) => _updateTapIndex(
                 spanData: spanData,
@@ -213,9 +213,7 @@ class SpansBuilder {
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler?.onEnter,
             onExit: gestureHandler?.onExit,
-            children: [
-              def.builder(spanData.element.text, spanData.element.groups),
-            ],
+            children: [def.builder(spanData.element)],
           )
         : TextSpan(
             text: spanData.shownText ??
@@ -268,9 +266,7 @@ class SpansBuilder {
             mouseCursor: spanData.definition.mouseCursor,
             onEnter: gestureHandler?.onEnter,
             onExit: gestureHandler?.onExit,
-            children: [
-              def.builder(spanData.element.text, spanData.element.groups),
-            ],
+            children: [def.builder(spanData.element)],
           )
         : TextSpan(
             text: spanData.shownText ??

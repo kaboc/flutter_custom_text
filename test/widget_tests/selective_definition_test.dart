@@ -23,8 +23,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                 ),
               ],
               onTap: onAction,
@@ -59,8 +59,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                 ),
               ],
               onLongPress: onAction,
@@ -97,8 +97,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                   onTap: onAction,
                 ),
               ],
@@ -133,8 +133,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                   onLongPress: onAction,
                 ),
               ],
@@ -173,8 +173,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                 ),
               ],
               onGesture: onAction,
@@ -237,8 +237,8 @@ void main() {
               definitions: [
                 SelectiveDefinition(
                   matcher: const LinkMatcher(),
-                  shownText: (groups) => groups[0]!,
-                  actionText: (groups) => groups[1]!,
+                  shownText: (element) => element.groups[0]!,
+                  actionText: (element) => element.groups[1]!,
                   onGesture: onAction,
                 ),
               ],

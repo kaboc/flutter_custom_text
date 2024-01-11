@@ -25,7 +25,7 @@ extension ShowPopup on PopupController {
               definitions: [
                 SelectiveDefinition(
                   matcher: const PatternMatcher(r'\*\*(.+?)\*\*'),
-                  shownText: (groups) => groups.first!,
+                  shownText: (element) => element.groups.first!,
                 ),
               ],
               style: const TextStyle(fontSize: 14.0),
