@@ -620,7 +620,7 @@ class _CustomTextState extends State<CustomText> {
         locale: widget.locale,
         softWrap: widget.softWrap,
         overflow: widget.overflow,
-        // ignore: deprecated_member_use_from_same_package
+        // ignore: deprecated_member_use, deprecated_member_use_from_same_package
         textScaleFactor: widget.textScaleFactor,
         maxLines: widget.maxLines,
         semanticsLabel: widget.semanticsLabel,
