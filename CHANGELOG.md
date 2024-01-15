@@ -1,9 +1,23 @@
+## 1.4.2
+
+- Add notes about gesture-related parameters to README and examples of `CustomSpan.spans` and `preBuilder`.
+- Add a note about `decorationColor` in Material 3 to README.
+- Improve documents of properties of `CustomText`.
+
+## 1.4.1
+
+*Retracted due to breaking changes included unintentionally.* 
+
+- Add notes about gesture-related parameters to README and examples of `CustomSpan.spans` and `preBuilder`.
+- Add a note about `decorationColor` in Material 3 to README.
+- Improve documents of properties of `CustomText`.
+
 ## 1.4.0
 
-- Add `preBuilder` to `CustomText`. (#44)
-- Add `rebuildKey` to definitions. (#45)
+- Add `preBuilder` to `CustomText`. ([#44])
+- Add `rebuildKey` to definitions. ([#45])
 - Add missing `selectionColor` to CustomText.  
-- Avoid rebuilding irrelevant spans when definitions are updated. (#43)
+- Avoid rebuilding irrelevant spans when definitions are updated. ([#43])
 - Bump text_parser version to 2.3.0.
 - Refactorings.
 - Improve documentation.
