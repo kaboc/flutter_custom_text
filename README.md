@@ -596,6 +596,8 @@ CustomText(
 
 ## Limitations
 
+- `decorationColor` does not automatically inherit the text colour in Material 3.
+  See https://github.com/flutter/flutter/issues/129553.
 - The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
   [Safari versions before 16.4 have no support for it](https://caniuse.com/?search=lookbehind).
   Avoid using `TelMatcher` as is if your app targets older Safari versions.
