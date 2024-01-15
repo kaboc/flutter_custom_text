@@ -445,6 +445,11 @@ CustomText.spans(
 )
 ```
 
+**Notes:**
+
+- Arguments other than `text` and `style` in the spans passed to `spans` are
+  not used even if specified.
+
 ### ⭐ <b>CustomText with preBuilder</b>
 
 pre_builder.dart ([Code][example_pre_builder] / [Demo][demo_pre_builder])
@@ -482,6 +487,7 @@ CustomText(
 
 **Notes:**
 
+- Gesture callbacks and `mouseCursor` in the builder are not used even if specified.
 - The builder function is called first to parse the text and build a `TextSpan`,
   and then another parsing is performed in `CustomSpan` itself against the plain
   text converted from the built span, followed by a rebuild. Check how much it

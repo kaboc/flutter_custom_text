@@ -174,7 +174,9 @@ final pages = [
     builder: CustomTextSpansExample.new,
     additionalInfo: 'This example applies hoverStyle and onGesture '
         'to the range containing multiple styled InlineSpans including '
-        'a WidgetSpan.',
+        'a WidgetSpan.\n\n'
+        'Note that arguments other than `text` and `style` in the spans '
+        'are not used even if specified.',
   ),
   ExamplePage(
     pathString: 'pre-builder',
@@ -184,6 +186,8 @@ final pages = [
         'It has similar use cases to `CustomText.spans`, but is more '
         'helpful when it is not easy to compose complex spans manually.',
     builder: (_) => const PreBuilderExample(),
+    additionalInfo: 'Note that gesture callbacks and `mouseCursor` '
+        'in the builder are not used even if specified.',
     hasOutput: false,
   ),
   ExamplePage(
