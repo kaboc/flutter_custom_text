@@ -22,8 +22,8 @@ class App extends StatelessWidget {
           primarySwatch: Colors.blueGrey,
         ).copyWith(primary: Colors.grey.shade800),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontWeight: FontWeight.normal, height: 1.2),
           bodyMedium: TextStyle(fontSize: 18.0, height: 1.5),
+          bodySmall: TextStyle(fontSize: 14.0, height: 1.2),
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),

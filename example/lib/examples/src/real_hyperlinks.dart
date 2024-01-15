@@ -7,6 +7,8 @@ class RealHyperlinksExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const matchStyle = TextStyle(color: Colors.blue);
+
     return CustomText(
       'Please visit [pub.dev](https://pub.dev/packages/custom_text) or '
       '[GitHub](https://github.com/kaboc/flutter_custom_text) for more '
@@ -29,9 +31,8 @@ class RealHyperlinksExample extends StatelessWidget {
               ),
             );
           },
-          matchStyle: const TextStyle(color: Colors.blue),
-          hoverStyle: const TextStyle(
-            color: Colors.blue,
+          matchStyle: matchStyle,
+          hoverStyle: matchStyle.copyWith(
             decoration: TextDecoration.underline,
           ),
           mouseCursor: SystemMouseCursors.click,

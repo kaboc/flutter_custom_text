@@ -23,6 +23,8 @@ class _OnGestureExampleState extends State<OnGestureExample> {
 
   @override
   Widget build(BuildContext context) {
+    const matchStyle = TextStyle(color: Color(0xFF3366CC));
+
     return CustomText(
       'Flutter is an [open-source]() [UI]() [software development kit]() '
       'created by [Google](). It is used to develop [cross-platform '
@@ -37,9 +39,8 @@ class _OnGestureExampleState extends State<OnGestureExample> {
         SelectiveDefinition(
           matcher: const LinkMatcher(),
           shownText: (element) => element.groups.first!,
-          matchStyle: const TextStyle(color: Color(0xFF3366CC)),
-          hoverStyle: const TextStyle(
-            color: Color(0xFF3366CC),
+          matchStyle: matchStyle,
+          hoverStyle: matchStyle.copyWith(
             decoration: TextDecoration.underline,
           ),
           onTap: (details) {

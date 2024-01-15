@@ -159,7 +159,7 @@ final pages = [
         'with secondary button events unless the menu is suppressed.\n'
         '* The popup feature does not come with the package.',
     builder: OnGestureExample.new,
-    additionalInfo: 'The above text is an extract from the following '
+    additionalInfo: 'The above text is an excerpt from the following '
         'Wikipedia entry:\n'
         'https://en.wikipedia.org/wiki/Flutter_(software)',
   ),

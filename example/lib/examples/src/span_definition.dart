@@ -14,7 +14,7 @@ class SpanDefinitionExample extends StatelessWidget {
       'Hover and click  >>  @@Flutter',
       definitions: [
         SpanDefinition(
-          matcher: ExactMatcher(const ['>>']),
+          matcher: const PatternMatcher('>>'),
           builder: (element) => const WidgetSpan(
             child: Icon(
               Icons.keyboard_double_arrow_right,

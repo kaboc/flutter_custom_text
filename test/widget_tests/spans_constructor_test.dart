@@ -303,7 +303,7 @@ void main() {
                             mouseCursor: SystemMouseCursors.click,
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ],

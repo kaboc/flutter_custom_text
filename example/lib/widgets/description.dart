@@ -17,7 +17,7 @@ class Description extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyLarge!,
+      style: Theme.of(context).textTheme.bodySmall!,
       child: Container(
         width: double.infinity,
         color: Theme.of(context).colorScheme.primary.withOpacity(0.85),

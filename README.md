@@ -252,7 +252,7 @@ CustomText(
   'Hover and click  >>  [logo]Flutter',
   definitions: [
     SpanDefinition(
-      matcher: ExactMatcher(const ['>>']),
+      matcher: const PatternMatcher('>>'),
       builder: (element) => const WidgetSpan(
         child: Icon(Icons.keyboard_double_arrow_right, ...),
       ),
@@ -411,7 +411,7 @@ CustomText.spans(
   definitions: [
     TextDefinition(
       // WidgetSpan is matched by `\uFFFC` or `.` in a match pattern.
-      matcher: ExactMatcher(const ['Flutter devs\uFFFC']),
+      matcher: const PatternMatcher('Flutter devs\uFFFC'),
       matchStyle: const TextStyle(color: Colors.blue),
       hoverStyle: TextStyle(color: Colors.blue.shade300),
       mouseCursor: SystemMouseCursors.forbidden,
