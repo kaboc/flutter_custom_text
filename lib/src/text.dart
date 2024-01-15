@@ -331,23 +331,33 @@ class CustomText extends StatefulWidget {
   /// are unsure.
   final bool preventBlocking;
 
-  /// {@macro flutter.painting.textPainter.strutStyle}
+  /// The strut style to use.
+  ///
+  /// See [Text.strutStyle] for more details.
   final StrutStyle? strutStyle;
 
   /// How the text should be aligned horizontally.
   final TextAlign? textAlign;
 
   /// The directionality of the text.
+  ///
+  /// See [Text.textDirection] for more details.
   final TextDirection? textDirection;
 
   /// Used to select a font when the same Unicode character can
   /// be rendered differently, depending on the locale.
+  ///
+  /// See [Text.locale] for more details.
   final Locale? locale;
 
   /// Whether the text should break at soft line breaks.
+  ///
+  /// See [Text.softWrap] for more details.
   final bool? softWrap;
 
   /// How visual overflow should be handled.
+  ///
+  /// See [Text.overflow] for more details.
   final TextOverflow? overflow;
 
   /// The number of font pixels for each logical pixel.
@@ -356,15 +366,21 @@ class CustomText extends StatefulWidget {
 
   /// An optional maximum number of lines for the text to span,
   /// wrapping if necessary.
+  ///
+  /// See [Text.maxLines] for more details.
   final int? maxLines;
 
-  /// {@macro flutter.widgets.Text.semanticsLabel}
+  /// An alternative semantics label for this text.
+  ///
+  /// See [Text.semanticsLabel] for more details.
   final String? semanticsLabel;
 
-  /// {@macro flutter.painting.textPainter.textWidthBasis}
+  /// Defines how to measure the width of the rendered text.
   final TextWidthBasis? textWidthBasis;
 
-  /// {@macro dart.ui.textHeightBehavior}
+  /// Defines how to apply TextStyle.height over and under text.
+  ///
+  /// See [Text.textHeightBehavior] for more details.
   final TextHeightBehavior? textHeightBehavior;
 
   /// The color to use when painting the selection.
