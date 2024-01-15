@@ -153,7 +153,7 @@ class _Example extends StatelessWidget {
               additionalInfo!,
               definitions: [
                 TextDefinition(
-                  matcher: const UrlMatcher(),
+                  matcher: const UrlMatcher(r'https?://.+\)?'),
                   matchStyle: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
