@@ -29,7 +29,7 @@ class _ValueNotifier extends ChangeNotifier
   }
 
   void updateValue(TextSpan newValue, {bool force = false}) {
-    if (_value != newValue || force) {
+    if (!_disposed && (_value != newValue || force)) {
       _value = newValue;
       notifyListeners();
     }
@@ -110,15 +110,13 @@ class CustomTextSpanNotifier extends _ValueNotifier {
   void _onSpanUpdateNeeded(int index, TextElement element, TextSpan span) {
     // Span must not be updated in the following cases:
     //
-    // * When the notifier is no longer available. (issue #6)
     // * When the number of spans has been reduced while one of them
     //   is still hovered on, in which case an update will lead to
     //   a range error.
     // * When the text at the index has changed, which indicates that
     //   this method has been triggered by the hover handler of the
     //   old span and it will cause the new span to get wrong text.
-    if (!_disposed &&
-        index < value.children!.length &&
+    if (index < value.children!.length &&
         elements[index].text == element.text) {
       updateValue(
         TextSpan(
