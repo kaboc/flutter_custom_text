@@ -110,6 +110,8 @@ class CustomTextSpanNotifier extends _ValueNotifier {
   void _onSpanUpdateNeeded(int index, TextElement element, TextSpan span) {
     // Span must not be updated in the following cases:
     //
+    // * When the notifier is no longer available. (issue #6)
+    //   Disposal is not checked here but in value setter.
     // * When the number of spans has been reduced while one of them
     //   is still hovered on, in which case an update will lead to
     //   a range error.
