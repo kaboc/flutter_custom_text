@@ -1075,7 +1075,7 @@ void main() {
     );
   });
 
-  group('Updating properties', () {
+  group('How updates of properties affect appearance', () {
     testWidgets('change of matcher is reflected by rebuild', (tester) async {
       String? value;
       var definitions = const [
@@ -1321,145 +1321,148 @@ void main() {
     );
   });
 
-  testWidgets(
-    'Change in definition (except for matcher) causes a rebuild '
-    'of only relevant spans',
-    (tester) async {
-      var definitions = const [
-        TextDefinition(
-          matcher: PatternMatcher('bbb'),
-          matchStyle: TextStyle(color: Color(0x11111111)),
-        ),
-        TextDefinition(
-          matcher: PatternMatcher('ccc'),
-          matchStyle: TextStyle(color: Color(0x22222222)),
-        ),
-      ];
+  group('How updates of properties affect behaviours', () {
+    testWidgets(
+      'Change in definition (except for matcher) causes a rebuild '
+      'of only relevant spans',
+      (tester) async {
+        var definitions = const [
+          TextDefinition(
+            matcher: PatternMatcher('bbb'),
+            matchStyle: TextStyle(color: Color(0x11111111)),
+          ),
+          TextDefinition(
+            matcher: PatternMatcher('ccc'),
+            matchStyle: TextStyle(color: Color(0x22222222)),
+          ),
+        ];
 
-      await tester.pumpWidget(
-        StatefulBuilder(
-          builder: (_, setState) {
-            return CustomTextWidget(
-              'aaabbbccc',
-              definitions: definitions,
-              onButtonPressed: () => setState(() {
-                definitions = List.of(definitions)
-                  ..[0] = const TextDefinition(
-                    matcher: PatternMatcher('bbb'),
-                    matchStyle: TextStyle(color: Color(0x33333333)),
-                  );
-              }),
-            );
-          },
-        ),
-      );
-      await tester.pump();
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaabbbccc',
+                definitions: definitions,
+                onButtonPressed: () => setState(() {
+                  definitions = List.of(definitions)
+                    ..[0] = const TextDefinition(
+                      matcher: PatternMatcher('bbb'),
+                      matchStyle: TextStyle(color: Color(0x33333333)),
+                    );
+                }),
+              );
+            },
+          ),
+        );
+        await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children!);
+        final spans1 = List.of(findFirstTextSpan()!.children!);
 
-      await tester.tapButton();
-      await tester.pumpAndSettle();
+        await tester.tapButton();
+        await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children!);
+        final spans2 = List.of(findFirstTextSpan()!.children!);
 
-      expect(spans1, hasLength(3));
-      expect(spans2, hasLength(3));
+        expect(spans1, hasLength(3));
+        expect(spans2, hasLength(3));
 
-      expect(spans2[0], same(spans1[0]));
-      expect(spans2[1], isNot(same(spans1[1])));
-      expect(spans2[2], same(spans1[2]));
-    },
-  );
+        expect(spans2[0], same(spans1[0]));
+        expect(spans2[1], isNot(same(spans1[1])));
+        expect(spans2[2], same(spans1[2]));
+      },
+    );
 
-  testWidgets(
-    'Change of matcher causes parsing and rebuilds of all spans',
-    (tester) async {
-      var definitions = const [
-        TextDefinition(
-          matcher: PatternMatcher('bbb'),
-          matchStyle: TextStyle(color: Color(0x11111111)),
-        ),
-      ];
+    testWidgets(
+      'Change of matcher causes parsing and rebuilds of all spans',
+      (tester) async {
+        var definitions = const [
+          TextDefinition(
+            matcher: PatternMatcher('bbb'),
+            matchStyle: TextStyle(color: Color(0x11111111)),
+          ),
+        ];
 
-      await tester.pumpWidget(
-        StatefulBuilder(
-          builder: (_, setState) {
-            return CustomTextWidget(
-              'aaabbbccc',
-              definitions: definitions,
-              onButtonPressed: () => setState(() {
-                definitions = List.of(definitions)
-                  ..[0] = const TextDefinition(
-                    matcher: PatternMatcher('bb'),
-                    matchStyle: TextStyle(color: Color(0x11111111)),
-                  );
-              }),
-            );
-          },
-        ),
-      );
-      await tester.pump();
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaabbbccc',
+                definitions: definitions,
+                onButtonPressed: () => setState(() {
+                  definitions = List.of(definitions)
+                    ..[0] = const TextDefinition(
+                      matcher: PatternMatcher('bb'),
+                      matchStyle: TextStyle(color: Color(0x11111111)),
+                    );
+                }),
+              );
+            },
+          ),
+        );
+        await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children!);
+        final spans1 = List.of(findFirstTextSpan()!.children!);
 
-      await tester.tapButton();
-      await tester.pumpAndSettle();
+        await tester.tapButton();
+        await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children!);
+        final spans2 = List.of(findFirstTextSpan()!.children!);
 
-      expect(spans1, hasLength(3));
-      expect(spans2, hasLength(3));
+        expect(spans1, hasLength(3));
+        expect(spans2, hasLength(3));
 
-      expect(spans2[0], isNot(same(spans1[0])));
-      expect(spans2[1], isNot(same(spans1[1])));
-      expect(spans2[2], isNot(same(spans1[2])));
-    },
-  );
+        expect(spans2[0], isNot(same(spans1[0])));
+        expect(spans2[1], isNot(same(spans1[1])));
+        expect(spans2[2], isNot(same(spans1[2])));
+      },
+    );
 
-  testWidgets(
-    'Change in number of definitions causes parsing and rebuilds of all spans',
-    (tester) async {
-      var definitions = const [
-        TextDefinition(
-          matcher: PatternMatcher('bbb'),
-          matchStyle: TextStyle(color: Color(0x11111111)),
-        ),
-      ];
+    testWidgets(
+      'Change in number of definitions causes parsing and rebuilds of '
+      'all spans',
+      (tester) async {
+        var definitions = const [
+          TextDefinition(
+            matcher: PatternMatcher('bbb'),
+            matchStyle: TextStyle(color: Color(0x11111111)),
+          ),
+        ];
 
-      await tester.pumpWidget(
-        StatefulBuilder(
-          builder: (_, setState) {
-            return CustomTextWidget(
-              'aaabbbccc',
-              definitions: definitions,
-              onButtonPressed: () => setState(() {
-                definitions = List.of(definitions)
-                  ..add(
-                    const TextDefinition(
-                      matcher: PatternMatcher('ccc'),
-                      matchStyle: TextStyle(color: Color(0x22222222)),
-                    ),
-                  );
-              }),
-            );
-          },
-        ),
-      );
-      await tester.pump();
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaabbbccc',
+                definitions: definitions,
+                onButtonPressed: () => setState(() {
+                  definitions = List.of(definitions)
+                    ..add(
+                      const TextDefinition(
+                        matcher: PatternMatcher('ccc'),
+                        matchStyle: TextStyle(color: Color(0x22222222)),
+                      ),
+                    );
+                }),
+              );
+            },
+          ),
+        );
+        await tester.pump();
 
-      final spans1 = List.of(findFirstTextSpan()!.children!);
+        final spans1 = List.of(findFirstTextSpan()!.children!);
 
-      await tester.tapButton();
-      await tester.pumpAndSettle();
+        await tester.tapButton();
+        await tester.pumpAndSettle();
 
-      final spans2 = List.of(findFirstTextSpan()!.children!);
+        final spans2 = List.of(findFirstTextSpan()!.children!);
 
-      expect(spans1, hasLength(3));
-      expect(spans2, hasLength(3));
+        expect(spans1, hasLength(3));
+        expect(spans2, hasLength(3));
 
-      expect(spans2[0], isNot(same(spans1[0])));
-      expect(spans2[1], isNot(same(spans1[1])));
-      expect(spans2[2], isNot(same(spans1[2])));
-    },
-  );
+        expect(spans2[0], isNot(same(spans1[0])));
+        expect(spans2[1], isNot(same(spans1[1])));
+        expect(spans2[2], isNot(same(spans1[2])));
+      },
+    );
+  });
 }
