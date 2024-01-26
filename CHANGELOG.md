@@ -1,3 +1,7 @@
+## 1.4.3
+
+- Fix exception thrown when CustomText is removed before parsing completes. ([#49])
+
 ## 1.4.2
 
 - Add notes about gesture-related parameters to README and examples of `CustomSpan.spans` and `preBuilder`.
@@ -329,3 +333,4 @@
 [#43]: https://github.com/kaboc/flutter_custom_text/pull/43
 [#44]: https://github.com/kaboc/flutter_custom_text/pull/44
 [#45]: https://github.com/kaboc/flutter_custom_text/pull/45
+[#49]: https://github.com/kaboc/flutter_custom_text/pull/49
