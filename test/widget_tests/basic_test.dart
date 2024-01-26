@@ -1465,4 +1465,63 @@ void main() {
       },
     );
   });
+
+  group('Notifier', () {
+    testWidgets(
+      'No exception when parsing completes after notifier is disposed',
+      (tester) async {
+        final completer = Completer<List<TextElement>>();
+        var tapCount = 0;
+
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    if (tapCount == 0)
+                      CustomText(
+                        'abcde',
+                        parserOptions: ParserOptions.external((_) {
+                          return completer.future;
+                        }),
+                        definitions: const [
+                          TextDefinition(matcher: PatternMatcher('')),
+                        ],
+                      ),
+                    ElevatedButton(
+                      onPressed: () => setState(() {
+                        if (++tapCount == 2) {
+                          completer.complete(const [TextElement('abcde')]);
+                        }
+                      }),
+                      child: const Text('Button'),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(tapCount, 0);
+        expect(find.byType(CustomText), findsOneWidget);
+
+        await tester.tapButton();
+        await tester.pump();
+
+        expect(tapCount, 1);
+        expect(completer.isCompleted, isFalse);
+        expect(find.byType(CustomText), isNot(findsOneWidget));
+
+        await tester.tapButton();
+        await tester.pump();
+
+        expect(tapCount, 2);
+        expect(completer.isCompleted, isTrue);
+        expect(find.byType(CustomText), isNot(findsOneWidget));
+      },
+    );
+  });
 }
