@@ -525,13 +525,7 @@ class _CustomTextState extends State<CustomText> {
       return;
     }
 
-    final needsEntireBuild = preBuilder != null && preBuilder.built;
-    final updatedDefIndexes = needsEntireBuild
-        ? <int>[]
-        : widget.definitions.findUpdatedDefinitions(oldWidget.definitions);
-
-    final needsBuild = needsEntireBuild ||
-        updatedDefIndexes.isNotEmpty ||
+    final needsEntireBuild = preBuilder != null && preBuilder.built ||
         widget.style != oldWidget.style ||
         widget.matchStyle != oldWidget.matchStyle ||
         widget.tapStyle != oldWidget.tapStyle ||
@@ -539,7 +533,11 @@ class _CustomTextState extends State<CustomText> {
         widget.longPressDuration != oldWidget.longPressDuration ||
         !listEquals(widget.spans, oldWidget.spans);
 
-    if (needsBuild) {
+    final updatedDefIndexes = needsEntireBuild
+        ? <int>[]
+        : widget.definitions.findUpdatedDefinitions(oldWidget.definitions);
+
+    if (needsEntireBuild || updatedDefIndexes.isNotEmpty) {
       _textSpanNotifier.buildSpan(
         style: widget.style,
         updatedDefinitionIndexes: updatedDefIndexes,

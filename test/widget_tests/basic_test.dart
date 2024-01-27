@@ -1373,7 +1373,7 @@ void main() {
     );
 
     testWidgets(
-      'Change of matcher causes parsing and rebuilds of all spans',
+      'Changing matcher causes parsing and rebuilds of all spans',
       (tester) async {
         var definitions = const [
           TextDefinition(
@@ -1418,7 +1418,7 @@ void main() {
     );
 
     testWidgets(
-      'Change in number of definitions causes parsing and rebuilds of '
+      'Changing number of definitions causes parsing and rebuilds of '
       'all spans',
       (tester) async {
         var definitions = const [
@@ -1442,6 +1442,51 @@ void main() {
                         matchStyle: TextStyle(color: Color(0x22222222)),
                       ),
                     );
+                }),
+              );
+            },
+          ),
+        );
+        await tester.pump();
+
+        final spans1 = List.of(findFirstTextSpan()!.children!);
+
+        await tester.tapButton();
+        await tester.pumpAndSettle();
+
+        final spans2 = List.of(findFirstTextSpan()!.children!);
+
+        expect(spans1, hasLength(3));
+        expect(spans2, hasLength(3));
+
+        expect(spans2[0], isNot(same(spans1[0])));
+        expect(spans2[1], isNot(same(spans1[1])));
+        expect(spans2[2], isNot(same(spans1[2])));
+      },
+    );
+
+    testWidgets(
+      'Changing both definitions and configurations other than definitions '
+      'causes rebuilds of all spans',
+      (tester) async {
+        var style = const TextStyle(color: Color(0x11111111));
+        var matchStyleInDef = const TextStyle(color: Color(0x22222222));
+
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (_, setState) {
+              return CustomTextWidget(
+                'aaabbbccc',
+                style: style,
+                definitions: [
+                  TextDefinition(
+                    matcher: const PatternMatcher('bbb'),
+                    matchStyle: matchStyleInDef,
+                  ),
+                ],
+                onButtonPressed: () => setState(() {
+                  style = const TextStyle(color: Color(0x33333333));
+                  matchStyleInDef = const TextStyle(color: Color(0x44444444));
                 }),
               );
             },
