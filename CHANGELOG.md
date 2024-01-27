@@ -1,3 +1,9 @@
+## 1.4.4
+
+- Fix the bugs where changes in configurations were not fully reflected in the following cases. ([#51])
+    - When both definitions and other configurations were updated.
+    - When `DefaultTextStyle` changed while there were no other changes.
+
 ## 1.4.3
 
 - Fix exception thrown when CustomText is removed before parsing completes. ([#49])
@@ -334,3 +340,4 @@
 [#44]: https://github.com/kaboc/flutter_custom_text/pull/44
 [#45]: https://github.com/kaboc/flutter_custom_text/pull/45
 [#49]: https://github.com/kaboc/flutter_custom_text/pull/49
+[#51]: https://github.com/kaboc/flutter_custom_text/pull/51
