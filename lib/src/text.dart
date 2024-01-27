@@ -393,6 +393,8 @@ class CustomText extends StatefulWidget {
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
 
+  TextStyle? _prevDefaultStyle;
+
   SpansBuilderSettings _createSettings({List<InlineSpan>? spans}) {
     return SpansBuilderSettings(
       definitions: widget.definitions,
@@ -457,6 +459,20 @@ class _CustomTextState extends State<CustomText> {
       spanText: widget.spans.toPlainText(),
       oldWidget: oldWidget,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final defaultStyle = DefaultTextStyle.of(context).style;
+    if (_prevDefaultStyle != null && defaultStyle != _prevDefaultStyle) {
+      _textSpanNotifier.buildSpan(
+        style: widget.style,
+        updatedDefinitionIndexes: [],
+      );
+    }
+    _prevDefaultStyle = defaultStyle;
   }
 
   Future<void> _buildSpans({
