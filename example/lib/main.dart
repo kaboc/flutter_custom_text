@@ -14,16 +14,26 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.blueGrey,
+    ).copyWith(
+      primary: Colors.grey.shade800,
+      surfaceTint: Colors.transparent,
+    );
+
     return MaterialApp.router(
       title: 'CustomText Demo',
       theme: ThemeData(
-        useMaterial3: false,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.blueGrey,
-        ).copyWith(primary: Colors.grey.shade800),
+        colorScheme: colorScheme,
+        // Workaround for https://github.com/flutter/flutter/issues/129553.
+        typography: Typography.material2018(),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(fontSize: 18.0, height: 1.5),
           bodySmall: TextStyle(fontSize: 14.0, height: 1.2),
+        ),
+        appBarTheme: AppBarTheme(
+          foregroundColor: colorScheme.onPrimary,
+          backgroundColor: colorScheme.primary,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
