@@ -55,8 +55,6 @@ class TextDefinition extends Definition {
 ///
 /// {@template customText.selectiveDefinition}
 /// [shownText] and [actionText] are functions to select a string.
-/// The functions receive a list of strings that have matched the
-/// fragments enclosed in parentheses specified in the match pattern.
 /// The string returned by [shownText] is displayed, and the string
 /// returned by [actionText] is included in the [GestureDetails]
 /// object passed to [onTap], [onLongPress] and [onGesture].
@@ -97,18 +95,15 @@ class SelectiveDefinition extends Definition {
 /// builds the [InlineSpan] to replace matched strings with.
 ///
 /// {@template customText.spanDefinition}
-/// The [builder] function receives the entire matched string and
-/// a list of strings that have matched the fragments enclosed in
-/// parentheses within the match pattern. Use the function to return
-/// an object of [InlineSpan] or its subtype (e.g. [WidgetSpan]) to
-/// display it instead of the matched string.
+/// An object of [InlineSpan] or its subtype (e.g. [WidgetSpan])
+/// returned from the [builder] function is displayed in place of the
+/// string matched by the match pattern specified in this definition.
 ///
 /// When this definition type is used, the [InlineSpan] created by
-/// the [builder] callback is not shown until parsing completes
-/// and spots which parts in the original text need to be replaced
-/// with the span, so that the raw text is not shown as is while
-/// waiting. Exceptionally, this behaviour is not applied if
-/// [CustomText.preventBlocking] is enabled.
+/// [builder] is not shown until CustomText finds which parts in the
+/// original text need to be replaced with the span, so that the raw
+/// text is not shown as is while waiting. Exceptionally, this behaviour
+/// is not applied if [CustomText.preventBlocking] is enabled.
 ///
 /// See also the document of [TextDefinition], which has most of
 /// other properties in common.

@@ -183,10 +183,12 @@ An example to parse a markdown-style link in the format of `[shown text](url)`
 and make it tappable.
 
 [SelectiveDefinition] allows to select the string to display and the string to
-be passed to gesture callbacks individually from the groups of matched strings.
+be passed to gesture callbacks individually.
 
-For details of `groups`, see the document of the [text_parser] package used
-internally in this package.
+The `shownText` and `actionText` functions receive a [TextElement] object
+containing various pieces of information provided by the parser. For its
+details, see the document of the [text_parser] package used internally in
+this package.
 
 ```dart
 CustomText(
@@ -195,12 +197,10 @@ CustomText(
     SelectiveDefinition(
       matcher: const LinkMatcher(),
       // `shownText` is used to choose the string to display.
-      // It receives a list of strings that have matched the
-      // fragments enclosed in parentheses within the match pattern.
-      shownText: (groups) => groups[0]!,
+      shownText: (element) => element.groups[0]!,
       // `actionText` is used to choose the string to be passed
       // to the `onTap`, `onLongPress` and `onGesture` handlers.
-      actionText: (groups) => groups[1]!,
+      actionText: (element) => element.groups[1]!,
     ),
   ],
   matchStyle: TextStyle(color: Colors.blue),
@@ -221,7 +221,7 @@ CustomText(
   definitions: [
     SelectiveDefinition(
       matcher: const LinkMatcher(),
-      shownText: (groups) => groups[0]!,
+      shownText: (element) => element.groups[0]!,
     ),
   ],
   matchStyle: const TextStyle(color: Colors.red),
@@ -237,7 +237,8 @@ span_definition.dart ([Code][example_span_definition] / [Demo][demo_span_definit
 An example to display both text and widgets.
 
 [SpanDefinition] enables a certain portion of text to be replaced with an arbitrary
-[InlineSpan]. The `builder` function can use the parse result (the matched string and groups)
+[InlineSpan]. The `builder` function receives a [TextElement] object containing
+various pieces of information provided by the parser so that you can use it
 to flexibly build an `InlineSpan`.
 
 Text styles, gesture handlers and the mouse cursor type are applied to the entire
@@ -252,17 +253,17 @@ CustomText(
   definitions: [
     SpanDefinition(
       matcher: ExactMatcher(const ['>>']),
-      builder: (text, groups) => const WidgetSpan(
+      builder: (element) => const WidgetSpan(
         child: Icon(Icons.keyboard_double_arrow_right, ...),
       ),
     ),
     SpanDefinition(
       matcher: const PatternMatcher(r'\[logo\](\w+)'),
-      builder: (text, groups) => TextSpan(
+      builder: (element) => TextSpan(
         children: [
           const WidgetSpan(child: FlutterLogo()),
           const WidgetSpan(child: SizedBox(width: 2.0)),
-          TextSpan(text: groups.first),
+          TextSpan(text: element.groups.first),
         ],
       ),
       matchStyle: TextStyle(color: Colors.blue),
@@ -293,16 +294,16 @@ CustomText(
   definitions: [
     SpanDefinition(
       matcher: const LinkMatcher(),
-      builder: (text, groups) {
+      builder: (element) {
         return WidgetSpan(
           alignment: PlaceholderAlignment.middle,
           child: Link(
-            uri: Uri.parse(groups[1]!),
+            uri: Uri.parse(element.groups[1]!),
             target: LinkTarget.blank,
             builder: (context, openLink) {
               return GestureDetector(
                 onTap: openLink,
-                child: Text(groups[0]!),
+                child: Text(element.groups[0]!),
               );
             },
           ),

@@ -107,8 +107,7 @@ final pages = [
     description: 'An example to parse a markdown-style link in the format '
         'of `[shown text](url)` and make it tappable.\n'
         '`SelectiveDefinition` allows to select the string to display and '
-        'the string to be passed to gesture callbacks individually from '
-        'the groups of matched strings.',
+        'the string to be passed to gesture callbacks individually.',
     builder: SelectiveDefinitionExample.new,
   ),
   const ExamplePage(
@@ -117,8 +116,8 @@ final pages = [
     description: 'An example to show both text and widgets. '
         '`SpanDefinition` enables part of text to be replaced with an '
         'arbitrary `InlineSpan`.\n'
-        'The `builder` function can use the parse result (the matched '
-        'string and groups) to flexibly build an InlineSpan.',
+        'The `builder` function can use the parse result to flexibly '
+        'build an InlineSpan.',
     builder: SpanDefinitionExample.new,
     additionalInfo: 'Gestures are detected on both the logo and the text '
         'of "Flutter".',
