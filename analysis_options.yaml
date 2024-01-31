@@ -24,6 +24,7 @@ linter:
 #    always_put_required_named_parameters_first: true
 #    always_specify_types: true
 #    always_use_package_imports: true
+    annotate_redeclares: true
     avoid_annotating_with_dynamic: true
     avoid_bool_literals_in_conditional_expressions: true
     avoid_catches_without_on_clauses: true
@@ -52,17 +53,17 @@ linter:
     cascade_invocations: true
     cast_nullable_to_non_nullable: true
     close_sinks: true
-    collection_methods_unrelated_type: true
     combinators_ordering: true
     comment_references: true
     conditional_uri_does_not_exist: true
-    dangling_library_doc_comments: true
     deprecated_consistency: true
+    deprecated_member_use_from_same_package: true
 #    directives_ordering: true
 #    discarded_futures: true
     do_not_use_environment: true
     eol_at_end_of_file: true
-    implicit_call_tearoffs: true
+    implicit_reopen: true
+    invalid_case_patterns: true
     join_return_with_assignment: true
     leading_newlines_in_multiline_strings: true
     library_annotations: true
@@ -72,6 +73,7 @@ linter:
     no_adjacent_strings_in_list: true
     no_default_cases: true
     no_runtimeType_toString: true
+    no_self_assignments: true
     noop_primitive_operations: true
     omit_local_variable_types: true
     one_member_abstracts: true
@@ -90,9 +92,9 @@ linter:
     prefer_mixin: true
     prefer_null_aware_method_calls: true
     prefer_single_quotes: true
+    prefer_void_to_null: true
     public_member_api_docs: true
     require_trailing_commas: true
-    secure_pubspec_urls: true
     sort_constructors_first: true
 #    sort_pub_dependencies: true
     sort_unnamed_constructors_first: true
@@ -102,7 +104,7 @@ linter:
     type_annotate_public_apis: true
     unawaited_futures: true
     unnecessary_await_in_return: true
-#    unnecessary_breaks: true
+    unnecessary_breaks: true
     unnecessary_lambdas: true
     unnecessary_library_directive: true
     unnecessary_null_aware_operator_on_extension_on_nullable: true
@@ -110,7 +112,6 @@ linter:
     unnecessary_parenthesis: true
     unnecessary_raw_strings: true
     unnecessary_statements: true
-    unnecessary_to_list_in_spreads: true
     unreachable_from_main: true
     unsafe_html: true
     use_enums: true
@@ -121,7 +122,5 @@ linter:
     use_raw_strings: true
     use_setters_to_change_properties: true
     use_string_buffers: true
-    use_string_in_part_of_directives: true
-    use_super_parameters: true
     use_test_throws_matchers: true
     use_to_and_as_if_applicable: true

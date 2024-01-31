@@ -13,17 +13,6 @@ import 'span/data.dart';
 import 'span/span_utils.dart';
 import 'span/text_span_notifier.dart';
 
-const _kTextScaleFactorDeprecation =
-    'Use `MediaQuery` instead or ignore this warning depending on the '
-    'Flutter SDK version you are currently using, until `textScaler` '
-    'is added at a future version of custom_text. This was deprecated '
-    'at custom_text 1.3.0.\n'
-    '* < Flutter 3.16: Ignore this warning for now.\n'
-    '* >= Flutter 3.16: Wrap `CustomText` / `CustomText.spans` with '
-    '`MediaQuery`, `MediaQuery.withNoTextScaling` or '
-    '`MediaQuery.withClampedTextScaling` to override the existing '
-    'TextScaler.';
-
 /// A text widget that decorates substrings and enables tap, long-press
 /// and/or hover gestures on them based on flexible definitions.
 ///
@@ -77,7 +66,7 @@ class CustomText extends StatefulWidget {
     this.locale,
     this.softWrap,
     this.overflow,
-    @Deprecated(_kTextScaleFactorDeprecation) this.textScaleFactor,
+    this.textScaler,
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
@@ -166,7 +155,7 @@ class CustomText extends StatefulWidget {
     this.locale,
     this.softWrap,
     this.overflow,
-    @Deprecated(_kTextScaleFactorDeprecation) this.textScaleFactor,
+    this.textScaler,
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
@@ -360,9 +349,11 @@ class CustomText extends StatefulWidget {
   /// See [Text.overflow] for more details.
   final TextOverflow? overflow;
 
-  /// The number of font pixels for each logical pixel.
-  @Deprecated(_kTextScaleFactorDeprecation)
-  final double? textScaleFactor;
+  /// The font scaling strategy to use when laying out and
+  /// rendering the text.
+  ///
+  /// See [Text.textScaler] for more details.
+  final TextScaler? textScaler;
 
   /// An optional maximum number of lines for the text to span,
   /// wrapping if necessary.
@@ -620,8 +611,7 @@ class _CustomTextState extends State<CustomText> {
         locale: widget.locale,
         softWrap: widget.softWrap,
         overflow: widget.overflow,
-        // ignore: deprecated_member_use_from_same_package
-        textScaleFactor: widget.textScaleFactor,
+        textScaler: widget.textScaler,
         maxLines: widget.maxLines,
         semanticsLabel: widget.semanticsLabel,
         textWidthBasis: widget.textWidthBasis,
