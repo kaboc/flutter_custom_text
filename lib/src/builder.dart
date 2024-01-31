@@ -3,7 +3,7 @@ import 'package:meta/meta.dart' show internal, visibleForTesting;
 
 import 'package:text_parser/text_parser.dart';
 
-import 'definition_base.dart';
+import 'definitions.dart';
 import 'parser_options.dart';
 import 'text.dart';
 import 'utils.dart';

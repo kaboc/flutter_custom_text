@@ -5,7 +5,6 @@ import 'package:text_parser/text_parser.dart' show TextParser;
 
 import 'builder.dart';
 import 'definitions.dart';
-import 'definition_base.dart';
 import 'gesture_details.dart';
 import 'parser_options.dart';
 import 'utils.dart';

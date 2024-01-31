@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'definition_base.dart';
+import 'definitions.dart';
 
 extension CompareDefinitions on List<Definition> {
   bool hasUpdatedMatchers(List<Definition>? other) {

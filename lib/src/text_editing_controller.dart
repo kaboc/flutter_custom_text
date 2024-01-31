@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart' show experimental;
 import 'package:text_parser/text_parser.dart' show TextElement, TextParser;
 
-import 'definition_base.dart';
 import 'definitions.dart';
 import 'parser_options.dart';
 import 'span/data.dart';

@@ -7,7 +7,7 @@ import 'package:flutter/painting.dart' show InlineSpan, TextStyle;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
-import '../definition_base.dart';
+import '../definitions.dart';
 import '../gesture_details.dart';
 
 const kLongPressDuration = Duration(milliseconds: 600);
