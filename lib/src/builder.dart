@@ -1,5 +1,5 @@
-import 'package:flutter/painting.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/painting.dart' show InlineSpan, TextSpan, TextStyle;
+import 'package:meta/meta.dart' show internal, visibleForTesting;
 
 import 'package:text_parser/text_parser.dart';
 

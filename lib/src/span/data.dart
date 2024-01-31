@@ -56,8 +56,7 @@ class SpansBuilderSettings {
     // a definition) that is necessary to identify which matcher
     // was used for a certain element when there are more than one
     // matchers of the same type.
-    for (var i = 0; i < definitions.length; i++) {
-      final def = definitions[i];
+    for (final (i, def) in definitions.indexed) {
       this.definitions.update(
             def.matcher.runtimeType,
             (list) => list..[i] = def,

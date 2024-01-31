@@ -3,6 +3,12 @@
 import 'package:text_parser/text_parser.dart'
     show TextElement, TextElementsExtension;
 
+typedef BuildResult = ({
+  List<TextElement> elements,
+  Range replaceRange,
+  Range spanRange,
+});
+
 extension on String {
   String safeSubstring(int start, [int? end]) {
     final s = start < 0 ? 0 : (start > length ? length : start);
@@ -19,18 +25,6 @@ class Range {
   final int end;
 
   bool get isInvalid => start < 0 || end < 0;
-}
-
-class BuildResult {
-  const BuildResult({
-    required this.elements,
-    required this.replaceRange,
-    required this.spanRange,
-  });
-
-  final List<TextElement> elements;
-  final Range replaceRange;
-  final Range spanRange;
 }
 
 /// Builds elements to be used transiently while parsing is being debounced.
@@ -178,10 +172,9 @@ class TransientTextElementsBuilder {
         stringB = stringB.substring(len);
       }
       if (diffLen > 0) {
-        for (var i = 0; i < elmsB.length; i++) {
+        for (final (i, elm) in elmsB.indexed) {
           replRangeTo++;
 
-          final elm = elmsB[i];
           final len = elm.text.length < diffLen ? elm.text.length : diffLen;
           diffLen -= len;
           elmsB[i] = elm.copyWith(text: elm.text.substring(len));
@@ -204,7 +197,7 @@ class TransientTextElementsBuilder {
       spanRangeTo++;
     }
 
-    return BuildResult(
+    return (
       elements: [
         ...elmsA,
         if (stringA.isNotEmpty) oldElmS.copyWith(text: stringA),

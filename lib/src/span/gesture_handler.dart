@@ -165,10 +165,10 @@ class GestureHandler {
               localPosition: tapUpDetails.localPosition,
             );
 
-            if (_spanData.definition.onTap != null) {
-              _spanData.definition.onTap!(details);
-            } else {
+            if (_spanData.definition.onTap == null) {
               _settings.onTap?.call(details);
+            } else {
+              _spanData.definition.onTap?.call(details);
             }
           }
 
@@ -233,10 +233,10 @@ class GestureHandler {
       localPosition: localPosition,
     );
 
-    if (_spanData.definition.onGesture != null) {
-      _spanData.definition.onGesture?.call(details);
-    } else {
+    if (_spanData.definition.onGesture == null) {
       _settings.onGesture?.call(details);
+    } else {
+      _spanData.definition.onGesture?.call(details);
     }
   }
 

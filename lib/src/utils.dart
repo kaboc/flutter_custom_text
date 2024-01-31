@@ -4,17 +4,15 @@ import 'definition_base.dart';
 
 extension CompareDefinitions on List<Definition> {
   bool hasUpdatedMatchers(List<Definition>? other) {
-    final entries = asMap().entries;
-
     return length != other?.length ||
-        entries.any((e) => e.value.matcher != other?[e.key].matcher);
+        indexed.any((e) => e.$2.matcher != other?[e.$1].matcher);
   }
 
   List<int> findUpdatedDefinitions(List<Definition>? other) {
     return [
       if (length == other?.length)
-        for (var i = 0; i < length; i++)
-          if (this[i] != other?[i]) i,
+        for (final (i, def) in indexed)
+          if (def != other?[i]) i,
     ];
   }
 }

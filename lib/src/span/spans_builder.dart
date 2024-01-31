@@ -51,10 +51,10 @@ class SpansBuilder {
         ? null
         : [
             if (splitSpans == null)
-              for (var i = 0; i < elements.length; i++)
+              for (final (i, element) in elements.indexed)
                 _span(
                   elementIndex: i,
-                  element: elements[i],
+                  element: element,
                   children: null,
                   currentSpans: currentSpans,
                   updatedDefinitionIndexes: updatedDefinitionIndexes,

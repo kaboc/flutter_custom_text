@@ -4,17 +4,11 @@ import 'package:flutter/painting.dart' show InlineSpan, TextSpan;
 
 import 'package:text_parser/text_parser.dart' show TextElement;
 
-class _Result {
-  const _Result({
-    required this.spans,
-    required this.elmIndex,
-    required this.textOffset,
-  });
-
-  final Map<int, List<InlineSpan>> spans;
-  final int elmIndex;
-  final int textOffset;
-}
+typedef _Result = ({
+  Map<int, List<InlineSpan>> spans,
+  int elmIndex,
+  int textOffset,
+});
 
 extension on Map<Object, List<InlineSpan>> {
   void addOrCreate(Object key, InlineSpan span) {
@@ -143,7 +137,7 @@ extension SplitSpans on List<InlineSpan> {
       }
     }
 
-    return _Result(
+    return (
       spans: spans,
       elmIndex: currentElmIndex,
       textOffset: elmTextOffset,
