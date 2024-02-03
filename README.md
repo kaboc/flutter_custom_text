@@ -12,6 +12,8 @@ particular strings with colors and different font settings. You can configure th
 and the behaviour using multiple definitions consisting of regular expressions, text styles,
 gesture handlers, etc.
 
+---
+
 ## Usage by example
 
 Most of the examples here are contained in the sample app in the [example] folder.
@@ -26,14 +28,19 @@ by this package (plus the [highlight] package used as an external parser).
 <img src="https://github.com/kaboc/flutter_custom_text/assets/20254485/b92d95d2-e0eb-45dd-8fb3-38cc22fb76ff" alt="Code highlighting" height="360">
 </a>
 
+---
+
 ### ⭐ <b>Simplest example</b>
-
-simple.dart ([Code][example_simple] / [Demo][demo_simple])
-
-![Image - Simplest example image](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
 
 A very basic example of how to apply a colour to URLs and email addresses using preset
 matchers.
+
+[Code][example_simple] / [Demo][demo_simple]
+
+![Image - Simplest example image](https://user-images.githubusercontent.com/20254485/100355817-c0bddb80-3035-11eb-8c5b-3c4d0ee9f921.png)
+
+<details>
+<summary>Click to see the details</summary>
 
 Gestures are not available on the coloured strings in this example.
 
@@ -60,15 +67,21 @@ If a stricter pattern is necessary, overwrite the preset pattern or create a cus
 - [TelMatcher] for phone numbers
 - [LinkMatcher] for Markdown-style links or for other strings to be handled
   by [SelectiveDefinition]
+</details>
+
+---
 
 ### ⭐ <b>Styles and actions per definition</b>
 
-styles_and_actions.dart ([Code][example_styles_and_actions] / [Demo][demo_styles_and_actions])
+An example to decorate URLs, email addresses and phone numbers, and also enable them
+to be tapped and long-pressed.
+
+[Code][example_styles_and_actions] / [Demo][demo_styles_and_actions]
 
 ![Image - Styles and actions per definition](https://user-images.githubusercontent.com/20254485/221410479-c1014891-2e4a-40d6-9fcf-db1a2b946dfd.gif)
 
-An example to decorate URLs, email addresses and phone numbers, and also enable them
-to be tapped and long-pressed.
+<details>
+<summary>Click to see the details</summary>
 
 All the three are styled, but only phone numbers among them are styled differently with
 the unique `matchStyle` and `tapStyle`.
@@ -107,14 +120,20 @@ CustomText(
   onLongPress: (details) => print('[Long press] ${details.actionText}'),
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>Overwriting a match pattern</b>
 
-overwriting_pattern.dart ([Code][example_overwriting_pattern] / [Demo][demo_overwriting_pattern])
+An example to replace the default pattern of [TelMatcher].
+
+[Code][example_overwriting_pattern] / [Demo][demo_overwriting_pattern]
 
 ![Image - Overwriting match pattern](https://user-images.githubusercontent.com/20254485/100355852-ca474380-3035-11eb-8fc9-e9f895f0f17b.png)
 
-An example to replace the default pattern of [TelMatcher].
+<details>
+<summary>Click to see the details</summary>
 
 The new pattern here regards only the `{3 digits}-{4 digits}-{4 digits}` format
 as a phone number.
@@ -129,14 +148,20 @@ CustomText(
   onTap: (details) => print(details.actionText),
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>Custom match pattern</b>
 
-custom_pattern.dart ([Code][example_custom_pattern] / [Demo][demo_custom_pattern])
+An example to parse hashtags with a custom pattern and apply styles to them.
+
+[Code][example_custom_pattern] / [Demo][demo_custom_pattern]
 
 ![Image - Custom match pattern](https://user-images.githubusercontent.com/20254485/100355864-cddaca80-3035-11eb-9dff-02cd7c97375e.png)
 
-An example to parse hashtags with a custom pattern and apply styles to them.
+<details>
+<summary>Click to see the details</summary>
 
 A hashtag has a wide variety of definitions, but here as an example, it is defined
 as a string that starts with "#" followed by an alphabet and then alphanumerics,
@@ -172,15 +197,21 @@ CustomText(
   },
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>SelectiveDefinition</b>
 
-selective_definition.dart ([Code][example_selective_definition] / [Demo][demo_selective_definition])
+An example to parse a markdown-style link in the format of `[shown text](url)`
+and make it tappable.
+
+[Code][example_selective_definition] / [Demo][demo_selective_definition]
 
 ![Image - SelectiveDefinition](https://github.com/kaboc/flutter_custom_text/assets/20254485/d47566f4-a92e-4d74-99d4-866387cd4ad8)
 
-An example to parse a markdown-style link in the format of `[shown text](url)`
-and make it tappable.
+<details>
+<summary>Click to see the details</summary>
 
 [SelectiveDefinition] allows to select the string to display and the string to
 be passed to gesture callbacks individually.
@@ -227,14 +258,20 @@ CustomText(
   matchStyle: const TextStyle(color: Colors.red),
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>SpanDefinition</b>
 
-span_definition.dart ([Code][example_span_definition] / [Demo][demo_span_definition])
+An example to display both text and widgets.
+
+[Code][example_span_definition] / [Demo][demo_span_definition]
 
 ![Image - SpanDefinition](https://github.com/kaboc/flutter_custom_text/assets/20254485/7e566862-d986-478b-85ff-9e26d4c47821)
 
-An example to display both text and widgets.
+<details>
+<summary>Click to see the details</summary>
 
 [SpanDefinition] enables a certain portion of text to be replaced with an arbitrary
 [InlineSpan]. The `builder` function receives a [TextElement] object containing
@@ -273,15 +310,21 @@ CustomText(
   ],
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>Real hyperlinks</b>
 
-real_hyperlinks.dart ([Code][example_real_hyperlinks] / [Demo][demo_real_hyperlinks])
+An example to embed real hyperlinks for the web by making use of [SpanDefinition]
+together with the `Link` widget of [url_launcher].
+
+[Code][example_real_hyperlinks] / [Demo][demo_real_hyperlinks]
 
 ![Image - Real hyperlinks](https://github.com/kaboc/flutter_custom_text/assets/20254485/fd93cf5f-36b7-411e-9ba4-37d85e33075e)
 
-An example to embed real hyperlinks for the web by making use of [SpanDefinition]
-together with the `Link` widget of [url_launcher].
+<details>
+<summary>Click to see the details</summary>
 
 **Notes:**
 
@@ -316,15 +359,22 @@ CustomText(
   ],
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>Changing mouse cursor and text style on hover</b>
 
-hover_style.dart ([Code][example_hover_style] / [Demo][demo_hover_style])
+An example to change the mouse cursor type on certain substrings.
+
+[Code][example_hover_style] / [Demo][demo_hover_style]
 
 ![Image - Mouse cursor and text style on hover](https://user-images.githubusercontent.com/20254485/221410499-23e5dfd2-dc19-4234-b119-17c46ac80a77.gif)
 
-It is possible to change the mouse cursor type on a certain parts of text by
-passing a desired type to the `mouseCursor` parameter of a definition.
+<details>
+<summary>Click to see the details</summary>
+
+This is easily possible by just passing your desired type to `mouseCursor`.
 
 If a tap handler (`onTap` or `onLongPress`) is specified and `mouseCursor` is not,
 `SystemMouseCursors.click` is automatically used for the tappable element.
@@ -368,15 +418,24 @@ CustomText(
   ],
 )
 ```
+</details>
+
+---
 
 ### ⭐ <b>Event positions and onGesture</b>
 
-on_gesture.dart ([Code][example_on_gesture] / [Demo][demo_on_gesture])
+An example to trigger an action by a secondary or tertiary button press or a
+mouse enter or exit gesture.
+
+[Code][example_on_gesture] / [Demo][demo_on_gesture]
 
 ![Image - Event positions and onGesture](https://user-images.githubusercontent.com/20254485/221400940-c686ab71-8d15-46ad-99fd-9058f7ca30dc.gif)
 
-The `onGesture` handler supports events of the secondary and tertiary buttons and mouse enter and
-exit events.
+<details>
+<summary>Click to see the details</summary>
+
+The `onGesture` handler is called on an event of a non-primary button or mouse
+gesture.
 
 You can check the event type with `gestureKind` contained in the [GestureDetails] object
 which is passed to the handler function. The object also has the global and local positions
@@ -389,15 +448,21 @@ where an event happened. It is useful for showing a popup or a menu at the posit
 - The handler function is called one microsecond or more after the actual occurrence of an event.
     - This is due to a workaround for preventing the function from being called more times than
       expected by updates of the text span.
+</details>
+
+---
 
 ### ⭐ <b>CustomText.spans</b>
 
-spans_constructor.dart ([Code][example_spans_constructor] / [Demo][demo_spans_constructor])
+An example of the [CustomText.spans] constructor that allows to use a list of `InlineSpan`s
+instead of plain text.
+
+[Code][example_spans_constructor] / [Demo][demo_spans_constructor]
 
 ![Image - CustomText.spans](https://github.com/kaboc/flutter_custom_text/assets/20254485/3d9f47d3-5ace-4191-9297-b1321f7b39cd)
 
-An example of the [CustomText.spans] constructor that allows to use a list of `InlineSpan`s
-instead of plain text.
+<details>
+<summary>Click to see the details</summary>
 
 This constructor is useful if you already have styled spans and want to decorate them
 additionally.
@@ -450,15 +515,21 @@ CustomText.spans(
 
 - Arguments other than `text` and `style` in the spans passed to `spans` are
   not used even if specified.
+</details>
+
+---
 
 ### ⭐ <b>CustomText with preBuilder</b>
 
-pre_builder.dart ([Code][example_pre_builder] / [Demo][demo_pre_builder])
+An example of [preBuilder] that allows to apply decorations and then additionally
+apply more decorations and enable gestures.
+
+[Code][example_pre_builder] / [Demo][demo_pre_builder]
 
 ![Image - CustomText with preBuilder](https://github.com/kaboc/flutter_custom_text/assets/20254485/3066d802-b444-4ea7-9206-54941e572ac4)
 
-An example of [preBuilder] that allows to apply decorations and then additionally
-apply more decorations and enable gestures.
+<details>
+<summary>Click to see the details</summary>
 
 It has similar use cases to [CustomText.spans], but is more helpful when it is
 not easy to compose complex spans manually.
@@ -493,15 +564,21 @@ CustomText(
   and then another parsing is performed in `CustomSpan` itself against the plain
   text converted from the built span, followed by a rebuild. Check how much it
   affects the performance of your app if you choose to use this.
+</details>
+
+---
 
 ### ⭐ <b>CustomTextEditingController</b>
 
-text_editing_controller.dart ([Code][example_text_editing_controller] / [Demo][demo_text_editing_controller])
+An example of [CustomTextEditingController] that makes some of the CustomText
+functionality available in an editable text.
+
+[Code][example_text_editing_controller] / [Demo][demo_text_editing_controller]
 
 ![Image - CustomTextEditingController](https://user-images.githubusercontent.com/20254485/221410504-f8af0c02-1ccb-4094-bdf1-bb6a1a454874.gif)
 
-Text decoration, tap/long-press actions and hover effects are available also in
-an editable text field via [CustomTextEditingController].
+<details>
+<summary>Click to see the details</summary>
 
 ```dart
 final controller = CustomTextEditingController(
@@ -540,16 +617,23 @@ Widget build(BuildContext context) {
     - Text input will be still slow even with debouncing because
       [Flutter itself has performance issues](https://github.com/flutter/flutter/issues/114158)
       in editable text.
+</details>
+
+---
 
 ### ⭐ <b>Using an external parser</b>
 
-external_parser.dart ([Code][example_external_parser] / [Demo][demo_external_parser])
+An example of using an external parser instead of the internal one.
+
+[Code][example_external_parser] / [Demo][demo_external_parser]
 
 ![Image - External parser](https://user-images.githubusercontent.com/20254485/227700405-8ec4bd20-dd30-4ee3-a921-b1a3a019aba6.gif)
 
-It is possible to use an external parser instead of the internal one. It helps you
-when a different parser you already have does a better job or can do what is difficult
-with the default parser.
+<details>
+<summary>Click to see the details</summary>
+
+`ParserOptions.external` helps you when a different parser you already have does
+a better job or can do what is difficult with the default parser.
 
 ```dart
 // These empty matchers are used to distinguish the matcher types of
@@ -594,6 +678,9 @@ CustomText(
   generated by the parser must all together constitute the original text.
   Otherwise, it will cause unexpected behaviours.
     - This does not apply to `CustomText`.
+</details>
+
+---
 
 ## Limitations
 
