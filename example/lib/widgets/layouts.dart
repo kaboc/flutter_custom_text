@@ -4,13 +4,11 @@ import 'package:custom_text_example/widgets/description.dart';
 
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
-    required this.maxWidth,
     required this.description,
     required this.example,
     required this.output,
   });
 
-  final double maxWidth;
   final Description description;
   final Widget example;
   final Widget output;
@@ -51,46 +49,48 @@ class HorizontalLayout extends StatelessWidget {
 
 class VerticalLayout extends StatelessWidget {
   const VerticalLayout({
-    required this.maxHeight,
     required this.description,
     required this.example,
     required this.output,
   });
 
-  final double maxHeight;
   final Description description;
   final Widget example;
   final Widget output;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: maxHeight,
-        ),
-        child: IntrinsicHeight(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              description,
-              Expanded(
-                child: example,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  description,
+                  Expanded(
+                    child: example,
+                  ),
+                  const Divider(
+                    height: 1.0,
+                    thickness: 1.0,
+                    color: Colors.black26,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 150.0,
+                    child: output,
+                  ),
+                ],
               ),
-              const Divider(
-                height: 1.0,
-                thickness: 1.0,
-                color: Colors.black26,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 150.0,
-                child: output,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
