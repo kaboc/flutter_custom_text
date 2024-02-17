@@ -1,3 +1,32 @@
+## 2.0.0
+
+- **Breaking:**
+    - Raise minimum Flutter SDK version to 3.2.0. ([#47])
+    - Remove deprecated `textScaleFactor` from `CustomText`and add `textScaler`. ([#47])
+    - Change `shownText` and `actionText` of `SeletiveDefinition` and `builder`
+      of `SpanDefinition` to receive a `TextElement` object. ([#46])
+      - e.g. 
+        ```dart
+        // <2.0.0
+        SelectiveDefinition(
+          matcher: const LinkMatcher(),
+          shownText: (groups) => groups[0]!,
+          actionText: (groups) => groups[1]!,
+        )
+        ```
+        ```dart        
+        // >=2.0.0
+        SelectiveDefinition(
+          matcher: const LinkMatcher(),
+          shownText: (element) => element.groups[0]!,
+          actionText: (element) => element.groups[1]!,
+        )
+        ```
+- Potentially breaking:
+    - Change `Definition` to a sealed class.
+- Small refactorings.
+- Collapse the details of each example in README.
+
 ## 1.4.4
 
 - Fix the bugs where changes in configurations were not fully reflected in the following cases. ([#51])
@@ -339,5 +368,7 @@
 [#43]: https://github.com/kaboc/flutter_custom_text/pull/43
 [#44]: https://github.com/kaboc/flutter_custom_text/pull/44
 [#45]: https://github.com/kaboc/flutter_custom_text/pull/45
+[#46]: https://github.com/kaboc/flutter_custom_text/pull/46
+[#47]: https://github.com/kaboc/flutter_custom_text/pull/47
 [#49]: https://github.com/kaboc/flutter_custom_text/pull/49
 [#51]: https://github.com/kaboc/flutter_custom_text/pull/51
