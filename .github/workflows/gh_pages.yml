@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+      - name: Update dependencies
+        run: flutter pub upgrade
       - uses: bluefireteam/flutter-gh-pages@v8
         with:
           workingDir: example
