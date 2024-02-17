@@ -16,8 +16,8 @@ gesture handlers, etc.
 
 ## Usage by example
 
-Most of the examples here are included in the sample app in the [example] folder.
-Just click on the link below to see it in action on the web.
+Most of the examples here are contained in the sample app in the [example] folder.
+Just click on the link below to open its web version and see it in action.
 
 **[Web Demo][demo]**
 
@@ -41,7 +41,6 @@ matchers.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 Gestures are not available on the coloured strings in this example.
 
@@ -83,7 +82,6 @@ to be tapped and long-pressed.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 All the three are styled, but only phone numbers among them are styled differently with
 the unique `matchStyle` and `tapStyle`.
@@ -136,7 +134,6 @@ An example to replace the default pattern of [TelMatcher].
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 The new pattern here regards only the `{3 digits}-{4 digits}-{4 digits}` format
 as a phone number.
@@ -165,7 +162,6 @@ An example to parse hashtags with a custom pattern and apply styles to them.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 A hashtag has a wide variety of definitions, but here as an example, it is defined
 as a string that starts with "#" followed by an alphabet and then alphanumerics,
@@ -216,7 +212,6 @@ and make it tappable.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 [SelectiveDefinition] allows to select the string to display and the string to
 be passed to gesture callbacks individually.
@@ -277,7 +272,6 @@ An example to display both text and widgets.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 [SpanDefinition] enables a certain portion of text to be replaced with an arbitrary
 [InlineSpan]. The `builder` function receives a [TextElement] object containing
@@ -331,7 +325,6 @@ together with the `Link` widget of [url_launcher].
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 **Notes:**
 
@@ -380,12 +373,11 @@ An example to change the mouse cursor type on certain substrings.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 This is easily possible by just passing your desired type to `mouseCursor`.
 
 If a tap handler (`onTap` or `onLongPress`) is specified and `mouseCursor` is not,
-`SystemMouseCursors.click` is automatically used for the tappable region.
+`SystemMouseCursors.click` is automatically used for the tappable element.
 
 A different text style can also be applied on hover using `hoverStyle` either in `CustomText`
 or in a definition.
@@ -441,25 +433,21 @@ mouse enter or exit gesture.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 The `onGesture` handler is called on an event of a non-primary button or mouse
 gesture.
 
-You can check the event type with `gestureKind` contained in the [GestureDetails]
-object which is passed to the handler function. The object also has the global
-and local positions where an event happened.
+You can check the event type with `gestureKind` contained in the [GestureDetails] object
+which is passed to the handler function. The object also has the global and local positions
+where an event happened. It is useful for showing a popup or a menu at the position.
 
 **Notes:**
 
-- `onGesture` does not handle events of the primary button. Use `onTap` and/or
-  `onLongPress` instead.
-- Unlike `onTap` and `onLongPress`, whether `onGesture` is specified does not
-  affect text styling.
-- The handler function is called one microsecond or more after the actual
-  occurrence of an event.
-    - This is due to a workaround for preventing the function from being called
-      more times than expected by updates of the text span.
+- `onGesture` does not handle events of the primary button. Use `onTap` and/or `onLongPress` instead.
+- Unlike `onTap` and `onLongPress`, whether `onGesture` is specified does not affect text styling.
+- The handler function is called one microsecond or more after the actual occurrence of an event.
+    - This is due to a workaround for preventing the function from being called more times than
+      expected by updates of the text span.
 </details>
 
 ---
@@ -475,7 +463,6 @@ instead of plain text.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 This constructor is useful if you already have styled spans and want to decorate them
 additionally.
@@ -543,7 +530,6 @@ apply more decorations and enable gestures.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 It has similar use cases to [CustomText.spans], but is more helpful when it is
 not easy to compose complex spans manually.
@@ -593,7 +579,6 @@ functionality available in an editable text.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 ```dart
 final controller = CustomTextEditingController(
@@ -646,7 +631,6 @@ An example of using an external parser instead of the internal one.
 
 <details>
 <summary>Click to see the details</summary>
-<br>
 
 `ParserOptions.external` helps you when a different parser you already have does
 a better job or can do what is difficult with the default parser.
@@ -702,8 +686,9 @@ CustomText(
 
 - `decorationColor` does not automatically inherit the text colour in Material 3.
   See https://github.com/flutter/flutter/issues/129553.
-- The regular expression pattern of `TelMatcher` contains a lookbehind assertion.
-  [It is not supported in Safari versions before 16.4](https://caniuse.com/?search=lookbehind).
+- The regular expression pattern of `TelMatcher` contains a lookbehind assertion, but
+  [Safari versions before 16.4 have no support for it](https://caniuse.com/?search=lookbehind).
+  Avoid using `TelMatcher` as is if your app targets older Safari versions.
 - `CustomTextEditingController` raises an error on iOS simulators (not on real devices)
   if the initial text and `onTap`, `onLongPress` or `onGesture` are specified.
   See https://github.com/flutter/flutter/issues/97433.
