@@ -594,7 +594,7 @@ void main() {
 
         await tester.pumpWidget(
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.topLeft,
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: CustomText.spans(
@@ -633,13 +633,13 @@ void main() {
 
         const spans = [
           TextSpan(text: 'aaa'),
-          WidgetSpan(child: SizedBox.square(dimension: 30.0)),
+          WidgetSpan(child: SizedBox(width: 30.0, height: 10.0)),
           TextSpan(text: 'ccc'),
         ];
 
         await tester.pumpWidget(
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.topLeft,
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: CustomText.spans(
