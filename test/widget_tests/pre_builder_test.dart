@@ -60,7 +60,8 @@ void main() {
     });
 
     testWidgets(
-      'CustomText parses children of TextSpan built by preBuilder',
+      'Match pattern in CustomText itself is used for TextSpan built by '
+      'preBuilder, not for the original text',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
         const matchStyle1 = TextStyle(decoration: TextDecoration.underline);
@@ -72,14 +73,15 @@ void main() {
             textDirection: TextDirection.ltr,
             definitions: const [
               TextDefinition(
-                matcher: PatternMatcher('abbbc'),
+                matcher: PatternMatcher('adddc'),
                 matchStyle: matchStyle1,
               ),
             ],
             preBuilder: CustomSpanBuilder(
-              definitions: const [
-                TextDefinition(
-                  matcher: PatternMatcher('bbb'),
+              definitions: [
+                SelectiveDefinition(
+                  matcher: const PatternMatcher('bbb'),
+                  shownText: (_) => 'ddd',
                   matchStyle: matchStyle2,
                 ),
               ],
@@ -102,7 +104,7 @@ void main() {
                 style: matchStyle1,
                 children: [
                   TextSpan(text: 'a', style: style),
-                  TextSpan(text: 'bbb', style: matchStyle2),
+                  TextSpan(text: 'ddd', style: matchStyle2),
                   TextSpan(text: 'c', style: style),
                 ],
               ),

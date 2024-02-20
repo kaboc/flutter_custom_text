@@ -516,7 +516,7 @@ class _CustomTextState extends State<CustomText> {
 
     if (needsParse) {
       await _parse(
-        widget.text ?? spanText ?? builtSpanText ?? '',
+        builtSpanText ?? widget.text ?? spanText ?? '',
       );
       return;
     }
