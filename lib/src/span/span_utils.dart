@@ -110,9 +110,7 @@ class WidgetSpanChild extends StatelessWidget {
     final span = rootSpan;
     if (span.onEnter != null ||
         span.onExit != null ||
-        span.mouseCursor != MouseCursor.defer &&
-            (recognizer == null ||
-                span.mouseCursor != SystemMouseCursors.click)) {
+        span.mouseCursor != MouseCursor.defer) {
       child = MouseRegion(
         onEnter: span.onEnter,
         onExit: span.onExit,
