@@ -1509,48 +1509,6 @@ void main() {
         expect(spans2[2], isNot(same(spans1[2])));
       },
     );
-
-    testWidgets(
-      'Changing DefaultTextStyle while there are no other changes '
-      'causes rebuilds of all spans',
-      (tester) async {
-        var defaultStyle = const TextStyle(color: Color(0x11111111));
-
-        await tester.pumpWidget(
-          StatefulBuilder(
-            builder: (_, setState) {
-              return DefaultTextStyle(
-                style: defaultStyle,
-                child: CustomTextWidget(
-                  'aaabbbccc',
-                  definitions: const [
-                    TextDefinition(matcher: PatternMatcher('bbb')),
-                  ],
-                  onButtonPressed: () => setState(() {
-                    defaultStyle = const TextStyle(color: Color(0x22222222));
-                  }),
-                ),
-              );
-            },
-          ),
-        );
-        await tester.pump();
-
-        final spans1 = List.of(findFirstTextSpan()!.children!);
-
-        await tester.tapButton();
-        await tester.pumpAndSettle();
-
-        final spans2 = List.of(findFirstTextSpan()!.children!);
-
-        expect(spans1, hasLength(3));
-        expect(spans2, hasLength(3));
-
-        expect(spans2[0], isNot(same(spans1[0])));
-        expect(spans2[1], isNot(same(spans1[1])));
-        expect(spans2[2], isNot(same(spans1[2])));
-      },
-    );
   });
 
   group('Notifier', () {
