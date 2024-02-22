@@ -141,6 +141,7 @@ class CustomSpanBuilder {
         updatedDefinitionIndexes: [],
       );
     }
+    _spansBuilder.elements = oldBuilder?._spansBuilder.elements ?? [];
 
     final updatedDefIndexes =
         definitions.findUpdatedDefinitions(oldBuilder?.definitions);
@@ -150,7 +151,6 @@ class CustomSpanBuilder {
         matchStyle != oldBuilder?.matchStyle;
 
     if (needsBuild) {
-      _spansBuilder.elements = oldBuilder?._spansBuilder.elements ?? [];
       return _span = await _build(
         currentSpans: _span.children ?? [],
         updatedDefinitionIndexes: updatedDefIndexes,

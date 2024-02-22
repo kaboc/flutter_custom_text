@@ -170,6 +170,80 @@ void main() {
         );
       },
     );
+
+    // This is a test to avoid recurrence of the issue #58.
+    testWidgets(
+      'Text elements in previous builder are inherited to new builder '
+      'when both parsing and building are skipped',
+      (tester) async {
+        var rebuildKey = const ValueKey(1);
+
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    CustomText(
+                      'aaabbb',
+                      textDirection: TextDirection.ltr,
+                      definitions: const [
+                        TextDefinition(matcher: PatternMatcher('')),
+                      ],
+                      preBuilder: CustomSpanBuilder(
+                        definitions: [
+                          TextDefinition(
+                            rebuildKey: rebuildKey,
+                            matcher: const PatternMatcher('bbb'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => setState(() {}),
+                      child: const Text('Button'),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+        await tester.pump();
+
+        const expectedSpan = TextSpan(
+          children: [
+            TextSpan(
+              children: [
+                TextSpan(text: 'aaa'),
+                TextSpan(text: 'bbb'),
+              ],
+            ),
+          ],
+        );
+
+        expect(findFirstTextSpan(), expectedSpan);
+
+        // Rebuilds CustomText to run the preBuilder function.
+        // Configs have not changed, so preBuilder skips both
+        // parsing and building.
+        await tester.tapButton();
+        await tester.pumpAndSettle();
+
+        expect(findFirstTextSpan(), expectedSpan);
+
+        // Rebuilds CustomText to run the preBuilder function.
+        // This time, preBuilder skips parsing but performs building.
+        rebuildKey = const ValueKey(2);
+        await tester.tapButton();
+        await tester.pumpAndSettle();
+
+        // Having the same span as above indicates text elements were
+        // inherited to the new builder as expected.
+        expect(findFirstTextSpan(), expectedSpan);
+      },
+    );
   });
 
   group('Optimisation', () {
