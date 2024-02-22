@@ -1,3 +1,13 @@
+## 2.0.1
+
+- Fix bug where `SystemMouseCursors.click` was not used for clickable `WidgetSpan`. ([#54])
+- Fix bugs related to `preBuilder`.
+    - Match patterns were used for original text instead of `TextSpan` built by `preBuilder`. ([#55])
+    - Update of `DefaultTextStyle` caused a rebuild and reset prebuilt `TextSpan`. ([#57])
+    - Text elements were lost when both parsing and building were skipped in `preBuilder`. ([#59])
+- Improve documentation to clarify the target of match patterns used in the context of `preBuilder`.
+- Small refactoring.
+
 ## 2.0.0
 
 - **Breaking:**
@@ -372,3 +382,7 @@
 [#47]: https://github.com/kaboc/flutter_custom_text/pull/47
 [#49]: https://github.com/kaboc/flutter_custom_text/pull/49
 [#51]: https://github.com/kaboc/flutter_custom_text/pull/51
+[#54]: https://github.com/kaboc/flutter_custom_text/pull/54
+[#55]: https://github.com/kaboc/flutter_custom_text/pull/55
+[#57]: https://github.com/kaboc/flutter_custom_text/pull/57
+[#59]: https://github.com/kaboc/flutter_custom_text/pull/59

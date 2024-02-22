@@ -413,13 +413,13 @@ class _CustomTextState extends State<CustomText> {
 
     _textSpanNotifier = _shouldBeInvisibleDuringParsing()
         ? CustomTextSpanNotifier(
-            // Uses plain text instead of spans at this point even when
-            // `CustomText.spans` or `preBuilder` is used.
-            // Otherwise, widgets contained in spans become visible
-            // because the transparent colour only works for text.
-            // (Using empty string instead of making text transparent
-            // is wrong here because the widget should have the space
-            // for the content at this point to avoid it changing later.)
+            // Uses plain text instead of spans for now even if
+            // `CustomText.spans` or `preBuilder` is used. Otherwise, widgets
+            // contained in spans become visible because the transparent colour
+            // only works for text.
+            // (Using empty string instead of making text transparent is
+            // wrong here because the widget should have the space for the
+            // content at this point to avoid it changing later.)
             initialText: widget.text ?? spanText,
             initialStyle:
                 widget.style?.copyWith(color: const Color(0x00000000)) ??
