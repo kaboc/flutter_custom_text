@@ -480,12 +480,11 @@ class _CustomTextState extends State<CustomText> {
       oldBuilder: oldBuilder,
     );
 
-    if (preBuilder != null && builtSpan != null) {
+    if (builtSpan != null) {
       _textSpanNotifier.updateSettings(
         _createSettings(spans: builtSpan.children),
       );
     }
-
     final builtSpanText = builtSpan?.toPlainText();
 
     final needsParse = isInitial ||
