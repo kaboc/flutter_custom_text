@@ -10,6 +10,8 @@ class PreBuilderExample extends StatelessWidget {
       'KISS is an acronym for "Keep It Simple, Stupid!".',
       definitions: const [
         TextDefinition(
+          // This pattern is used for parsing the TextSpan built
+          // by preBuilder, not for the original text.
           matcher: PatternMatcher('[A-Z]'),
           matchStyle: TextStyle(color: Colors.red),
         ),
@@ -17,6 +19,7 @@ class PreBuilderExample extends StatelessWidget {
       preBuilder: CustomSpanBuilder(
         definitions: [
           const TextDefinition(
+            // This pattern is used for parsing the original text.
             matcher: PatternMatcher('KISS|Keep.+Stupid!'),
             matchStyle: TextStyle(fontWeight: FontWeight.bold),
           ),

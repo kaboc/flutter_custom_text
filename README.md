@@ -556,6 +556,8 @@ CustomText(
   'KISS is an acronym for "Keep It Simple, Stupid!".',
   definitions: const [
     TextDefinition(
+      // This pattern is used for parsing the TextSpan built
+      // by preBuilder, not for the original text.
       matcher: PatternMatcher('[A-Z]'),
       matchStyle: TextStyle(color: Colors.red),
     ),
@@ -563,6 +565,7 @@ CustomText(
   preBuilder: CustomSpanBuilder(
     definitions: [
       const TextDefinition(
+        // This pattern is used for parsing the original text.
         matcher: PatternMatcher('KISS|Keep.+Stupid!'),
         matchStyle: TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -573,11 +576,14 @@ CustomText(
 
 **Notes:**
 
+- Parsing is performed first in the builder and then in `CustomText` itself. It
+  is important to understand that the match patterns in the builder are used for
+  the original text and the patterns in `CustomText` are used for the `TextSpan`
+  built by the builder. 
+- Parsing and building of spans are avoided if not necessary, but still happen
+  in two steps as written above when unavoidable. Be careful how much it affects
+  the performance of your app.
 - Gesture callbacks and `mouseCursor` in the builder are not used even if specified.
-- The builder function is called first to parse the text and build a `TextSpan`,
-  and then another parsing is performed in `CustomSpan` itself against the plain
-  text converted from the built span, followed by a rebuild. Check how much it
-  affects the performance of your app if you choose to use this.
 </details>
 
 ---

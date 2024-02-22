@@ -182,6 +182,8 @@ class CustomText extends StatefulWidget {
   ///   'KISS is an acronym for "Keep It Simple, Stupid!".',
   ///   definitions: const [
   ///     TextDefinition(
+  ///       // This pattern is used for parsing the TextSpan built
+  ///       // by preBuilder, not for the original text.
   ///       matcher: PatternMatcher('[A-Z]'),
   ///       matchStyle: TextStyle(color: Colors.red),
   ///     ),
@@ -199,12 +201,11 @@ class CustomText extends StatefulWidget {
   ///
   /// This is optional. If specified, the function is called first to build
   /// a [TextSpan], and then another parsing is performed in `CustomText`
-  /// itself against the plain text converted from the built span, followed
-  /// by a rebuild. Check how much it affects the performance of your app
-  /// if you choose to use this.
+  /// itself for the plain text converted from the built span, followed by
+  /// a rebuild. Be careful how much it affects the performance of your app.
   ///
-  /// Note that [CustomSpanBuilder] ignores values passed to most
-  /// parameters of definitions. See its document for details.
+  /// Note that [CustomSpanBuilder] ignores values passed to most parameters
+  /// of definitions. See its document for details.
   final CustomSpanBuilder? preBuilder;
 
   /// Definitions that specify rules for parsing, appearance and actions.
