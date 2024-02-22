@@ -10,7 +10,8 @@ import 'utils.dart';
 void main() {
   group('applyPropsToChildren()', () {
     testWidgets(
-      'Recognizer of root span is applied to descendant WidgetSpans',
+      'Recognizer of root span is applied to descendant WidgetSpans and '
+      'SystemMouseCursors.click is used even if it is not specified',
       (tester) async {
         final recognizer = TapGestureRecognizer();
         addTearDown(recognizer.dispose);
@@ -46,20 +47,28 @@ void main() {
         expect(gestureDetectors, hasLength(2));
 
         final gestureDetector1 = gestureDetectors.first;
-        expect(gestureDetector1.child, child1);
         expect(gestureDetector1.onTapDown, recognizer.onTapDown);
         expect(gestureDetector1.onTapUp, recognizer.onTapUp);
         expect(gestureDetector1.onTapCancel, recognizer.onTapCancel);
         expect(gestureDetector1.onSecondaryTapUp, recognizer.onSecondaryTapUp);
         expect(gestureDetector1.onTertiaryTapUp, recognizer.onTertiaryTapUp);
 
+        expect(gestureDetector1.child, isA<MouseRegion>());
+        final mouseRegion1 = gestureDetector1.child! as MouseRegion;
+        expect(mouseRegion1.cursor, SystemMouseCursors.click);
+        expect(mouseRegion1.child, child1);
+
         final gestureDetector2 = gestureDetectors.last;
-        expect(gestureDetector2.child, child2);
         expect(gestureDetector2.onTapDown, recognizer.onTapDown);
         expect(gestureDetector2.onTapUp, recognizer.onTapUp);
         expect(gestureDetector2.onTapCancel, recognizer.onTapCancel);
         expect(gestureDetector2.onSecondaryTapUp, recognizer.onSecondaryTapUp);
         expect(gestureDetector2.onTertiaryTapUp, recognizer.onTertiaryTapUp);
+
+        expect(gestureDetector2.child, isA<MouseRegion>());
+        final mouseRegion2 = gestureDetector2.child! as MouseRegion;
+        expect(mouseRegion2.cursor, SystemMouseCursors.click);
+        expect(mouseRegion2.child, child2);
       },
     );
 
