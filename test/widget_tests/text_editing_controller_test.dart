@@ -1,6 +1,8 @@
 import 'dart:async' show Completer;
 
+import 'package:flutter/material.dart' show Material, Theme;
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart' show Builder;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
@@ -16,7 +18,9 @@ void main() {
 
   group('Text style', () {
     testWidgets(
-      '`style` of controller is used until initial parsing completes',
+      '`style` of editable text (not that of controller) is used for '
+      'top-level style of TextSpan even before initial parsing completes, '
+      'and styles specified in controller are used for children',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
         const matchStyle = TextStyle(color: Color(0x22222222));
@@ -37,19 +41,27 @@ void main() {
         );
         addTearDown(controller.dispose);
 
+        late TextStyle bodyLarge;
         await tester.pumpWidget(
-          TextFieldWidget(
-            controller: controller,
-            style: fieldStyle,
+          Material(
+            child: Builder(
+              builder: (context) {
+                bodyLarge = Theme.of(context).textTheme.bodyLarge!;
+                return TextFieldWidget(
+                  controller: controller,
+                  style: fieldStyle,
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
 
         expect(
-          tester.findRenderEditable()?.text,
-          const TextSpan(
+          tester.findRenderEditable()!.text,
+          TextSpan(
+            style: bodyLarge.merge(fieldStyle),
             text: 'aaa bbb@example.com',
-            style: style,
           ),
         );
 
@@ -60,49 +72,14 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-          tester.findRenderEditable()?.text,
-          const TextSpan(
-            children: [
+          tester.findRenderEditable()!.text,
+          TextSpan(
+            style: bodyLarge.merge(fieldStyle),
+            children: const [
               TextSpan(text: 'aaa ', style: style),
               TextSpan(text: 'bbb@example.com', style: matchStyle),
             ],
           ),
-        );
-      },
-    );
-
-    testWidgets(
-      '`style` of TextField is used until initial parsing completes '
-      'if `style` is not specified in controller',
-      (tester) async {
-        const matchStyle = TextStyle(color: Color(0x11111111));
-        const fieldStyle = TextStyle(color: Color(0x22222222));
-
-        final controller = CustomTextEditingController(
-          text: 'aaa bbb@example.com',
-          parserOptions: ParserOptions.external(
-            (text) => Completer<List<TextElement>>().future,
-          ),
-          definitions: const [
-            TextDefinition(
-              matcher: EmailMatcher(),
-              matchStyle: matchStyle,
-            ),
-          ],
-        );
-        addTearDown(controller.dispose);
-
-        await tester.pumpWidget(
-          TextFieldWidget(
-            controller: controller,
-            style: fieldStyle,
-          ),
-        );
-        await tester.pump();
-
-        expect(
-          tester.findRenderEditable()?.text?.style?.color,
-          fieldStyle.color,
         );
       },
     );

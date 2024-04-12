@@ -140,7 +140,6 @@ class CustomTextEditingController extends TextEditingController {
   Future<List<TextElement>> Function(String)? _parser;
   late CustomTextSpanNotifier _textSpanNotifier;
   String _oldText = '';
-  TextStyle? _style;
   Future<void> Function()? _delayedParse;
   Timer? _debounceTimer;
 
@@ -172,20 +171,26 @@ class CustomTextEditingController extends TextEditingController {
     TextStyle? style,
     required bool withComposing,
   }) {
-    _style = style;
-
     if (_parser == null) {
-      // Initialisation must not occur before the first call to this method.
-      // The text style from the editable text is not available before then.
       _init();
     }
 
     return _textSpanNotifier.elements.isEmpty
         ? TextSpan(
             text: _textSpanNotifier.value.text,
-            style: this.style ?? style,
+            style: style,
           )
-        : _textSpanNotifier.value;
+        : TextSpan(
+            children: _textSpanNotifier.value.children,
+            // The style from buildTextSpan() must be applied to the
+            // top level. Applying it to the children instead causes
+            // the following behaviours.
+            //
+            // * The height is not applied to the cursor.
+            // * Changes in the style specified in editable text are
+            //   not reflected quickly.
+            style: style,
+          );
   }
 
   void _init() {
@@ -220,7 +225,7 @@ class CustomTextEditingController extends TextEditingController {
     addListener(_onTextChanged);
   }
 
-  Future<void> _onTextChanged() async {
+  Future<void> _onTextChanged({bool force = false}) async {
     _debounceTimer?.cancel();
 
     final debounceDuration = _correctedDebounceDuration;
@@ -229,15 +234,15 @@ class CustomTextEditingController extends TextEditingController {
     final newText = text;
     _oldText = text;
 
-    if (newText != oldText) {
+    if (force || newText != oldText) {
       final oldElementsLength = _textSpanNotifier.elements.length;
 
-      if (debounceDuration == null || oldElementsLength == 0) {
+      if (force || debounceDuration == null || oldElementsLength == 0) {
         final elements = await _parser!(newText);
         _textSpanNotifier
           ..updateElements(elements)
           ..buildSpan(
-            style: style ?? _style,
+            style: style,
             updatedDefinitionIndexes: [],
           );
       } else {
@@ -257,7 +262,7 @@ class CustomTextEditingController extends TextEditingController {
         _textSpanNotifier
           ..updateElements(result.elements)
           ..buildTransientSpan(
-            style: style ?? _style,
+            style: style,
             replaceRange: result.replaceRange,
             spanRange: result.spanRange,
           );
@@ -267,7 +272,7 @@ class CustomTextEditingController extends TextEditingController {
           _textSpanNotifier
             ..updateElements(elements)
             ..buildSpan(
-              style: style ?? _style,
+              style: style,
               updatedDefinitionIndexes: [],
             );
         };
