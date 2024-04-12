@@ -61,6 +61,10 @@ class _ExamplePageState extends State<ExamplePage> {
       resultNotifier: _resultNotifier,
       scrollController: _scrollController,
     );
+
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -88,15 +92,17 @@ class _ExamplePageState extends State<ExamplePage> {
           onTap: FocusScope.of(context).unfocus,
           child: SafeArea(
             child: widget.hasOutput
-                ? OrientationBuilder(
-                    builder: (context, orientation) {
-                      return orientation == Orientation.landscape
+                ? LayoutBuilder(
+                    builder: (context, constraints) {
+                      return isLandscape
                           ? HorizontalLayout(
+                              maxWidth: constraints.maxWidth,
                               description: description,
                               example: example,
                               output: output,
                             )
                           : VerticalLayout(
+                              maxHeight: constraints.maxHeight,
                               description: description,
                               example: example,
                               output: output,
