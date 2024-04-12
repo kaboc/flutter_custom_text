@@ -98,18 +98,28 @@ class TextFieldWidget extends StatelessWidget {
     super.key,
     required this.controller,
     this.style,
+    this.onButtonPressed,
   });
 
   final CustomTextEditingController controller;
   final TextStyle? style;
+  final VoidCallback? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: TextField(
-          controller: controller,
-          style: style,
+        body: Column(
+          children: [
+            TextField(
+              controller: controller,
+              style: style,
+            ),
+            ElevatedButton(
+              onPressed: onButtonPressed,
+              child: const Text('Button'),
+            ),
+          ],
         ),
       ),
     );
