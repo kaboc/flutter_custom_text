@@ -53,13 +53,13 @@ final router = GoRouter(
               ),
             ),
           ],
-          redirect: (_, state) {
-            return state.pageWidget == null ? '/' : null;
-          },
         ),
       ],
     ),
   ],
+  redirect: (_, state) {
+    return state.pageWidget == null ? '/' : null;
+  },
 );
 
 final pages = [

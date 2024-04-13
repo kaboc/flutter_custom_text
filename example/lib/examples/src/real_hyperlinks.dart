@@ -36,6 +36,11 @@ class RealHyperlinksExample extends StatelessWidget {
             decoration: TextDecoration.underline,
           ),
           mouseCursor: SystemMouseCursors.click,
+          onTap: (_) {
+            // no-op
+            // This callback is only necessary to make hoverStyle
+            // applied on tap on mobile devices.
+          },
         ),
       ],
     );

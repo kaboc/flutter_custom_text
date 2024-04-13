@@ -25,9 +25,23 @@ Future<List<TextElement>> _buildElements(
     if (node.children == null) {
       final value = node.value;
       if (value != null && value.isNotEmpty) {
-        elements.addAll(
-          await _buildValueElements(value, currentOffset, className),
-        );
+        if (className != 'code' || value.startsWith('```')) {
+          elements.addAll(
+            await _buildValueElements(
+              value,
+              currentOffset,
+              className == 'code' ? 'code_block' : className,
+            ),
+          );
+        } else {
+          elements.add(
+            TextElement(
+              value,
+              matcherType: CodeMatcher,
+              offset: currentOffset,
+            ),
+          );
+        }
       }
     } else {
       elements.addAll(
@@ -88,6 +102,7 @@ const _mappings = {
   'link': UrlMatcher,
   'quote': QuoteMatcher,
   'code': CodeMatcher,
+  'code_block': CodeBlockMatcher,
 };
 
 class KeywordMatcher extends TextMatcher {
@@ -176,4 +191,8 @@ class QuoteMatcher extends TextMatcher {
 
 class CodeMatcher extends TextMatcher {
   const CodeMatcher() : super('');
+}
+
+class CodeBlockMatcher extends TextMatcher {
+  const CodeBlockMatcher() : super('');
 }

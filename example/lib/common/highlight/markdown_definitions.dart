@@ -39,6 +39,10 @@ const markdownDefinitions = [
   ),
   TextDefinition(
     matcher: CodeMatcher(),
+    matchStyle: TextStyle(backgroundColor: Color(0x22000000)),
+  ),
+  TextDefinition(
+    matcher: CodeBlockMatcher(),
     matchStyle: TextStyle(color: Color(0xFF795548)),
   ),
   TextDefinition(
