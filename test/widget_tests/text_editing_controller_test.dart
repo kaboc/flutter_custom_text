@@ -1,6 +1,8 @@
 import 'dart:async' show Completer;
 
+import 'package:flutter/material.dart' show Material, Theme;
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart' show Builder, StatefulBuilder;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:custom_text/custom_text.dart';
@@ -16,7 +18,9 @@ void main() {
 
   group('Text style', () {
     testWidgets(
-      '`style` of controller is used until initial parsing completes',
+      '`style` of editable text (not that of controller) is used for '
+      'top-level style of TextSpan even before initial parsing completes, '
+      'and styles specified in controller are used for children',
       (tester) async {
         const style = TextStyle(color: Color(0x11111111));
         const matchStyle = TextStyle(color: Color(0x22222222));
@@ -37,19 +41,27 @@ void main() {
         );
         addTearDown(controller.dispose);
 
+        late TextStyle bodyLarge;
         await tester.pumpWidget(
-          TextFieldWidget(
-            controller: controller,
-            style: fieldStyle,
+          Material(
+            child: Builder(
+              builder: (context) {
+                bodyLarge = Theme.of(context).textTheme.bodyLarge!;
+                return TextFieldWidget(
+                  controller: controller,
+                  style: fieldStyle,
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
 
         expect(
-          tester.findRenderEditable()?.text,
-          const TextSpan(
+          tester.findRenderEditable()!.text,
+          TextSpan(
+            style: bodyLarge.merge(fieldStyle),
             text: 'aaa bbb@example.com',
-            style: style,
           ),
         );
 
@@ -60,9 +72,10 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-          tester.findRenderEditable()?.text,
-          const TextSpan(
-            children: [
+          tester.findRenderEditable()!.text,
+          TextSpan(
+            style: bodyLarge.merge(fieldStyle),
+            children: const [
               TextSpan(text: 'aaa ', style: style),
               TextSpan(text: 'bbb@example.com', style: matchStyle),
             ],
@@ -72,38 +85,80 @@ void main() {
     );
 
     testWidgets(
-      '`style` of TextField is used until initial parsing completes '
-      'if `style` is not specified in controller',
+      'Cursor respects text height specified in style of editable text',
       (tester) async {
-        const matchStyle = TextStyle(color: Color(0x11111111));
-        const fieldStyle = TextStyle(color: Color(0x22222222));
-
         final controller = CustomTextEditingController(
-          text: 'aaa bbb@example.com',
-          parserOptions: ParserOptions.external(
-            (text) => Completer<List<TextElement>>().future,
-          ),
+          text: 'abc',
           definitions: const [
-            TextDefinition(
-              matcher: EmailMatcher(),
-              matchStyle: matchStyle,
-            ),
+            TextDefinition(matcher: PatternMatcher('')),
           ],
         );
         addTearDown(controller.dispose);
 
+        late TextStyle bodyLarge;
         await tester.pumpWidget(
-          TextFieldWidget(
-            controller: controller,
-            style: fieldStyle,
+          Material(
+            child: Builder(
+              builder: (context) {
+                bodyLarge = Theme.of(context).textTheme.bodyLarge!;
+                return TextFieldWidget(
+                  controller: controller,
+                  style: const TextStyle(height: 2.0),
+                );
+              },
+            ),
           ),
         );
         await tester.pump();
 
-        expect(
-          tester.findRenderEditable()?.text?.style?.color,
-          fieldStyle.color,
+        final rect = tester.getCursorRect();
+        expect(rect.height, bodyLarge.fontSize! * 2.0);
+      },
+    );
+
+    testWidgets(
+      'Changes in style specified in editable text are applied quickly',
+      (tester) async {
+        final controller = CustomTextEditingController(
+          text: 'abc',
+          definitions: const [
+            TextDefinition(matcher: PatternMatcher('')),
+          ],
         );
+        addTearDown(controller.dispose);
+
+        var style = const TextStyle();
+        const style2 = TextStyle(height: 1.8, fontSize: 30.0);
+
+        late TextStyle bodyLarge;
+        await tester.pumpWidget(
+          Material(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                bodyLarge = Theme.of(context).textTheme.bodyLarge!;
+                return TextFieldWidget(
+                  controller: controller,
+                  style: style,
+                  onButtonPressed: () => setState(() => style = style2),
+                );
+              },
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final textHeight1 = tester.findRenderEditable()!.size.height;
+        final cursorHeight1 = tester.getCursorRect().height;
+        expect(textHeight1, bodyLarge.fontSize! * bodyLarge.height!);
+        expect(cursorHeight1, textHeight1);
+
+        await tester.tapButton();
+        await tester.pump();
+
+        final textHeight2 = tester.findRenderEditable()!.size.height;
+        final cursorHeight2 = tester.getCursorRect().height;
+        expect(textHeight2, style2.fontSize! * style2.height!);
+        expect(cursorHeight2, textHeight2);
       },
     );
   });

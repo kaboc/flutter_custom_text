@@ -128,4 +128,9 @@ extension WidgetTesterExtension on WidgetTester {
 
     return renderEditable;
   }
+
+  Rect getCursorRect() {
+    return findRenderEditable()!
+        .getLocalRectForCaret(const TextPosition(offset: 0));
+  }
 }
