@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/kaboc/flutter_custom_text/branch/main/graph/badge.svg?token=H7ILK6CS0V)](https://codecov.io/gh/kaboc/flutter_custom_text)
 
 A highly customisable text widget that enables decorations and gesture actions, and
-a special TextEditingController that makes most of the same functionality available also
+a special TextEditingController that makes some of the features available also
 in a text field.
 
 This package is useful for making partial strings in text (e.g. URLs, email addresses

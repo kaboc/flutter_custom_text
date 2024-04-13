@@ -1,3 +1,10 @@
+## 2.0.2
+
+- Fix wrong handling of styles in CustomTextEditingController. ([#61])
+    - The cursor didn't respect text height.
+    - The style specified in editable text was ignored if another style was passed to the controller.
+    - Changes in the style specified in editable text were not applied quicly.
+
 ## 2.0.1
 
 - Fix bug where `SystemMouseCursors.click` was not used for clickable `WidgetSpan`. ([#54])
@@ -386,3 +393,4 @@
 [#55]: https://github.com/kaboc/flutter_custom_text/pull/55
 [#57]: https://github.com/kaboc/flutter_custom_text/pull/57
 [#59]: https://github.com/kaboc/flutter_custom_text/pull/59
+[#61]: https://github.com/kaboc/flutter_custom_text/pull/61
