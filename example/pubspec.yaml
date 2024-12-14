@@ -16,16 +16,18 @@ dependencies:
   collection: ^1.18.0
   device_info_plus: ^9.1.2
   go_router: ^13.2.3
-  google_fonts: ^6.1.0
+  # 6.2.0 has a bug and 6.2.1 does not support Dart 3.2.
+  # https://github.com/material-foundation/flutter-packages/issues/567
+  google_fonts: 6.1.0
   highlight: ^0.7.0
   positioned_popup:
     git:
       url: https://github.com/kaboc/positioned-popup.git
       ref: 28af814a9dcb1623fce3a7301d10e76006afbf94
-  url_launcher: ^6.2.6
+  url_launcher: ^6.3.0
 
 dev_dependencies:
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
