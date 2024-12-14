@@ -93,12 +93,6 @@ class CustomSpanBuilder {
   String _text = '';
   TextSpan _span = const TextSpan();
 
-  @internal
-  // ignore: public_member_api_docs
-  String spanText() {
-    return _span.toPlainText();
-  }
-
   bool _parsed = false;
   bool _built = false;
 
@@ -113,6 +107,12 @@ class CustomSpanBuilder {
   /// Whether the most recent call to [build] caused a build of spans.
   @internal
   bool get built => _built;
+
+  @internal
+  // ignore: public_member_api_docs
+  String spanText() {
+    return _span.toPlainText();
+  }
 
   /// Builds a [TextSpan] based on [definitions].
   ///
