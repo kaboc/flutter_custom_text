@@ -1,9 +1,13 @@
+## 2.0.3
+
+- Update dependencies.
+
 ## 2.0.2
 
 - Fix wrong handling of styles in CustomTextEditingController. ([#61])
-    - The cursor didn't respect text height.
+    - The cursor didn't respect the text height.
     - The style specified in editable text was ignored if another style was passed to the controller.
-    - Changes in the style specified in editable text were not applied quicly.
+    - Changes in the style specified in editable text were not applied quickly.
 
 ## 2.0.1
 
