@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -114,6 +116,51 @@ void main() {
       expect(spansByBuilder2[1], isNot(same(spansByBuilder1[1])));
       expect(spansByBuilder2[2], same(spansByBuilder1[2]));
       expect(span2, isNot(same(span1)));
+    },
+  );
+
+  testWidgets(
+    'Reassembling app causes an entire rebuild (similarly to when rebuildKey '
+    'is replaced), while rebuilding parent of CustomText does not.',
+    (tester) async {
+      var replace = 'BBB';
+
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                children: [
+                  CustomText(
+                    'aaabbb',
+                    definitions: [
+                      SpanDefinition(
+                        matcher: const PatternMatcher('bbb'),
+                        builder: (element) => TextSpan(text: replace),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () => setState(() => replace = 'CCC'),
+                    child: const Text('Button'),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(findText().textSpan?.toPlainText(), 'aaaBBB');
+
+      await tester.tapButton();
+      await tester.pumpAndSettle();
+      expect(findText().textSpan?.toPlainText(), 'aaaBBB');
+
+      unawaited(tester.binding.reassembleApplication());
+      await tester.pumpAndSettle();
+      expect(findText().textSpan?.toPlainText(), 'aaaCCC');
     },
   );
 }

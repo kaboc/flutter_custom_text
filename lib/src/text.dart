@@ -383,6 +383,7 @@ class CustomText extends StatefulWidget {
 
 class _CustomTextState extends State<CustomText> {
   late CustomTextSpanNotifier _textSpanNotifier;
+  bool _wasReassembled = false;
 
   SpansBuilderSettings _createSettings({List<InlineSpan>? spans}) {
     return SpansBuilderSettings(
@@ -450,12 +451,21 @@ class _CustomTextState extends State<CustomText> {
     );
   }
 
+  @override
+  void reassemble() {
+    super.reassemble();
+    _wasReassembled = true;
+  }
+
   Future<void> _buildSpans({
     required String? spanText,
     required CustomText? oldWidget,
   }) async {
     final isInitial = oldWidget == null;
     final hasElements = _textSpanNotifier.elements.isNotEmpty;
+
+    final wasReassembled = _wasReassembled;
+    _wasReassembled = false;
 
     if (!isInitial) {
       final hasText = (widget.text ?? '').isNotEmpty;
@@ -521,7 +531,8 @@ class _CustomTextState extends State<CustomText> {
         widget.tapStyle != oldWidget.tapStyle ||
         widget.hoverStyle != oldWidget.hoverStyle ||
         widget.longPressDuration != oldWidget.longPressDuration ||
-        !listEquals(widget.spans, oldWidget.spans);
+        !listEquals(widget.spans, oldWidget.spans) ||
+        wasReassembled;
 
     final updatedDefIndexes = needsEntireBuild
         ? <int>[]
