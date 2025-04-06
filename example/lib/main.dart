@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import 'package:custom_text_example/common/device_info.dart';
-import 'package:custom_text_example/common/router.dart';
+import 'package:custom_text_example/routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,10 @@ class App extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'CustomText Demo',
+      routerConfig: GoRouter(
+        routes: $appRoutes,
+        onException: (context, state, router) => router.go('/'),
+      ),
       theme: ThemeData(
         colorScheme: colorScheme,
         // Workaround for https://github.com/flutter/flutter/issues/129553.
@@ -45,9 +51,6 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      routeInformationProvider: router.routeInformationProvider,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
     );
   }
 }

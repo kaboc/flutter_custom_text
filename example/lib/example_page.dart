@@ -6,29 +6,24 @@ import 'package:go_router/go_router.dart';
 import 'package:positioned_popup/positioned_popup.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import 'package:custom_text_example/routes.dart';
 import 'package:custom_text_example/widgets/description.dart';
 import 'package:custom_text_example/widgets/layouts.dart';
 
 class ExamplePage extends StatefulWidget {
   const ExamplePage({
-    required this.pathString,
     required this.title,
     required this.description,
     required this.builder,
-    this.subtitle,
     this.hasOutput = true,
     this.additionalInfo,
   });
 
-  final String pathString;
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
-  final String? subtitle;
   final bool hasOutput;
   final String? additionalInfo;
-
-  String get filename => '${pathString.replaceAll('-', '_')}.dart';
 
   @override
   State<ExamplePage> createState() => _ExamplePageState();
@@ -37,6 +32,18 @@ class ExamplePage extends StatefulWidget {
 class _ExamplePageState extends State<ExamplePage> {
   final _resultNotifier = ValueNotifier<String>('');
   final _scrollController = ScrollController();
+
+  late final String _path;
+  late final String _filename;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final router = GoRouter.of(context);
+    _path = router.currentPath;
+    _filename = router.exampleFilename;
+  }
 
   @override
   void dispose() {
@@ -48,8 +55,8 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     final description = Description(
-      pathString: widget.pathString,
-      filename: widget.filename,
+      path: _path,
+      filename: _filename,
       description: widget.description,
     );
     final example = _Example(
@@ -75,7 +82,7 @@ class _ExamplePageState extends State<ExamplePage> {
               icon: const Icon(Icons.open_in_browser),
               onPressed: () => launchUrlString(
                 'https://kaboc.github.io/'
-                'flutter_custom_text/#/${widget.pathString}',
+                'flutter_custom_text/#$_path',
               ),
             ),
             const SizedBox(width: 4.0),
@@ -83,7 +90,7 @@ class _ExamplePageState extends State<ExamplePage> {
           IconButton(
             tooltip: 'View code',
             icon: const Icon(Icons.article),
-            onPressed: () => context.go('/${widget.pathString}/code'),
+            onPressed: () => context.go('$_path/code'),
           ),
         ],
       ),
@@ -143,9 +150,9 @@ class _Example extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builder((v) {
+          builder((text) {
             final value = resultNotifier.value;
-            resultNotifier.value += value.isEmpty ? v : '\n$v';
+            resultNotifier.value += value.isEmpty ? text : '\n$text';
           }),
           if (additionalInfo != null) ...[
             const SizedBox(height: 32.0),

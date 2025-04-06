@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 
 class Description extends StatelessWidget {
   const Description({
-    required this.pathString,
+    required this.path,
     required this.filename,
     required this.description,
   });
 
-  final String pathString;
+  final String path;
   final String filename;
   final String description;
 
@@ -33,7 +33,7 @@ class Description extends StatelessWidget {
                   hoverStyle: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
-                  onTap: (_) => context.go('/$pathString/code'),
+                  onTap: (_) => context.go('$path/code'),
                 ),
               ],
               style: TextStyle(
