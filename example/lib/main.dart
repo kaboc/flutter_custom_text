@@ -8,11 +8,15 @@ import 'package:custom_text_example/routes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DeviceInfo.checkIosSimulator();
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  const App();
+  final _router = GoRouter(
+    routes: $appRoutes,
+    navigatorKey: rootNavigatorKey,
+    onException: (context, state, router) => router.go('/'),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +29,7 @@ class App extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'CustomText Demo',
-      routerConfig: GoRouter(
-        routes: $appRoutes,
-        onException: (context, state, router) => router.go('/'),
-      ),
+      routerConfig: _router,
       theme: ThemeData(
         colorScheme: colorScheme,
         // Workaround for https://github.com/flutter/flutter/issues/129553.

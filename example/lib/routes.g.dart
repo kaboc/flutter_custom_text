@@ -10,145 +10,194 @@ List<RouteBase> get $appRoutes => [
       $homeRoute,
     ];
 
-RouteBase get $homeRoute => GoRouteData.$route(
-      path: '/',
+RouteBase get $homeRoute => ShellRouteData.$route(
+      navigatorKey: HomeRoute.$navigatorKey,
       factory: $HomeRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'simple',
-          factory: $SimpleRouteExtension._fromState,
+          path: '/',
+          factory: $BasicViewRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'code',
-              factory: $SimpleCodeRouteExtension._fromState,
+              path: 'simple',
+              parentNavigatorKey: SimpleRoute.$parentNavigatorKey,
+              factory: $SimpleRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: SimpleCodeRoute.$parentNavigatorKey,
+                  factory: $SimpleCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'styles-and-actions',
+              parentNavigatorKey: StylesAndActionsRoute.$parentNavigatorKey,
+              factory: $StylesAndActionsRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      StylesAndActionsCodeRoute.$parentNavigatorKey,
+                  factory: $StylesAndActionsCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'overwriting-pattern',
+              parentNavigatorKey: OverwritingPatternRoute.$parentNavigatorKey,
+              factory: $OverwritingPatternRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      OverwritingPatternCodeRoute.$parentNavigatorKey,
+                  factory: $OverwritingPatternCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'custom-pattern',
+              parentNavigatorKey: CustomPatternRoute.$parentNavigatorKey,
+              factory: $CustomPatternRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      CustomPatternCodeRoute.$parentNavigatorKey,
+                  factory: $CustomPatternCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'selective-definition',
+              parentNavigatorKey: SelectiveDefinitionRoute.$parentNavigatorKey,
+              factory: $SelectiveDefinitionRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      SelectiveDefinitionCodeRoute.$parentNavigatorKey,
+                  factory: $SelectiveDefinitionCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'span-definition',
+              parentNavigatorKey: SpanDefinitionRoute.$parentNavigatorKey,
+              factory: $SpanDefinitionRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      SpanDefinitionCodeRoute.$parentNavigatorKey,
+                  factory: $SpanDefinitionCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'real-hyperlinks',
+              parentNavigatorKey: RealHyperlinksRoute.$parentNavigatorKey,
+              factory: $RealHyperlinksRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      RealHyperlinksCodeRoute.$parentNavigatorKey,
+                  factory: $RealHyperlinksCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'hover-style',
+              parentNavigatorKey: HoverStyleRoute.$parentNavigatorKey,
+              factory: $HoverStyleRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: HoverStyleCodeRoute.$parentNavigatorKey,
+                  factory: $HoverStyleCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'on-gesture',
+              parentNavigatorKey: OnGestureRoute.$parentNavigatorKey,
+              factory: $OnGestureRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: OnGestureCodeRoute.$parentNavigatorKey,
+                  factory: $OnGestureCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'spans-constructor',
+              parentNavigatorKey: CustomTextSpansRoute.$parentNavigatorKey,
+              factory: $CustomTextSpansRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      CustomTextSpansCodeRoute.$parentNavigatorKey,
+                  factory: $CustomTextSpansCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'pre-builder',
+              parentNavigatorKey: PreBuilderRoute.$parentNavigatorKey,
+              factory: $PreBuilderRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: PreBuilderCodeRoute.$parentNavigatorKey,
+                  factory: $PreBuilderCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'text-editing-controller',
+              parentNavigatorKey: ControllerRoute.$parentNavigatorKey,
+              factory: $ControllerRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: ControllerCodeRoute.$parentNavigatorKey,
+                  factory: $ControllerCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'external-parser',
+              parentNavigatorKey: ExternalParserRoute.$parentNavigatorKey,
+              factory: $ExternalParserRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      ExternalParserCodeRoute.$parentNavigatorKey,
+                  factory: $ExternalParserCodeRouteExtension._fromState,
+                ),
+              ],
             ),
           ],
         ),
         GoRouteData.$route(
-          path: 'styles-and-actions',
-          factory: $StylesAndActionsRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $StylesAndActionsCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'overwriting-pattern',
-          factory: $OverwritingPatternRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $OverwritingPatternCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'custom-pattern',
-          factory: $CustomPatternRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $CustomPatternCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'selective-definition',
-          factory: $SelectiveDefinitionRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $SelectiveDefinitionCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'span-definition',
-          factory: $SpanDefinitionRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $SpanDefinitionCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'real-hyperlinks',
-          factory: $RealHyperlinksRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $RealHyperlinksCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'hover-style',
-          factory: $HoverStyleRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $HoverStyleCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'on-gesture',
-          factory: $OnGestureRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $OnGestureCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'spans-constructor',
-          factory: $CustomTextSpansRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $CustomTextSpansCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'pre-builder',
-          factory: $PreBuilderRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $PreBuilderCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'text-editing-controller',
-          factory: $ControllerRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $ControllerCodeRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: 'external-parser',
-          factory: $ExternalParserRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'code',
-              factory: $ExternalParserCodeRouteExtension._fromState,
-            ),
-          ],
+          path: '/advanced',
+          factory: $AdvancedViewRouteExtension._fromState,
         ),
       ],
     );
 
 extension $HomeRouteExtension on HomeRoute {
   static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+}
+
+extension $BasicViewRouteExtension on BasicViewRoute {
+  static BasicViewRoute _fromState(GoRouterState state) =>
+      const BasicViewRoute();
 
   String get location => GoRouteData.$location(
         '/',
@@ -619,6 +668,24 @@ extension $ExternalParserCodeRouteExtension on ExternalParserCodeRoute {
 
   String get location => GoRouteData.$location(
         '/external-parser/code',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AdvancedViewRouteExtension on AdvancedViewRoute {
+  static AdvancedViewRoute _fromState(GoRouterState state) =>
+      const AdvancedViewRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced',
       );
 
   void go(BuildContext context) => context.go(location);

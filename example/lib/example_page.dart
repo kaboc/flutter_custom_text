@@ -33,16 +33,12 @@ class _ExamplePageState extends State<ExamplePage> {
   final _resultNotifier = ValueNotifier<String>('');
   final _scrollController = ScrollController();
 
-  late final String _path;
-  late final String _filename;
+  late final Uri _uri;
 
   @override
   void initState() {
     super.initState();
-
-    final router = GoRouter.of(context);
-    _path = router.currentPath;
-    _filename = router.exampleFilename;
+    _uri = GoRouter.of(context).uri;
   }
 
   @override
@@ -55,8 +51,7 @@ class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
     final description = Description(
-      path: _path,
-      filename: _filename,
+      uri: _uri,
       description: widget.description,
     );
     final example = _Example(
@@ -82,7 +77,7 @@ class _ExamplePageState extends State<ExamplePage> {
               icon: const Icon(Icons.open_in_browser),
               onPressed: () => launchUrlString(
                 'https://kaboc.github.io/'
-                'flutter_custom_text/#$_path',
+                'flutter_custom_text/#${_uri.path}',
               ),
             ),
             const SizedBox(width: 4.0),
@@ -90,7 +85,7 @@ class _ExamplePageState extends State<ExamplePage> {
           IconButton(
             tooltip: 'View code',
             icon: const Icon(Icons.article),
-            onPressed: () => context.go('$_path/code'),
+            onPressed: () => context.go('${_uri.path}/code'),
           ),
         ],
       ),

@@ -5,11 +5,16 @@ import 'package:custom_text/custom_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:custom_text_example/common/highlight/highlight.dart';
+import 'package:custom_text_example/routes.dart';
 import 'package:custom_text_example/widgets/hyperlink.dart';
 
 class CodeViewPage extends StatefulWidget {
-  const CodeViewPage({required this.filename});
+  const CodeViewPage({
+    required this.viewType,
+    required this.filename,
+  });
 
+  final ViewType viewType;
   final String filename;
 
   @override
@@ -34,7 +39,7 @@ class _CodeViewPageState extends State<CodeViewPage> {
   }
 
   Future<void> _loadSourceCode() async {
-    final path = 'lib/examples/src/${widget.filename}';
+    final path = 'lib/examples/${widget.viewType.name}/${widget.filename}';
     final code = await rootBundle.loadString(path);
     setState(() => _code = code);
   }
@@ -49,7 +54,8 @@ class _CodeViewPageState extends State<CodeViewPage> {
             child: Hyperlink(
               label: 'View on GitHub',
               url: 'https://github.com/kaboc/flutter_custom_text/'
-                  'blob/main/example/lib/examples/src/${widget.filename}',
+                  'blob/main/example/lib/'
+                  'examples/${widget.viewType.name}/${widget.filename}',
             ),
           ),
           const SizedBox(width: 16.0),
