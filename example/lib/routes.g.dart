@@ -187,6 +187,46 @@ RouteBase get $homeRoute => ShellRouteData.$route(
         GoRouteData.$route(
           path: '/advanced',
           factory: $AdvancedViewRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'expressive-text',
+              parentNavigatorKey: ExpressiveTextRoute.$parentNavigatorKey,
+              factory: $ExpressiveTextRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      ExpressiveTextCodeRoute.$parentNavigatorKey,
+                  factory: $ExpressiveTextCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'searchable-text',
+              parentNavigatorKey: SearchableTextRoute.$parentNavigatorKey,
+              factory: $SearchableTextRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey:
+                      SearchableTextCodeRoute.$parentNavigatorKey,
+                  factory: $SearchableTextCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+            GoRouteData.$route(
+              path: 'fill-in-blanks',
+              parentNavigatorKey: FillInBlanksRoute.$parentNavigatorKey,
+              factory: $FillInBlanksRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'code',
+                  parentNavigatorKey: FillInBlanksCodeRoute.$parentNavigatorKey,
+                  factory: $FillInBlanksCodeRouteExtension._fromState,
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     );
@@ -686,6 +726,114 @@ extension $AdvancedViewRouteExtension on AdvancedViewRoute {
 
   String get location => GoRouteData.$location(
         '/advanced',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ExpressiveTextRouteExtension on ExpressiveTextRoute {
+  static ExpressiveTextRoute _fromState(GoRouterState state) =>
+      const ExpressiveTextRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/expressive-text',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ExpressiveTextCodeRouteExtension on ExpressiveTextCodeRoute {
+  static ExpressiveTextCodeRoute _fromState(GoRouterState state) =>
+      ExpressiveTextCodeRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/expressive-text/code',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SearchableTextRouteExtension on SearchableTextRoute {
+  static SearchableTextRoute _fromState(GoRouterState state) =>
+      const SearchableTextRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/searchable-text',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SearchableTextCodeRouteExtension on SearchableTextCodeRoute {
+  static SearchableTextCodeRoute _fromState(GoRouterState state) =>
+      SearchableTextCodeRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/searchable-text/code',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $FillInBlanksRouteExtension on FillInBlanksRoute {
+  static FillInBlanksRoute _fromState(GoRouterState state) =>
+      const FillInBlanksRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/fill-in-blanks',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $FillInBlanksCodeRouteExtension on FillInBlanksCodeRoute {
+  static FillInBlanksCodeRoute _fromState(GoRouterState state) =>
+      FillInBlanksCodeRoute();
+
+  String get location => GoRouteData.$location(
+        '/advanced/fill-in-blanks/code',
       );
 
   void go(BuildContext context) => context.go(location);

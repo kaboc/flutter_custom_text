@@ -36,3 +36,4 @@ flutter:
 
   assets:
     - lib/examples/basic/
+    - lib/examples/advanced/

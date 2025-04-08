@@ -6,6 +6,9 @@ import 'package:custom_text_example/basic_view.dart';
 import 'package:custom_text_example/code_view_page.dart';
 import 'package:custom_text_example/common/device_info.dart';
 import 'package:custom_text_example/example_page.dart';
+import 'package:custom_text_example/examples/advanced/expressive_text.dart';
+import 'package:custom_text_example/examples/advanced/fill_in_blanks.dart';
+import 'package:custom_text_example/examples/advanced/searchable_text.dart';
 import 'package:custom_text_example/examples/basic/custom_pattern.dart';
 import 'package:custom_text_example/examples/basic/external_parser.dart';
 import 'package:custom_text_example/examples/basic/hover_style.dart';
@@ -109,6 +112,20 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
     ),
     TypedGoRoute<AdvancedViewRoute>(
       path: '/advanced',
+      routes: [
+        TypedGoRoute<ExpressiveTextRoute>(
+          path: 'expressive-text',
+          routes: [TypedGoRoute<ExpressiveTextCodeRoute>(path: 'code')],
+        ),
+        TypedGoRoute<SearchableTextRoute>(
+          path: 'searchable-text',
+          routes: [TypedGoRoute<SearchableTextCodeRoute>(path: 'code')],
+        ),
+        TypedGoRoute<FillInBlanksRoute>(
+          path: 'fill-in-blanks',
+          routes: [TypedGoRoute<FillInBlanksCodeRoute>(path: 'code')],
+        ),
+      ],
     ),
   ],
 )
@@ -462,6 +479,71 @@ class ExternalParserRoute extends GoRouteData {
   }
 }
 
+class ExpressiveTextRoute extends GoRouteData {
+  const ExpressiveTextRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+  static const String title = 'Expressive text widget';
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return SlideTransitionPage(
+      child: ExamplePage(
+        title: title,
+        description:
+            'A text widget you can use to easily apply styles such as bold '
+            'and italic with Markdown-ish notification.',
+        additionalInfo:
+            '{{dash}} is custom markup to be replace with a Dash icon.',
+        hasOutput: false,
+        builder: (_) => const ExpressiveTextExample(),
+      ),
+    );
+  }
+}
+
+class SearchableTextRoute extends GoRouteData {
+  const SearchableTextRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+  static const String title = 'Searchable text widget';
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return SlideTransitionPage(
+      child: ExamplePage(
+        title: title,
+        description:
+            'A text widget that allows you to search for a keyword contained '
+            'in it.',
+        hasOutput: false,
+        scrollable: true,
+        builder: (_) => const SearchableTextExample(),
+      ),
+    );
+  }
+}
+
+class FillInBlanksRoute extends GoRouteData {
+  const FillInBlanksRoute();
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+  static const String title = 'Fill-in-the-blanks question';
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return SlideTransitionPage(
+      child: ExamplePage(
+        title: title,
+        description: 'Text with blanks whose content are revealed by a hover.',
+        additionalInfo: 'Try this example on a device with a mouse.',
+        hasOutput: false,
+        builder: (_) => const FillInBlanksExample(),
+      ),
+    );
+  }
+}
+
 abstract class CodeViewRoute extends GoRouteData {
   const CodeViewRoute();
 
@@ -525,6 +607,18 @@ class ControllerCodeRoute extends CodeViewRoute {
 }
 
 class ExternalParserCodeRoute extends CodeViewRoute {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class ExpressiveTextCodeRoute extends CodeViewRoute {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class SearchableTextCodeRoute extends CodeViewRoute {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class FillInBlanksCodeRoute extends CodeViewRoute {
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 

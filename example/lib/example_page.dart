@@ -15,15 +15,17 @@ class ExamplePage extends StatefulWidget {
     required this.title,
     required this.description,
     required this.builder,
-    this.hasOutput = true,
     this.additionalInfo,
+    this.hasOutput = true,
+    this.scrollable = false,
   });
 
   final String title;
   final String description;
   final Widget Function(void Function(String)) builder;
-  final bool hasOutput;
   final String? additionalInfo;
+  final bool hasOutput;
+  final bool scrollable;
 
   @override
   State<ExamplePage> createState() => _ExamplePageState();
@@ -57,6 +59,7 @@ class _ExamplePageState extends State<ExamplePage> {
     final example = _Example(
       builder: widget.builder,
       additionalInfo: widget.additionalInfo,
+      scrollable: widget.scrollable,
       resultNotifier: _resultNotifier,
     );
     final output = _Output(
@@ -93,7 +96,7 @@ class _ExamplePageState extends State<ExamplePage> {
         child: GestureDetector(
           onTap: FocusScope.of(context).unfocus,
           child: SafeArea(
-            child: widget.hasOutput
+            child: widget.hasOutput && !widget.scrollable
                 ? LayoutBuilder(
                     builder: (context, constraints) {
                       return isLandscape
@@ -111,15 +114,25 @@ class _ExamplePageState extends State<ExamplePage> {
                             );
                     },
                   )
-                : SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        description,
-                        example,
-                      ],
-                    ),
-                  ),
+                : widget.scrollable
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          description,
+                          Expanded(
+                            child: example,
+                          ),
+                        ],
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            description,
+                            example,
+                          ],
+                        ),
+                      ),
           ),
         ),
       ),
@@ -131,24 +144,33 @@ class _Example extends StatelessWidget {
   const _Example({
     required this.builder,
     required this.additionalInfo,
+    required this.scrollable,
     required this.resultNotifier,
   });
 
   final Widget Function(void Function(String)) builder;
   final String? additionalInfo;
+  final bool scrollable;
   final ValueNotifier<String> resultNotifier;
 
   @override
   Widget build(BuildContext context) {
+    final child = builder((text) {
+      final value = resultNotifier.value;
+      resultNotifier.value += value.isEmpty ? text : '\n$text';
+    });
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          builder((text) {
-            final value = resultNotifier.value;
-            resultNotifier.value += value.isEmpty ? text : '\n$text';
-          }),
+          if (scrollable)
+            Expanded(
+              child: child,
+            )
+          else
+            child,
           if (additionalInfo != null) ...[
             const SizedBox(height: 32.0),
             CustomText(
