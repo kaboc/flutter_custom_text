@@ -311,10 +311,7 @@ class RealHyperlinksRoute extends GoRouteData {
             '`Link` widget of package:url_launcher.',
         additionalInfo:
             'Run this example in a desktop web browser and place the mouse '
-            'pointer or right-click on a link.\n\n'
-            'Note:\n'
-            'Sadly, WidgetSpans are vertically misaligned with plain text '
-            'on the web due to issues existing on the Flutter SDK side.',
+            'pointer or right-click on a link.',
         hasOutput: false,
         builder: (_) => const RealHyperlinksExample(),
       ),
@@ -362,7 +359,7 @@ class OnGestureRoute extends GoRouteData {
             'mouse enter event.\n\n'
             'The secondary and tertiary buttons also call the `onGesture` '
             'callback.\n\n'
-            'Notice:\n'
+            'Note:\n'
             '* On the web, the context menu of your browser will interfere '
             'with secondary button events unless the menu is suppressed.\n'
             '* The popup feature does not come with the package.',
@@ -441,7 +438,7 @@ class ControllerRoute extends GoRouteData {
         title: title,
         description: 'Uses most `CustomText` features in `TextField` too using '
             '`CustomTextEditingController`.\n\n'
-            'Notice:\n'
+            'Note:\n'
             '* SelectiveDefinition and SpanDefinition are not available '
             'for CustomTextEditingController.\n'
             '* Not suitable for long text, even with debouncing enabled.',

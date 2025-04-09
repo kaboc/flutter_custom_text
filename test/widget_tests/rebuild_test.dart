@@ -54,8 +54,8 @@ void main() {
   );
 
   testWidgets(
-    'Changing rebuildKey in preBuilder causes a rebuild in CustomSpan too '
-    'despite no actual change in spans built in preBuilder',
+    'Changing rebuildKey in preBuilder causes CustomSpanBuilder to rerun '
+    'despite no other change in builder/preBuilder settings',
     (tester) async {
       late CustomSpanBuilder builder;
       var rebuildKey = const ValueKey(1);

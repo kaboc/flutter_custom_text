@@ -20,11 +20,12 @@ dependencies:
   # https://github.com/material-foundation/flutter-packages/issues/567
   google_fonts: 6.1.0
   highlight: ^0.7.0
+  url_launcher: ^6.3.0
+
   positioned_popup:
     git:
       url: https://github.com/kaboc/positioned-popup.git
       ref: 28af814a9dcb1623fce3a7301d10e76006afbf94
-  url_launcher: ^6.3.0
 
 dev_dependencies:
   build_runner: ^2.4.9

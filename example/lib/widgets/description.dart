@@ -29,7 +29,7 @@ class Description extends StatelessWidget {
               uri.exampleFilename,
               definitions: [
                 TextDefinition(
-                  matcher: const _FilenameMatcher(),
+                  matcher: const PatternMatcher(r'\w+\.dart'),
                   hoverStyle: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
@@ -47,7 +47,7 @@ class Description extends StatelessWidget {
               description,
               definitions: [
                 SelectiveDefinition(
-                  matcher: const _CodeMatcher(),
+                  matcher: const PatternMatcher('`(.+?)`'),
                   shownText: (element) => element.groups[0] ?? '',
                   matchStyle: const TextStyle(
                     color: Colors.white,
@@ -62,12 +62,4 @@ class Description extends StatelessWidget {
       ),
     );
   }
-}
-
-class _FilenameMatcher extends TextMatcher {
-  const _FilenameMatcher() : super(r'\w+\.dart');
-}
-
-class _CodeMatcher extends TextMatcher {
-  const _CodeMatcher() : super('`(.+?)`');
 }

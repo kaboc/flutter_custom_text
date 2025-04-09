@@ -88,10 +88,6 @@ to be tapped and long-pressed.
 All the three are styled, but only phone numbers among them are styled differently with
 the unique `matchStyle` and `tapStyle`.
 
-**Tip**:\
-To open a browser or another app when a string is tapped or long-pressed, use the
-[url_launcher] package or equivalent in the `onTap` and/or `onLongPress` handlers.
-
 ```dart
 CustomText(
   'URL: https://example.com/\n'
@@ -122,6 +118,10 @@ CustomText(
   onLongPress: (details) => print('[Long press] ${details.actionText}'),
 )
 ```
+
+> [!TIP]
+> To open a browser or another app when a string is tapped or long-pressed, use the
+  [url_launcher] package or equivalent in the `onTap` and/or `onLongPress` handlers.
 </details>
 
 ---
@@ -333,11 +333,6 @@ together with the `Link` widget of [url_launcher].
 <summary>Click to see the details</summary>
 <br>
 
-**Notes:**
-
-As you can see in the screencast above, [WidgetSpan]s are vertically misaligned
-with plain text on the web. It is due to issues existing on the Flutter SDK side.
-
 ```dart
 CustomText(
   'Please visit [pub.dev](https://pub.dev/packages/custom_text) and ...',
@@ -346,7 +341,8 @@ CustomText(
       matcher: const LinkMatcher(),
       builder: (element) {
         return WidgetSpan(
-          alignment: PlaceholderAlignment.middle,
+          baseline: TextBaseline.alphabetic,
+          alignment: PlaceholderAlignment.baseline,
           child: Link(
             uri: Uri.parse(element.groups[1]!),
             target: LinkTarget.blank,
@@ -390,9 +386,6 @@ If a tap handler (`onTap` or `onLongPress`) is specified and `mouseCursor` is no
 A different text style can also be applied on hover using `hoverStyle` either in `CustomText`
 or in a definition.
 
-**Tip**:\
-Use `hoverStyle` and omit `tapStyle` if you want the same style for tap and hover.
-
 ```dart
 CustomText(
   'URL: https://example.com/\n'
@@ -426,6 +419,9 @@ CustomText(
   ],
 )
 ```
+
+> [!TIP]
+> Use `hoverStyle` and omit `tapStyle` if you want the same style for tap and hover.
 </details>
 
 ---
@@ -450,16 +446,15 @@ You can check the event type with `gestureKind` contained in the [GestureDetails
 object which is passed to the handler function. The object also has the global
 and local positions where an event happened.
 
-**Notes:**
-
-- `onGesture` does not handle events of the primary button. Use `onTap` and/or
-  `onLongPress` instead.
-- Unlike `onTap` and `onLongPress`, whether `onGesture` is specified does not
-  affect text styling.
-- The handler function is called one microsecond or more after the actual
-  occurrence of an event.
-    - This is due to a workaround for preventing the function from being called
-      more times than expected by updates of the text span.
+> [!NOTE]
+> - `onGesture` does not handle events of the primary button. Use `onTap` and/or
+    `onLongPress` instead.
+> - Unlike `onTap` and `onLongPress`, whether `onGesture` is specified does not
+    affect text styling.
+> - The handler function is called one microsecond or more after the actual
+    occurrence of an event.
+>     - This is due to a workaround for preventing the function from being called
+        more times than expected by updates of the text span.
 </details>
 
 ---
@@ -524,10 +519,9 @@ CustomText.spans(
 )
 ```
 
-**Notes:**
-
-- Arguments other than `text` and `style` in the spans passed to `spans` are
-  not used even if specified.
+> [!NOTE]
+> - Arguments other than `text` and `style` in the spans passed to `spans` are
+    not used even if specified.
 </details>
 
 ---
@@ -574,16 +568,15 @@ CustomText(
 )
 ```
 
-**Notes:**
-
-- Parsing is performed first in the builder and then in `CustomText` itself. It
-  is important to understand that the match patterns in the builder are used for
-  the original text and the patterns in `CustomText` are used for the `TextSpan`
-  built by the builder. 
-- Parsing and building of spans are avoided if not necessary, but still happen
-  in two steps as written above when unavoidable. Be careful how much it affects
-  the performance of your app.
-- Gesture callbacks and `mouseCursor` in the builder are not used even if specified.
+> [!NOTE]
+> - Parsing is performed first in the builder and then in `CustomText` itself.
+    It is important to understand that the match patterns in the builder are used
+    for the original text and the patterns in `CustomText` are used for the `TextSpan`
+    built by the builder. 
+> - Parsing and building of spans are avoided if not necessary, but still happen
+    in two steps as written above when unavoidable. Be careful how much it affects
+    the performance of your app.
+> - Gesture callbacks and `mouseCursor` in the builder are not used even if specified.
 </details>
 
 ---
@@ -625,19 +618,18 @@ Widget build(BuildContext context) {
 }
 ```
 
-**Notes:**
-
-- `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
-- An error is raised on iOS simulators (not on real devices) if the initial text and
-  `onTap`, `onLongPress` or `onGesture` are specified.
-    - See https://github.com/flutter/flutter/issues/97433.
-- Debouncing of text parsing is available as an experimental feature for getting slightly
-  better performance in handling long text.
-    - Pass some duration to `debounceDuration` to enable the feature.
-    - Use it at your own risk.
-    - Text input will be still slow even with debouncing because
-      [Flutter itself has performance issues](https://github.com/flutter/flutter/issues/114158)
-      in editable text.
+> [!NOTE]
+> - `CustomTextEditingController` does not support `SelectiveDefinition` and `SpanDefinition`.
+> - An error is raised on iOS simulators (not on real devices) if the initial text
+    and `onTap`, `onLongPress` or `onGesture` are specified.
+>     - See https://github.com/flutter/flutter/issues/97433.
+> - Debouncing of text parsing is available as an experimental feature for getting
+    slightly better performance in handling long text.
+>     - Pass some duration to `debounceDuration` to enable the feature.
+>     - Use it at your own risk.
+>     - Text input will be still slow even with debouncing because
+        [Flutter itself has performance issues](https://github.com/flutter/flutter/issues/114158)
+        in editable text.
 </details>
 
 ---
@@ -691,15 +683,14 @@ CustomText(
 );
 ```
 
-**Notes:**
-
-- The external parser must generate a list of `TextElement`s.
-- If an existing external parser creates hierarchical nodes, they need to be
-  flattened as this package only supports a flat list.
-- If a custom parser is used with `CustomTextEditingController`, the `TextElement`s
-  generated by the parser must all together constitute the original text.
-  Otherwise, it will cause unexpected behaviours.
-    - This does not apply to `CustomText`.
+> [!NOTE]
+> - The external parser must generate a list of [TextElement]s.
+> - If an existing external parser creates hierarchical nodes, they need to be
+    flattened as this package only supports a flat list.
+> - If a custom parser is used with `CustomTextEditingController`, the `TextElement`s
+    generated by the parser must all together constitute the original text.
+    Otherwise, it will cause unexpected behaviours.
+>     - This does not apply to `CustomText`.
 </details>
 
 ---
@@ -760,6 +751,7 @@ CustomText(
 [PatternMatcher]: https://pub.dev/documentation/text_parser/latest/text_parser/PatternMatcher-class.html
 [SelectiveDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SelectiveDefinition-class.html
 [SpanDefinition]: https://pub.dev/documentation/custom_text/latest/custom_text/SpanDefinition-class.html
+[TextElement]: https://pub.dev/documentation/text_parser/latest/text_parser/TextElement-class.html
 [GestureDetails]: https://pub.dev/documentation/custom_text/latest/custom_text/GestureDetails-class.html
 [InlineSpan]: https://api.flutter.dev/flutter/painting/InlineSpan-class.html
 [WidgetSpan]: https://api.flutter.dev/flutter/widgets/WidgetSpan-class.html

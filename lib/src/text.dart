@@ -304,7 +304,7 @@ class CustomText extends StatefulWidget {
   /// Whether to use an isolate for parsing to avoid blocking of the UI.
   ///
   /// If set to true, parsing with the default parser is executed in
-  /// an isolate to prevent blocking of the main thread and the UI.
+  /// an isolate to prevent blocking of the main isolate and the UI.
   ///
   /// This option does not work for the web where isolates are not
   /// supported. Also, this does not affect an external parser.

@@ -18,7 +18,15 @@ class RealHyperlinksExample extends StatelessWidget {
           matcher: const LinkMatcher(),
           builder: (element) {
             return WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
+              // The baseline and alignment settings are necessary to
+              // vertically align WidgetSpans with TextSpans when the text
+              // consists of alphabets.
+              // For non-alphabets, you can use `TextBaseline.ideographic`.
+              // However, due to issues in the Flutter SDK, it is not easy
+              // to align strings if the text contains both alphabet and
+              // ideographic characters, .
+              baseline: TextBaseline.alphabetic,
+              alignment: PlaceholderAlignment.baseline,
               child: Link(
                 uri: Uri.parse(element.groups[1]!),
                 target: LinkTarget.blank,

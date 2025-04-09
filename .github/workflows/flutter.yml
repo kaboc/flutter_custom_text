@@ -18,7 +18,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.16.8
+          flutter-version: 3.16.9
       - name: Install dependencies
         run: flutter pub get
       - name: Check format
