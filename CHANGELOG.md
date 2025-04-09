@@ -1,3 +1,8 @@
+## 2.0.4
+
+- Rerun SpanBuilder and CustomSpanBuilder on hot reload.
+- Add advanced examples.
+
 ## 2.0.3
 
 - Update dependencies.
